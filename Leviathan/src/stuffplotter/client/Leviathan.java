@@ -1,5 +1,9 @@
 package stuffplotter.client;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
 import stuffplotter.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -39,6 +43,10 @@ public class Leviathan implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		
+		// testing imported JDBC stuff
+		Timestamp.UTC(2012, 8, 3, 4, 45, 23);
+		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
