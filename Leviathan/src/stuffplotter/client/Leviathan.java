@@ -1,7 +1,5 @@
 package stuffplotter.client;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import stuffplotter.shared.FieldVerifier;
