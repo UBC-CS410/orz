@@ -3,6 +3,8 @@ package stuffplotter.client;
 import java.sql.Timestamp;
 
 import stuffplotter.shared.FieldVerifier;
+
+import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -45,6 +47,11 @@ public class Leviathan implements EntryPoint {
 		// testing imported JDBC stuff
 		Timestamp.UTC(2012, 8, 3, 4, 45, 23);
 		
+		// testing calendar stuff
+		Calendar calendar = new Calendar();
+		calendar.setWidth("500px");
+		calendar.setHeight("400px");
+		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
@@ -58,7 +65,8 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
-
+		RootPanel.get("calendarContainer").add(calendar);
+		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		nameField.selectAll();
