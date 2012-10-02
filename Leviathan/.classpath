@@ -6,6 +6,8 @@
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/classes12.zip"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-cal-0.9.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.1.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
