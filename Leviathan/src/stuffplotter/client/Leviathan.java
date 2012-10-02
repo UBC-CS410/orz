@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import stuffplotter.shared.FieldVerifier;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
+import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -51,6 +52,9 @@ public class Leviathan implements EntryPoint {
 		Calendar calendar = new Calendar();
 		calendar.setWidth("500px");
 		calendar.setHeight("400px");
+
+		//Displays the month View
+		calendar.setView(CalendarViews.MONTH);
 		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();
