@@ -8,6 +8,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/classes12.zip"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-cal-0.9.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.1.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps3-0.2b.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
