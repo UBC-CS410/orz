@@ -13,6 +13,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.maps.client.MapOptions;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -56,6 +59,11 @@ public class Leviathan implements EntryPoint {
 		//Displays the month View
 		calendar.setView(CalendarViews.MONTH);
 		
+		// testing map stuff
+		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
+		map.setSize("500px", "500px");
+
+		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
@@ -70,6 +78,7 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("calendarContainer").add(calendar);
+		RootPanel.get("mapContainter").add(map);
 		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
