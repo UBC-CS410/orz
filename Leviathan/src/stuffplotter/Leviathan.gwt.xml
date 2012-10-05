@@ -16,6 +16,8 @@
   <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
   <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
   <inherits name='com.google.gwt.maps.GoogleMaps' />
+  <inherits name='gwtquery.plugins.UiEmbedded' />
+
 
   <!-- Note: Need to get API when starting to deploy -->
   <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false" />

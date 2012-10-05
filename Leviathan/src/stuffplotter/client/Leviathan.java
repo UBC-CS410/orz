@@ -1,8 +1,18 @@
 package stuffplotter.client;
 
+import gwtquery.plugins.ui.widgets.Accordion;
+
 import java.sql.Timestamp;
 
 import stuffplotter.shared.FieldVerifier;
+
+// import to have jquery in code
+import static com.google.gwt.query.client.GQuery.$;
+
+// import to have jquery-ui in code
+import static gwtquery.plugins.ui.Ui.Ui;
+import gwtquery.plugins.ui.widgets.Accordion;
+
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -13,7 +23,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -63,6 +72,8 @@ public class Leviathan implements EntryPoint {
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize("500px", "500px");
 
+		// testing gquery-ui
+		$("#accordion", RootPanel.get("accordionGroup")).as(Ui).accordion(Accordion.Options.create().collapsible(true));
 		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();

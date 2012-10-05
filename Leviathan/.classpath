@@ -9,6 +9,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-cal-0.9.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtquery-ui-r146.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtquery-1.2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
