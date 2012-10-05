@@ -24,6 +24,10 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.control.Control;
+import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.control.LargeMapControl3D;
+import com.google.gwt.maps.client.control.SmallMapControl;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -71,7 +75,9 @@ public class Leviathan implements EntryPoint {
 		// testing map stuff
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize("500px", "500px");
-
+		map.setScrollWheelZoomEnabled(true);
+		map.addControl(new LargeMapControl3D());
+		
 		// testing gquery-ui
 		$("#accordion", RootPanel.get("accordionGroup")).as(Ui).accordion(Accordion.Options.create().collapsible(true));
 		
