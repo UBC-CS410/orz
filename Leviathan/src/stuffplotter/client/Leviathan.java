@@ -3,7 +3,10 @@ package stuffplotter.client;
 import gwtquery.plugins.ui.widgets.Accordion;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import stuffplotter.shared.Event;
 import stuffplotter.shared.FieldVerifier;
 
 // import to have jquery in code
@@ -25,9 +28,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.Control;
-import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
-import com.google.gwt.maps.client.control.SmallMapControl;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -37,6 +38,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -60,7 +63,7 @@ public class Leviathan implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		
+				
 		// testing imported JDBC stuff
 		Timestamp.UTC(2012, 8, 3, 4, 45, 23);
 		
@@ -73,11 +76,11 @@ public class Leviathan implements EntryPoint {
 		calendar.setView(CalendarViews.MONTH);
 		
 		// testing map stuff
-		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
+		/*MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize("500px", "500px");
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
-		
+		*/
 		// testing gquery-ui
 		$("#accordion", RootPanel.get("accordionGroup")).as(Ui).accordion(Accordion.Options.create().collapsible(true));
 		
@@ -95,7 +98,7 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("calendarContainer").add(calendar);
-		RootPanel.get("mapContainter").add(map);
+		//RootPanel.get("mapContainter").add(map);
 		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
