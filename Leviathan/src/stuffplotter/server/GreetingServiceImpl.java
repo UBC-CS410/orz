@@ -1,14 +1,8 @@
 package stuffplotter.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import stuffplotter.client.GreetingService;
-import stuffplotter.shared.Event;
 import stuffplotter.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 
 /**
  * The server side implementation of the RPC service.
@@ -34,16 +28,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		userAgent = escapeHtml(userAgent);
 
 		// testing Objectify code
-		ObjectifyService.register(Event.class);
-		
-		Objectify obj = ObjectifyService.begin();
-		
-		List<String> testList = new ArrayList<String>();
-		testList.add("Person 1");
-		testList.add("Person 2");
-		testList.add("Person 3");
-		Event testEvent = new Event("Test Event 1" + input, testList);
-		obj.put(testEvent);
+		DatabaseStore dataStore = new DatabaseStore();
+		dataStore.addEvent(input);
 		
 		
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo

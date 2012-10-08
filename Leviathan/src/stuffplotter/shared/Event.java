@@ -3,10 +3,12 @@ package stuffplotter.shared;
 import java.util.List;
 
 import javax.persistence.Id;
+import com.googlecode.objectify.annotation.Entity;;
 
 /**
  * Class to hold all the information for an event.
  */
+@Entity
 public class Event {
 	
 	@Id private Long eventID;
