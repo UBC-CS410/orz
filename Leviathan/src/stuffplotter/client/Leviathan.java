@@ -4,6 +4,7 @@ import gwtquery.plugins.ui.widgets.Accordion;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import stuffplotter.shared.Event;
@@ -17,8 +18,13 @@ import static gwtquery.plugins.ui.Ui.Ui;
 import gwtquery.plugins.ui.widgets.Accordion;
 
 
+import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
+import com.bradrydzewski.gwt.calendar.client.event.MouseOverEvent;
+import com.bradrydzewski.gwt.calendar.client.event.MouseOverHandler;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -74,6 +80,16 @@ public class Leviathan implements EntryPoint {
 
 		//Displays the month View
 		calendar.setView(CalendarViews.MONTH);
+		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>() {
+			
+			@Override
+			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
+				// TODO Auto-generated method stub
+				DialogBox testBox = new DialogBox();
+				testBox.setText(Integer.toString(event.getTarget().getDay()));
+				RootPanel.get("mapContainter").add(testBox);
+			}
+		});
 		
 		// testing map stuff
 		/*MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
