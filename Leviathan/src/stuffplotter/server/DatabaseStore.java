@@ -1,5 +1,7 @@
 package stuffplotter.server;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,12 @@ public class DatabaseStore {
 	 */
 	public void addEvent(String input)
 	{	
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Objectify obj = ObjectifyService.begin();
 		List<String> testList = new ArrayList<String>();
 		testList.add("Person 1");
