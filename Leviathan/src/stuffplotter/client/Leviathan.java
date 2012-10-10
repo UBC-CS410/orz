@@ -5,6 +5,7 @@ import gwtquery.plugins.ui.widgets.Accordion;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import stuffplotter.shared.Event;
@@ -86,7 +87,7 @@ public class Leviathan implements EntryPoint {
 			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
 				// TODO Auto-generated method stub
 				DialogBox testBox = new DialogBox();
-				testBox.setText(Integer.toString(event.getTarget().getDay()));
+				testBox.setText(Integer.toString(event.getTarget().getDate()));
 				RootPanel.get("mapContainter").add(testBox);
 			}
 		});
