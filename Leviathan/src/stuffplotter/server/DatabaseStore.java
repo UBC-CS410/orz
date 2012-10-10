@@ -1,5 +1,6 @@
 package stuffplotter.server;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,6 +40,12 @@ public class DatabaseStore {
 	{	
 		try {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			//String connectURL = "jdbc:oracle:thin:@localhost:1521:ug";
+			//Connection con = DriverManager.getConnection(connectURL, "ora_e0e7", "a60311081");
+			//System.out.println("Connected to Oracle!");
+				
+		
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
