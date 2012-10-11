@@ -101,6 +101,30 @@ public class Leviathan implements EntryPoint {
 		// testing gquery-ui
 		$("#accordion", RootPanel.get("accordionGroup")).as(Ui).accordion(Accordion.Options.create().collapsible(true));
 		
+		// testing Toy Level System
+		final LevelSystem lvlSys = new LevelSystem();
+
+		VerticalPanel lvlView = new VerticalPanel();
+		final Button addExpBtn = new Button("Up Vote");
+		final Label lvlLabel = new Label("Level: 1");
+		final Label expLabel = new Label("Experience: 0");
+		
+		lvlView.add(lvlLabel);
+		lvlView.add(expLabel);
+		lvlView.add(addExpBtn);
+		
+		addExpBtn.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				lvlSys.addExperience(50);
+				expLabel.setText("Experience: " + Integer.toString(lvlSys.getCurrentExperience()));
+				lvlLabel.setText("Level: " + Integer.toString(lvlSys.getCurrentLevel()));
+			}	
+		});
+		
+		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
@@ -116,6 +140,7 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("calendarContainer").add(calendar);
 		//RootPanel.get("mapContainter").add(map);
+		RootPanel.get("addExp").add(lvlView);
 		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
