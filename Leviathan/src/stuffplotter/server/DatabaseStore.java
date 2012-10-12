@@ -71,8 +71,12 @@ public class DatabaseStore {
 	public Event retrieveEvent(String eventID)
 	{
 		Objectify obj = ObjectifyService.begin();
-		Long eventIDAsLong = Long.parseLong(eventID);
-		if(eventIDAsLong == null)
+		Long eventIDAsLong;
+		try
+		{
+			eventIDAsLong = Long.parseLong(eventID);
+		}
+		catch(NumberFormatException e)
 		{
 			return null;
 		}
