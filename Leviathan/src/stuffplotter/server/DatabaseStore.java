@@ -1,6 +1,5 @@
 package stuffplotter.server;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,8 +7,10 @@ import java.util.List;
 
 import stuffplotter.shared.Event;
 
+import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 
 /**
  * Class to manipulate the database.
@@ -57,5 +58,24 @@ public class DatabaseStore {
 		testList.add("Person 3");
 		Event testEvent = new Event("Test Event 1" + input, testList);
 		obj.put(testEvent);	
+	}
+	
+	/**
+	 * Method to retrieve an event with the given ID.
+	 * @param eventID - the ID of the event to search for. 
+	 * @return the event or null if it could not be found.
+	 */
+	public Event retrieveEvent(String eventID)
+	{
+		Objectify obj = ObjectifyService.begin();
+		try
+		{
+			List<Event> asdf = obj.query(Event.class).list();
+			return obj.async().get(Event.class, eventID).get();
+		}
+		catch (NotFoundException e)
+		{
+			return null;
+		}
 	}
 }

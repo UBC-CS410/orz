@@ -1,6 +1,10 @@
 package stuffplotter.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import stuffplotter.client.GreetingService;
+import stuffplotter.shared.Event;
 import stuffplotter.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -31,9 +35,19 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		DatabaseStore dataStore = new DatabaseStore();
 		dataStore.addEvent(input);
 		
+		Event retrievedEvent = dataStore.retrieveEvent(input);
+		String eventName = "N/A";
+		List<String> participants = new ArrayList<String>();
+		if(retrievedEvent != null)
+		{
+			eventName = retrievedEvent.getName();
+			participants = retrievedEvent.getParticipants();
+		}
 		
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo
-				+ ".<br><br>It looks like you are using:<br>" + userAgent;
+				+ ".<br><br>It looks like you are using:<br>" + userAgent
+				+ "<br><br> The event found was: " + eventName + " with: "
+				+ participants.size() + " participants.";
 	}
 
 	/**
