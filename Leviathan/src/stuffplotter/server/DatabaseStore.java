@@ -1,5 +1,6 @@
 package stuffplotter.server;
 
+import java.security.Key;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,8 +37,9 @@ public class DatabaseStore {
 	 * @pre input != null;
 	 * @post true;
 	 * @param input - string to append to the event name.
+	 * @return the ID of the event.
 	 */
-	public void addEvent(String input)
+	public Long addEvent(String input)
 	{	
 		try {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -57,7 +59,8 @@ public class DatabaseStore {
 		testList.add("Person 2");
 		testList.add("Person 3");
 		Event testEvent = new Event("Test Event 1" + input, testList);
-		obj.put(testEvent);	
+		obj.put(testEvent);
+		return testEvent.getID();
 	}
 	
 	/**
@@ -68,14 +71,18 @@ public class DatabaseStore {
 	public Event retrieveEvent(String eventID)
 	{
 		Objectify obj = ObjectifyService.begin();
-		try
-		{
-			List<Event> asdf = obj.query(Event.class).list();
-			return obj.async().get(Event.class, eventID).get();
-		}
-		catch (NotFoundException e)
+		Long eventIDAsLong = Long.parseLong(eventID);
+		if(eventIDAsLong == null)
 		{
 			return null;
 		}
+		
+		List<Event> listOfEvents = obj.query(Event.class).filter("eventID", eventIDAsLong).list();
+		if(listOfEvents.size() == 0)
+		{
+			return null;
+		}
+		
+		return listOfEvents.get(0);
 	}
 }

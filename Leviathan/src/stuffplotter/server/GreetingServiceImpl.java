@@ -33,7 +33,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 		// testing Objectify code
 		DatabaseStore dataStore = new DatabaseStore();
-		dataStore.addEvent(input);
+		Long newEventID = dataStore.addEvent(input);
 		
 		Event retrievedEvent = dataStore.retrieveEvent(input);
 		String eventName = "N/A";
@@ -46,7 +46,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo
 				+ ".<br><br>It looks like you are using:<br>" + userAgent
-				+ "<br><br> The event found was: " + eventName + " with: "
+				+ "<br><br> The ID of the event created was: " + newEventID +
+				"<br><br> The event found was: " + eventName + " with: "
 				+ participants.size() + " participants.";
 	}
 
