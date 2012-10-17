@@ -41,18 +41,6 @@ public class DatabaseStore {
 	 */
 	public Long addEvent(String input)
 	{	
-		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			//String connectURL = "jdbc:oracle:thin:@localhost:1521:ug";
-			//Connection con = DriverManager.getConnection(connectURL, "ora_e0e7", "a60311081");
-			//System.out.println("Connected to Oracle!");
-				
-		
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		Objectify obj = ObjectifyService.begin();
 		List<String> testList = new ArrayList<String>();
 		testList.add("Person 1");
