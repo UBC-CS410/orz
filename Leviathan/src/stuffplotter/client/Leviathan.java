@@ -26,6 +26,7 @@ import com.bradrydzewski.gwt.calendar.client.event.MouseOverEvent;
 import com.bradrydzewski.gwt.calendar.client.event.MouseOverHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,6 +38,7 @@ import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.Control;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -124,6 +126,9 @@ public class Leviathan implements EntryPoint {
 			}	
 		});
 		
+		com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
+		ListRequest calRequest = testCalendar.events().list(Window.prompt("Input Email Address", "example@example.com"));
+		Window.alert(calRequest.toString());
 		
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();

@@ -47,16 +47,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			eventName = retrievedEvent.getName();
 			participants = retrievedEvent.getParticipants();
 		}
-		
-		Calendar testCalendar = GWT.create(Calendar.class);
-		ListRequest calRequest = testCalendar.events().list(input);
 
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo
 				+ ".<br><br>It looks like you are using:<br>" + userAgent
 				+ "<br><br> The ID of the event created was: " + newEventID +
 				"<br><br> The event found was: " + eventName + " with: "
-				+ participants.size() + " participants." + "<br><br>" +
-				"GoogleCalendarStuff: " + calRequest.toString();
+				+ participants.size() + " participants.";
 	}
 
 	/**
