@@ -6,6 +6,10 @@ import java.util.List;
 import stuffplotter.client.GreetingService;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.FieldVerifier;
+
+import com.google.api.gwt.services.calendar.shared.Calendar;
+import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -44,11 +48,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			participants = retrievedEvent.getParticipants();
 		}
 		
+		Calendar testCalendar = GWT.create(Calendar.class);
+		ListRequest calRequest = testCalendar.events().list(input);
+
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo
 				+ ".<br><br>It looks like you are using:<br>" + userAgent
 				+ "<br><br> The ID of the event created was: " + newEventID +
 				"<br><br> The event found was: " + eventName + " with: "
-				+ participants.size() + " participants.";
+				+ participants.size() + " participants." + "<br><br>" +
+				"GoogleCalendarStuff: " + calRequest.toString();
 	}
 
 	/**
