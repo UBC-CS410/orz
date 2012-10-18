@@ -73,9 +73,6 @@ public class Leviathan implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 				
-		// testing imported JDBC stuff
-		Timestamp.UTC(2012, 8, 3, 4, 45, 23);
-		
 		// testing calendar stuff
 		Calendar calendar = new Calendar();
 		calendar.setWidth("500px");
@@ -95,11 +92,11 @@ public class Leviathan implements EntryPoint {
 		});
 		
 		// testing map stuff
-		/*MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
+		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize("500px", "500px");
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
-		*/
+		
 		// testing gquery-ui
 		$("#accordion", RootPanel.get("accordionGroup")).as(Ui).accordion(Accordion.Options.create().collapsible(true));
 		
@@ -144,7 +141,7 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("calendarContainer").add(calendar);
-		//RootPanel.get("mapContainter").add(map);
+		RootPanel.get("mapContainter").add(map);
 		RootPanel.get("addExp").add(lvlView);
 		
 		// Focus the cursor on the name field when the app loads

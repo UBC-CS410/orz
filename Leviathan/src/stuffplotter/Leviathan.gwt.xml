@@ -20,8 +20,9 @@
   <inherits name='gwtquery.plugins.UiEmbedded' />
 
 
-  <!-- Note: Need to get API when starting to deploy -->
-  <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false" />
+  <!-- Note: Need API Key only required when starting to deploy -->
+  <!-- <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false" /> -->
+  <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='stuffplotter.client.Leviathan'/>
