@@ -43,6 +43,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -86,8 +87,7 @@ public class Leviathan implements EntryPoint {
 			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
 				// TODO Auto-generated method stub
 				DialogBox testBox = new DialogBox();
-				testBox.setText(Integer.toString(event.getTarget().getDate()));
-				RootPanel.get("mapContainter").add(testBox);
+				Window.alert(Integer.toString(event.getTarget().getDate()));
 			}
 		});
 		
@@ -135,13 +135,16 @@ public class Leviathan implements EntryPoint {
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
+		HorizontalPanel calMapHolder = new HorizontalPanel();
+		calMapHolder.add(calendar);
+		calMapHolder.add(map);
+		
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
-		RootPanel.get("calendarContainer").add(calendar);
-		RootPanel.get("mapContainter").add(map);
+		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		
 		// Focus the cursor on the name field when the app loads
