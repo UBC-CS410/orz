@@ -2,13 +2,10 @@ package stuffplotter.client;
 
 import gwtquery.plugins.ui.widgets.Accordion;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
-import stuffplotter.shared.Event;
+import java.util.Date;
+
+import stuffplotter.UI.AvailabilitySubmitter;
 import stuffplotter.shared.FieldVerifier;
 
 // import to have jquery in code
@@ -19,11 +16,8 @@ import static gwtquery.plugins.ui.Ui.Ui;
 import gwtquery.plugins.ui.widgets.Accordion;
 
 
-import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
-import com.bradrydzewski.gwt.calendar.client.event.MouseOverEvent;
-import com.bradrydzewski.gwt.calendar.client.event.MouseOverHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
@@ -35,7 +29,6 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.control.Control;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
@@ -48,8 +41,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -86,7 +77,6 @@ public class Leviathan implements EntryPoint {
 			@Override
 			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
 				// TODO Auto-generated method stub
-				DialogBox testBox = new DialogBox();
 				Window.alert(Integer.toString(event.getTarget().getDate()));
 			}
 		});
@@ -123,6 +113,17 @@ public class Leviathan implements EntryPoint {
 			}	
 		});
 		
+		final Button availBtn = new Button("Avail");
+		availBtn.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				AvailabilitySubmitter availSubmitter = new AvailabilitySubmitter();
+				availSubmitter.show();
+			}
+		});
+		
 		com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		ListRequest calRequest = testCalendar.events().list(Window.prompt("Input Email Address", "example@example.com"));
 		Window.alert(calRequest.toString());
@@ -146,6 +147,7 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
+		RootPanel.get("availSub").add(availBtn);
 		
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
