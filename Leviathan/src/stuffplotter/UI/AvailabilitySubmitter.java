@@ -4,6 +4,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to make the window for submitting availabilities for an event.
@@ -24,7 +28,10 @@ public class AvailabilitySubmitter extends DialogBox {
 	 */
 	private void initializeWindow()
 	{
-		intializeCancelBtn();
+		VerticalPanel vertPanel = new VerticalPanel();
+		vertPanel.add(new DaySelections("4"));
+		this.add(vertPanel);
+		intializeCancelBtn(vertPanel);
 		this.setText("Submit Your Availabilities");
 		this.setGlassEnabled(true);
 		this.setAnimationEnabled(true);
@@ -34,8 +41,9 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the cancel button for the window.
+	 * @param panel - the panel to add the close button to.
 	 */
-	private void intializeCancelBtn()
+	private void intializeCancelBtn(Panel panel)
 	{
 		Button cancelBtn = new Button("Cancel");
 		cancelBtn.addClickHandler(new ClickHandler() 
@@ -46,6 +54,7 @@ public class AvailabilitySubmitter extends DialogBox {
 				hide();
 			}
 		});
-		this.add(cancelBtn);
+		panel.add(cancelBtn);
 	}
+	
 }
