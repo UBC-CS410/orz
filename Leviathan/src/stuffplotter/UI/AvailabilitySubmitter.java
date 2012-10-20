@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -28,8 +29,13 @@ public class AvailabilitySubmitter extends DialogBox {
 	 */
 	private void initializeWindow()
 	{
+		int[] testTimes = {0, 3, 5, 23};
+		
 		VerticalPanel vertPanel = new VerticalPanel();
-		vertPanel.add(new DaySelections("4"));
+		HorizontalPanel horPanel = new HorizontalPanel();
+		horPanel.add(new DaySelections("4"));
+		horPanel.add(new DaySelections("5", testTimes));
+		vertPanel.add(horPanel);
 		this.add(vertPanel);
 		intializeCancelBtn(vertPanel);
 		this.setText("Submit Your Availabilities");
