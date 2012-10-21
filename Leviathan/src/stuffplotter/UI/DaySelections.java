@@ -1,9 +1,14 @@
 package stuffplotter.UI;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the selectable times for a given day.
@@ -47,6 +52,26 @@ public class DaySelections extends VerticalPanel
 		{
 			this.add(new CheckBox(timeIntervals[intervalIndexValues[i]]));
 		}		
+	}
+	
+	/**
+	 * Method to return the selected values, based on their indices from
+	 * the list timeIntervals.
+	 * @return the indices of the selected time intervals.
+	 */
+	public List<String> retrieveSelectedValues()
+	{
+		List<String> selectedValues = new ArrayList<String>();
+		
+		for (Widget timeSlot : this.getChildren())
+		{
+			if(timeSlot instanceof CheckBox)
+			{
+				selectedValues.add(((CheckBox) timeSlot).getText());
+			}
+		}
+		
+		return selectedValues;
 	}
 	
 	/**
