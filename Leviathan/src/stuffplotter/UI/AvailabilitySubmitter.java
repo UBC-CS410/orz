@@ -38,9 +38,9 @@ public class AvailabilitySubmitter extends DialogBox {
 	 * Method to retrieve the submission submitted by the user.
 	 * @return the submissions of the user.
 	 */
-	public List<String> retrieveSubmission()
+	public List<Integer> retrieveSubmission()
 	{
-		List<String> selectedValues = new ArrayList<String>();
+		List<Integer> selectedValues = new ArrayList<Integer>();
 		
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
 		{
@@ -87,9 +87,9 @@ public class AvailabilitySubmitter extends DialogBox {
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				List<String> selectedValues = retrieveSubmission();
+				List<Integer> selectedValues = retrieveSubmission();
 				String result = "";
-				for(String value : selectedValues)
+				for(Integer value : selectedValues)
 				{
 					result += "Selected: " + value + " ";
 				}

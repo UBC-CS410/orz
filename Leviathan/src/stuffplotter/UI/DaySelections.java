@@ -33,7 +33,7 @@ public class DaySelections extends VerticalPanel
 		this.add(new Label(dayOfMonth));
 		for (int i = 0; i < timeIntervals.length; i++)
 		{
-			this.add(new CheckBox(timeIntervals[i]));
+			this.add(new TimeSlot(timeIntervals[i], i));
 		}
 	}
 	
@@ -50,7 +50,8 @@ public class DaySelections extends VerticalPanel
 		this.add(new Label(dayOfMonth));
 		for (int i = 0; i < intervalIndexValues.length; i++)
 		{
-			this.add(new CheckBox(timeIntervals[intervalIndexValues[i]]));
+			int intervalGiven = intervalIndexValues[i];
+			this.add(new TimeSlot(timeIntervals[intervalGiven], intervalGiven));
 		}		
 	}
 	
@@ -59,15 +60,19 @@ public class DaySelections extends VerticalPanel
 	 * the list timeIntervals.
 	 * @return the indices of the selected time intervals.
 	 */
-	public List<String> retrieveSelectedValues()
+	public List<Integer> retrieveSelectedValues()
 	{
-		List<String> selectedValues = new ArrayList<String>();
+		List<Integer> selectedValues = new ArrayList<Integer>();
 		
+		// for each loop to find all the selected time intervals
 		for (Widget timeSlot : this.getChildren())
 		{
-			if(timeSlot instanceof CheckBox)
+			if(timeSlot instanceof TimeSlot)
 			{
-				selectedValues.add(((CheckBox) timeSlot).getText());
+				if(((TimeSlot) timeSlot).getValue())
+				{
+					selectedValues.add(((TimeSlot) timeSlot).getIndexValue());
+				}
 			}
 		}
 		
@@ -77,29 +82,27 @@ public class DaySelections extends VerticalPanel
 	/**
 	 * Inner class for individual time slots in the DaySelections component.
 	 */
-	public class TimeSlot extends HorizontalPanel
+	public class TimeSlot extends CheckBox
 	{
-		private CheckBox checkBox;
 		private int intervalIndexValue;
 		
 		/**
 		 * Constructor for a time interval in the DaySelections component.
 		 * @param timeInterval - the time interval to display.
 		 */
-		public TimeSlot(String timeInterval)
+		public TimeSlot(String timeInterval, int indexValue)
 		{
-			this.checkBox = new CheckBox(timeInterval);
-			this.add(checkBox);
+			super(timeInterval);
+			this.intervalIndexValue = indexValue;
 		}
 		
 		/**
-		 * Method to retrieve whether or not the time slot has been selected.
-		 * @return
+		 * Method to retrieve the index value of the time interval selected.
+		 * @return the index value of the time interval selected.
 		 */
-		public boolean IsSelected()
+		public int getIndexValue()
 		{
-			return true;
+			return intervalIndexValue;
 		}
-	}
-	
+	}	
 }
