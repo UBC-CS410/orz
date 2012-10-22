@@ -30,6 +30,7 @@ public class DaySelections extends VerticalPanel
 	 */
 	public DaySelections(String dayOfMonth)
 	{
+		super();
 		this.add(new Label(dayOfMonth));
 		for (int i = 0; i < timeIntervals.length; i++)
 		{
@@ -47,6 +48,7 @@ public class DaySelections extends VerticalPanel
 	 */
 	public DaySelections(String dayOfMonth, int[] intervalIndexValues)
 	{
+		super();
 		this.add(new Label(dayOfMonth));
 		for (int i = 0; i < intervalIndexValues.length; i++)
 		{

@@ -18,6 +18,7 @@ public class MapCalendarView extends SimplePanel
 	 */
 	public MapCalendarView()
 	{
+		super();
 		TabPanel mapCalHolder = new TabPanel();
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize("250px", "250px");
