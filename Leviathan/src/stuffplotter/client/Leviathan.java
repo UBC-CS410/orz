@@ -6,6 +6,7 @@ import gwtquery.plugins.ui.widgets.Accordion;
 import java.util.Date;
 
 import stuffplotter.UI.AvailabilitySubmitter;
+import stuffplotter.UI.EventCreationDialogBox;
 import stuffplotter.shared.FieldVerifier;
 
 // import to have jquery in code
@@ -117,10 +118,21 @@ public class Leviathan implements EntryPoint {
 		availBtn.addClickHandler(new ClickHandler()
 		{
 			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+			public void onClick(ClickEvent event)
+			{
 				AvailabilitySubmitter availSubmitter = new AvailabilitySubmitter();
 				availSubmitter.show();
+			}
+		});
+		
+		final Button createEventBtn = new Button("Create Event");
+		createEventBtn.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				EventCreationDialogBox eventCreation = new EventCreationDialogBox();
+				eventCreation.show();
 			}
 		});
 		
@@ -147,6 +159,7 @@ public class Leviathan implements EntryPoint {
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
+		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("availSub").add(availBtn);
 		
 		// Focus the cursor on the name field when the app loads
