@@ -40,16 +40,16 @@ public class AvailabilitySubmitter extends DialogBox {
 	 * Method to retrieve the submission submitted by the user.
 	 * @return the submissions of the user.
 	 */
-	public List<Integer> retrieveSubmission()
+	public List<Integer> retrieveSubmissions()
 	{
 		List<Integer> selectedValues = new ArrayList<Integer>();
 		
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
 		{
 			Widget childWidget = this.horPanel.getWidget(i); 
-			if(childWidget instanceof DaySelections)
+			if(childWidget instanceof MonthPanel)
 			{
-				selectedValues.addAll(((DaySelections) childWidget).retrieveSelectedValues());
+				selectedValues.addAll(((MonthPanel) childWidget).retrieveSubmission());
 			}
 		}
 		
@@ -66,7 +66,8 @@ public class AvailabilitySubmitter extends DialogBox {
 		MonthPanel month = new MonthPanel(Month.OCTOBER, testTimes);
 		//horPanel.add(new DaySelections("4"));
 		//horPanel.add(new DaySelections("5", testTimes));
-		vertPanel.add(month);
+		horPanel.add(month);
+		vertPanel.add(horPanel);
 		this.add(vertPanel);
 		initializeSubmitBtn(vertPanel);
 		intializeCancelBtn(vertPanel);
@@ -89,7 +90,7 @@ public class AvailabilitySubmitter extends DialogBox {
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				List<Integer> selectedValues = retrieveSubmission();
+				List<Integer> selectedValues = retrieveSubmissions();
 				String result = "";
 				for(Integer value : selectedValues)
 				{
