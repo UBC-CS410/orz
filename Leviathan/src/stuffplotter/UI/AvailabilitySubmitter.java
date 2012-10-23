@@ -3,6 +3,8 @@ package stuffplotter.UI;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.UI.MonthPanel.Month;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -61,10 +63,10 @@ public class AvailabilitySubmitter extends DialogBox {
 	{
 		int[] testTimes = {0, 3, 5, 23};
 		
-
-		horPanel.add(new DaySelections("4"));
-		horPanel.add(new DaySelections("5", testTimes));
-		vertPanel.add(horPanel);
+		MonthPanel month = new MonthPanel(Month.OCTOBER, testTimes);
+		//horPanel.add(new DaySelections("4"));
+		//horPanel.add(new DaySelections("5", testTimes));
+		vertPanel.add(month);
 		this.add(vertPanel);
 		initializeSubmitBtn(vertPanel);
 		intializeCancelBtn(vertPanel);
