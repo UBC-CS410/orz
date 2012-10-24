@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -47,7 +48,9 @@ public class MapCalendarView extends SimplePanel
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event)
 			{
-				Window.alert(event.getValue().toString());
+				Date dayClicked = event.getValue();
+				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
+				Window.alert(dayFormat.format(dayClicked).toString());
 			}			
 		});
 	}
