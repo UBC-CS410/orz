@@ -1,10 +1,9 @@
 package stuffplotter.shared;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Id;
 import com.googlecode.objectify.annotation.Entity;;
-
-/* Allen was here */
 
 /**
  * Class to hold all the information for an event.

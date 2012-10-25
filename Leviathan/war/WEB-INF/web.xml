@@ -16,6 +16,16 @@
     <url-pattern>/leviathan/events</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>accountServlet</servlet-name>
+    <servlet-class>stuffplotter.server.AccountServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>accountServlet</servlet-name>
+    <url-pattern>/leviathan/account</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Leviathan.html</welcome-file>
