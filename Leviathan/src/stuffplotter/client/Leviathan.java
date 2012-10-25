@@ -4,11 +4,13 @@ import java.util.Date;
 
 import stuffplotter.UI.AvailabilitySubmitter;
 import stuffplotter.UI.EventCreationDialogBox;
+import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.gargoylesoftware.htmlunit.javascript.host.Event;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -18,6 +20,8 @@ import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -29,11 +33,33 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class Leviathan implements EntryPoint
 {
+	
+	private final String redirectUrl = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private Account account = null;
+	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-				
+		
+		AccountServiceAsync accountService = GWT.create(AccountService.class);
+		
+		accountService.login(redirectUrl, new AsyncCallback<Account>() {
+	        public void onFailure(Throwable error) {
+	        }
+
+	        public void onSuccess(Account result) {
+	          account = result;
+	          if(account.inSession()) {
+	        	  loadUI();
+	          } else {
+	        	  Window.Location.assign(account.getLogin());
+	          }
+	        }
+	      });
+	}
+	
+	public void loadUI() {
 		// testing calendar stuff
 		Calendar calendar = new Calendar();
 		calendar.setWidth("500px");
