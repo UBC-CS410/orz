@@ -21,6 +21,10 @@ public class MonthPanel extends VerticalPanel
 		JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER,
 		OCTOBER, NOVEMBER, DECEMBER;
 		
+		/**
+		 * Method to get the display name for the given enum.
+		 * @return the name of the month with only the first letter capitalized.
+		 */
 		public String displayName()
 		{
 			String allLowerCase = this.toString().toLowerCase();

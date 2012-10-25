@@ -26,9 +26,11 @@ public class EventCreationDialogBox extends DialogBox
 		tempPanel.add(new EventInfoInput());
 		horPanel.add(tempPanel);
 		
+		TimeSheetPanel timeSheetPanel = new TimeSheetPanel();
+		
 		VerticalPanel vertPanel = new VerticalPanel();
-		vertPanel.add(new MapCalendarView());
-		vertPanel.add(new TimeSheetPanel());
+		vertPanel.add(new MapCalendarView(timeSheetPanel));
+		vertPanel.add(timeSheetPanel);
 		intializeCancelBtn(vertPanel);
 		horPanel.add(vertPanel);
 		

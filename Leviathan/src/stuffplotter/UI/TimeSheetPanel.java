@@ -65,7 +65,10 @@ public class TimeSheetPanel extends SimplePanel
 			{
 				if(((MonthPanel) childWidget).getMonth().equals(month))
 				{
-					((MonthPanel) childWidget).addDay(month.displayName(), days);
+					for(Integer day : days)
+					{
+						((MonthPanel) childWidget).addDay(String.valueOf(day));
+					}
 					monthFound = true;
 				}
 			}

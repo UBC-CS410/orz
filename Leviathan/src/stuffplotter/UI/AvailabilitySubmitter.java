@@ -64,8 +64,8 @@ public class AvailabilitySubmitter extends DialogBox {
 		int[] testTimes = {0, 3, 5, 23};
 		
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		int[] days = {2, 3, 4};
-		int[] days2 = {6, 8, 10};
+		int[] days = {2};
+		int[] days2 = {6, 8};
 		timeSheet.addDay(Month.OCTOBER, days);
 		timeSheet.addDay(Month.OCTOBER, days2);
 		timeSheet.addDay(Month.NOVEMBER, days2);
