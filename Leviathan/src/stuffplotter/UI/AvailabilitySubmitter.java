@@ -66,7 +66,8 @@ public class AvailabilitySubmitter extends DialogBox {
 		MonthPanel month = new MonthPanel(Month.OCTOBER, testTimes);
 		//horPanel.add(new DaySelections("4"));
 		//horPanel.add(new DaySelections("5", testTimes));
-		horPanel.add(month);
+		//horPanel.add(month);
+		horPanel.add(new TimeSheetPanel());
 		vertPanel.add(horPanel);
 		this.add(vertPanel);
 		initializeSubmitBtn(vertPanel);

@@ -28,7 +28,7 @@ public class EventCreationDialogBox extends DialogBox
 		
 		VerticalPanel vertPanel = new VerticalPanel();
 		vertPanel.add(new MapCalendarView());
-		vertPanel.add(new AvailabilitySubmitter());
+		vertPanel.add(new TimeSheetPanel());
 		intializeCancelBtn(vertPanel);
 		horPanel.add(vertPanel);
 		
