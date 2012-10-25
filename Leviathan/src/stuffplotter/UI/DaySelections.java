@@ -96,6 +96,7 @@ public class DaySelections extends VerticalPanel
 		{
 			super(timeInterval);
 			this.intervalIndexValue = indexValue;
+			this.setWordWrap(false);
 		}
 		
 		/**

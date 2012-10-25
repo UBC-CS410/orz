@@ -34,6 +34,7 @@ public class MapCalendarView extends SimplePanel
 		DatePicker calendar = new DatePicker();
 		initializeCalendarChangeHandler(calendar);
 		mapCalHolder.add(calendar, new Label("Calendar"));
+		mapCalHolder.selectTab(1);
 		this.add(mapCalHolder);
 	}
 	
