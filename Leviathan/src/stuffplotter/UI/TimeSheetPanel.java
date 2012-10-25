@@ -2,20 +2,20 @@ package stuffplotter.UI;
 
 import stuffplotter.UI.MonthPanel.Month;
 
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the view of the proposed times for an event.
  */
 public class TimeSheetPanel extends SimplePanel
 {
-	private FlexTable timeSheet = new FlexTable();
+	private ScrollPanel timeSheetWindow;
+	private HorizontalPanel horPanel;
+	
+	//private FlexTable timeSheet = new FlexTable();
 	
 	/**
 	 * Constructor for TimeSheetPanel.
@@ -23,6 +23,11 @@ public class TimeSheetPanel extends SimplePanel
 	public TimeSheetPanel()
 	{
 		super();
+		timeSheetWindow = new ScrollPanel();
+		horPanel = new HorizontalPanel();
+		timeSheetWindow.add(horPanel);
+		this.add(timeSheetWindow);
+		
 		/*timeSheet.insertRow(0);
 		timeSheet.insertRow(1);
 		timeSheet.insertRow(2);
@@ -39,17 +44,37 @@ public class TimeSheetPanel extends SimplePanel
 		//timeSheet.setWidget(0, 0, new CheckBox("asdf"));
 		//timeSheet.setWidget(1, 1, new CheckBox("asdf2"));
 		this.add(timeSheet);*/
-		ScrollPanel timeSheetWindow = new ScrollPanel();
-		HorizontalPanel horPanel = new HorizontalPanel();
+	}
+	
+	/**
+	 * Method to add a new day with all time slots to the time sheet, a month panel will be
+	 * generated where appropriate.
+	 * @param month - month of the day(s) to add.
+	 */
+	public void addDay(Month month, int[] days)
+	{
+		boolean monthFound = false;
+		int numOfMonthPanels = this.horPanel.getWidgetCount();
+		int i = 0;
 		
-		// create test panels
-		int[] days = {4, 9, 10};
-		int[] days2 = {7, 9, 20};
-		MonthPanel monthOct = new MonthPanel(Month.OCTOBER, days);
-		MonthPanel monthNov = new MonthPanel(Month.NOVEMBER, days2);
-		horPanel.add(monthOct);
-		horPanel.add(monthNov);
-		timeSheetWindow.add(horPanel);
-		this.add(timeSheetWindow);
+		// while loop to determine if the month is already in the time sheet panel
+		while(!monthFound && i < numOfMonthPanels)
+		{
+			Widget childWidget = this.horPanel.getWidget(i); 
+			if(childWidget instanceof MonthPanel)
+			{
+				if(((MonthPanel) childWidget).getMonth().equals(month))
+				{
+					((MonthPanel) childWidget).addDay(month.displayName(), days);
+					monthFound = true;
+				}
+			}
+			i++;
+		}
+		
+		if(!monthFound)
+		{
+			this.horPanel.add(new MonthPanel(month, days));
+		}
 	}
 }

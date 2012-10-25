@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class MonthPanel extends VerticalPanel
 {
 	private HorizontalPanel daysHolder;
+	private Month month;
 	
 	public enum Month
 	{
@@ -33,13 +34,15 @@ public class MonthPanel extends VerticalPanel
 	 */
 	public MonthPanel(Month monthName, int[] days)
 	{
+		super();
+		this.month = monthName;
 		this.add(new Label(monthName.displayName()));
-		daysHolder = new HorizontalPanel();
+		this.daysHolder = new HorizontalPanel();
 		for(int day : days)
 		{
-			daysHolder.add(new DaySelections(String.valueOf(day)));
+			this.daysHolder.add(new DaySelections(String.valueOf(day)));
 		}
-		this.add(daysHolder);
+		this.add(this.daysHolder);
 	}
 	
 	/**
@@ -60,5 +63,33 @@ public class MonthPanel extends VerticalPanel
 		}
 		
 		return selectedValues;
+	}
+	
+	/**
+	 * Method to add a new day with all time slots to the month panel.
+	 * @param dayOfMonth - the day of the month to display.
+	 */
+	public void addDay(String dayOfMonth)
+	{
+		this.daysHolder.add(new DaySelections(dayOfMonth));
+	}
+	
+	/**
+	 * Method to add a new day with specified time slots.
+	 * @param dayOfMonth - the day of the month to display.
+	 * @param timeSlots - the time slots to add to the display.
+	 */
+	public void addDay(String dayOfMonth, int[] timeSlots)
+	{
+		this.daysHolder.add(new DaySelections(dayOfMonth, timeSlots));
+	}
+	
+	/**
+	 * Method to retrieve the month represented by the panel.
+	 * @return the month of the panel.
+	 */
+	public Month getMonth()
+	{
+		return this.month;
 	}
 }

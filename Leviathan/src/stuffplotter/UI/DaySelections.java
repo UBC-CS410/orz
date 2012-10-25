@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DaySelections extends VerticalPanel
 {
+	private String dayOfMonth;
+	
 	private final String[] timeIntervals = new String[]
 	{
 		"12AM - 1AM", "1AM - 2AM", "2AM - 3AM",	"3AM - 4AM", "4AM - 5AM",
@@ -31,6 +33,7 @@ public class DaySelections extends VerticalPanel
 	public DaySelections(String dayOfMonth)
 	{
 		super();
+		this.dayOfMonth = dayOfMonth;
 		this.add(new Label(dayOfMonth));
 		for (int i = 0; i < timeIntervals.length; i++)
 		{
@@ -49,6 +52,7 @@ public class DaySelections extends VerticalPanel
 	public DaySelections(String dayOfMonth, int[] intervalIndexValues)
 	{
 		super();
+		this.dayOfMonth = dayOfMonth;
 		this.add(new Label(dayOfMonth));
 		for (int i = 0; i < intervalIndexValues.length; i++)
 		{
@@ -107,5 +111,14 @@ public class DaySelections extends VerticalPanel
 		{
 			return intervalIndexValue;
 		}
-	}	
+	}
+	
+	/**
+	 * Method to get the day represented by the panel.
+	 * @return the day of the month the panel represents.
+	 */
+	public String getDay()
+	{
+		return this.dayOfMonth;
+	}
 }
