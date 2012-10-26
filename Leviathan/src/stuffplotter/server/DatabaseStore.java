@@ -4,8 +4,10 @@ import java.security.Key;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 
 import com.googlecode.objectify.NotFoundException;
@@ -18,9 +20,10 @@ import com.googlecode.objectify.Query;
  */
 public class DatabaseStore {
 	
-	// register the objects to store in the database
+	/* Register all the entity classes Objectify will be working with */
 	static
 	{
+		ObjectifyService.register(Account.class);
 		ObjectifyService.register(Event.class);
 	}
 	
@@ -33,48 +36,67 @@ public class DatabaseStore {
 	}
 	
 	/**
-	 * Temporary method for adding events. i.e. this is a test method.
-	 * @pre input != null;
-	 * @post true;
-	 * @param input - string to append to the event name.
-	 * @return the ID of the event.
-	 */
-	public Long addEvent(String input)
-	{	
-		Objectify obj = ObjectifyService.begin();
-		List<String> testList = new ArrayList<String>();
-		testList.add("Person 1");
-		testList.add("Person 2");
-		testList.add("Person 3");
-		Event testEvent = new Event("Test Event 1" + input, testList);
-		obj.put(testEvent);
-		return testEvent.getID();
+	 * Stores an object to the data store using Objectify
+	 * @param pAcct	the Account to be stored
+	 */	
+	public void store(Object pObj) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pObj);
 	}
 	
 	/**
-	 * Method to retrieve an event with the given ID.
-	 * @param eventID - the ID of the event to search for. 
-	 * @return the event or null if it could not be found.
+	 * Fetches an Account from the data store using Objectify
+	 * @param pId 	the id of the Account
+	 * @return		the Account that is associated with the specified id
 	 */
-	public Event retrieveEvent(String eventID)
-	{
-		Objectify obj = ObjectifyService.begin();
-		Long eventIDAsLong;
-		try
-		{
-			eventIDAsLong = Long.parseLong(eventID);
-		}
-		catch(NumberFormatException e)
-		{
-			return null;
-		}
-		
-		List<Event> listOfEvents = obj.query(Event.class).filter("eventID", eventIDAsLong).list();
-		if(listOfEvents.size() == 0)
-		{
-			return null;
-		}
-		
-		return listOfEvents.get(0);
+	public Account fetchAccount(String pId) {
+		Objectify ofy = ObjectifyService.begin();
+		Account acct = ofy.get(Account.class, pId);
+		return acct;
 	}
+	
+	/**
+	 * Fetches an Event from the data store using Objectify
+	 * @param pId 	the id of the Event
+	 * @return		the Event that is associated with the specified id
+	 */
+	public Event fetchEvent(Long pId) {
+		Objectify ofy = ObjectifyService.begin();
+		Event evnt = ofy.get(Event.class, pId);
+		return evnt;
+	}
+	
+	/**
+	 * Searches for Events by Account
+	 * @param pId	the id of the Account
+	 * @return		the list of Events owned by the specified Account, list could be empty
+	 */
+	public List<Event> searchEvents(String pId) {
+		Objectify ofy = ObjectifyService.begin();
+		List<Event> evntList = ofy.query(Event.class).filter("eventOwner", pId).list();
+		return evntList;
+	}
+	
+	/**
+	 * Searches for Events by Date
+	 * @param pDate	the date of interest
+	 * @return		the list of Events on the specified Date, list could be empty
+	 */
+	public List<Event> searchEvents(Date pDate) {
+		Objectify ofy = ObjectifyService.begin();
+		List<Event> evntList = ofy.query(Event.class).filter("eventDate", pDate).list();
+		return evntList;
+	}
+	
+	/**
+	 * Searches for Events by Cost
+	 * @param pDbl	the cost of interest
+	 * @return		the list of Events of the specified cost, list could be empty
+	 */
+	public List<Event> searchEvents(double pDbl) {
+		Objectify ofy = ObjectifyService.begin();
+		List<Event> evntList = ofy.query(Event.class).filter("eventCost", pDbl).list();
+		return evntList;
+	}
+	
 }
