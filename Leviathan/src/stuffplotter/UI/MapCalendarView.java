@@ -2,6 +2,8 @@ package stuffplotter.UI;
 
 import java.util.Date;
 
+import stuffplotter.UI.MonthPanel.Month;
+
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -19,12 +21,15 @@ import com.google.gwt.user.datepicker.client.DatePicker;
  */
 public class MapCalendarView extends SimplePanel
 {
+	private TimeSheetPanel timeSheet;
+	
 	/**
 	 * Constructor for MapCalednarView.
 	 */
-	public MapCalendarView()
+	public MapCalendarView(TimeSheetPanel timeSheetPanel)
 	{
 		super();
+		timeSheet = timeSheetPanel;
 		TabPanel mapCalHolder = new TabPanel();
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize("250px", "250px");
@@ -51,8 +56,10 @@ public class MapCalendarView extends SimplePanel
 			{
 				Date dayClicked = event.getValue();
 				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
-				Window.alert(dayFormat.format(dayClicked).toString());
-			}			
+				String[] calendarValues = dayFormat.format(dayClicked).toString().split(",");
+				int[] days = { Integer.valueOf(calendarValues[1]) };
+				timeSheet.addDay(Month.valueOf(calendarValues[0].toUpperCase()), days);
+			}
 		});
 	}
 }
