@@ -3,12 +3,18 @@
  */
 package stuffplotter.server;
 
+import java.util.Date;
+
 import stuffplotter.client.EventService;
+import stuffplotter.shared.Account;
+import stuffplotter.shared.Event;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EventServiceImpl extends RemoteServiceServlet implements EventService {
+	
+	private DatabaseStore dbstore = new DatabaseStore();
 
 	@Override
 	public Calendar createCalendar() {
@@ -19,9 +25,15 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 
 	@Override
-	public void createEvent() {
-		// TODO Auto-generated method stub
+	public Event createEvent(String pId, String pName, Date pDate, double pCost) {
+		Event event = new Event(pId, pName, pDate, pCost);
+		dbstore.store(event);
 		
+		//Account account = dbstore.fetchAccount(pId);
+		//account.addUserEvent(event.getID());
+		//dbstore.put(account);
+		
+		return event;
 	}
 
 	@Override

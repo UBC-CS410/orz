@@ -7,6 +7,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.NotFoundException;
 
 public class AccountServiceImpl extends RemoteServiceServlet implements AccountService {
 	
@@ -17,16 +18,19 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
 	    
-	    Account account;
+	    Account account = null;
 
 	    if (user != null) {
-	      account = dbstore.fetchAccount(user.getUserId());
-	      if (account == null) {
+	    	
+	      try {
+	    	  account = dbstore.fetchAccount(user.getUserId());
+	      } catch (NotFoundException nfe) {
 		      account = new Account(user.getUserId(), user.getNickname(), user.getEmail());
-		      dbstore.storeAccount(account); // register account
+		      dbstore.store(account); // register account
+	      } finally {
+		      account.setSession(true);
+		      account.setLogout(userService.createLogoutURL(requestUri));  
 	      }
-	      account.setSession(true);
-	      account.setLogout(userService.createLogoutURL(requestUri));  
 	    } else {
 	      account = new Account();
 	      account.setSession(false);

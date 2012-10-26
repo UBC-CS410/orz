@@ -44,15 +44,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		List<String> participants = new ArrayList<String>();
 		if(retrievedEvent != null)
 		{
-			eventName = retrievedEvent.getName();
-			participants = retrievedEvent.getParticipants();
+			eventName = retrievedEvent.geteventName();
 		}
 
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo
 				+ ".<br><br>It looks like you are using:<br>" + userAgent
 				+ "<br><br> The ID of the event created was: " + newEventID +
-				"<br><br> The event found was: " + eventName + " with: "
-				+ participants.size() + " participants.";
+				"<br><br> The event found was: " + eventName;
 	}
 
 	/**

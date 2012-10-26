@@ -35,24 +35,34 @@ public class DatabaseStore {
 	}
 	
 	/**
-	 * Stores an Account to the data store using Objectify
+	 * Stores an object to the data store using Objectify
 	 * @param pAcct	the Account to be stored
 	 */	
-	public String storeAccount(Account pAcct) {
+	public void store(Object pObj) {
 		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pAcct);
-		return pAcct.getUserId();
+		ofy.put(pObj);
 	}
 	
 	/**
 	 * Fetches an Account from the data store using Objectify
-	 * @param pUid 	the id that the Account is associated with
+	 * @param pId 	the id of the Account
 	 * @return		the Account that is associated with the specified id
 	 */
-	public Account fetchAccount(String pUid) {
+	public Account fetchAccount(String pId) {
 		Objectify ofy = ObjectifyService.begin();
-		Account acct = ofy.get(Account.class, pUid);
+		Account acct = ofy.get(Account.class, pId);
 		return acct;
+	}
+	
+	/**
+	 * Fetches an Event from the data store using Objectify
+	 * @param pId 	the id of the Account
+	 * @return		the Event that is associated with the specified id
+	 */
+	public Event fetchEvent(Long pId) {
+		Objectify ofy = ObjectifyService.begin();
+		Event evnt = ofy.get(Event.class, pId);
+		return evnt;
 	}
 	
 	/**
@@ -62,17 +72,15 @@ public class DatabaseStore {
 	 * @param input - string to append to the event name.
 	 * @return the ID of the event.
 	 */
+	
 	public Long addEvent(String input)
 	{	
 		Objectify obj = ObjectifyService.begin();
-		List<String> testList = new ArrayList<String>();
-		testList.add("Person 1");
-		testList.add("Person 2");
-		testList.add("Person 3");
-		Event testEvent = new Event("Test Event 1" + input, testList);
+		Event testEvent = new Event();
 		obj.put(testEvent);
 		return testEvent.getID();
 	}
+	
 	
 	/**
 	 * Method to retrieve an event with the given ID.

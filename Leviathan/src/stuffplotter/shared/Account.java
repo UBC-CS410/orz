@@ -2,6 +2,7 @@ package stuffplotter.shared;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -30,8 +31,9 @@ public class Account implements Serializable {
 	private int userAge;
 	private String userPhone;
 	
-	/* Event information */
-	private List<Long> userEvents;
+	/* Social information */
+	private List<String> userFriends = new ArrayList<String>();
+	private List<Long> userEvents = new ArrayList<Long>();
 	
 	/* Record information */
 	private int userLevel;
@@ -49,7 +51,7 @@ public class Account implements Serializable {
 	}
 	
 	/**
-	 * Account Constructor that clones a google account's information
+	 * Account Constructor that sets google account information
 	 * @param pId 		google account id
 	 * @param pName 	google account nickname
 	 * @param pEmail	google account email
@@ -58,6 +60,13 @@ public class Account implements Serializable {
 		this.userId = pId;
 		this.userName = pName;
 		this.userEmail = pEmail;
+		
+		this.userFriends = new ArrayList<String>();
+		this.userEvents = new ArrayList<Long>();
+		
+		this.userLevel = 0;
+		this.userExperience = 0;
+		this.userAchievements = new ArrayList<Achievement>();
 	}
 	
 	/**
@@ -167,6 +176,21 @@ public class Account implements Serializable {
 	}
 
 	/**
+	 * @return the userFriends
+	 */
+	public List<String> getUserFriends() {
+		return userFriends;
+	}
+
+	/**
+	 * Adds a friend to the user's friends list
+	 * @param pId	the id of another user Account
+	 */
+	public void addUserFriend(String pId) {
+		this.userFriends.add(pId);
+	}
+
+	/**
 	 * @return the userEvents
 	 */
 	public List<Long> getUserEvents() {
@@ -174,10 +198,11 @@ public class Account implements Serializable {
 	}
 
 	/**
-	 * @param userEvents the userEvents to set
+	 * Adds an event to the user's event list
+	 * @param pId	the id of an Event
 	 */
-	public void setUserEvents(List<Long> userEvents) {
-		this.userEvents = userEvents;
+	public void addUserEvent(Long pId) {
+		this.userEvents.add(pId);
 	}
 
 	/**

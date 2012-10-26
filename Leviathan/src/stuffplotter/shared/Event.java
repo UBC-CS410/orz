@@ -1,6 +1,7 @@
 package stuffplotter.shared;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Id;
 import com.googlecode.objectify.annotation.Entity;;
@@ -11,12 +12,18 @@ import com.googlecode.objectify.annotation.Entity;;
 @Entity
 public class Event implements Serializable {
 	
-	@Id private Long eventID;
-	private String name;
-	private List<String> participants;
+	@Id private Long eventId;
+	private String eventOwner;
+	private String eventName;
+	
+	private Date eventDate;
+	private double eventCost;
+	
+	private List<String> eventHosts;
+	private List<String> eventGuests;
 	
 	/**
-	 * Emtpy constructor for the Event class.
+	 * Event constructor.
 	 */
 	public Event()
 	{
@@ -24,14 +31,17 @@ public class Event implements Serializable {
 	}
 	
 	/**
-	 * Constructor for events.
-	 * @param name - the name of the event.
+	 * Event constructor that sets basic information
+	 * @param eventName - the eventName of the event.
+	 * 
 	 * @param participants - the participants for an event.
 	 */
-	public Event(String name, List<String> participants)
+	public Event(String pOwner, String pName, Date pDate, double pCost)
 	{
-		this.name = name;
-		this.participants = participants;
+		this.eventOwner = pOwner;
+		this.eventName = pName;
+		this.eventDate = pDate;
+		this.eventCost = pCost;
 	}
 	
 	/**
@@ -42,28 +52,18 @@ public class Event implements Serializable {
 	 */
 	public Long getID()
 	{
-		return eventID;
+		return eventId;
 	}
 	
 	/**
-	 * Method to retrieve the name of the event.
+	 * Method to retrieve the eventName of the event.
 	 * @pre true;
 	 * @post true;
-	 * @return the name of the event.
+	 * @return the eventName of the event.
 	 */
-	public String getName()
+	public String geteventName()
 	{
-		return this.name;
+		return this.eventName;
 	}
 	
-	/**
-	 * Method to retrieve the list of participants of the event.
-	 * @pre true;
-	 * @post true;
-	 * @return a list of participants.
-	 */
-	public List<String> getParticipants()
-	{
-		return this.participants;
-	}
 }
