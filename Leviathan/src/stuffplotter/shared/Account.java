@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.googlecode.objectify.annotation.Entity;
 
@@ -19,9 +20,9 @@ public class Account implements Serializable {
 	@Id private String userId;
 	
 	/* Session information */
-	private boolean userSession = false;
-	private String userLogin;
-	private String userLogout;
+	@Transient private boolean userSession;
+	@Transient private String userLogin;
+	@Transient private String userLogout;
 	
 	/* Basic information */
 	private String userName;
@@ -49,14 +50,14 @@ public class Account implements Serializable {
 	
 	/**
 	 * Account Constructor that clones a google account's information
-	 * @param pId - google account
-	 * @param pName - google nickname
-	 * @param pEmail - google email
+	 * @param pId 		google account id
+	 * @param pName 	google account nickname
+	 * @param pEmail	google account email
 	 */
 	public Account(String pId, String pName, String pEmail) {
-		userId = pId;
-		setUserName(pName);
-		setUserEmail(pEmail);
+		this.userId = pId;
+		this.userName = pName;
+		this.userEmail = pEmail;
 	}
 	
 	/**
@@ -108,19 +109,19 @@ public class Account implements Serializable {
 	public void setLogout(String pUri) {
 		userLogout = pUri;
 	}
+	
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
 
 	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
 		return userName;
-	}
-
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	/**

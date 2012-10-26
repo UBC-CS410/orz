@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 
 import com.googlecode.objectify.NotFoundException;
@@ -18,9 +19,10 @@ import com.googlecode.objectify.Query;
  */
 public class DatabaseStore {
 	
-	// register the objects to store in the database
+	/* Register all the entity classes Objectify will be working with */
 	static
 	{
+		ObjectifyService.register(Account.class);
 		ObjectifyService.register(Event.class);
 	}
 	
@@ -30,6 +32,27 @@ public class DatabaseStore {
 	public DatabaseStore()
 	{
 		// empty constructor
+	}
+	
+	/**
+	 * Stores an Account to the data store using Objectify
+	 * @param pAcct	the Account to be stored
+	 */	
+	public String storeAccount(Account pAcct) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pAcct);
+		return pAcct.getUserId();
+	}
+	
+	/**
+	 * Fetches an Account from the data store using Objectify
+	 * @param pUid 	the id that the Account is associated with
+	 * @return		the Account that is associated with the specified id
+	 */
+	public Account fetchAccount(String pUid) {
+		Objectify ofy = ObjectifyService.begin();
+		Account acct = ofy.get(Account.class, pUid);
+		return acct;
 	}
 	
 	/**
