@@ -9,7 +9,7 @@ import com.googlecode.objectify.annotation.Entity;;
  * Class to hold all the information for an event.
  */
 @Entity
-public class Event {
+public class Event implements Serializable {
 	
 	@Id private Long eventID;
 	private String name;
