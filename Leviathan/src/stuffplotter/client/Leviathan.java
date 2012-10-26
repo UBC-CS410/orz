@@ -4,13 +4,13 @@ import java.util.Date;
 
 import stuffplotter.UI.AvailabilitySubmitter;
 import stuffplotter.UI.EventCreationDialogBox;
+import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
-import com.gargoylesoftware.htmlunit.javascript.host.Event;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -21,7 +21,6 @@ import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -40,26 +39,35 @@ public class Leviathan implements EntryPoint
 	/**
 	 * This is the entry point method.
 	 */
-	public void onModuleLoad() {
+	public void onModuleLoad()
+	{
 		
 		AccountServiceAsync accountService = GWT.create(AccountService.class);
 		
-		accountService.login(redirectUrl, new AsyncCallback<Account>() {
-	        public void onFailure(Throwable error) {
+		accountService.login(redirectUrl, new AsyncCallback<Account>()
+		{
+	        public void onFailure(Throwable error)
+	        {
+	        	
 	        }
 
-	        public void onSuccess(Account result) {
+	        public void onSuccess(Account result)
+	        {
 	          account = result;
-	          if(account.inSession()) {
+	          if(account.inSession())
+	          {
 	        	  loadUI();
-	          } else {
+	          }
+	          else
+	          {
 	        	  Window.Location.assign(account.getLogin());
 	          }
 	        }
-	      });
+		});
 	}
 	
-	public void loadUI() {
+	public void loadUI()
+	{
 		// testing calendar stuff
 		Calendar calendar = new Calendar();
 		calendar.setWidth("500px");
@@ -67,10 +75,11 @@ public class Leviathan implements EntryPoint
 
 		//Displays the month View
 		calendar.setView(CalendarViews.MONTH);
-		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>() {
-			
+		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>()
+		{
 			@Override
-			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
+			public void onTimeBlockClick(TimeBlockClickEvent<Date> event)
+			{
 				// TODO Auto-generated method stub
 				Window.alert(Integer.toString(event.getTarget().getDate()));
 			}
@@ -126,6 +135,17 @@ public class Leviathan implements EntryPoint
 				eventCreation.show();
 			}
 		});
+
+		final Button findFriends = new Button("Find Friends");
+		findFriends.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				FriendFinderDialogBox friendDialog = new FriendFinderDialogBox();
+				friendDialog.show();
+			}	
+		});
 		
 		com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		ListRequest calRequest = testCalendar.events().list(Window.prompt("Input Email Address", "example@example.com"));
@@ -141,5 +161,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("availSub").add(availBtn);
+		RootPanel.get("friendFinder").add(findFriends);
 	}
 }
