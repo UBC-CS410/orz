@@ -50,7 +50,7 @@ public class Event implements Serializable {
 	 * @post true; 
 	 * @return the ID of an event.
 	 */
-	public Long getID()
+	public Long getEventId()
 	{
 		return eventId;
 	}
@@ -61,7 +61,7 @@ public class Event implements Serializable {
 	 * @post true;
 	 * @return the eventName of the event.
 	 */
-	public String geteventName()
+	public String getEventName()
 	{
 		return this.eventName;
 	}
