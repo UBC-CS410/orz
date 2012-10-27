@@ -1,6 +1,7 @@
 package stuffplotter.client;
 
 import java.util.Date;
+import java.util.List;
 
 import stuffplotter.UI.AvailabilitySubmitter;
 import stuffplotter.UI.EventCreationDialogBox;
@@ -35,7 +36,7 @@ public class Leviathan implements EntryPoint
 	
 	private final String redirectUrl = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
-	
+	private int friendCount = 0;
 	/**
 	 * This is the entry point method.
 	 */
@@ -96,12 +97,77 @@ public class Leviathan implements EntryPoint
 
 		VerticalPanel lvlView = new VerticalPanel();
 		final Button addExpBtn = new Button("Up Vote");
+		final Button addfriend = new Button("Add Friend");
+		final Button getfriends = new Button("Get Friends");
 		final Label lvlLabel = new Label("Level: 1");
 		final Label expLabel = new Label("Experience: 0");
 		
 		lvlView.add(lvlLabel);
 		lvlView.add(expLabel);
 		lvlView.add(addExpBtn);
+		lvlView.add(addfriend);
+		lvlView.add(getfriends);
+		
+		addfriend.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AccountServiceAsync accountService = GWT.create(AccountService.class);
+				friendCount++;
+				final String testFriend = "TestFriend_"+friendCount;
+				account.addUserFriend(testFriend);
+				accountService.addFriend(account, testFriend, new AsyncCallback<Void>(){
+
+					@Override
+					public void onFailure(Throwable caught) 
+					{
+						Window.alert("Failed");
+					}
+
+					@Override
+					public void onSuccess(Void result) 
+					{
+						Window.alert("Friend: "+testFriend+" has been added");
+					}
+					
+				});
+				
+			}
+			
+		});
+		
+		getfriends.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AccountServiceAsync accountService = GWT.create(AccountService.class);
+				accountService.getFriends(account, new AsyncCallback<List<String>>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+					Window.alert("Failure");
+						
+					}
+
+					@Override
+					public void onSuccess(List<String> result) {
+						String test = "";
+						for (int i=0; i<result.size();i++){
+							test = test + result.get(i) + "/n";
+						}
+						
+						Window.alert(test);
+						
+					}
+					
+				});
+				
+			}
+			
+		});
+		
 		
 		addExpBtn.addClickHandler(new ClickHandler()
 		{
