@@ -1,5 +1,7 @@
 package stuffplotter.server;
 
+import java.util.List;
+
 import stuffplotter.client.AccountService;
 import stuffplotter.shared.Account;
 
@@ -37,6 +39,19 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	      account.setLogin(userService.createLoginURL(requestUri));
 	    }
 	    return account;
+	}
+
+	@Override
+	public void addFriend(Account acc, String friend) {
+		Account temp = dbstore.fetchAccount(acc.getUserId());
+		temp.addUserFriend(friend);
+		dbstore.store(temp);
+	}
+
+	@Override
+	public List<String> getFriends(Account acc) {
+		Account temp = dbstore.fetchAccount(acc.getUserId());
+		return temp.getUserFriends();
 	}
 
 }
