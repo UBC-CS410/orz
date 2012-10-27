@@ -9,11 +9,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -44,6 +42,7 @@ public class AvailabilitySubmitter extends DialogBox {
 	{
 		List<Integer> selectedValues = new ArrayList<Integer>();
 		
+		// for loop to get the submission information from each MonthPanel
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
 		{
 			Widget childWidget = this.horPanel.getWidget(i); 
@@ -61,14 +60,13 @@ public class AvailabilitySubmitter extends DialogBox {
 	 */
 	private void initializeWindow()
 	{
-		int[] testTimes = {0, 3, 5, 23};
-		
+		// TO DO: Remove hard coded values and feed values from database
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
 		int[] days = {2};
 		int[] days2 = {6, 8};
-		timeSheet.addDay(Month.OCTOBER, days);
-		timeSheet.addDay(Month.OCTOBER, days2);
-		timeSheet.addDay(Month.NOVEMBER, days2);
+		timeSheet.addDay(Month.OCTOBER, "2012", days);
+		timeSheet.addDay(Month.OCTOBER, "2012", days2);
+		timeSheet.addDay(Month.NOVEMBER, "2012", days2);
 		
 		horPanel.add(timeSheet);
 		vertPanel.add(horPanel);
@@ -96,10 +94,13 @@ public class AvailabilitySubmitter extends DialogBox {
 			{
 				List<Integer> selectedValues = retrieveSubmissions();
 				String result = "";
+				
+				// temporary for each loop to help display selected intervals
 				for(Integer value : selectedValues)
 				{
 					result += "Selected: " + value + " ";
 				}
+				
 				hide();
 				Window.alert(result);
 			}
@@ -117,7 +118,8 @@ public class AvailabilitySubmitter extends DialogBox {
 		cancelBtn.addClickHandler(new ClickHandler() 
 		{
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onClick(ClickEvent event)
+			{
 				hide();
 			}
 		});

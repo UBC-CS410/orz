@@ -15,6 +15,7 @@ public class MonthPanel extends VerticalPanel
 {
 	private HorizontalPanel daysHolder;
 	private Month month;
+	private String year;
 	
 	public enum Month
 	{
@@ -36,16 +37,20 @@ public class MonthPanel extends VerticalPanel
 	/**
 	 * Constructor for MonthPanel.
 	 */
-	public MonthPanel(Month monthName, int[] days)
+	public MonthPanel(Month monthName, String year, int[] days)
 	{
 		super();
 		this.month = monthName;
+		this.year = year;
 		this.add(new Label(monthName.displayName()));
 		this.daysHolder = new HorizontalPanel();
+		
+		// for loop to populate the DaySelections for the month panel
 		for(int day : days)
 		{
 			this.daysHolder.add(new DaySelections(String.valueOf(day)));
 		}
+		
 		this.add(this.daysHolder);
 	}
 	
@@ -57,6 +62,7 @@ public class MonthPanel extends VerticalPanel
 	{
 		List<Integer> selectedValues = new ArrayList<Integer>();
 		
+		// for loop to retrieve the submissions from each DaySelections
 		for (int i = 0; i < this.daysHolder.getWidgetCount(); i++)
 		{
 			Widget childWidget = this.daysHolder.getWidget(i); 
@@ -95,5 +101,14 @@ public class MonthPanel extends VerticalPanel
 	public Month getMonth()
 	{
 		return this.month;
+	}
+	
+	/**
+	 * Method to retrieve the year the month is in.
+	 * @return the year of the month panel.
+	 */
+	public String getYear()
+	{
+		return this.year;
 	}
 }

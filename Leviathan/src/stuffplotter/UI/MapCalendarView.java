@@ -10,7 +10,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -24,11 +23,21 @@ public class MapCalendarView extends SimplePanel
 	private TimeSheetPanel timeSheet;
 	
 	/**
-	 * Constructor for MapCalednarView.
+	 * Constructor for MapCalendarView.
+	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
 	public MapCalendarView(TimeSheetPanel timeSheetPanel)
 	{
 		super();
+		this.initializeUI(timeSheetPanel);
+	}
+	
+	/**
+	 * Helper method to add the panels to the MapCalendarView.
+	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
+	 */
+	private void initializeUI(TimeSheetPanel timeSheetPanel)
+	{
 		timeSheet = timeSheetPanel;
 		TabPanel mapCalHolder = new TabPanel();
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
@@ -37,7 +46,7 @@ public class MapCalendarView extends SimplePanel
 		map.addControl(new LargeMapControl3D());
 		mapCalHolder.add(map, new Label("Map"));
 		DatePicker calendar = new DatePicker();
-		initializeCalendarChangeHandler(calendar);
+		this.initializeCalendarChangeHandler(calendar);
 		mapCalHolder.add(calendar, new Label("Calendar"));
 		mapCalHolder.selectTab(1);
 		this.add(mapCalHolder);
@@ -57,8 +66,10 @@ public class MapCalendarView extends SimplePanel
 				Date dayClicked = event.getValue();
 				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
 				String[] calendarValues = dayFormat.format(dayClicked).toString().split(",");
-				int[] days = { Integer.valueOf(calendarValues[1]) };
-				timeSheet.addDay(Month.valueOf(calendarValues[0].toUpperCase()), days);
+				Month month = Month.valueOf(calendarValues[0].toUpperCase());
+				int[] day = { Integer.valueOf(calendarValues[1]) };
+				String year = calendarValues[2];
+				timeSheet.addDay(month, year, day);
 			}
 		});
 	}
