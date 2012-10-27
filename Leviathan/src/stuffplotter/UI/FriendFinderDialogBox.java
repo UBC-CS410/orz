@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -44,10 +43,22 @@ public class FriendFinderDialogBox extends DialogBox
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				userList.removeAllRows();
 				List<String> friends = searchDB(friendInput.getValue());
-				for(String friend : friends)
+				for(int i = 0; i < friends.size(); i++)
 				{
-					userList.add(new Label(friend));
+					userList.setText(i, 0, friends.get(i));
+					final int rowToRemove = i;
+					Button friendRequest = new Button("Send Request");
+					friendRequest.addClickHandler(new ClickHandler()
+					{
+						@Override
+						public void onClick(ClickEvent event)
+						{
+							userList.removeRow(rowToRemove);
+						}
+					});
+					userList.setWidget(i, 1, friendRequest);
 				}
 			}
 		});
