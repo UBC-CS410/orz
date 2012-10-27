@@ -1,5 +1,8 @@
 package stuffplotter.UI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import stuffplotter.UI.MonthPanel.Month;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -62,5 +65,26 @@ public class TimeSheetPanel extends SimplePanel
 		{
 			this.horPanel.add(new MonthPanel(month, year, days));
 		}
+	}
+	
+	/**
+	 * Method to retrieve the submission made by the user for the event.
+	 * @return the submission made by the user for the event.
+	 */
+	public List<Integer> retrieveSubmission()
+	{
+		List<Integer> selectedValues = new ArrayList<Integer>();
+		
+		// for loop to get the submission information from each MonthPanel
+		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
+		{
+			Widget childWidget = this.horPanel.getWidget(i); 
+			if(childWidget instanceof MonthPanel)
+			{
+				selectedValues.addAll(((MonthPanel) childWidget).retrieveSubmission());
+			}
+		}
+		
+		return selectedValues;
 	}
 }

@@ -42,13 +42,13 @@ public class AvailabilitySubmitter extends DialogBox {
 	{
 		List<Integer> selectedValues = new ArrayList<Integer>();
 		
-		// for loop to get the submission information from each MonthPanel
+		// for loop to get the submission information from the TimeSheetPanel
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
 		{
 			Widget childWidget = this.horPanel.getWidget(i); 
-			if(childWidget instanceof MonthPanel)
+			if(childWidget instanceof TimeSheetPanel)
 			{
-				selectedValues.addAll(((MonthPanel) childWidget).retrieveSubmission());
+				selectedValues.addAll(((TimeSheetPanel) childWidget).retrieveSubmission());
 			}
 		}
 		
@@ -94,7 +94,6 @@ public class AvailabilitySubmitter extends DialogBox {
 			{
 				List<Integer> selectedValues = retrieveSubmissions();
 				String result = "";
-				
 				// temporary for each loop to help display selected intervals
 				for(Integer value : selectedValues)
 				{

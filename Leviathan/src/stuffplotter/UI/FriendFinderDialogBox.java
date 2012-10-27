@@ -68,6 +68,7 @@ public class FriendFinderDialogBox extends DialogBox
 		horPanel.add(findFriend);
 		vertPanel.add(horPanel);
 		vertPanel.add(userList);
+		this.setText("Find your friends!");
 		this.add(vertPanel);
 	}
 	

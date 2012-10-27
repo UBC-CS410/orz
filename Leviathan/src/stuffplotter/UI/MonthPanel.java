@@ -42,7 +42,7 @@ public class MonthPanel extends VerticalPanel
 		super();
 		this.month = monthName;
 		this.year = year;
-		this.add(new Label(monthName.displayName()));
+		this.add(new Label(monthName.displayName() + " " + year));
 		this.daysHolder = new HorizontalPanel();
 		
 		// for loop to populate the DaySelections for the month panel
