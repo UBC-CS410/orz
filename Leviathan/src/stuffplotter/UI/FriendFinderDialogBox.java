@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -48,14 +49,15 @@ public class FriendFinderDialogBox extends DialogBox
 				for(int i = 0; i < friends.size(); i++)
 				{
 					userList.setText(i, 0, friends.get(i));
-					final int rowToRemove = i;
 					Button friendRequest = new Button("Send Request");
 					friendRequest.addClickHandler(new ClickHandler()
 					{
 						@Override
 						public void onClick(ClickEvent event)
 						{
-							userList.removeRow(rowToRemove);
+							int rowSelected = userList.getCellForEvent(event).getRowIndex();
+							userList.removeRow(rowSelected);
+							// TO DO: Add Friend Request Backend
 						}
 					});
 					userList.setWidget(i, 1, friendRequest);
