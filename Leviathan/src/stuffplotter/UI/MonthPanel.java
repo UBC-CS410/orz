@@ -76,12 +76,35 @@ public class MonthPanel extends VerticalPanel
 	}
 	
 	/**
-	 * Method to add a new day with all time slots to the month panel.
+	 * Method to add a new day with all time slots to the month panel,
+	 * if the day is already in the month panel, it will not be added.
 	 * @param dayOfMonth - the day of the month to display.
 	 */
 	public void addDay(String dayOfMonth)
 	{
-		this.daysHolder.add(new DaySelections(dayOfMonth));
+		boolean dayFound = false;
+		int numOfDayPanels = this.daysHolder.getWidgetCount();
+		int i = 0;
+		
+		// while loop to determine if the day is already in the time sheet panel
+		while(!dayFound && i < numOfDayPanels)
+		{
+			Widget childWidget = this.daysHolder.getWidget(i); 
+			if(childWidget instanceof DaySelections)
+			{
+				DaySelections dayPanel = (DaySelections) childWidget;
+				if(dayPanel.getDay().equals(dayOfMonth))
+				{
+					dayFound = true;
+				}
+			}	
+			i++;
+		}
+		
+		if(!dayFound)
+		{
+			this.daysHolder.add(new DaySelections(dayOfMonth));
+		}
 	}
 	
 	/**

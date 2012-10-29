@@ -25,6 +25,7 @@ public class TimeSheetPanel extends SimplePanel
 	{
 		super();
 		timeSheetWindow = new ScrollPanel();
+		timeSheetWindow.setSize("500px", "150px");
 		horPanel = new HorizontalPanel();
 		timeSheetWindow.add(horPanel);
 		this.add(timeSheetWindow);
