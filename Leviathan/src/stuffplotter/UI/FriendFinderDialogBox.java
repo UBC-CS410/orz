@@ -3,6 +3,8 @@ package stuffplotter.UI;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.misc.CloseClickHandler;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -38,6 +40,7 @@ public class FriendFinderDialogBox extends DialogBox
 		HorizontalPanel horPanel = new HorizontalPanel();
 		final TextBox friendInput = new TextBox();
 		Button findFriend = new Button("Find");
+		Button cancelBtn = new Button("Cancel");
 		findFriend.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -64,11 +67,15 @@ public class FriendFinderDialogBox extends DialogBox
 			}
 		});
 		
+		cancelBtn.addClickHandler(new CloseClickHandler(this));
+		
 		horPanel.add(friendInput);
 		horPanel.add(findFriend);
 		vertPanel.add(horPanel);
 		vertPanel.add(userList);
+		vertPanel.add(cancelBtn);
 		this.setText("Find your friends!");
+		this.setGlassEnabled(true);
 		this.add(vertPanel);
 	}
 	

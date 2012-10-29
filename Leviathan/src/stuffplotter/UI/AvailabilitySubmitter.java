@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.misc.CloseClickHandler;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -114,14 +115,7 @@ public class AvailabilitySubmitter extends DialogBox {
 	private void intializeCancelBtn(Panel panel)
 	{
 		Button cancelBtn = new Button("Cancel");
-		cancelBtn.addClickHandler(new ClickHandler() 
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				hide();
-			}
-		});
+		cancelBtn.addClickHandler(new CloseClickHandler(this));
 		panel.add(cancelBtn);
 	}
 }
