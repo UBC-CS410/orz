@@ -23,6 +23,8 @@ public class FriendFinderDialogBox extends DialogBox
 	
 	/**
 	 * Constructor for FriendFinderDialogBox.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public FriendFinderDialogBox()
 	{
@@ -32,6 +34,8 @@ public class FriendFinderDialogBox extends DialogBox
 	
 	/**
 	 * Helper method to initialize the UI for the FriendFinderDialogBox.
+	 * @pre true;
+	 * @post true;
 	 */
 	private void initializeUI()
 	{
@@ -48,6 +52,8 @@ public class FriendFinderDialogBox extends DialogBox
 			{
 				userList.removeAllRows();
 				List<String> friends = searchDB(friendInput.getValue());
+				
+				// for loop to populate the FlexTable with the friends
 				for(int i = 0; i < friends.size(); i++)
 				{
 					userList.setText(i, 0, friends.get(i));
@@ -81,6 +87,8 @@ public class FriendFinderDialogBox extends DialogBox
 	
 	/**
 	 * Helper method to search the database for a user containing the given name.
+	 * @pre friendName != null;
+	 * @post true;
 	 * @param friendName - the name to search for.
 	 * @return List<String> of the user(s) containing the provided name.
 	 */

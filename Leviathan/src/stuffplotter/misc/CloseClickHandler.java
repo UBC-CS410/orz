@@ -13,6 +13,8 @@ public class CloseClickHandler implements ClickHandler
 
 	/**
 	 * Constructor to set the panel that the CloseClickHandler will close.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to close when the handler receives a
 	 * 				  ClickEvent.
 	 */
@@ -25,6 +27,8 @@ public class CloseClickHandler implements ClickHandler
 	/**
 	 * Overridden onClick event to close the PopupPanel CloseClickHandler
 	 * contains.
+	 * @pre event != null;
+	 * @post this.panel.isVisible() == false;
 	 * @param event - the ClickEvent received.
 	 */
 	@Override

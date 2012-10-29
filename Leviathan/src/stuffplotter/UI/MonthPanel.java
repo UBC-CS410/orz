@@ -36,6 +36,8 @@ public class MonthPanel extends VerticalPanel
 	
 	/**
 	 * Constructor for MonthPanel.
+	 * @pre monthName != null && year != null && days != null;
+	 * @post this.isVisible() == true;
 	 */
 	public MonthPanel(Month monthName, String year, int[] days)
 	{
@@ -56,6 +58,8 @@ public class MonthPanel extends VerticalPanel
 	
 	/**
 	 * Method to retrieve the submission submitted by the user.
+	 * @pre true;
+	 * @post true;
 	 * @return the submissions of the user.
 	 */
 	public List<Integer> retrieveSubmission()
@@ -78,6 +82,8 @@ public class MonthPanel extends VerticalPanel
 	/**
 	 * Method to add a new day with all time slots to the month panel,
 	 * if the day is already in the month panel, it will not be added.
+	 * @pre dayOfMonth != null;
+	 * @post true;
 	 * @param dayOfMonth - the day of the month to display.
 	 */
 	public void addDay(String dayOfMonth)
@@ -109,6 +115,8 @@ public class MonthPanel extends VerticalPanel
 	
 	/**
 	 * Method to add a new day with specified time slots.
+	 * @pre dayOfMonth != null && timeSlots != null;
+	 * @post true;
 	 * @param dayOfMonth - the day of the month to display.
 	 * @param timeSlots - the time slots to add to the display.
 	 */
@@ -119,6 +127,8 @@ public class MonthPanel extends VerticalPanel
 	
 	/**
 	 * Method to retrieve the month represented by the panel.
+	 * @pre true;
+	 * @post true;
 	 * @return the month of the panel.
 	 */
 	public Month getMonth()
@@ -128,6 +138,8 @@ public class MonthPanel extends VerticalPanel
 	
 	/**
 	 * Method to retrieve the year the month is in.
+	 * @pre true;
+	 * @post true;
 	 * @return the year of the month panel.
 	 */
 	public String getYear()

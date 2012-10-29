@@ -20,10 +20,14 @@ import com.google.gwt.user.datepicker.client.DatePicker;
  */
 public class MapCalendarView extends SimplePanel
 {
+	final private String mapCalWidth = "250px";
+	final private String mapCalHeight = "250px";
 	private TimeSheetPanel timeSheet;
 	
 	/**
 	 * Constructor for MapCalendarView.
+	 * @pre timeSheetPanel != null;
+	 * @post this.isVisible() == true;
 	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
 	public MapCalendarView(TimeSheetPanel timeSheetPanel)
@@ -34,6 +38,8 @@ public class MapCalendarView extends SimplePanel
 	
 	/**
 	 * Helper method to add the panels to the MapCalendarView.
+	 * @pre timeSheetPanel != null;
+	 * @post true;
 	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
 	private void initializeUI(TimeSheetPanel timeSheetPanel)
@@ -41,11 +47,12 @@ public class MapCalendarView extends SimplePanel
 		timeSheet = timeSheetPanel;
 		TabPanel mapCalHolder = new TabPanel();
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
-		map.setSize("250px", "250px");
+		map.setSize(mapCalWidth, mapCalHeight);
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
 		mapCalHolder.add(map, new Label("Map"));
 		DatePicker calendar = new DatePicker();
+		calendar.setSize(mapCalWidth, mapCalHeight);
 		this.initializeCalendarChangeHandler(calendar);
 		mapCalHolder.add(calendar, new Label("Calendar"));
 		mapCalHolder.selectTab(1);
@@ -54,6 +61,8 @@ public class MapCalendarView extends SimplePanel
 	
 	/**
 	 * Helper method to initialize the change handler for the calendar.
+	 * @pre calendar != null;
+	 * @post true;
 	 * @param calendar - the calendar to add the change handler to.
 	 */
 	private void initializeCalendarChangeHandler(DatePicker calendar)

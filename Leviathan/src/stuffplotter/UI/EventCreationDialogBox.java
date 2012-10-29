@@ -16,6 +16,8 @@ public class EventCreationDialogBox extends DialogBox
 {
 	/**
 	 * Constructor for the EventCreationDialogBox class.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public EventCreationDialogBox()
 	{
@@ -34,12 +36,15 @@ public class EventCreationDialogBox extends DialogBox
 		intializeCancelBtn(vertPanel);
 		horPanel.add(vertPanel);
 		
+		this.center();
 		this.setGlassEnabled(true);
 		this.add(horPanel);
 	}
 	
 	/**
 	 * Helper method to initialize the cancel button for the window.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to add the close button to.
 	 */
 	private void intializeCancelBtn(Panel panel)

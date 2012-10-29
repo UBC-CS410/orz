@@ -15,17 +15,21 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TimeSheetPanel extends SimplePanel
 {
+	final private String timeSheetWidth = "500px";
+	final private String timeSheetHeight = "150px";
 	private ScrollPanel timeSheetWindow;
 	private HorizontalPanel horPanel;
 	
 	/**
 	 * Constructor for TimeSheetPanel.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public TimeSheetPanel()
 	{
 		super();
 		timeSheetWindow = new ScrollPanel();
-		timeSheetWindow.setSize("500px", "150px");
+		timeSheetWindow.setSize(timeSheetWidth, timeSheetHeight);
 		horPanel = new HorizontalPanel();
 		timeSheetWindow.add(horPanel);
 		this.add(timeSheetWindow);
@@ -34,6 +38,8 @@ public class TimeSheetPanel extends SimplePanel
 	/**
 	 * Method to add a new day with all time slots to the time sheet, a month panel will be
 	 * generated where appropriate.
+	 * @pre month != null && year != null && days != null;
+	 * @post true; 
 	 * @param month - month of the day(s) to add.
 	 */
 	public void addDay(Month month, String year, int[] days)
@@ -70,6 +76,8 @@ public class TimeSheetPanel extends SimplePanel
 	
 	/**
 	 * Method to retrieve the submission made by the user for the event.
+	 * @pre true;
+	 * @post true; 
 	 * @return the submission made by the user for the event.
 	 */
 	public List<Integer> retrieveSubmission()

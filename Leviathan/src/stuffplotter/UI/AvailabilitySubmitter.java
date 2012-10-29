@@ -28,6 +28,8 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public AvailabilitySubmitter()
 	{
@@ -37,6 +39,8 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Method to retrieve the submission submitted by the user.
+	 * @pre true;
+	 * @post true;
 	 * @return the submissions of the user.
 	 */
 	public List<Integer> retrieveSubmissions()
@@ -58,6 +62,8 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the AvailabilitySubmitter.
+	 * @pre true;
+	 * @post true;
 	 */
 	private void initializeWindow()
 	{
@@ -83,6 +89,8 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the submit button for the window.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to add the submit button to.
 	 */
 	private void initializeSubmitBtn(Panel panel)
@@ -110,6 +118,8 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the cancel button for the window.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to add the close button to.
 	 */
 	private void intializeCancelBtn(Panel panel)

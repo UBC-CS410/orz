@@ -26,6 +26,8 @@ public class DaySelections extends VerticalPanel
 
 	/**
 	 * Constructor for DaySelections, populates all time slots.
+	 * @pre dayOfMonth != null;
+	 * @post this.isVisible() == true;
 	 * @param dayOfMonth - the day of the month to display.
 	 */
 	public DaySelections(String dayOfMonth)
@@ -42,6 +44,8 @@ public class DaySelections extends VerticalPanel
 	/**
 	 * Constructor for DaySelections, populates all time slots based
 	 * on the given indices.
+	 * @pre dayOfMonth != null && intervalIndexValues != null;
+	 * @post this.isVisible() == true;
 	 * @param dayOfMonth - the day of the month to display.
 	 * @param intervalIndexValues - the list of intervals to display based on
 	 * 								the their index value from the list
@@ -62,6 +66,8 @@ public class DaySelections extends VerticalPanel
 	/**
 	 * Method to return the selected values, based on their indices from
 	 * the list timeIntervals.
+	 * @pre true;
+	 * @post true;
 	 * @return the indices of the selected time intervals.
 	 */
 	public List<Integer> retrieveSelectedValues()
@@ -92,6 +98,9 @@ public class DaySelections extends VerticalPanel
 		
 		/**
 		 * Constructor for a time interval in the DaySelections component.
+		 * @pre timeInterval != null && indexValue != null &&
+		 * indexValue >= 0 && indexValue < timeIntervals.length;
+		 * @post this.isVisible() == true;
 		 * @param timeInterval - the time interval to display.
 		 */
 		public TimeSlot(String timeInterval, int indexValue)
@@ -103,6 +112,8 @@ public class DaySelections extends VerticalPanel
 		
 		/**
 		 * Method to retrieve the index value of the time interval selected.
+		 * @pre true;
+		 * @post true;
 		 * @return the index value of the time interval selected.
 		 */
 		public int getIndexValue()
@@ -113,6 +124,8 @@ public class DaySelections extends VerticalPanel
 	
 	/**
 	 * Method to get the day represented by the panel.
+	 * @pre true;
+	 * @post true;
 	 * @return the day of the month the panel represents.
 	 */
 	public String getDay()

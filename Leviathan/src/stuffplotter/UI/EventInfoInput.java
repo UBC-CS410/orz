@@ -11,6 +11,8 @@ public class EventInfoInput extends VerticalPanel
 {
 	/**
 	 * Constructor for the EventInfoInput class.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public EventInfoInput()
 	{
@@ -21,6 +23,8 @@ public class EventInfoInput extends VerticalPanel
 	/**
 	 * Helper method to add all the UI components to the event info window of the
 	 * creation window.
+	 * @pre true;
+	 * @post true;
 	 */
 	private void addFields()
 	{
