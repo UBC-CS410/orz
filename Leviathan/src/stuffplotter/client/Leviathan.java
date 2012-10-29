@@ -12,11 +12,20 @@ import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.google.api.gwt.client.GoogleApiRequestTransport;
+import com.google.api.gwt.client.OAuth2Login;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.api.gwt.services.calendar.shared.model.CalendarList;
+import com.google.api.gwt.services.calendar.shared.model.Event;
+import com.google.api.gwt.services.calendar.shared.model.Events;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -27,6 +36,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -213,9 +223,49 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
-		com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
-		ListRequest calRequest = testCalendar.events().list(Window.prompt("Input Email Address", "example@example.com"));
-		Window.alert(calRequest.toString());
+		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
+		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
+		OAuth2Login.get().authorize("933841708791.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+		{
+
+			@Override
+			public void onFailure(Exception reason) {
+				// TODO Auto-generated method stub
+				Window.alert(reason.getMessage());				
+			}
+
+			@Override
+			public void onSuccess(Void result)
+			{
+				Window.alert(result.toString());
+			}	
+			
+		});
+/*		testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
+		{
+			@Override
+			public void onSuccess(CalendarList response) 
+			{
+				String calendarID = response.getItems().get(0).getId();
+				ListRequest calRequest = testCalendar.events().list(calendarID);
+				calRequest.fire(new Receiver<Events>()
+				{
+					@Override
+					public void onSuccess(Events response)
+					{
+						String result = "";
+						List<Event> events = response.getItems();
+						for(Event event : events)
+						{
+							result += " " + event.getCreated();
+						}
+						Window.alert(result);
+					}
+				});
+				
+				Window.alert(calRequest.toString());
+			}
+		});*/
 		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);

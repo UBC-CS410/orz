@@ -77,7 +77,7 @@ public class TimeSheetPanel extends SimplePanel
 	/**
 	 * Method to retrieve the submission made by the user for the event.
 	 * @pre true;
-	 * @post true; 
+	 * @post true;
 	 * @return the submission made by the user for the event.
 	 */
 	public List<Integer> retrieveSubmission()
