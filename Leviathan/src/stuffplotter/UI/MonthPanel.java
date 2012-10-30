@@ -3,6 +3,9 @@ package stuffplotter.UI;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.shared.DayContainer;
+import stuffplotter.shared.MonthContainer;
+
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -62,9 +65,9 @@ public class MonthPanel extends VerticalPanel
 	 * @post true;
 	 * @return the submissions of the user.
 	 */
-	public List<Integer> retrieveSubmission()
+	public MonthContainer retrieveSubmission()
 	{
-		List<Integer> selectedValues = new ArrayList<Integer>();
+		List<DayContainer> selectedValues = new ArrayList<DayContainer>();
 		
 		// for loop to retrieve the submissions from each DaySelections
 		for (int i = 0; i < this.daysHolder.getWidgetCount(); i++)
@@ -72,11 +75,11 @@ public class MonthPanel extends VerticalPanel
 			Widget childWidget = this.daysHolder.getWidget(i); 
 			if(childWidget instanceof DaySelections)
 			{
-				selectedValues.addAll(((DaySelections) childWidget).retrieveSelectedValues());
+				selectedValues.add(((DaySelections) childWidget).retrieveSelectedValues());
 			}
 		}
 		
-		return selectedValues;
+		return new MonthContainer(this.month, this.year, selectedValues);
 	}
 	
 	/**

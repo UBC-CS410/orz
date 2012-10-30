@@ -5,6 +5,8 @@ import java.util.List;
 
 import stuffplotter.UI.MonthPanel.Month;
 import stuffplotter.misc.CloseClickHandler;
+import stuffplotter.shared.DayContainer;
+import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -43,9 +45,9 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 	 * @post true;
 	 * @return the submissions of the user.
 	 */
-	public List<Integer> retrieveSubmissions()
+	public List<MonthContainer> retrieveSubmissions()
 	{
-		List<Integer> selectedValues = new ArrayList<Integer>();
+		List<MonthContainer> selectedValues = new ArrayList<MonthContainer>();
 		
 		// for loop to get the submission information from the TimeSheetPanel
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
@@ -101,12 +103,26 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				List<Integer> selectedValues = retrieveSubmissions();
+				List<MonthContainer> selectedValues = retrieveSubmissions();
 				String result = "";
 				// temporary for each loop to help display selected intervals
-				for(Integer value : selectedValues)
+				for(MonthContainer value : selectedValues)
 				{
-					result += "Selected: " + value + " ";
+					String month = value.getMonth().displayName();
+					String year = value.getYear();
+					result += "Selected: " + month + " " + year + " ";
+					List<DayContainer> days = value.getDays();
+					for(DayContainer day : days)
+					{
+						String dayValue = day.getDay();
+						result += "Day " + dayValue + "-> ";
+						List<Integer> timeSlots = day.getTimeSlots();
+						for(Integer slot : timeSlots)
+						{
+							result += slot + " ";
+						}
+					}
+					
 				}
 				
 				hide();

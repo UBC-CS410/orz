@@ -3,6 +3,8 @@ package stuffplotter.UI;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.shared.DayContainer;
+
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -68,9 +70,9 @@ public class DaySelections extends VerticalPanel
 	 * the list timeIntervals.
 	 * @pre true;
 	 * @post true;
-	 * @return the indices of the selected time intervals.
+	 * @return a Day containing the indices of the selected time intervals.
 	 */
-	public List<Integer> retrieveSelectedValues()
+	public DayContainer retrieveSelectedValues()
 	{
 		List<Integer> selectedValues = new ArrayList<Integer>();
 		
@@ -86,7 +88,7 @@ public class DaySelections extends VerticalPanel
 			}
 		}
 		
-		return selectedValues;
+		return new DayContainer(this.dayOfMonth, selectedValues);
 	}
 	
 	/**
