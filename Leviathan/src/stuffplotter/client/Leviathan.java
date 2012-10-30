@@ -3,7 +3,8 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.UI.AvailabilitySubmitter;
+import stuffplotter.UI.AccountPanel;
+import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
 import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.shared.Account;
@@ -101,6 +102,7 @@ public class Leviathan implements EntryPoint
 		map.setSize("500px", "500px");
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
+		map.setGoogleBarEnabled(true);
 		
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
@@ -196,7 +198,7 @@ public class Leviathan implements EntryPoint
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				AvailabilitySubmitter availSubmitter = new AvailabilitySubmitter();
+				AvailabilitySubmitterDialogBox availSubmitter = new AvailabilitySubmitterDialogBox();
 				availSubmitter.show();
 			}
 		});
@@ -223,6 +225,7 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
+		// test code to read from user's Google Calendar
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
 		OAuth2Login.get().authorize("933841708791.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
@@ -269,6 +272,9 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
+		// testing user account panel
+		AccountPanel userAccountPanel = new AccountPanel(account);
+		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
 		calMapHolder.add(map);
@@ -280,5 +286,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
+		RootPanel.get("userAccount").add(userAccountPanel);
 	}
 }

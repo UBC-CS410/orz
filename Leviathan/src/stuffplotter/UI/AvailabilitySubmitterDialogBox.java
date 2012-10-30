@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Class to make the window for submitting availabilities for an event.
  */
-public class AvailabilitySubmitter extends DialogBox {
+public class AvailabilitySubmitterDialogBox extends DialogBox {
 
 	// vertical panel to hold all the components in top-down order
 	final private VerticalPanel vertPanel = new VerticalPanel();
@@ -31,7 +31,7 @@ public class AvailabilitySubmitter extends DialogBox {
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public AvailabilitySubmitter()
+	public AvailabilitySubmitterDialogBox()
 	{
 		super();
 		initializeWindow();
