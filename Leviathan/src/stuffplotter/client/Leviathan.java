@@ -237,35 +237,37 @@ public class Leviathan implements EntryPoint
 			@Override
 			public void onSuccess(Void result)
 			{
-				Window.alert(result.toString());
-			}	
-			
-		});
-/*		testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
-		{
-			@Override
-			public void onSuccess(CalendarList response) 
-			{
-				String calendarID = response.getItems().get(0).getId();
-				ListRequest calRequest = testCalendar.events().list(calendarID);
-				calRequest.fire(new Receiver<Events>()
+				Window.alert("Authorized");
+				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
 				{
 					@Override
-					public void onSuccess(Events response)
+					public void onSuccess(CalendarList response) 
 					{
-						String result = "";
-						List<Event> events = response.getItems();
-						for(Event event : events)
+						String calendarID = response.getItems().get(0).getId();
+						ListRequest calRequest = testCalendar.events().list(calendarID);
+						calRequest.fire(new Receiver<Events>()
 						{
-							result += " " + event.getCreated();
-						}
-						Window.alert(result);
+							@Override
+							public void onSuccess(Events response)
+							{
+								String result = "Events Found: ";
+								List<Event> events = response.getItems();
+								if(events != null)
+								{
+									for(Event event : events)
+									{
+										result += " " + event.getCreated();
+									}
+								}
+								Window.alert(result);
+							}
+						});
+						
+						Window.alert(calRequest.toString());
 					}
 				});
-				
-				Window.alert(calRequest.toString());
-			}
-		});*/
+			}	
+		});
 		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
