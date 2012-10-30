@@ -7,6 +7,7 @@ import stuffplotter.UI.AccountPanel;
 import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
 import stuffplotter.UI.FriendFinderDialogBox;
+import stuffplotter.UI.TopRightPanel;
 import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
@@ -275,6 +276,9 @@ public class Leviathan implements EntryPoint
 		// testing user account panel
 		AccountPanel userAccountPanel = new AccountPanel(account);
 		
+		// testing top right panel for logged in user
+		TopRightPanel topRightPanel = new TopRightPanel(account);
+		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
 		calMapHolder.add(map);
@@ -287,5 +291,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("userAccount").add(userAccountPanel);
+		RootPanel.get("topRightPanel").add(topRightPanel);
 	}
 }
