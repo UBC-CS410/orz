@@ -1,0 +1,14 @@
+Hi Guys, 
+Here is your grade of Design Review:
+
+Team Name: ORZ	70(total)	
+
+Time Management 	15	They missed to give a  future plan explicitly
+Design Document 	25	They did not show how they're going to implement Ustories with class diagram/ no enough detail about architechture and its style/ some problems in UML class diagram ( god class ... )
+Team Participant 	20	
+Interface		10	No specific thing about the UI layer architecture/ Some Ustory were not covered by UI/ more details required  
+
+Cheers, 
+Reza
+
+

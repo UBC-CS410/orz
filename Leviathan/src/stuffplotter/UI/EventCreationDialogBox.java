@@ -1,7 +1,7 @@
 package stuffplotter.UI;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import stuffplotter.misc.CloseClickHandler;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -16,6 +16,8 @@ public class EventCreationDialogBox extends DialogBox
 {
 	/**
 	 * Constructor for the EventCreationDialogBox class.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public EventCreationDialogBox()
 	{
@@ -34,23 +36,21 @@ public class EventCreationDialogBox extends DialogBox
 		intializeCancelBtn(vertPanel);
 		horPanel.add(vertPanel);
 		
+		this.center();
+		this.setGlassEnabled(true);
 		this.add(horPanel);
 	}
 	
 	/**
 	 * Helper method to initialize the cancel button for the window.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to add the close button to.
 	 */
 	private void intializeCancelBtn(Panel panel)
 	{
 		Button cancelBtn = new Button("Cancel");
-		cancelBtn.addClickHandler(new ClickHandler() 
-		{
-			@Override
-			public void onClick(ClickEvent event) {
-				hide();
-			}
-		});
+		cancelBtn.addClickHandler(new CloseClickHandler(this));
 		panel.add(cancelBtn);
 	}
 }

@@ -10,7 +10,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -21,23 +20,40 @@ import com.google.gwt.user.datepicker.client.DatePicker;
  */
 public class MapCalendarView extends SimplePanel
 {
+	final private String mapCalWidth = "250px";
+	final private String mapCalHeight = "250px";
 	private TimeSheetPanel timeSheet;
 	
 	/**
-	 * Constructor for MapCalednarView.
+	 * Constructor for MapCalendarView.
+	 * @pre timeSheetPanel != null;
+	 * @post this.isVisible() == true;
+	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
 	public MapCalendarView(TimeSheetPanel timeSheetPanel)
 	{
 		super();
+		this.initializeUI(timeSheetPanel);
+	}
+	
+	/**
+	 * Helper method to add the panels to the MapCalendarView.
+	 * @pre timeSheetPanel != null;
+	 * @post true;
+	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
+	 */
+	private void initializeUI(TimeSheetPanel timeSheetPanel)
+	{
 		timeSheet = timeSheetPanel;
 		TabPanel mapCalHolder = new TabPanel();
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
-		map.setSize("250px", "250px");
+		map.setSize(mapCalWidth, mapCalHeight);
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
 		mapCalHolder.add(map, new Label("Map"));
 		DatePicker calendar = new DatePicker();
-		initializeCalendarChangeHandler(calendar);
+		calendar.setSize(mapCalWidth, mapCalHeight);
+		this.initializeCalendarChangeHandler(calendar);
 		mapCalHolder.add(calendar, new Label("Calendar"));
 		mapCalHolder.selectTab(1);
 		this.add(mapCalHolder);
@@ -45,6 +61,8 @@ public class MapCalendarView extends SimplePanel
 	
 	/**
 	 * Helper method to initialize the change handler for the calendar.
+	 * @pre calendar != null;
+	 * @post true;
 	 * @param calendar - the calendar to add the change handler to.
 	 */
 	private void initializeCalendarChangeHandler(DatePicker calendar)
@@ -57,8 +75,10 @@ public class MapCalendarView extends SimplePanel
 				Date dayClicked = event.getValue();
 				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
 				String[] calendarValues = dayFormat.format(dayClicked).toString().split(",");
-				int[] days = { Integer.valueOf(calendarValues[1]) };
-				timeSheet.addDay(Month.valueOf(calendarValues[0].toUpperCase()), days);
+				Month month = Month.valueOf(calendarValues[0].toUpperCase());
+				int[] day = { Integer.valueOf(calendarValues[1]) };
+				String year = calendarValues[2];
+				timeSheet.addDay(month, year, day);
 			}
 		});
 	}

@@ -3,20 +3,31 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.UI.AvailabilitySubmitter;
+import stuffplotter.UI.AccountPanel;
+import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
 import stuffplotter.UI.FriendFinderDialogBox;
+import stuffplotter.UI.TopRightPanel;
 import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.google.api.gwt.client.GoogleApiRequestTransport;
+import com.google.api.gwt.client.OAuth2Login;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.api.gwt.services.calendar.shared.model.CalendarList;
+import com.google.api.gwt.services.calendar.shared.model.Event;
+import com.google.api.gwt.services.calendar.shared.model.Events;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -27,6 +38,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -91,6 +103,7 @@ public class Leviathan implements EntryPoint
 		map.setSize("500px", "500px");
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
+		map.setGoogleBarEnabled(true);
 		
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
@@ -186,7 +199,7 @@ public class Leviathan implements EntryPoint
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				AvailabilitySubmitter availSubmitter = new AvailabilitySubmitter();
+				AvailabilitySubmitterDialogBox availSubmitter = new AvailabilitySubmitterDialogBox();
 				availSubmitter.show();
 			}
 		});
@@ -213,9 +226,58 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
-		com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
-		ListRequest calRequest = testCalendar.events().list(Window.prompt("Input Email Address", "example@example.com"));
-		Window.alert(calRequest.toString());
+		// test code to read from user's Google Calendar
+		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
+		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
+		OAuth2Login.get().authorize("933841708791.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+		{
+
+			@Override
+			public void onFailure(Exception reason) {
+				// TODO Auto-generated method stub
+				Window.alert(reason.getMessage());				
+			}
+
+			@Override
+			public void onSuccess(Void result)
+			{
+				Window.alert("Authorized");
+				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
+				{
+					@Override
+					public void onSuccess(CalendarList response) 
+					{
+						String calendarID = response.getItems().get(0).getId();
+						ListRequest calRequest = testCalendar.events().list(calendarID);
+						calRequest.fire(new Receiver<Events>()
+						{
+							@Override
+							public void onSuccess(Events response)
+							{
+								String result = "Events Found: ";
+								List<Event> events = response.getItems();
+								if(events != null)
+								{
+									for(Event event : events)
+									{
+										result += " " + event.getCreated();
+									}
+								}
+								Window.alert(result);
+							}
+						});
+						
+						Window.alert(calRequest.toString());
+					}
+				});
+			}	
+		});
+		
+		// testing user account panel
+		AccountPanel userAccountPanel = new AccountPanel(account);
+		
+		// testing top right panel for logged in user
+		TopRightPanel topRightPanel = new TopRightPanel(account);
 		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
@@ -228,5 +290,7 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
+		RootPanel.get("userAccount").add(userAccountPanel);
+		RootPanel.get("topRightPanel").add(topRightPanel);
 	}
 }

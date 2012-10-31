@@ -3,6 +3,8 @@ package stuffplotter.UI;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.misc.CloseClickHandler;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -21,6 +23,8 @@ public class FriendFinderDialogBox extends DialogBox
 	
 	/**
 	 * Constructor for FriendFinderDialogBox.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public FriendFinderDialogBox()
 	{
@@ -30,6 +34,8 @@ public class FriendFinderDialogBox extends DialogBox
 	
 	/**
 	 * Helper method to initialize the UI for the FriendFinderDialogBox.
+	 * @pre true;
+	 * @post true;
 	 */
 	private void initializeUI()
 	{
@@ -38,6 +44,7 @@ public class FriendFinderDialogBox extends DialogBox
 		HorizontalPanel horPanel = new HorizontalPanel();
 		final TextBox friendInput = new TextBox();
 		Button findFriend = new Button("Find");
+		Button cancelBtn = new Button("Cancel");
 		findFriend.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -45,17 +52,20 @@ public class FriendFinderDialogBox extends DialogBox
 			{
 				userList.removeAllRows();
 				List<String> friends = searchDB(friendInput.getValue());
+				
+				// for loop to populate the FlexTable with the friends
 				for(int i = 0; i < friends.size(); i++)
 				{
 					userList.setText(i, 0, friends.get(i));
-					final int rowToRemove = i;
 					Button friendRequest = new Button("Send Request");
 					friendRequest.addClickHandler(new ClickHandler()
 					{
 						@Override
 						public void onClick(ClickEvent event)
 						{
-							userList.removeRow(rowToRemove);
+							int rowSelected = userList.getCellForEvent(event).getRowIndex();
+							userList.removeRow(rowSelected);
+							// TO DO: Add Friend Request Backend
 						}
 					});
 					userList.setWidget(i, 1, friendRequest);
@@ -63,15 +73,22 @@ public class FriendFinderDialogBox extends DialogBox
 			}
 		});
 		
+		cancelBtn.addClickHandler(new CloseClickHandler(this));
+		
 		horPanel.add(friendInput);
 		horPanel.add(findFriend);
 		vertPanel.add(horPanel);
 		vertPanel.add(userList);
+		vertPanel.add(cancelBtn);
+		this.setText("Find your friends!");
+		this.setGlassEnabled(true);
 		this.add(vertPanel);
 	}
 	
 	/**
 	 * Helper method to search the database for a user containing the given name.
+	 * @pre friendName != null;
+	 * @post true;
 	 * @param friendName - the name to search for.
 	 * @return List<String> of the user(s) containing the provided name.
 	 */

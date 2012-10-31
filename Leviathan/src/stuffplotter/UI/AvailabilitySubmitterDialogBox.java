@@ -4,23 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.misc.CloseClickHandler;
+import stuffplotter.shared.DayContainer;
+import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to make the window for submitting availabilities for an event.
  */
-public class AvailabilitySubmitter extends DialogBox {
+public class AvailabilitySubmitterDialogBox extends DialogBox {
 
 	// vertical panel to hold all the components in top-down order
 	final private VerticalPanel vertPanel = new VerticalPanel();
@@ -29,8 +30,10 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
-	public AvailabilitySubmitter()
+	public AvailabilitySubmitterDialogBox()
 	{
 		super();
 		initializeWindow();
@@ -38,18 +41,21 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Method to retrieve the submission submitted by the user.
+	 * @pre true;
+	 * @post true;
 	 * @return the submissions of the user.
 	 */
-	public List<Integer> retrieveSubmissions()
+	public List<MonthContainer> retrieveSubmissions()
 	{
-		List<Integer> selectedValues = new ArrayList<Integer>();
+		List<MonthContainer> selectedValues = new ArrayList<MonthContainer>();
 		
+		// for loop to get the submission information from the TimeSheetPanel
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
 		{
 			Widget childWidget = this.horPanel.getWidget(i); 
-			if(childWidget instanceof MonthPanel)
+			if(childWidget instanceof TimeSheetPanel)
 			{
-				selectedValues.addAll(((MonthPanel) childWidget).retrieveSubmission());
+				selectedValues.addAll(((TimeSheetPanel) childWidget).retrieveSubmission());
 			}
 		}
 		
@@ -58,17 +64,18 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the AvailabilitySubmitter.
+	 * @pre true;
+	 * @post true;
 	 */
 	private void initializeWindow()
 	{
-		int[] testTimes = {0, 3, 5, 23};
-		
+		// TO DO: Remove hard coded values and feed values from database
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
 		int[] days = {2};
 		int[] days2 = {6, 8};
-		timeSheet.addDay(Month.OCTOBER, days);
-		timeSheet.addDay(Month.OCTOBER, days2);
-		timeSheet.addDay(Month.NOVEMBER, days2);
+		timeSheet.addDay(Month.OCTOBER, "2012", days);
+		timeSheet.addDay(Month.OCTOBER, "2012", days2);
+		timeSheet.addDay(Month.NOVEMBER, "2012", days2);
 		
 		horPanel.add(timeSheet);
 		vertPanel.add(horPanel);
@@ -84,6 +91,8 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the submit button for the window.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to add the submit button to.
 	 */
 	private void initializeSubmitBtn(Panel panel)
@@ -94,12 +103,28 @@ public class AvailabilitySubmitter extends DialogBox {
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				List<Integer> selectedValues = retrieveSubmissions();
+				List<MonthContainer> selectedValues = retrieveSubmissions();
 				String result = "";
-				for(Integer value : selectedValues)
+				// temporary for each loop to help display selected intervals
+				for(MonthContainer value : selectedValues)
 				{
-					result += "Selected: " + value + " ";
+					String month = value.getMonth().displayName();
+					String year = value.getYear();
+					result += "Selected: " + month + " " + year + " ";
+					List<DayContainer> days = value.getDays();
+					for(DayContainer day : days)
+					{
+						String dayValue = day.getDay();
+						result += "Day " + dayValue + "-> ";
+						List<Integer> timeSlots = day.getTimeSlots();
+						for(Integer slot : timeSlots)
+						{
+							result += slot + " ";
+						}
+					}
+					
 				}
+				
 				hide();
 				Window.alert(result);
 			}
@@ -109,18 +134,14 @@ public class AvailabilitySubmitter extends DialogBox {
 	
 	/**
 	 * Helper method to initialize the cancel button for the window.
+	 * @pre panel != null;
+	 * @post true;
 	 * @param panel - the panel to add the close button to.
 	 */
 	private void intializeCancelBtn(Panel panel)
 	{
 		Button cancelBtn = new Button("Cancel");
-		cancelBtn.addClickHandler(new ClickHandler() 
-		{
-			@Override
-			public void onClick(ClickEvent event) {
-				hide();
-			}
-		});
+		cancelBtn.addClickHandler(new CloseClickHandler(this));
 		panel.add(cancelBtn);
 	}
 }
