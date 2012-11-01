@@ -15,4 +15,5 @@ public interface AccountService extends RemoteService {
 	Account login(String requestUri);
 	void addFriend(Account acc, String friend);
 	List<String> getFriends(Account acc);
+	Account getAccount(String userId);
 }
