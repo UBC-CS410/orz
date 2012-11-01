@@ -6,6 +6,7 @@ import java.util.List;
 import stuffplotter.UI.AccountPanel;
 import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
+import stuffplotter.UI.EventCreationPager;
 import stuffplotter.UI.EventLocationSearchPanel;
 import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.UI.TopRightPanel;
@@ -110,7 +111,9 @@ public class Leviathan implements EntryPoint
 		
 		// testing search panel for map
 		EventLocationSearchPanel eventLocationPanel = new EventLocationSearchPanel();
+		eventLocationPanel.hide();
 		eventLocationPanel.setPopupPosition(map.getAbsoluteLeft(), 100);
+		eventLocationPanel.show();
 		
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
@@ -281,6 +284,9 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
+		// paging panel
+		EventCreationPager pager = new EventCreationPager();
+		
 		// testing user account panel
 		AccountPanel userAccountPanel = new AccountPanel(account);
 		
@@ -300,6 +306,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("userAccount").add(userAccountPanel);
 		RootPanel.get("topRightPanel").add(topRightPanel);
-		//RootPanel.get("eventLocSearchPanel").add(eventLocationPanel);
+		RootPanel.get("pager").add(pager);
 	}
 }
