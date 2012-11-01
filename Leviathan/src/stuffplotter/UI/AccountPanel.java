@@ -24,6 +24,7 @@ public class AccountPanel extends SimplePanel
 	 */
 	public AccountPanel(Account userAccount)
 	{
+		super();
 		this.userAccount = userAccount;
 		this.initializeUI();
 	}

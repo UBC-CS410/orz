@@ -24,6 +24,7 @@ public class TopRightPanel extends HorizontalPanel
 	 */
 	public TopRightPanel(Account userAccount)
 	{
+		super();
 		this.userName = userAccount.getUserName();
 		this.logoutLink = new Anchor("Logout", userAccount.getLogout());
 		this.initializeUI();

@@ -6,6 +6,7 @@ import java.util.List;
 import stuffplotter.UI.AccountPanel;
 import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
+import stuffplotter.UI.EventLocationSearchPanel;
 import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.UI.TopRightPanel;
 import stuffplotter.shared.Account;
@@ -28,8 +29,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.maps.client.GoogleBarOptions;
+import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
+import com.google.gwt.maps.client.event.MapDoubleClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -99,11 +103,14 @@ public class Leviathan implements EntryPoint
 		});
 		
 		// testing map stuff
-		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
+		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 12);
 		map.setSize("500px", "500px");
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
-		map.setGoogleBarEnabled(true);
+		
+		// testing search panel for map
+		EventLocationSearchPanel eventLocationPanel = new EventLocationSearchPanel();
+		eventLocationPanel.setPopupPosition(map.getAbsoluteLeft(), 100);
 		
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
@@ -233,7 +240,8 @@ public class Leviathan implements EntryPoint
 		{
 
 			@Override
-			public void onFailure(Exception reason) {
+			public void onFailure(Exception reason)
+			{
 				// TODO Auto-generated method stub
 				Window.alert(reason.getMessage());				
 			}
@@ -292,5 +300,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("userAccount").add(userAccountPanel);
 		RootPanel.get("topRightPanel").add(topRightPanel);
+		//RootPanel.get("eventLocSearchPanel").add(eventLocationPanel);
 	}
 }
