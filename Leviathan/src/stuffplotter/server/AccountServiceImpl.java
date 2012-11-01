@@ -54,4 +54,11 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		return temp.getUserFriends();
 	}
 
+	@Override
+	public Account getAccount(String userId) {
+		return dbstore.fetchAccount(userId);
+	}
+	
+	
+
 }

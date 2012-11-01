@@ -10,4 +10,5 @@ public interface AccountServiceAsync {
 	void login(String requestUri, AsyncCallback<Account> callback);
 	void addFriend(Account acc, String friend, AsyncCallback<Void> callback);
 	void getFriends(Account acc, AsyncCallback<List<String>> callback);
+	void getAccount(String userID, AsyncCallback<Account> callback);
 }
