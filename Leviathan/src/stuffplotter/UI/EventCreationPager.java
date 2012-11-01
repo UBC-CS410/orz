@@ -3,9 +3,11 @@ package stuffplotter.UI;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -34,11 +36,15 @@ public class EventCreationPager extends DeckPanel
 		page1Btns.add(nextBtn);
 		page1Btns.add(cancelBtn);
 		page1.add(new Label("Page 1"));
+		page1.add(new CheckBox());
+		page1.add(new TextBox());
 		page1.add(page1Btns);
 		
 		page2Btns.add(backBtn);
 		page2Btns.add(cancelBtn);
 		page2.add(new Label("Page 2"));
+		page2.add(new CheckBox());
+		page2.add(new TextBox());
 		page2.add(page2Btns);
 		this.add(page1);
 		this.add(page2);

@@ -252,7 +252,6 @@ public class Leviathan implements EntryPoint
 			@Override
 			public void onSuccess(Void result)
 			{
-				Window.alert("Authorized");
 				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
 				{
 					@Override
@@ -277,8 +276,6 @@ public class Leviathan implements EntryPoint
 								Window.alert(result);
 							}
 						});
-						
-						Window.alert(calRequest.toString());
 					}
 				});
 			}	
