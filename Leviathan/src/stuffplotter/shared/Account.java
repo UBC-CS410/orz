@@ -257,6 +257,15 @@ public class Account implements Serializable {
 	}
 	
 	/**
+	 * This adds the pending user to thier pending list.
+	 * @param pendingUser
+	 * @return
+	 */
+	public boolean addPendingRequest(String pendingUser){
+		return this.pendingFriends.add(pendingUser);
+	}
+	
+	/**
 	 * This moves user from the pending list into the friend list
 	 * 
 	 * @param pendingUser The pending user that will be accepted as a friend

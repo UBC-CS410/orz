@@ -42,6 +42,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
@@ -120,76 +121,16 @@ public class Leviathan implements EntryPoint
 
 		VerticalPanel lvlView = new VerticalPanel();
 		final Button addExpBtn = new Button("Up Vote");
-		final Button addfriend = new Button("Add Friend");
-		final Button getfriends = new Button("Get Friends");
+
 		final Label lvlLabel = new Label("Level: 1");
 		final Label expLabel = new Label("Experience: 0");
 		
 		lvlView.add(lvlLabel);
 		lvlView.add(expLabel);
 		lvlView.add(addExpBtn);
-		lvlView.add(addfriend);
-		lvlView.add(getfriends);
+
+	
 		
-		addfriend.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event) {
-				AccountServiceAsync accountService = GWT.create(AccountService.class);
-				friendCount++;
-				final String testFriend = "TestFriend_"+friendCount;
-				account.addUserFriend(testFriend);
-				accountService.addFriend(account, testFriend, new AsyncCallback<Void>(){
-
-					@Override
-					public void onFailure(Throwable caught) 
-					{
-						Window.alert("Failed");
-					}
-
-					@Override
-					public void onSuccess(Void result) 
-					{
-						Window.alert("Friend: "+testFriend+" has been added");
-					}
-					
-				});
-				
-			}
-			
-		});
-		
-		getfriends.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event) {
-				AccountServiceAsync accountService = GWT.create(AccountService.class);
-				accountService.getFriends(account, new AsyncCallback<List<String>>(){
-
-					@Override
-					public void onFailure(Throwable caught) {
-					Window.alert("Failure");
-						
-					}
-
-					@Override
-					public void onSuccess(List<String> result) {
-						String test = "";
-						for (int i=0; i<result.size();i++){
-							test = test + result.get(i) + "/n";
-						}
-						
-						Window.alert(test);
-						
-					}
-					
-				});
-				
-			}
-			
-		});
 		
 		
 		addExpBtn.addClickHandler(new ClickHandler()
@@ -226,6 +167,82 @@ public class Leviathan implements EntryPoint
 		});
 
 		final Button findFriends = new Button("Find Friends");
+		
+		
+		//Testing for adding friends and accepting
+		final TextBox testInput = new TextBox();
+		final Button addFriends = new Button("Add Friends");
+		
+		addFriends.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				
+				AccountServiceAsync accountService = GWT.create(AccountService.class);
+				accountService.addFriend(account, testInput.getText(), new AsyncCallback<Void>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Failure");
+						
+					}
+
+					@Override
+					public void onSuccess(Void result) {
+						Window.alert("Friend Request to "+testInput.getText()+" has been added.");
+						
+					}
+					
+				});
+				
+			}
+			
+		}
+		);
+		
+		final Button getPending = new Button("See Requests");
+		getPending.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				
+				AccountServiceAsync accountService = GWT.create(AccountService.class);
+				accountService.getPendingFriends(account, new  AsyncCallback<List<String>>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Failure");
+						
+					}
+
+					@Override
+					public void onSuccess(List<String> result) {
+						String pending = "";
+						for(String user : result){
+							pending = pending + user + "\n";
+						}
+						
+						Window.alert(pending);
+						
+					}
+					
+				});
+				
+				
+				
+			}
+			
+		}
+		);
+		
+		
+		//END OF TEST
+		
+
 		findFriends.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -233,6 +250,8 @@ public class Leviathan implements EntryPoint
 			{
 				FriendFinderDialogBox friendDialog = new FriendFinderDialogBox();
 				friendDialog.show();
+				
+				
 			}	
 		});
 		
@@ -301,6 +320,9 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
+		RootPanel.get("friendFinder").add(testInput);
+		RootPanel.get("friendFinder").add(addFriends);
+		RootPanel.get("friendFinder").add(getPending);
 		RootPanel.get("userAccount").add(userAccountPanel);
 		RootPanel.get("topRightPanel").add(topRightPanel);
 		RootPanel.get("pager").add(pager);

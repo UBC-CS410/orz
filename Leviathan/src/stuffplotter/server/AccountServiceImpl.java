@@ -44,7 +44,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	@Override
 	public void addFriend(Account acc, String friend) {
 		Account temp = dbstore.fetchAccount(acc.getUserId());
-		temp.addUserFriend(friend);
+		temp.addPendingRequest(friend);
 		dbstore.store(temp);
 	}
 
@@ -57,6 +57,12 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	@Override
 	public Account getAccount(String userId) {
 		return dbstore.fetchAccount(userId);
+	}
+
+	@Override
+	public List<String> getPendingFriends(Account acc) {
+		Account temp = dbstore.fetchAccount(acc.getUserId());
+		return temp.getPendingFriends();
 	}
 	
 	
