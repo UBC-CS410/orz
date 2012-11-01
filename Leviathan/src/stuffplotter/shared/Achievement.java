@@ -6,6 +6,7 @@ public enum Achievement {
     COMPLETE_FIRST_EVENT("Hang over"), 
     FULL_EVENT_ATTENDANCE("Full house!");
     
+    private int achId;
 	private String display;
 
     /**
@@ -18,5 +19,6 @@ public enum Achievement {
             this.display = pStr;
     }
 
+    
 
 }
