@@ -33,6 +33,7 @@ public class Account implements Serializable {
 	
 	/* Social information */
 	private List<String> userFriends = new ArrayList<String>();
+	private List<String> pendingFriends = new ArrayList<String>();
 	private List<Long> userEvents = new ArrayList<Long>();
 	
 	/* Record information */
@@ -245,6 +246,40 @@ public class Account implements Serializable {
 	 */
 	public void setUserAchievements(List<Achievement> userAchievements) {
 		this.userAchievements = userAchievements;
+	}
+	
+	/**
+	 * Gets the pending list of friends
+	 * @return returns the pending list of friends
+	 */
+	public List<String> getPendingFriends(){
+		return this.pendingFriends;
+	}
+	
+	/**
+	 * This moves user from the pending list into the friend list
+	 * 
+	 * @param pendingUser The pending user that will be accepted as a friend
+	 * @return returns true if transfer of friends was successful
+	 */
+	public boolean acceptFriendRequest(String pendingUser){
+		if(this.pendingFriends.remove(pendingUser)){
+			this.userFriends.add(pendingUser);
+			return true;
+		}else{
+			return false;
+		}	
+	
+	}
+	
+	/**
+	 * This denies the friend request
+	 * 
+	 * @param pendingUser The pending user that will be denied as a friend
+	 * @return returns true if successful
+	 */
+	public boolean denyFriendRequest(String pendingUser){
+		return this.pendingFriends.remove(pendingUser);
 	}
 	
 	
