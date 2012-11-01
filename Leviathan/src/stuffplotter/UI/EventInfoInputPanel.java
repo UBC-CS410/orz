@@ -7,14 +7,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Class for displaying the input view for creating a new event.
  */
-public class EventInfoInput extends VerticalPanel
+public class EventInfoInputPanel extends VerticalPanel
 {
 	/**
 	 * Constructor for the EventInfoInput class.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventInfoInput()
+	public EventInfoInputPanel()
 	{
 		super();
 		addFields();
@@ -34,6 +34,8 @@ public class EventInfoInput extends VerticalPanel
 		this.add(new Label("Location:"));
 		this.add(new TextBox());
 		this.add(new Label("Cost:"));
+		this.add(new TextBox());
+		this.add(new Label("Duration:"));
 		this.add(new TextBox());
 	}
 }

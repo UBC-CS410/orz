@@ -7,56 +7,44 @@ import stuffplotter.UI.MonthPanel.Month;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.control.LargeMapControl3D;
-import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 /**
- * Class to swap between a map and calendar view.
+ * Class to display a DatePicker with TimeSheetPanel to select dates for an event.
  */
-public class MapCalendarView extends SimplePanel
+public class EventDateSelectionPanel extends SimplePanel
 {
-	final private String mapCalWidth = "250px";
-	final private String mapCalHeight = "250px";
 	private TimeSheetPanel timeSheet;
 	
 	/**
-	 * Constructor for MapCalendarView.
+	 * Constructor for EventDateSelectionPanel.
 	 * @pre timeSheetPanel != null;
 	 * @post this.isVisible() == true;
 	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
-	public MapCalendarView(TimeSheetPanel timeSheetPanel)
+	public EventDateSelectionPanel(TimeSheetPanel timeSheetPanel)
 	{
 		super();
 		this.initializeUI(timeSheetPanel);
 	}
 	
 	/**
-	 * Helper method to add the panels to the MapCalendarView.
+	 * Helper method to add the panels to the EventDateSelectionPanel.
 	 * @pre timeSheetPanel != null;
 	 * @post true;
 	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
 	private void initializeUI(TimeSheetPanel timeSheetPanel)
 	{
-		timeSheet = timeSheetPanel;
-		TabPanel mapCalHolder = new TabPanel();
-		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
-		map.setSize(mapCalWidth, mapCalHeight);
-		map.setScrollWheelZoomEnabled(true);
-		map.addControl(new LargeMapControl3D());
-		mapCalHolder.add(map, new Label("Map"));
+		this.timeSheet = timeSheetPanel;
+		HorizontalPanel horPanel = new HorizontalPanel();
 		DatePicker calendar = new DatePicker();
-		calendar.setSize(mapCalWidth, mapCalHeight);
-		this.initializeCalendarChangeHandler(calendar);
-		mapCalHolder.add(calendar, new Label("Calendar"));
-		mapCalHolder.selectTab(1);
-		this.add(mapCalHolder);
+		this.initCalChangeHandler(calendar);
+		horPanel.add(calendar);
+		horPanel.add(timeSheetPanel);
+		this.add(horPanel);
 	}
 	
 	/**
@@ -64,8 +52,9 @@ public class MapCalendarView extends SimplePanel
 	 * @pre calendar != null;
 	 * @post true;
 	 * @param calendar - the calendar to add the change handler to.
+	 * @param timeSheet - the time sheet to add selected dates to.
 	 */
-	private void initializeCalendarChangeHandler(DatePicker calendar)
+	private void initCalChangeHandler(DatePicker calendar)
 	{
 		calendar.addValueChangeHandler(new ValueChangeHandler<Date>()
 		{
@@ -83,3 +72,4 @@ public class MapCalendarView extends SimplePanel
 		});
 	}
 }
+

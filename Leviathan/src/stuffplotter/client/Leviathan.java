@@ -6,7 +6,6 @@ import java.util.List;
 import stuffplotter.UI.AccountPanel;
 import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
-import stuffplotter.UI.EventCreationPager;
 import stuffplotter.UI.EventLocationSearchPanel;
 import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.UI.TopRightPanel;
@@ -30,11 +29,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.maps.client.GoogleBarOptions;
-import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
-import com.google.gwt.maps.client.event.MapDoubleClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -221,7 +217,6 @@ public class Leviathan implements EntryPoint
 			public void onClick(ClickEvent event)
 			{
 				EventCreationDialogBox eventCreation = new EventCreationDialogBox();
-				eventCreation.show();
 			}
 		});
 
@@ -281,9 +276,6 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
-		// paging panel
-		EventCreationPager pager = new EventCreationPager();
-		
 		// testing user account panel
 		AccountPanel userAccountPanel = new AccountPanel(account);
 		
@@ -303,6 +295,5 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("userAccount").add(userAccountPanel);
 		RootPanel.get("topRightPanel").add(topRightPanel);
-		RootPanel.get("pager").add(pager);
 	}
 }
