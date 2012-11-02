@@ -44,8 +44,12 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	@Override
 	public void addFriend(Account acc, String friend) {
 		Account temp = dbstore.fetchAccount(friend);
-		temp.addPendingRequest(acc.getUserName());
-		dbstore.store(temp);
+		if(!temp.getPendingFriends().contains(acc.getUserName()))
+		{
+			temp.addPendingRequest(acc.getUserName());
+			dbstore.store(temp);	
+		}
+		
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		Account temp = dbstore.fetchAccount(acc.getUserName());
 		temp.confirmFriendReq(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
-		newFriend.addUserFriend(acc.getUserName());
+		newFriend.confirmFriendReq(acc.getUserName());
 		dbstore.store(temp);
 		dbstore.store(newFriend);
 		
