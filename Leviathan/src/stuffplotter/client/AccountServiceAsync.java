@@ -13,4 +13,6 @@ public interface AccountServiceAsync {
 	void getAccount(String userId, AsyncCallback<Account> callback);
 	void getPendingFriends(Account acc, AsyncCallback<List<String>> callback);
 	void confirmFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
+	void removeFriend(Account acc, String friend, AsyncCallback<Void> callback);
+	void declineFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
 }

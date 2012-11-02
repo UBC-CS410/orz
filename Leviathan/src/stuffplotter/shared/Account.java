@@ -18,8 +18,6 @@ import com.googlecode.objectify.annotation.Entity;
 
 @Entity
 public class Account implements Serializable {
-	
-	private String userId;
 
 	/* Session information */
 	@Transient private boolean userSession;
@@ -59,8 +57,7 @@ public class Account implements Serializable {
 	 * @param pName 	google account nickname
 	 * @param pEmail	google account email
 	 */
-	public Account(String pId, String pName, String pEmail) {
-		this.userId = pId;
+	public Account(String pName, String pEmail) {
 		this.userName = pName;
 		this.userEmail = pEmail;
 
@@ -122,12 +119,6 @@ public class Account implements Serializable {
 		userLogout = pUri;
 	}
 
-	/**
-	 * @return the userId
-	 */
-	public String getUserId() {
-		return userId;
-	}
 
 	/**
 	 * @return the userName

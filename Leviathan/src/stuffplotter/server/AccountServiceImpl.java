@@ -27,7 +27,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	      try {
 	    	  account = dbstore.fetchAccount(user.getNickname());
 	      } catch (NotFoundException nfe) {
-		      account = new Account(user.getUserId(), user.getNickname(), user.getEmail());
+		      account = new Account(user.getNickname(), user.getEmail());
 		      dbstore.store(account); // register account
 	      } finally {
 		      account.setSession(true);
@@ -75,6 +75,27 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		temp.confirmFriendReq(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.confirmFriendReq(acc.getUserName());
+		dbstore.store(temp);
+		dbstore.store(newFriend);
+	}
+
+	@Override
+	public void removeFriend(Account acc, String friend) {
+		Account temp = dbstore.fetchAccount(acc.getUserName());
+		temp.getUserFriends().remove(friend);
+		Account newFriend = dbstore.fetchAccount(friend);
+		newFriend.getUserFriends().remove(acc.getUserName());
+		dbstore.store(temp);
+		dbstore.store(newFriend);
+		
+	}
+
+	@Override
+	public void declineFriendReq(Account acc, String friend) {
+		Account temp = dbstore.fetchAccount(acc.getUserName());
+		temp.getPendingFriends().remove(friend);
+		Account newFriend = dbstore.fetchAccount(friend);
+		newFriend.getPendingFriends().remove(acc.getUserName());
 		dbstore.store(temp);
 		dbstore.store(newFriend);
 		
