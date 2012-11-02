@@ -234,6 +234,34 @@ public class Leviathan implements EntryPoint
 		}
 		);
 		
+		final Button acceptPending = new Button("Accept Request");
+		
+		acceptPending.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AccountServiceAsync accountService = GWT.create(AccountService.class);
+				accountService.confirmFriendReq(account, testInput.getText(), new  AsyncCallback<Void>()
+						{
+
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert("Failure");
+								
+							}
+
+							@Override
+							public void onSuccess(Void result) {
+								Window.alert(testInput.getText()+" has been successfully added in your friends list.");
+								
+							}
+						
+						});
+				
+			}
+			
+		});
 		
 		//END OF TEST
 		
@@ -315,6 +343,7 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("friendFinder").add(testInput);
 		RootPanel.get("friendFinder").add(addFriends);
 		RootPanel.get("friendFinder").add(getPending);
+		RootPanel.get("friendFinder").add(acceptPending);
 		RootPanel.get("userAccount").add(userAccountPanel);
 		RootPanel.get("topRightPanel").add(topRightPanel);
 	}

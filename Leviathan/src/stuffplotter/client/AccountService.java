@@ -17,4 +17,5 @@ public interface AccountService extends RemoteService {
 	List<String> getFriends(Account acc);
 	List<String> getPendingFriends(Account acc);
 	Account getAccount(String userId);
+	void confirmFriendReq(Account acc, String friend);
 }
