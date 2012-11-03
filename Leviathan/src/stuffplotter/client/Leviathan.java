@@ -106,12 +106,6 @@ public class Leviathan implements EntryPoint
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
 		
-		// testing search panel for map
-		EventLocationSearchPanel eventLocationPanel = new EventLocationSearchPanel();
-		eventLocationPanel.hide();
-		eventLocationPanel.setPopupPosition(map.getAbsoluteLeft(), 100);
-		eventLocationPanel.show();
-		
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
 
