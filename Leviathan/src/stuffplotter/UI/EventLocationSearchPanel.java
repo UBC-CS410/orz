@@ -8,6 +8,7 @@ import com.google.gwt.maps.client.geocode.Geocoder;
 import com.google.gwt.maps.client.geocode.LocationCallback;
 import com.google.gwt.maps.client.geocode.Placemark;
 import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -178,7 +179,7 @@ public class EventLocationSearchPanel extends VerticalPanel
 	{
 		if(hasPreviousLocation())
 		{
-			this.currentLocationIndex++;
+			this.currentLocationIndex--;
 			this.updateUI(this.currentLocationIndex);
 			if(!hasPreviousLocation())
 			{
@@ -207,7 +208,7 @@ public class EventLocationSearchPanel extends VerticalPanel
 	{
 		if(hasNextLocation())
 		{
-			this.currentLocationIndex--;
+			this.currentLocationIndex++;
 			this.updateUI(this.currentLocationIndex);
 			if(!hasNextLocation())
 			{
