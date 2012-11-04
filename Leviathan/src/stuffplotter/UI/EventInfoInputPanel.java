@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class EventInfoInputPanel extends VerticalPanel
 {
+	private TextBox location;
+	
 	/**
 	 * Constructor for the EventInfoInput class.
 	 * @pre true;
@@ -32,10 +34,22 @@ public class EventInfoInputPanel extends VerticalPanel
 		this.add(new Label("Event Name:"));
 		this.add(new TextBox());
 		this.add(new Label("Location:"));
-		this.add(new TextBox());
+		this.location = new TextBox();
+		this.add(location);
 		this.add(new Label("Cost:"));
 		this.add(new TextBox());
 		this.add(new Label("Duration:"));
 		this.add(new TextBox());
+	}
+	
+	/**
+	 * Method to set the text in the input box for the location value.
+	 * @pre text != null;
+	 * @post this.location.getText().equals(text);
+	 * @param text
+	 */
+	public void setLocationText(String text)
+	{
+		this.location.setText(text);
 	}
 }
