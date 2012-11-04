@@ -1,6 +1,5 @@
 package stuffplotter.UI;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
@@ -66,7 +65,7 @@ public class EventCreationPagedPanel extends DeckPanel
 	 */
 	public boolean hasNextPage()
 	{
-		return currentPage < this.getChildren().size() - 1;
+		return currentPage < this.getChildren().size();
 	}
 	
 	/**
