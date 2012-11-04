@@ -5,6 +5,7 @@ import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Class to display a map with search box to find the location for an event.
@@ -37,12 +38,15 @@ public class EventLocationMapPanel extends SimplePanel
 	{
 		this.eventInfoInput = eventInfoInputPanel;
 		HorizontalPanel infoMapHolder = new HorizontalPanel();
+		VerticalPanel mapSearchHolder = new VerticalPanel();
 		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
 		map.setSize(mapWidth, mapHeight);
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
+		mapSearchHolder.add(map);
+		mapSearchHolder.add(new EventLocationSearchPanel(map, eventInfoInputPanel));
 		infoMapHolder.add(eventInfoInputPanel);
-		infoMapHolder.add(map);
+		infoMapHolder.add(mapSearchHolder);
 		this.add(infoMapHolder);
 	}
 }
