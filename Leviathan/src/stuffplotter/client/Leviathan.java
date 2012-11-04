@@ -99,7 +99,19 @@ public class Leviathan implements EntryPoint
 				Window.alert(Integer.toString(event.getTarget().getDate()));
 			}
 		});
-				
+		
+		// testing map stuff
+		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 12);
+		map.setSize("500px", "500px");
+		map.setScrollWheelZoomEnabled(true);
+		map.addControl(new LargeMapControl3D());
+		
+		// testing search panel for map
+		EventLocationSearchPanel eventLocationPanel = new EventLocationSearchPanel();
+		eventLocationPanel.hide();
+		eventLocationPanel.setPopupPosition(map.getAbsoluteLeft(), 100);
+		eventLocationPanel.show();
+		
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
 
@@ -222,34 +234,6 @@ public class Leviathan implements EntryPoint
 		}
 		);
 		
-		final Button acceptPending = new Button("Accept Request");
-		
-		acceptPending.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event) {
-				AccountServiceAsync accountService = GWT.create(AccountService.class);
-				accountService.confirmFriendReq(account, testInput.getText(), new  AsyncCallback<Void>()
-						{
-
-							@Override
-							public void onFailure(Throwable caught) {
-								Window.alert("Failure");
-								
-							}
-
-							@Override
-							public void onSuccess(Void result) {
-								Window.alert(testInput.getText()+" has been successfully added in your friends list.");
-								
-							}
-						
-						});
-				
-			}
-			
-		});
 		
 		//END OF TEST
 		
@@ -265,7 +249,7 @@ public class Leviathan implements EntryPoint
 				
 			}	
 		});
-/*		
+		
 		// test code to read from user's Google Calendar
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
@@ -310,7 +294,7 @@ public class Leviathan implements EntryPoint
 				});
 			}	
 		});
-	*/	
+		
 		// testing user account panel
 		AccountPanel userAccountPanel = new AccountPanel(account);
 		
@@ -319,7 +303,10 @@ public class Leviathan implements EntryPoint
 		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
+		calMapHolder.add(map);
 		
+		// Add the nameField and sendButton to the RootPanel
+		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);
@@ -328,7 +315,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("friendFinder").add(testInput);
 		RootPanel.get("friendFinder").add(addFriends);
 		RootPanel.get("friendFinder").add(getPending);
-		RootPanel.get("friendFinder").add(acceptPending);
 		RootPanel.get("userAccount").add(userAccountPanel);
 		RootPanel.get("topRightPanel").add(topRightPanel);
 	}
