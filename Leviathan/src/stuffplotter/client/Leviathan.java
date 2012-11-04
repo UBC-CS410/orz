@@ -265,7 +265,7 @@ public class Leviathan implements EntryPoint
 				
 			}	
 		});
-		
+/*		
 		// test code to read from user's Google Calendar
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
@@ -310,7 +310,7 @@ public class Leviathan implements EntryPoint
 				});
 			}	
 		});
-		
+	*/	
 		// testing user account panel
 		AccountPanel userAccountPanel = new AccountPanel(account);
 		
