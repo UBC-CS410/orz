@@ -5,14 +5,17 @@ import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Class to display a map with search box to find the location for an event.
  */
 public class EventLocationMapPanel extends SimplePanel
 {
-	final private String mapWidth = "250px";
-	final private String mapHeight = "250px";
+	final private LatLng vancouver = LatLng.newInstance(49.264448, -123.185844);
+	final private int zoomLevel = 12;
+	final private String mapWidth = "500px";
+	final private String mapHeight = "300px";
 	private EventInfoInputPanel eventInfoInput;
 	
 	/**
@@ -37,12 +40,15 @@ public class EventLocationMapPanel extends SimplePanel
 	{
 		this.eventInfoInput = eventInfoInputPanel;
 		HorizontalPanel infoMapHolder = new HorizontalPanel();
-		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
+		VerticalPanel mapSearchHolder = new VerticalPanel();
+		MapWidget map = new MapWidget(vancouver, zoomLevel);
 		map.setSize(mapWidth, mapHeight);
 		map.setScrollWheelZoomEnabled(true);
 		map.addControl(new LargeMapControl3D());
+		mapSearchHolder.add(map);
+		mapSearchHolder.add(new EventLocationSearchPanel(map, eventInfoInputPanel));
 		infoMapHolder.add(eventInfoInputPanel);
-		infoMapHolder.add(map);
+		infoMapHolder.add(mapSearchHolder);
 		this.add(infoMapHolder);
 	}
 }

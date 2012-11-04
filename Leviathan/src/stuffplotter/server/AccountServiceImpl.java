@@ -25,9 +25,9 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    if (user != null) {
 	    	
 	      try {
-	    	  account = dbstore.fetchAccount(user.getUserId());
+	    	  account = dbstore.fetchAccount(user.getNickname());
 	      } catch (NotFoundException nfe) {
-		      account = new Account(user.getUserId(), user.getNickname(), user.getEmail());
+		      account = new Account(user.getNickname(), user.getEmail());
 		      dbstore.store(account); // register account
 	      } finally {
 		      account.setSession(true);
@@ -43,14 +43,18 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 
 	@Override
 	public void addFriend(Account acc, String friend) {
-		Account temp = dbstore.fetchAccount(acc.getUserId());
-		temp.addPendingRequest(friend);
-		dbstore.store(temp);
+		Account temp = dbstore.fetchAccount(friend);
+		if(!temp.getPendingFriends().contains(acc.getUserName()))
+		{
+			temp.addPendingRequest(acc.getUserName());
+			dbstore.store(temp);	
+		}
+		
 	}
 
 	@Override
 	public List<String> getFriends(Account acc) {
-		Account temp = dbstore.fetchAccount(acc.getUserId());
+		Account temp = dbstore.fetchAccount(acc.getUserName());
 		return temp.getUserFriends();
 	}
 
@@ -61,8 +65,40 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 
 	@Override
 	public List<String> getPendingFriends(Account acc) {
-		Account temp = dbstore.fetchAccount(acc.getUserId());
+		Account temp = dbstore.fetchAccount(acc.getUserName());
 		return temp.getPendingFriends();
+	}
+
+	@Override
+	public void confirmFriendReq(Account acc, String friend) {
+		Account temp = dbstore.fetchAccount(acc.getUserName());
+		temp.confirmFriendReq(friend);
+		Account newFriend = dbstore.fetchAccount(friend);
+		newFriend.confirmFriendReq(acc.getUserName());
+		dbstore.store(temp);
+		dbstore.store(newFriend);
+	}
+
+	@Override
+	public void removeFriend(Account acc, String friend) {
+		Account temp = dbstore.fetchAccount(acc.getUserName());
+		temp.getUserFriends().remove(friend);
+		Account newFriend = dbstore.fetchAccount(friend);
+		newFriend.getUserFriends().remove(acc.getUserName());
+		dbstore.store(temp);
+		dbstore.store(newFriend);
+		
+	}
+
+	@Override
+	public void declineFriendReq(Account acc, String friend) {
+		Account temp = dbstore.fetchAccount(acc.getUserName());
+		temp.getPendingFriends().remove(friend);
+		Account newFriend = dbstore.fetchAccount(friend);
+		newFriend.getPendingFriends().remove(acc.getUserName());
+		dbstore.store(temp);
+		dbstore.store(newFriend);
+		
 	}
 	
 	
