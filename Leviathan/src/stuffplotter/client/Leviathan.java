@@ -99,13 +99,7 @@ public class Leviathan implements EntryPoint
 				Window.alert(Integer.toString(event.getTarget().getDate()));
 			}
 		});
-		
-		// testing map stuff
-		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 12);
-		map.setSize("500px", "500px");
-		map.setScrollWheelZoomEnabled(true);
-		map.addControl(new LargeMapControl3D());
-		
+				
 		// testing Toy Level System
 		final LevelSystem lvlSys = new LevelSystem();
 
@@ -325,10 +319,7 @@ public class Leviathan implements EntryPoint
 		
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
-		calMapHolder.add(map);
 		
-		// Add the nameField and sendButton to the RootPanel
-		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);

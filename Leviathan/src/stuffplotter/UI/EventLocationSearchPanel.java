@@ -4,29 +4,29 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geocode.Geocoder;
-import com.google.gwt.maps.client.geocode.LatLngCallback;
 import com.google.gwt.maps.client.geocode.LocationCallback;
 import com.google.gwt.maps.client.geocode.Placemark;
-import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Class to display the search panel for the location of an event.
  */
-public class EventLocationSearchPanel extends SimplePanel
+public class EventLocationSearchPanel extends VerticalPanel
 {
 	private MapWidget googleMap;
 	private EventInfoInputPanel eventInfo;
 	private JsArray<Placemark> locationsFound;
+	private Button previousLocation;
+	private Button nextLocation;
+	private Label numOfResults;
+	private int currentLocationIndex;
+	private int totalNumLocations;
 	
 	/**
 	 * Constructor for EventLocationSearchPanel.
@@ -39,15 +39,71 @@ public class EventLocationSearchPanel extends SimplePanel
 		super();
 		this.googleMap = map;
 		this.eventInfo = eventInfo;
-		HorizontalPanel searchElementsHolder = new HorizontalPanel();
+		this.defaultPageResults();
+		this.initializeUI();
+	}
+	
+	/**
+	 * Helper method to generate the UI for the EventLocationSearchPanel.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void initializeUI()
+	{
+		// create top section
+		HorizontalPanel topSearchElementsHolder = new HorizontalPanel();
 		TextBox searchBox = new TextBox();
 		Button searchButton = new Button("Search");
 		this.initializeSearchButton(searchBox, searchButton);
-		searchElementsHolder.add(searchBox);
-		searchElementsHolder.add(searchButton);
-		this.add(searchElementsHolder);
+		topSearchElementsHolder.add(searchBox);
+		topSearchElementsHolder.add(searchButton);
+		
+		// create bottom section
+		HorizontalPanel botSearchElementsHolder = new HorizontalPanel();
+		this.numOfResults = new Label("Type in the location of the event.");
+		this.previousLocation = new Button("Previous");
+		this.nextLocation = new Button("Next");
+		botSearchElementsHolder.add(this.numOfResults);
+		botSearchElementsHolder.add(this.previousLocation);
+		botSearchElementsHolder.add(this.nextLocation);
+		this.initializePagingButtons();
+		
+		// add all the elements to the panel
+		this.add(topSearchElementsHolder);
+		this.add(botSearchElementsHolder);
 	}
-	
+		
+	/**
+	 * Helper method to add clickHandlers to the "Previous" and "Next" buttons
+	 * and disable the buttons initially.
+	 * @pre previousResult != null && nextResult != null;
+	 * @post previous.isEnabled() == false && next.isEnabled() == false;
+	 */
+	private void initializePagingButtons()
+	{
+		this.previousLocation.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				previousLocation();
+				nextLocation.setEnabled(true);
+			}			
+		});
+		
+		this.nextLocation.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				nextLocation();
+				previousLocation.setEnabled(true);
+			}
+		});
+
+		this.disablePagingButtons();
+	}
+
 	/**
 	 * Helper method to add clickHandler to search button.
 	 * @pre searchBox != null && searchButton != null;
@@ -65,36 +121,135 @@ public class EventLocationSearchPanel extends SimplePanel
 			{			
 				LocationCallback callback = new LocationCallback()
 				{
-
 					@Override
 					public void onFailure(int statusCode)
 					{
-						// TODO Auto-generated method stub
-						Window.alert("FAILED!!!");
+						numOfResults.setText("No results found.");
+						defaultPageResults();
+						disablePagingButtons();
 					}
 
 					@Override
 					public void onSuccess(JsArray<Placemark> locations)
 					{
 						locationsFound = locations;
-						eventInfo.setLocationText(locations.get(0).getStreet());
-						Marker location = new Marker(locations.get(0).getPoint());
-						location.addMarkerClickHandler(new MarkerClickHandler()
+						currentLocationIndex = 0;
+						totalNumLocations = locations.length();
+						disablePagingButtons();
+						if(totalNumLocations > 1)
 						{
-							@Override
-							public void onClick(MarkerClickEvent event)
-							{
-								Window.alert(this.toString());
-							}	
-						});
-						googleMap.addOverlay(location);
+							nextLocation.setEnabled(true);
+						}
+						// update location in EventInfoInputPanel, display for
+						// Google Map, and number of results found
+						updateUI(0);
+						numOfResults.setText("Results found: " + locations.length());
 					}
-
 				};
 				
 				Geocoder geocoder = new Geocoder();
 				geocoder.getLocations(searchInput.getText(), callback);
 			}
 		});
+	}
+	
+	/**
+	 * Helper method to update the EventLocationSearchPanel UI after a
+	 * search returned a successful result.
+	 * @pre locationIndex >= 0;
+	 * @post true;
+	 * @param locationIndex - the index of the location to retrieve from
+	 * 						  this.locationsFound
+	 */
+	private void updateUI(int locationIndex)
+	{
+		this.eventInfo.setLocationText(this.locationsFound.get(locationIndex).getAddress());
+		Marker location = new Marker(this.locationsFound.get(locationIndex).getPoint());
+		this.googleMap.addOverlay(location);
+		this.googleMap.panTo(location.getLatLng());
+	}
+	
+	/**
+	 * Helper method to display the previous location result if it exists.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void previousLocation()
+	{
+		if(hasPreviousLocation())
+		{
+			this.currentLocationIndex++;
+			this.updateUI(this.currentLocationIndex);
+			if(!hasPreviousLocation())
+			{
+				this.previousLocation.setEnabled(false);
+			}
+		}
+	}
+	
+	/**
+	 * Helper method to determine if a previous location exists.
+	 * @pre true;
+	 * @post true;
+	 * @return true if a previous location exists, false otherwise.
+	 */
+	private boolean hasPreviousLocation()
+	{
+		return this.currentLocationIndex > 0;
+	}
+	
+	/**
+	 * Helper method to display the next location result if it exists.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void nextLocation()
+	{
+		if(hasNextLocation())
+		{
+			this.currentLocationIndex--;
+			this.updateUI(this.currentLocationIndex);
+			if(!hasNextLocation())
+			{
+				this.nextLocation.setEnabled(false);
+			}
+		}
+	}
+	
+	/**
+	 * Helper method to determine if a next location exists.
+	 * @pre true;
+	 * @post true;
+	 * @return true if a next location exists, false otherwise.
+	 */
+	private boolean hasNextLocation()
+	{
+		return this.currentLocationIndex < this.totalNumLocations - 1;
+	}
+	
+	/**
+	 * Helper method to reset the page results for a location search to an
+	 * empty search.
+	 * @pre true;
+	 * @post locationsFound == null && currentLocationIndex == 0 &&
+	 * 		 totalNumLocations == 0;
+	 */
+	private void defaultPageResults()
+	{
+		locationsFound = null;
+		currentLocationIndex = 0;
+		totalNumLocations = 0;
+	}
+	
+	/**
+	 * Helper method to disable the paging buttons in the panel.
+	 * @pre true;
+	 * @post this.previousLocation.isEnabled() == false &&
+	 * 		 this.nextLocation.isEnabled() == false;
+	 */
+	private void disablePagingButtons()
+	{
+		this.previousLocation.setEnabled(false);
+		this.nextLocation.setEnabled(false);
 	}
 }
