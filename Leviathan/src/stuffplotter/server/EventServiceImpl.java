@@ -5,9 +5,11 @@ import java.util.List;
 
 import stuffplotter.client.EventService;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.DayContainer;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
 import stuffplotter.shared.Scheduler;
+import stuffplotter.shared.Scheduler.Availability;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -45,12 +47,31 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * 
 	 * @post	true
 	 * 
-	 * @param 	eventId			the id of the event
-	 * 			eventTimes		the list of containers containing the proposed times for the event
+	 * @param 	pEventId			the id of the event
+	 * 			pMonthContainers	the list of month containers containing the proposed times for the event
 	 */
 	@Override
-	public void createScheduler(Long pEventId, List<MonthContainer> pEventTimes) {
-		Scheduler scheduler = new Scheduler(pEventId, pEventTimes);
+	public void createScheduler(Long pEventId, List<MonthContainer> pMonthContainers) {
+		Scheduler scheduler = new Scheduler(pEventId);
+		
+		for (MonthContainer mc : pMonthContainers)
+		{
+			for (DayContainer dc : mc.getDays())
+			{
+				for (int i = 0; i < dc.getTimeSlots().size(); i++)
+				{
+					int year = Integer.parseInt(mc.getYear());
+					int month = mc.getMonth().getIndex();
+					int day = Integer.parseInt(dc.getDay());
+					int hour = dc.getTimeSlots().get(i);
+					Date date = new Date(year, month, day, hour, 0);
+					Availability availability = scheduler.new Availability(date);
+					dbstore.store(availability);
+					scheduler.addAvailability(availability);
+				}
+			}
+		}
+		
 		dbstore.store(scheduler);
 	}
 	

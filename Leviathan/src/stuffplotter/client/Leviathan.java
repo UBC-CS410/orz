@@ -168,7 +168,7 @@ public class Leviathan implements EntryPoint
 		
 							@Override
 							public void onSuccess(Event result) {
-								Window.alert("Event" + result.getId() + "created.");
+								Window.alert("Event " + result.getId() + " was created.");
 								testEventId = result.getId();
 							}
 						});
@@ -183,7 +183,7 @@ public class Leviathan implements EntryPoint
 		
 							@Override
 							public void onSuccess(Void result) {
-								Window.alert("Scheduler added");
+								Window.alert("Scheduler was added to dummy event.");
 							}
 						});
 			}

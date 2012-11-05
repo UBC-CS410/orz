@@ -6,6 +6,7 @@ import java.util.List;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Scheduler;
+import stuffplotter.shared.Scheduler.Availability;
 
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
@@ -23,6 +24,7 @@ public class DatabaseStore {
 		ObjectifyService.register(Account.class);
 		ObjectifyService.register(Event.class);
 		ObjectifyService.register(Scheduler.class);
+		ObjectifyService.register(Availability.class);
 	}
 	
 	/**
@@ -58,6 +60,15 @@ public class DatabaseStore {
 	public void store(Scheduler pSch) {
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pSch);
+	}
+	
+	/**
+	 * Stores an Availability to the data store using Objectify
+	 * @param pSch	the Scheduler to be stored
+	 */	
+	public void store(Availability pAvl) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pAvl);
 	}
 	
 	/**

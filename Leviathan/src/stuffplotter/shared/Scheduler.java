@@ -1,6 +1,7 @@
 package stuffplotter.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class Scheduler implements Serializable {
 	
 	@Id private Long id;
 	private Long eventId;
-	private List<Availability> proposedDates;
-	private Date finalDate;
+	private List<Long> eventAvailabilities;
+	private Date eventFinalized;
 	
 	
 	/**
@@ -39,27 +40,38 @@ public class Scheduler implements Serializable {
 	 * 			pMonthContainers	the list of month containers that contains the proposed times for the event
 	 * 
 	 */
-	public Scheduler(Long pEventId, List<MonthContainer> pMonthContainers) {
+	public Scheduler(Long pEventId) {
 		this.eventId = pEventId;
-		
-		/*
-		for(MonthContainer mc : pMonthContainers)
-		{
-			
-		}
-		*/
+	}
+	
+	public void addAvailability(Availability pAvailability) {
+		this.eventAvailabilities.add(pAvailability.getId());
 	}
 	
 	@Entity
-	private class Availability implements Serializable {
+	public class Availability implements Serializable {
 		
 		@Id private Long id;
 		private Date time;
 		private Integer votes;
 		
-		private Availability() {
-			
+		public Availability() {
+
 		}
+		
+		public Availability(Date pDate) {
+			this.time = pDate;
+			this.votes = 0;
+		}
+		
+		public Long getId() {
+			return this.id;
+		}
+		
+		public void incrementVote() {
+			this.votes++;
+		}
+		
 	}	
 
 }

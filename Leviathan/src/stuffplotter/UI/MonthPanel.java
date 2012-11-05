@@ -22,8 +22,26 @@ public class MonthPanel extends VerticalPanel
 	
 	public enum Month
 	{
-		JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER,
-		OCTOBER, NOVEMBER, DECEMBER;
+		JANUARY(0), FEBRUARY(1), MARCH(2), APRIL(3), MAY(4), JUNE(5), JULY(6), AUGUST(7), SEPTEMBER(8),
+		OCTOBER(9), NOVEMBER(10), DECEMBER(11);
+		
+		private int index;
+		
+		/**
+		 * Constructor to bind enum to a 0 based index
+		 * @param pIndex	the index of the month
+		 */
+		private Month(int pIndex) {
+			this.index = pIndex;
+		}
+		
+		/**
+		 * Method to get the index for the given enum
+		 * @return	the index of the Month
+		 */
+		public int getIndex() {
+			return this.index;
+		}
 		
 		/**
 		 * Method to get the display name for the given enum.
