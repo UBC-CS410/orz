@@ -1,5 +1,7 @@
 package stuffplotter.UI;
 
+import java.util.List;
+
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -25,7 +27,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	public EventInfoInputPanel()
 	{
 		super();
-		addFields();
+		this.addFields();
 	}
 	
 	/**
@@ -89,7 +91,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public String getLocation()
 	{
-		return location.getText().trim();
+		return this.location.getText().trim();
 	}
 
 	/**
@@ -100,9 +102,24 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public LatLng getMapCoordinates()
 	{
-		return mapCoordinates;
+		return this.mapCoordinates;
 	}
 
+	/**
+	 * Method to retrieve the coordinates of the event as a 2 element Double[] where the
+	 * first entry is the latitude and the second entry is the longitude. 
+	 * @pre true;
+	 * @post true;
+	 * @return the coordinates of the event in a 2 element Double[].
+	 */
+	public Double[] getMapCoordinatesAsArray()
+	{
+		Double[] coordinates = new Double[2];
+		coordinates[0] = this.mapCoordinates.getLatitude();
+		coordinates[1] = this.mapCoordinates.getLongitude();
+		return coordinates;
+	}
+	
 	/**
 	 * Method to retrieve the name of the event.
 	 * @pre true;
@@ -111,7 +128,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public String getName()
 	{
-		return name.getText().trim();
+		return this.name.getText().trim();
 	}
 
 	/**
@@ -122,7 +139,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public String getCost()
 	{
-		return cost.getText().trim();
+		return this.cost.getText().trim();
 	}
 
 	/**
@@ -133,7 +150,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public String getDuration()
 	{
-		return duration.getText().trim();
+		return this.duration.getText().trim();
 	}
 
 	/**
@@ -144,6 +161,6 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public String getDescription()
 	{
-		return description.getText().trim();
+		return this.description.getText().trim();
 	}
 }

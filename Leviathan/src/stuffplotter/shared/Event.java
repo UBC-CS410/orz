@@ -3,6 +3,8 @@ package stuffplotter.shared;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
+
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
@@ -31,7 +33,7 @@ public class Event implements Serializable
 	private String eventOwner;
 	private String eventName;
 	private String eventLocation;
-	private LatLng eventCoordinates;
+	private Double[] eventCoordinates;
 	
 	private Date eventDate;
 	private String eventDuration;
@@ -149,7 +151,7 @@ public class Event implements Serializable
 	 * @post true;
 	 * @return the coordinates of the event.
 	 */
-	public LatLng getCoordinates()
+	public Double[] getCoordinates()
 	{
 		return this.eventCoordinates;
 	}
@@ -160,7 +162,7 @@ public class Event implements Serializable
 	 * @post this.eventCoordinates.equals(coordinates);
 	 * @param coordinates - the coordinates for the event.
 	 */
-	public void setCoordinates(LatLng coordinates)
+	public void setCoordinates(Double[] coordinates)
 	{
 		this.eventCoordinates = coordinates;
 	}
