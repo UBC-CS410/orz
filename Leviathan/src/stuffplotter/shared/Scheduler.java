@@ -16,9 +16,9 @@ import com.googlecode.objectify.annotation.Entity;
 public class Scheduler implements Serializable {
 	
 	@Id private Long id;
-	private Long event;
-	private List<Date> dates;
-	private List<Date> finalDates;
+	private Long eventId;
+	private List<List<Date>> proposedDates;
+	private Date finalDate;
 	
 	/**
 	 * Constructor for Scheduler
@@ -26,10 +26,14 @@ public class Scheduler implements Serializable {
 	 * @pre		true
 	 * @post	true
 	 * 
+	 * @param 	pEventId	the id of the event for which the scheduler is responsible for
+	 * 
 	 */
-	public Scheduler() {
-		
+	public Scheduler(Long pEventId) {
+		this.eventId = pEventId;
 	}
+	
+	
 	
 	
 

@@ -10,6 +10,7 @@ import stuffplotter.UI.EventLocationSearchPanel;
 import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.UI.TopRightPanel;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.Event;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -21,7 +22,6 @@ import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.api.gwt.services.calendar.shared.model.CalendarList;
-import com.google.api.gwt.services.calendar.shared.model.Event;
 import com.google.api.gwt.services.calendar.shared.model.Events;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
@@ -112,10 +112,6 @@ public class Leviathan implements EntryPoint
 		lvlView.add(lvlLabel);
 		lvlView.add(expLabel);
 		lvlView.add(addExpBtn);
-
-	
-		
-		
 		
 		addExpBtn.addClickHandler(new ClickHandler()
 		{
@@ -146,6 +142,28 @@ public class Leviathan implements EntryPoint
 			public void onClick(ClickEvent event)
 			{
 				EventCreationDialogBox eventCreation = new EventCreationDialogBox(account);
+			}
+		});
+		
+		final Button createEventBtn2 = new Button("Create Dummy Event");
+		createEventBtn2.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				EventServiceAsync eventService = GWT.create(EventService.class);
+				eventService.createEvent(account.getUserName(), "Pool party", "My pool", new Date(0), 20.00, new AsyncCallback<Event>()
+						{
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.toString());
+							}
+		
+							@Override
+							public void onSuccess(Event result) {
+								Window.alert(result.getEventName() + "created");
+							}
+						});
 			}
 		});
 
@@ -323,6 +341,7 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);
+		RootPanel.get("eventCreation").add(createEventBtn2);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("friendFinder").add(testInput);

@@ -36,12 +36,21 @@ public class DatabaseStore {
 	}
 	
 	/**
-	 * Stores an object to the data store using Objectify
+	 * Stores an account to the data store using Objectify
 	 * @param pAcct	the Account to be stored
 	 */	
-	public void store(Object pObj) {
+	public void store(Account pAct) {
 		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pObj);
+		ofy.put(pAct);
+	}
+	
+	/**
+	 * Stores an event to the data store using Objectify
+	 * @param pEvt	the Event to be stored
+	 */	
+	public void store(Event pEvt) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pEvt);
 	}
 	
 	/**

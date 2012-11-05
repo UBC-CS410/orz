@@ -8,22 +8,12 @@ import java.util.Date;
 import stuffplotter.client.EventService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
-import stuffplotter.shared.Event.Field;
 
-import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EventServiceImpl extends RemoteServiceServlet implements EventService {
 	
 	private DatabaseStore dbstore = new DatabaseStore();
-
-	@Override
-	public Calendar createCalendar() {
-		Calendar calendar = new Calendar();
-		calendar.setWidth("500px");
-		calendar.setHeight("400px");
-		return calendar;
-	}
 
 	@Override
 	public Event createEvent(String pOwner, String pName, String pLocation, Date pDate, double pCost) {
@@ -38,10 +28,8 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 
 	@Override
-	public void editEvent(Long pId, Field pField, Object pValue) {
-		Event event = dbstore.fetchEvent(pId);
-		event.setEventField(pField, pValue);
-		dbstore.store(event);
+	public void editEvent(Event modifiedEvent) {
+		dbstore.store(modifiedEvent);
 	}
 
 	@Override

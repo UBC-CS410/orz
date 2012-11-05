@@ -14,15 +14,18 @@ import com.googlecode.objectify.annotation.Entity;
 @Entity
 public class Event implements Serializable {
 	
-	public enum Field {
-		OWNER,
-		NAME,
-		LOCATION,
-		DATE,
-		DURATION,
-		COST,
-		TYPE,
-		DESCRIPTION	
+	public enum Status 
+	{
+		CREATED, 	// Before setting up Scheduler
+		INVITED, 	// Scheduler is set up and invites are sent
+		SCHEDULED, 	// Date is finalized 
+		FINISHED	// Event is completed and open to scoring
+	};
+	
+	public enum Span 
+	{
+		HOURS, 		// Single day event
+		DAYS		// Multiple day event
 	};
 	
 	@Id private Long eventId;
@@ -34,8 +37,10 @@ public class Event implements Serializable {
 	private Integer eventDuration;
 	private Double eventCost;
 	
-	private enum eventState {CREATED, SCHEDULED};
-	private enum eventLength {HOURS, DAYS};
+	private Long eventScheduler;
+	
+	private Status eventStatus;
+	private Span eventSpan;
 	
 	private List<String> eventHosts;
 	private List<String> eventGuests;
@@ -66,6 +71,8 @@ public class Event implements Serializable {
 		this.setEventLocation(pLocation);
 		this.setEventDate(pDate);
 		this.setEventCost(pCost);
+		
+		this.eventStatus = Status.CREATED;
 	}
 	
 	/**
@@ -190,38 +197,4 @@ public class Event implements Serializable {
 	public void setEventDescription(String eventDescription) {
 		this.eventDescription = eventDescription;
 	}
-	
-	
-	
-	public void setEventField(Field pField, Object pValue) {
-		switch(pField) {
-			case OWNER:
-				this.setEventOwner((String)pValue);
-				break;
-			case NAME:
-				this.setEventName((String)pValue);
-				break;
-			case LOCATION:
-				this.setEventLocation((String)pValue);
-				break;
-			case DATE:
-				this.setEventDate((Date)pValue);
-				break;
-			case DURATION:
-				this.setEventDuration((Integer)pValue);
-				break;
-			case COST:
-				this.setEventCost((Double)pValue);
-				break;
-			case TYPE:
-				this.setEventType((String)pValue);
-				break;
-			case DESCRIPTION:
-				this.setEventDescription((String)pValue);
-				break;
-		}	
-	}
-	
-	
-	
 }

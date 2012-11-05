@@ -3,14 +3,10 @@ package stuffplotter.client;
 import java.util.Date;
 
 import stuffplotter.shared.Event;
-import stuffplotter.shared.Event.Field;
 
-import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface EventServiceAsync {
-	void createCalendar(AsyncCallback<Calendar> callback);
-	
+public interface EventServiceAsync {	
 	/**
 	 * Adds an Event to the data store and the host's eventList
 	 * 
@@ -36,12 +32,12 @@ public interface EventServiceAsync {
 	 * @post	changes the value of an Event's member variable
 	 * 
 	 * @param 	eventId			the id of the event
-	 * 			eventField		the Field of an event (see Event.Field)
-	 * 			fieldValue		the new field value
+	 * 			eventField		the event field to change
+	 * 			eventFieldValue	the new value to change event field to
 	 * 			callback		the callback object
 	 * 		
 	 */
-	void editEvent(Long eventId, Field eventField, Object fieldValue, AsyncCallback<Void> callback);
+	void editEvent(Event modifiedEvent, AsyncCallback<Void> callback);
 	void deleteEvent(AsyncCallback<Void> callback);
 	void rateEvent(AsyncCallback<Void> callback);
 }
