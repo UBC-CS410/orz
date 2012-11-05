@@ -33,11 +33,7 @@ public class EventCreationPagedPanel extends DeckPanel
 	private void initializePages(Account userAccount)
 	{
 		// initialize Page 1
-		HorizontalPanel page1Panel = new HorizontalPanel();
-		EventInfoInputPanel eventInputPanel = new EventInfoInputPanel();
-		EventLocationMapPanel mapPanel = new EventLocationMapPanel(eventInputPanel);
-		page1Panel.add(eventInputPanel);
-		page1Panel.add(mapPanel);
+		EventInfoPanel page1Panel = new EventInfoPanel();
 		
 		// initialize Page 2
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
