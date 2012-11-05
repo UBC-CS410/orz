@@ -145,6 +145,7 @@ public class Leviathan implements EntryPoint
 			}
 		});
 		
+		/*
 		final Button createEventBtn2 = new Button("Create Dummy Event");
 		createEventBtn2.addClickHandler(new ClickHandler()
 		{
@@ -166,6 +167,7 @@ public class Leviathan implements EntryPoint
 						});
 			}
 		});
+		*/
 
 		final Button findFriends = new Button("Find Friends");
 		
@@ -341,7 +343,7 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);
-		RootPanel.get("eventCreation").add(createEventBtn2);
+		//RootPanel.get("eventCreation").add(createEventBtn2);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("friendFinder").add(testInput);

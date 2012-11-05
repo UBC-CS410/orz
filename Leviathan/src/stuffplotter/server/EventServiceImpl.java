@@ -1,6 +1,3 @@
-/**
- * 
- */
 package stuffplotter.server;
 
 import java.util.Date;
@@ -13,8 +10,8 @@ import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class EventServiceImpl extends RemoteServiceServlet implements EventService {
-	
+public class EventServiceImpl extends RemoteServiceServlet implements EventService
+{
 	private DatabaseStore dbstore = new DatabaseStore();
 	
 	/**
@@ -24,18 +21,16 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * 
 	 * @post	adds an Event id to an Account's event list
 	 * 
-	 * @param 	pOwner		the id of the host account
-	 * 			pName		the name of the event
-	 * 			pLocation	the address of the event
-	 * 			pDate		the date of the event
-	 * 			pCost		the cost of the event
+	 * @param 	pOwner		the new event to store
+	 * 
 	 */
 	@Override
-	public Event createEvent(String pOwner, String pName, String pLocation, Date pDate, double pCost) {
-		Event event = new Event(pOwner, pName, pLocation, pDate, pCost);
+	public Event createEvent(Event pEvent)
+	{
+		Event event = pEvent;
 		dbstore.store(event);
 		
-		Account account = dbstore.fetchAccount(pOwner);
+		Account account = dbstore.fetchAccount(pEvent.getOwner());
 		account.addUserEvent(event.getEventId());
 		dbstore.store(account);
 		
@@ -82,14 +77,15 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 
 	
 	@Override
-	public void deleteEvent() {
+	public void deleteEvent()
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void rateEvent() {
+	public void rateEvent()
+	{
 		// TODO Auto-generated method stub
 	}
-
 }

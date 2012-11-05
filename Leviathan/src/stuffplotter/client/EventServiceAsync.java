@@ -23,7 +23,7 @@ public interface EventServiceAsync {
 	 * 			eventCost		the cost of the event
 	 * 			callback		the callback object	
 	 */
-	void createEvent(String ownerId, String eventName, String eventLocation, Date eventTime, double eventCost, AsyncCallback<Event> callback);
+	void createEvent(Event newEvent, AsyncCallback<Event> callback);
 	
 	/**
 	 * Adds a Scheduler to an Event
@@ -64,6 +64,7 @@ public interface EventServiceAsync {
 	 * 		
 	 */
 	void updateEvent(Event modifiedEvent, AsyncCallback<Void> callback);
+	
 	void deleteEvent(AsyncCallback<Void> callback);
 	void rateEvent(AsyncCallback<Void> callback);
 }

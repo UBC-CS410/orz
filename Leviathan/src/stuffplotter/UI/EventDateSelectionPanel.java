@@ -3,6 +3,8 @@ package stuffplotter.UI;
 import java.util.Date;
 
 import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.misc.EventSubmittable;
+import stuffplotter.shared.Event;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -14,7 +16,7 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 /**
  * Class to display a DatePicker with TimeSheetPanel to select dates for an event.
  */
-public class EventDateSelectionPanel extends SimplePanel
+public class EventDateSelectionPanel extends SimplePanel implements EventSubmittable
 {
 	private TimeSheetPanel timeSheet;
 	
@@ -70,6 +72,19 @@ public class EventDateSelectionPanel extends SimplePanel
 				timeSheet.addDay(month, year, day);
 			}
 		});
+	}
+
+	/**
+	 * Method to retrieve the submission information from the TimeSheetPanel.
+	 * @pre event != null;
+	 * @post true;
+	 * @param event - the Event to have its fields populated with before sending to
+	 * 				  the backend.
+	 */
+	@Override
+	public void retrieveSubmission(Event event)
+	{
+		event.setTimeSheet(this.timeSheet.retrieveSubmission());
 	}
 }
 
