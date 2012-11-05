@@ -8,6 +8,7 @@ import java.util.Date;
 import stuffplotter.client.EventService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.Event.Field;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -37,9 +38,10 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 
 	@Override
-	public void editEvent() {
-		// TODO Auto-generated method stub
-		
+	public void editEvent(Long pId, Field pField, Object pValue) {
+		Event event = dbstore.fetchEvent(pId);
+		event.setEventField(pField, pValue);
+		dbstore.store(event);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import com.googlecode.objectify.annotation.Entity;;
+import com.googlecode.objectify.annotation.Entity;
 
 /**
  * Class to hold all the information for an event.
@@ -31,8 +31,8 @@ public class Event implements Serializable {
 	private String eventLocation;
 	
 	private Date eventDate;
-	private int eventDuration;
-	private double eventCost;
+	private Integer eventDuration;
+	private Double eventCost;
 	
 	private enum eventState {CREATED, SCHEDULED};
 	private enum eventLength {HOURS, DAYS};
@@ -42,6 +42,8 @@ public class Event implements Serializable {
 	
 	private String eventType;
 	private String eventDescription;
+	
+	private double eventScore;
 	
 	/**
 	 * Event constructor.
@@ -136,7 +138,7 @@ public class Event implements Serializable {
 	/**
 	 * @return the eventLength
 	 */
-	public int getEventDuration() {
+	public Integer getEventDuration() {
 		return eventDuration;
 	}
 
@@ -150,7 +152,7 @@ public class Event implements Serializable {
 	/**
 	 * @return the eventCost
 	 */
-	public double getEventCost() {
+	public Double getEventCost() {
 		return eventCost;
 	}
 
@@ -188,5 +190,38 @@ public class Event implements Serializable {
 	public void setEventDescription(String eventDescription) {
 		this.eventDescription = eventDescription;
 	}
+	
+	
+	
+	public void setEventField(Field pField, Object pValue) {
+		switch(pField) {
+			case OWNER:
+				this.setEventOwner((String)pValue);
+				break;
+			case NAME:
+				this.setEventName((String)pValue);
+				break;
+			case LOCATION:
+				this.setEventLocation((String)pValue);
+				break;
+			case DATE:
+				this.setEventDate((Date)pValue);
+				break;
+			case DURATION:
+				this.setEventDuration((Integer)pValue);
+				break;
+			case COST:
+				this.setEventCost((Double)pValue);
+				break;
+			case TYPE:
+				this.setEventType((String)pValue);
+				break;
+			case DESCRIPTION:
+				this.setEventDescription((String)pValue);
+				break;
+		}	
+	}
+	
+	
 	
 }
