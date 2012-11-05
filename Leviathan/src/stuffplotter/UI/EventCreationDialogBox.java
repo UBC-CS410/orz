@@ -1,6 +1,7 @@
 package stuffplotter.UI;
 
 import stuffplotter.misc.CloseClickHandler;
+import stuffplotter.shared.Account;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,12 +24,12 @@ public class EventCreationDialogBox extends DialogBox
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventCreationDialogBox()
+	public EventCreationDialogBox(Account userAccount)
 	{
 		super();
 		VerticalPanel vertPanel = new VerticalPanel();
 		HorizontalPanel btnHolder = new HorizontalPanel();
-		this.eventPages = new EventCreationPagedPanel();
+		this.eventPages = new EventCreationPagedPanel(userAccount);
 		vertPanel.add(this.eventPages);
 		Button backBtn = new Button("Back");
 		Button nextBtn = new Button("Next");

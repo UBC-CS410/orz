@@ -145,7 +145,7 @@ public class Leviathan implements EntryPoint
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				EventCreationDialogBox eventCreation = new EventCreationDialogBox();
+				EventCreationDialogBox eventCreation = new EventCreationDialogBox(account);
 			}
 		});
 

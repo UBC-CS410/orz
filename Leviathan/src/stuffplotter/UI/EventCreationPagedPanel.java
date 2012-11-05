@@ -1,6 +1,7 @@
 package stuffplotter.UI;
 
-import com.google.gwt.user.client.Window;
+import stuffplotter.shared.Account;
+
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
@@ -16,10 +17,10 @@ public class EventCreationPagedPanel extends DeckPanel
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventCreationPagedPanel()
+	public EventCreationPagedPanel(Account userAccount)
 	{
 		super();
-		this.initializePages();
+		this.initializePages(userAccount);
 		this.showWidget(0);
 	}
 	
@@ -27,8 +28,9 @@ public class EventCreationPagedPanel extends DeckPanel
 	 * Helper method to initialize pages of the EventCreationPager.
 	 * @pre true;
 	 * @post true;
+	 * @param userAccount - the account of the user to populate the pages with.
 	 */
-	private void initializePages()
+	private void initializePages(Account userAccount)
 	{
 		// initialize Page 1
 		HorizontalPanel page1Panel = new HorizontalPanel();
@@ -40,8 +42,13 @@ public class EventCreationPagedPanel extends DeckPanel
 		// initialize Page 2
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
 		EventDateSelectionPanel page2Panel = new EventDateSelectionPanel(timeSheet);
+
+		// initialize Page 3
+		FriendSelectionPanel page3Panel = new FriendSelectionPanel(userAccount);
+		
 		this.add(page1Panel);
 		this.add(page2Panel);
+		this.add(page3Panel);
 	}
 	
 	/**
