@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("events")
 public interface EventService extends RemoteService {
 	Calendar createCalendar();
-	Event createEvent(String ownerId, String eventName, Date eventTime, double eventCost);
+	Event createEvent(String ownerId, String eventName, String pLocation, Date eventTime, double eventCost);
 	void editEvent();
 	void deleteEvent();
 	void rateEvent();
