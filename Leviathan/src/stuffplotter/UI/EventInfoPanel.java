@@ -41,7 +41,7 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable
 	{
 		event.setName(eventInputPanel.getName());
 		event.setLocation(eventInputPanel.getLocation());
-		event.setCoordinates(eventInputPanel.getMapCoordinates());
+		event.setCoordinates(eventInputPanel.getMapCoordinatesAsArray());
 		event.setCost(eventInputPanel.getCost());
 		event.setDuration(eventInputPanel.getDuration());
 		event.setDescription(eventInputPanel.getDescription());
