@@ -2,7 +2,6 @@ package stuffplotter.UI;
 
 import stuffplotter.shared.Account;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;

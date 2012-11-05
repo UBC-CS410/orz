@@ -1,9 +1,11 @@
 package stuffplotter.UI;
 
+import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.Event;
 
 import com.google.gwt.user.client.ui.DeckPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class for paging in the EventCreationDialogBox class.
@@ -45,6 +47,25 @@ public class EventCreationPagedPanel extends DeckPanel
 		this.add(page1Panel);
 		this.add(page2Panel);
 		this.add(page3Panel);
+	}
+	
+	/**
+	 * Helper method to retrieve the information for a new Event and add it to the database.
+	 * @pre createdEvent != null;
+	 * @post true;
+	 * @param createdEvent - the Event to fill with the information from the UI.
+	 */
+	public void populateEventInfo(Event createdEvent)
+	{	
+		// for loop to retrieve the information for the event from each page
+		for(int i = 0; i < this.getWidgetCount(); i++)
+		{
+			Widget page = this.getWidget(i);
+			if(page instanceof EventSubmittable)
+			{
+				((EventSubmittable) page).retrieveSubmission(createdEvent);
+			}
+		}
 	}
 	
 	/**

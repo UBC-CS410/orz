@@ -16,7 +16,6 @@ public class EventLocationMapPanel extends SimplePanel
 	final private int zoomLevel = 12;
 	final private String mapWidth = "500px";
 	final private String mapHeight = "300px";
-	private EventInfoInputPanel eventInfoInput;
 	
 	/**
 	 * Constructor for EventLocationMapPanel.
@@ -38,7 +37,6 @@ public class EventLocationMapPanel extends SimplePanel
 	 */
 	private void initializeUI(EventInfoInputPanel eventInfoInputPanel)
 	{
-		this.eventInfoInput = eventInfoInputPanel;
 		HorizontalPanel infoMapHolder = new HorizontalPanel();
 		VerticalPanel mapSearchHolder = new VerticalPanel();
 		MapWidget map = new MapWidget(vancouver, zoomLevel);

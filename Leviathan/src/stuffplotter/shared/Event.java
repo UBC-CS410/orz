@@ -6,15 +6,17 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import com.google.gwt.maps.client.geom.LatLng;
 import com.googlecode.objectify.annotation.Entity;;
 
 /**
  * Class to hold all the information for an event.
  */
 @Entity
-public class Event implements Serializable {
-	
-	public enum Field {
+public class Event implements Serializable
+{	
+	public enum Field
+	{
 		OWNER,
 		NAME,
 		LOCATION,
@@ -29,14 +31,16 @@ public class Event implements Serializable {
 	private String eventOwner;
 	private String eventName;
 	private String eventLocation;
+	private LatLng eventCoordinates;
 	
 	private Date eventDate;
-	private int eventDuration;
-	private double eventCost;
+	private String eventDuration;
+	private String eventCost;
 	
 	private enum eventState {CREATED, SCHEDULED};
 	private enum eventLength {HOURS, DAYS};
 	
+	private List<MonthContainer> timeSheet;
 	private List<String> eventHosts;
 	private List<String> eventGuests;
 	
@@ -53,17 +57,13 @@ public class Event implements Serializable {
 	
 	/**
 	 * Event constructor that sets basic information
-	 * @param eventName - the eventName of the event.
-	 * 
-	 * @param participants - the participants for an event.
+	 * @pre eventOwner != null;
+	 * @post this.eventOwner.equals(eventOwner);
+	 * @param eventOwner - the owner of the event.
 	 */
-	public Event(String pOwner, String pName, String pLocation, Date pDate, double pCost)
+	public Event(String eventOwner)
 	{
-		this.setEventOwner(pOwner);
-		this.setEventName(pName);
-		this.setEventLocation(pLocation);
-		this.setEventDate(pDate);
-		this.setEventCost(pCost);
+		this.eventOwner = eventOwner;
 	}
 	
 	/**
@@ -74,119 +74,248 @@ public class Event implements Serializable {
 	 */
 	public Long getEventId()
 	{
-		return eventId;
+		return this.eventId;
 	}
 	
 	/**
-	 * @return the eventOwner
+	 * Retrieves the owner for the event.
+	 * @pre true;
+	 * @post true; 
+	 * @return the owner of the event.
 	 */
-	public String getEventOwner() {
-		return eventOwner;
+	public String getOwner()
+	{
+		return this.eventOwner;
 	}
 
 	/**
+	 * Set the owner for the event.
+	 * @pre eventOwner != null;
+	 * @post this.eventOwner.equals(eventOwner);
 	 * @param eventOwner the eventOwner to set
 	 */
-	public void setEventOwner(String eventOwner) {
+	public void setOwner(String eventOwner)
+	{
 		this.eventOwner = eventOwner;
 	}
 
 	/**
-	 * @return the eventName
+	 * Retrieve the name of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the name of the event.
 	 */
-	public String getEventName() {
-		return eventName;
+	public String getName()
+	{
+		return this.eventName;
 	}
 
 	/**
-	 * @param eventName the eventName to set
+	 * Set the name of the event.
+	 * @pre eventName != null;
+	 * @post this.eventName.equals(eventName);
+	 * @param eventName - the name of the event.
 	 */
-	public void setEventName(String eventName) {
+	public void setName(String eventName)
+	{
 		this.eventName = eventName;
 	}
 	
 	/**
-	 * @return the eventLocation
+	 * Retrieves the address of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the address of the event.
 	 */
-	public String getEventLocation() {
-		return eventLocation;
+	public String getLocation()
+	{
+		return this.eventLocation;
 	}
 
 	/**
-	 * @param eventLocation the eventLocation to set
+	 * Set the address of the event.
+	 * @pre true;
+	 * @post this.eventLocation.equals(eventLocation);
+	 * @param eventLocation - the address of the event.
 	 */
-	public void setEventLocation(String eventLocation) {
+	public void setLocation(String eventLocation)
+	{
 		this.eventLocation = eventLocation;
 	}
 
 	/**
-	 * @return the eventDate
+	 * Retrieves the coordinates for the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the coordinates of the event.
 	 */
-	public Date getEventDate() {
-		return eventDate;
+	public LatLng getCoordinates()
+	{
+		return this.eventCoordinates;
+	}
+	
+	/**
+	 * Set the coordinates for the event.
+	 * @pre true;
+	 * @post this.eventCoordinates.equals(coordinates);
+	 * @param coordinates - the coordinates for the event.
+	 */
+	public void setCoordinates(LatLng coordinates)
+	{
+		this.eventCoordinates = coordinates;
+	}
+	
+	/**
+	 * Retrieves the date of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the date of the event.
+	 */
+	public Date getDate()
+	{
+		return this.eventDate;
 	}
 
 	/**
-	 * @param eventDate the eventDate to set
+	 * Set the date of the event.
+	 * @pre true;
+	 * @post this.eventDate.equals(eventDate);
+	 * @param eventDate - the date of the event.
 	 */
-	public void setEventDate(Date eventDate) {
+	public void setDate(Date eventDate)
+	{
 		this.eventDate = eventDate;
 	}
 
 	/**
-	 * @return the eventLength
+	 * Retrieves the duration of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the duration of the event.
 	 */
-	public int getEventDuration() {
-		return eventDuration;
+	public String getDuration()
+	{
+		return this.eventDuration;
 	}
 
 	/**
-	 * @param eventLength the eventLength to set
+	 * Set the duration of the event.
+	 * @pre eventDuration >= 0;
+	 * @post this.eventDuration == eventDuration;
+	 * @param eventDuration - the duration of the event.
 	 */
-	public void setEventDuration(int eventDuration) {
+	public void setDuration(String eventDuration)
+	{
 		this.eventDuration = eventDuration;
 	}
 
 	/**
+	 * Retrieves the cost of the event.
+	 * @pre true;
+	 * @post true;
 	 * @return the eventCost
 	 */
-	public double getEventCost() {
-		return eventCost;
+	public String getCost()
+	{
+		return this.eventCost;
 	}
 
 	/**
-	 * @param eventCost the eventCost to set
+	 * Set the cost of the event.
+	 * @pre eventCost >= 0;
+	 * @post this.eventCost == eventCost;
+	 * @param eventCost - the cost of the event.
 	 */
-	public void setEventCost(double eventCost) {
+	public void setCost(String eventCost)
+	{
 		this.eventCost = eventCost;
 	}
 	
 	/**
-	 * @return the eventType
+	 * Retrieves the type of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the type of the event.
 	 */
-	public String getEventType() {
-		return eventType;
+	public String getType()
+	{
+		return this.eventType;
 	}
 
 	/**
-	 * @param eventType the eventType to set
+	 * Set the type of the event.
+	 * @pre eventType != null;
+	 * @post this.eventType.equals(eventType);
+	 * @param eventType - the type of the event.
 	 */
-	public void setEventType(String eventType) {
+	public void setType(String eventType)
+	{
 		this.eventType = eventType;
 	}
 
 	/**
-	 * @return the eventDescription
+	 * Retrieves the description of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the description of the event.
 	 */
-	public String getEventDescription() {
-		return eventDescription;
+	public String getDescription()
+	{
+		return this.eventDescription;
 	}
 
 	/**
-	 * @param eventDescription the eventDescription to set
+	 * Set the description of the event.
+	 * @pre true;
+	 * @post this.eventDescription.equals(eventDescription);
+	 * @param eventDescription - the description of the event.
 	 */
-	public void setEventDescription(String eventDescription) {
+	public void setDescription(String eventDescription)
+	{
 		this.eventDescription = eventDescription;
 	}
 	
+	/**
+	 * Retrieves the times suggested for an event.
+	 * @pre true;
+	 * @post true;
+	 * @return the times suggested for an event.
+	 */
+	public List<MonthContainer> getTimeSheet()
+	{
+		return this.timeSheet;
+	}
+	
+	/**
+	 * Set the times suggested for an event.
+	 * @pre true;
+	 * @post this.timeSheet.equals(timeSheet);
+	 * @param timeSheet - the times suggested for an event.
+	 */
+	public void setTimeSheet(List<MonthContainer> timeSheet)
+	{
+		this.timeSheet = timeSheet;
+	}
+	
+	/**
+	 * Retrieves the guests invited to the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the guests invited to the event.
+	 */
+	public List<String> getGuests()
+	{
+		return this.eventGuests;
+	}
+	
+	/**
+	 * Set the guests invited to the event.
+	 * @pre true;
+	 * @post this.eventGuests.equals(guestList);
+	 * @param guestList - the list of guests for the event.
+	 */
+	public void setGuests(List<String> guestList)
+	{
+		this.eventGuests = guestList;
+	}
 }

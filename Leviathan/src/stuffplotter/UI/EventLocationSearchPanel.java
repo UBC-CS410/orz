@@ -8,7 +8,6 @@ import com.google.gwt.maps.client.geocode.Geocoder;
 import com.google.gwt.maps.client.geocode.LocationCallback;
 import com.google.gwt.maps.client.geocode.Placemark;
 import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -164,10 +163,12 @@ public class EventLocationSearchPanel extends VerticalPanel
 	 */
 	private void updateUI(int locationIndex)
 	{
-		this.eventInfo.setLocationText(this.locationsFound.get(locationIndex).getAddress());
-		Marker location = new Marker(this.locationsFound.get(locationIndex).getPoint());
-		this.googleMap.addOverlay(location);
-		this.googleMap.panTo(location.getLatLng());
+		Placemark location = this.locationsFound.get(locationIndex);
+		this.eventInfo.setLocationText(location.getAddress());
+		this.eventInfo.setCoordinates(location.getPoint());
+		Marker marker = new Marker(location.getPoint());
+		this.googleMap.addOverlay(marker);
+		this.googleMap.panTo(marker.getLatLng());
 	}
 	
 	/**
@@ -238,6 +239,8 @@ public class EventLocationSearchPanel extends VerticalPanel
 	private void defaultPageResults()
 	{
 		locationsFound = null;
+		this.eventInfo.setLocationText("");
+		this.eventInfo.setCoordinates(null);
 		currentLocationIndex = 0;
 		totalNumLocations = 0;
 	}

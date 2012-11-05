@@ -26,6 +26,7 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable
 		EventLocationMapPanel mapPanel = new EventLocationMapPanel(eventInputPanel);
 		infoHolder.add(eventInputPanel);
 		infoHolder.add(mapPanel);
+		this.add(infoHolder);
 	}
 
 	/**
@@ -38,6 +39,11 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable
 	@Override
 	public void retrieveSubmission(Event event)
 	{
-		
+		event.setName(eventInputPanel.getName());
+		event.setLocation(eventInputPanel.getLocation());
+		event.setCoordinates(eventInputPanel.getMapCoordinates());
+		event.setCost(eventInputPanel.getCost());
+		event.setDuration(eventInputPanel.getDuration());
+		event.setDescription(eventInputPanel.getDescription());
 	}
 }
