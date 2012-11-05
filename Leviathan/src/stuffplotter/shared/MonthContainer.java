@@ -1,5 +1,6 @@
 package stuffplotter.shared;
 
+import java.io.Serializable;
 import java.util.List;
 
 import stuffplotter.UI.MonthPanel.Month;
@@ -7,7 +8,7 @@ import stuffplotter.UI.MonthPanel.Month;
 /**
  * Class to hold the days selected for an event.
  */
-public class MonthContainer
+public class MonthContainer implements Serializable
 {
 	private String year;
 	private Month month;

@@ -1,8 +1,10 @@
 package stuffplotter.client;
 
 import java.util.Date;
+import java.util.List;
 
 import stuffplotter.shared.Event;
+import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -24,20 +26,44 @@ public interface EventServiceAsync {
 	void createEvent(String ownerId, String eventName, String eventLocation, Date eventTime, double eventCost, AsyncCallback<Event> callback);
 	
 	/**
-	 * Modifies an Event by changing one of its fields
+	 * Adds a Scheduler to an Event
 	 * 
-	 * @pre 	fieldValue is not null and Object type is the same as required 
-	 * 			by the variable that Field maps to
+	 * @pre 	true
 	 * 
-	 * @post	changes the value of an Event's member variable
+	 * @post	true
 	 * 
 	 * @param 	eventId			the id of the event
-	 * 			eventField		the event field to change
-	 * 			eventFieldValue	the new value to change event field to
+	 * 			eventTimes		the list of month containers that contains proposed times for the event
+	 * 			callback		the callback object	
+	 */
+	void createScheduler(Long eventId, List<MonthContainer> eventTimes, AsyncCallback<Void> callback);
+	
+	
+	/**
+	 * Retrieves an Event from the data store
+	 * 
+	 * @pre 	eventId comes from an account's event list
+	 * 
+	 * @post	true
+	 * 
+	 * @param 	eventId		the id of the event to retrieve
+	 * 			callback	the callback object
+	 * 		
+	 */
+	void retrieveEvent(Long eventId, AsyncCallback<Event> callback);
+	
+	/**
+	 * Modifies an Event by changing one of its fields
+	 * 
+	 * @pre 	modifiedEvent is not null
+	 * 
+	 * @post	changes the persistent members of an Event
+	 * 
+	 * @param 	modifiedEvent	the modified event with field changes
 	 * 			callback		the callback object
 	 * 		
 	 */
-	void editEvent(Event modifiedEvent, AsyncCallback<Void> callback);
+	void updateEvent(Event modifiedEvent, AsyncCallback<Void> callback);
 	void deleteEvent(AsyncCallback<Void> callback);
 	void rateEvent(AsyncCallback<Void> callback);
 }

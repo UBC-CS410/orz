@@ -27,9 +27,10 @@ public class Scheduler implements Serializable {
 	 * @post	true
 	 * 
 	 * @param 	pEventId	the id of the event for which the scheduler is responsible for
+	 * 			pEventTimes	the list of month containers that contains the proposed times for the event
 	 * 
 	 */
-	public Scheduler(Long pEventId) {
+	public Scheduler(Long pEventId, List<MonthContainer> pEventTimes) {
 		this.eventId = pEventId;
 	}
 	
