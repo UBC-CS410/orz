@@ -25,8 +25,8 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 
 	@Override
-	public Event createEvent(String pOwner, String pName, Date pDate, double pCost) {
-		Event event = new Event(pOwner, pName, pDate, pCost);
+	public Event createEvent(String pOwner, String pName, String pLocation, Date pDate, double pCost) {
+		Event event = new Event(pOwner, pName, pLocation, pDate, pCost);
 		dbstore.store(event);
 		
 		Account account = dbstore.fetchAccount(pOwner);

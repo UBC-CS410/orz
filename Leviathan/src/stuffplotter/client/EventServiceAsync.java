@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface EventServiceAsync {
 	void createCalendar(AsyncCallback<Calendar> callback);
-	void createEvent(String ownerId, String eventName, Date eventTime, double eventCost, AsyncCallback<Event> callback);
+	void createEvent(String ownerId, String eventName, String pLocation, Date eventTime, double eventCost, AsyncCallback<Event> callback);
 	void editEvent(AsyncCallback<Void> callback);
 	void deleteEvent(AsyncCallback<Void> callback);
 	void rateEvent(AsyncCallback<Void> callback);
