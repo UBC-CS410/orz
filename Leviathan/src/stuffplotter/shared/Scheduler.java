@@ -17,8 +17,17 @@ public class Scheduler implements Serializable {
 	
 	@Id private Long id;
 	private Long eventId;
-	private List<List<Date>> proposedDates;
+	private List<Availability> proposedDates;
 	private Date finalDate;
+	
+	
+	/**
+	 * No Arg Constructor for Scheduler
+	 */
+	public Scheduler() {
+		
+	}
+	
 	
 	/**
 	 * Constructor for Scheduler
@@ -26,16 +35,31 @@ public class Scheduler implements Serializable {
 	 * @pre		true
 	 * @post	true
 	 * 
-	 * @param 	pEventId	the id of the event for which the scheduler is responsible for
-	 * 			pEventTimes	the list of month containers that contains the proposed times for the event
+	 * @param 	pEventId			the id of the event for which the scheduler is responsible for
+	 * 			pMonthContainers	the list of month containers that contains the proposed times for the event
 	 * 
 	 */
-	public Scheduler(Long pEventId, List<MonthContainer> pEventTimes) {
+	public Scheduler(Long pEventId, List<MonthContainer> pMonthContainers) {
 		this.eventId = pEventId;
+		
+		/*
+		for(MonthContainer mc : pMonthContainers)
+		{
+			
+		}
+		*/
 	}
 	
-	
-	
-	
+	@Entity
+	private class Availability implements Serializable {
+		
+		@Id private Long id;
+		private Date time;
+		private Integer votes;
+		
+		private Availability() {
+			
+		}
+	}	
 
 }

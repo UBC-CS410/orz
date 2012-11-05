@@ -1,12 +1,10 @@
 package stuffplotter.client;
 
-import java.util.Date;
 import java.util.List;
 
 import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 

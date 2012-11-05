@@ -2,7 +2,10 @@ package stuffplotter.shared;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
@@ -33,7 +36,7 @@ public class Event implements Serializable {
 	private String eventOwner;
 	private String eventName;
 	private String eventLocation;
-	private LatLng eventCoordinates;
+	@Transient private LatLng eventCoordinates;
 	
 	private Date eventDate;
 	private String eventDuration;
@@ -51,7 +54,8 @@ public class Event implements Serializable {
 	private String eventType;
 	private String eventDescription;
 	
-	private double eventScore;
+	private Double eventScore;
+	
 	
 	/**
 	 * Event constructor.
@@ -79,7 +83,7 @@ public class Event implements Serializable {
 	 * @post true; 
 	 * @return the ID of an event.
 	 */
-	public Long getEventId()
+	public Long getId()
 	{
 		return this.eventId;
 	}

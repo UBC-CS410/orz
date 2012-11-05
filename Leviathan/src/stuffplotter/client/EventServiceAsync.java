@@ -16,11 +16,7 @@ public interface EventServiceAsync {
 	 * 
 	 * @post	adds 1 to the length of host account's eventList
 	 * 
-	 * @param 	ownerId			the id of the host account
-	 * 			eventName		the name of the event
-	 * 			eventLocation	the address of the event
-	 * 			eventTime		the date of the event
-	 * 			eventCost		the cost of the event
+	 * @param 	newEvent		the new event to be created
 	 * 			callback		the callback object	
 	 */
 	void createEvent(Event newEvent, AsyncCallback<Event> callback);

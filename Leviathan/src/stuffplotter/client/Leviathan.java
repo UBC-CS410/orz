@@ -1,5 +1,6 @@
 package stuffplotter.client;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import stuffplotter.UI.FriendFinderDialogBox;
 import stuffplotter.UI.TopRightPanel;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.MonthContainer;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -51,6 +53,9 @@ public class Leviathan implements EntryPoint
 	private final String redirectUrl = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
 	private int friendCount = 0;
+	
+	private Long testEventId;
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -145,7 +150,7 @@ public class Leviathan implements EntryPoint
 			}
 		});
 		
-		/*
+		
 		final Button createEventBtn2 = new Button("Create Dummy Event");
 		createEventBtn2.addClickHandler(new ClickHandler()
 		{
@@ -153,7 +158,8 @@ public class Leviathan implements EntryPoint
 			public void onClick(ClickEvent event)
 			{
 				EventServiceAsync eventService = GWT.create(EventService.class);
-				eventService.createEvent(account.getUserName(), "Pool party", "My pool", new Date(0), 20.00, new AsyncCallback<Event>()
+				Event newEvent = new Event(account.getUserName());
+				eventService.createEvent(newEvent, new AsyncCallback<Event>()
 						{
 							@Override
 							public void onFailure(Throwable caught) {
@@ -162,12 +168,27 @@ public class Leviathan implements EntryPoint
 		
 							@Override
 							public void onSuccess(Event result) {
-								Window.alert(result.getEventName() + "created");
+								Window.alert("Event" + result.getId() + "created.");
+								testEventId = result.getId();
+							}
+						});
+				
+				List<MonthContainer> newTimes = new ArrayList<MonthContainer>();
+				eventService.createScheduler(testEventId, newTimes, new AsyncCallback<Void>()
+						{
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.toString());
+							}
+		
+							@Override
+							public void onSuccess(Void result) {
+								Window.alert("Scheduler added");
 							}
 						});
 			}
 		});
-		*/
+		
 
 		final Button findFriends = new Button("Find Friends");
 		
@@ -343,7 +364,7 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);
-		//RootPanel.get("eventCreation").add(createEventBtn2);
+		RootPanel.get("eventCreation").add(createEventBtn2);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("friendFinder").add(testInput);

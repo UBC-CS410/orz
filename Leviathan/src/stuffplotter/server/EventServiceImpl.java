@@ -7,6 +7,7 @@ import stuffplotter.client.EventService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
+import stuffplotter.shared.Scheduler;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -31,7 +32,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		dbstore.store(event);
 		
 		Account account = dbstore.fetchAccount(pEvent.getOwner());
-		account.addUserEvent(event.getEventId());
+		account.addUserEvent(event.getId());
 		dbstore.store(account);
 		
 		return event;
@@ -45,12 +46,12 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @post	true
 	 * 
 	 * @param 	eventId			the id of the event
-	 * 			eventTimes		the list of month containers that contains proposed times for the event
+	 * 			eventTimes		the list of containers containing the proposed times for the event
 	 */
 	@Override
 	public void createScheduler(Long pEventId, List<MonthContainer> pEventTimes) {
-		// TODO Auto-generated method stub
-		
+		Scheduler scheduler = new Scheduler(pEventId, pEventTimes);
+		dbstore.store(scheduler);
 	}
 	
 	

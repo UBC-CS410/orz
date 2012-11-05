@@ -1,9 +1,5 @@
 package stuffplotter.server;
 
-import java.security.Key;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
