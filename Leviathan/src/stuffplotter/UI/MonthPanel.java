@@ -28,18 +28,24 @@ public class MonthPanel extends VerticalPanel
 		private int index;
 		
 		/**
-		 * Constructor to bind enum to a 0 based index
-		 * @param pIndex	the index of the month
+		 * Constructor to bind enum to a 0 based index.
+		 * @pre index >= 0;
+		 * @post this.index == index;
+		 * @param index - the index of the month
 		 */
-		private Month(int pIndex) {
-			this.index = pIndex;
+		private Month(int index)
+		{
+			this.index = index;
 		}
 		
 		/**
-		 * Method to get the index for the given enum
-		 * @return	the index of the Month
+		 * Method to get the index for the given enum.
+		 * @pre true;
+		 * @post true;
+		 * @return	the index of the Month.
 		 */
-		public int getIndex() {
+		public int getIndex()
+		{
 			return this.index;
 		}
 		
