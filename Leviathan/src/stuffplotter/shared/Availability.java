@@ -15,24 +15,42 @@ public class Availability implements Serializable
 	private Integer votes;
 	
 	/**
-	 * No arg constructor for Availability class
+	 * No Arg Constructor for Availability
+	 * @pre		true;
+	 * @post	true;
 	 */
 	public Availability()
 	{
 
 	}
 	
+	/**
+	 * Constructor for Availability
+	 * @pre		pDate != null;
+	 * @post	true;
+	 * @param 	pDate - date of the time slot
+	 */
 	public Availability(Date pDate)
 	{
 		this.time = pDate;
 		this.votes = 0;
 	}
 	
+	/**
+	 * Get the key of this time slot 
+	 * @pre		true;
+	 * @post	true;
+	 */
 	public Long getId()
 	{
 		return this.id;
 	}
 	
+	/**
+	 * Increment the vote of this time slot
+	 * @pre		true;
+	 * @post	this.votes == this.votes + 1;
+	 */
 	public void incrementVote()
 	{
 		this.votes++;
