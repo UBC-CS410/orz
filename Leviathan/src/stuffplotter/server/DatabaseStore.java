@@ -6,7 +6,7 @@ import java.util.List;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Scheduler;
-import stuffplotter.shared.Scheduler.Availability;
+import stuffplotter.shared.Availability;
 
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
