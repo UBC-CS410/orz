@@ -167,7 +167,7 @@ public class EventCreationDialogBox extends DialogBox
 					{
 						hide();
 						new NotificationDialogBox(taskName, "Unfortunately your event " +
-								"failed to be created, please try again later");
+								"failed to be created, please try again later.");
 					}
 				});
 			}	

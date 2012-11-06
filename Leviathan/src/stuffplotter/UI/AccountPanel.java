@@ -37,6 +37,7 @@ public class AccountPanel extends SimplePanel
 	{
 		this.informationHolder = new VerticalPanel();
 		this.informationHolder.add(new Label("Account Information"));
+		this.informationHolder.add(new Button("Edit"));
 		this.informationHolder.add(new InfoPanel("Name", this.userAccount.getUserName()));
 		this.informationHolder.add(new InfoPanel("Email", this.userAccount.getUserEmail()));
 		this.informationHolder.add(new InfoPanel("Phone", this.userAccount.getUserPhone()));
@@ -69,7 +70,6 @@ public class AccountPanel extends SimplePanel
 			{
 				this.add(new Label("--"));
 			}
-			this.add(new Button("Edit"));
 		}
 	}
 	
