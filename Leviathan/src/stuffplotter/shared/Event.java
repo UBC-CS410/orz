@@ -47,12 +47,13 @@ public class Event implements Serializable {
 	private Status eventStatus;
 	private Span eventSpan;
 	
-	private List<MonthContainer> timeSheet;
+	//private List<MonthContainer> timeSheet;
 	private List<String> eventHosts;
 	private List<String> eventGuests;
 	
 	private String eventType;
 	private String eventDescription;
+	private List<String> eventComments;
 	
 	private Double eventScore;
 	
@@ -262,23 +263,80 @@ public class Event implements Serializable {
 	}
 
 	/**
+	 * Get the status of the event.
 	 * @pre 	true;
 	 * @post 	true;
 	 * @return 	the eventStatus
 	 */
-	public Status getEventStatus()
+	public Status getStatus()
 	{
 		return eventStatus;
 	}
 
 	/**
+	 * Update the status of the event.
 	 * @pre		true;
 	 * @post	this.eventStatus == eventStatus
 	 * @param 	eventStatus the eventStatus to set
 	 */
-	public void setEventStatus(Status eventStatus)
+	public void setStatus(Status eventStatus)
 	{
 		this.eventStatus = eventStatus;
+	}
+	
+	/**
+	 * Get the list of event hosts
+	 * @pre 	true;
+	 * @post 	true;
+	 * @return 	the eventHosts
+	 */
+	public List<String> getHosts()
+	{
+		return eventHosts;
+	}
+
+	/**
+	 * Add a co-host to the event
+	 * @pre		true;
+	 * @post 	this.eventHosts.size() += 1;
+	 * @param 	eventHosts the eventHosts to set
+	 */
+	public void addHost(String eventHost)
+	{
+		this.eventHosts.add(eventHost);
+	}
+
+	/**
+	 * Get the list of guests invited to the event.
+	 * @pre 	true;
+	 * @post 	true;
+	 * @return 	the guests invited to the event.
+	 */
+	public List<String> getGuests()
+	{
+		return this.eventGuests;
+	}
+	
+	/**
+	 * Invite a guest to the event.
+	 * @pre 	true;
+	 * @post 	this.eventGuests.size() += 1;
+	 * @param 	guestList - the list of guests for the event.
+	 */
+	public void addGuest(String eventGuest)
+	{
+		this.eventGuests.add(eventGuest);
+	}
+	
+	/**
+	 * Invite a list of guests to the event
+	 * @pre 	true;
+	 * @post 	this.eventGuests.size() += eventGuests.size();
+	 * @param 	guestList - the list of guests for the event.
+	 */
+	public void addGuests(List<String> eventGuests)
+	{
+		this.eventGuests.addAll(eventGuests);
 	}
 
 	/**
@@ -326,46 +384,24 @@ public class Event implements Serializable {
 	}
 	
 	/**
-	 * Retrieves the times suggested for an event.
-	 * @pre true;
-	 * @post true;
-	 * @return the times suggested for an event.
+	 * Get the list of comments for the event.
+	 * @pre 	true;
+	 * @post 	true;
+	 * @return 	the eventComments
 	 */
-	public List<MonthContainer> getTimeSheet()
+	public List<String> getComments()
 	{
-		return this.timeSheet;
+		return eventComments;
 	}
-	
+
 	/**
-	 * Set the times suggested for an event.
-	 * @pre true;
-	 * @post this.timeSheet.equals(timeSheet);
-	 * @param timeSheet - the times suggested for an event.
+	 * Add a comment to the event. 
+	 * @pre		String != null && String != ""
+	 * @post 	true
+	 * @param 	eventComments 	an eventComment to add
 	 */
-	public void setTimeSheet(List<MonthContainer> timeSheet)
+	public void addComment(String eventComment)
 	{
-		this.timeSheet = timeSheet;
-	}
-	
-	/**
-	 * Retrieves the guests invited to the event.
-	 * @pre true;
-	 * @post true;
-	 * @return the guests invited to the event.
-	 */
-	public List<String> getGuests()
-	{
-		return this.eventGuests;
-	}
-	
-	/**
-	 * Set the guests invited to the event.
-	 * @pre true;
-	 * @post this.eventGuests.equals(guestList);
-	 * @param guestList - the list of guests for the event.
-	 */
-	public void setGuests(List<String> guestList)
-	{
-		this.eventGuests = guestList;
+		this.eventComments.add(eventComment);
 	}
 }

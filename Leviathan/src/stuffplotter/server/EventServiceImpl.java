@@ -77,7 +77,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		dbstore.store(scheduler);
 		Event event = dbstore.fetchEvent(pEventId);
 		event.setEventScheduler(scheduler.getId());
-		event.setEventStatus(Event.Status.PROPOSED);
+		event.setStatus(Event.Status.PROPOSED);
 		dbstore.store(event);
 	}
 	
