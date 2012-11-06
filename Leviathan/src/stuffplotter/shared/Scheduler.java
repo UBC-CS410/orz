@@ -17,35 +17,43 @@ import com.googlecode.objectify.annotation.Entity;
 public class Scheduler implements Serializable
 {	
 	@Id private Long id;
-	private Long eventId;
-	private List<Long> eventAvailabilities;
-	private Date eventFinalized;
+	private List<Long> availabilities;
+	private Date result;
 	
 	/**
-	 * No Arg Constructor for Scheduler
+	 * No arg Constructor for Scheduler
+	 * 
+	 * @pre		true
+	 * @post 	true
+	 * 
 	 */
 	public Scheduler()
 	{
-		
+		this.availabilities = new ArrayList<Long>();
 	}
 	
 	/**
-	 * Constructor for Scheduler
+	 * Method to get the id of the scheduler
 	 * 
 	 * @pre		true
 	 * @post	true
 	 * 
-	 * @param 	pEventId			the id of the event for which the scheduler is responsible for
-	 * 			pMonthContainers	the list of month containers that contains the proposed times for the event
-	 * 
+	 * @return	the data store generated id of the scheduler
 	 */
-	public Scheduler(Long pEventId)
-	{
-		this.eventId = pEventId;
+	public Long getId() {
+		return this.id;
 	}
 	
+	/**
+	 * Method to add an availability to the scheduler
+	 * 
+	 * @pre		true
+	 * @post	this.availabilities size is increased by 1
+	 * 
+	 * @param 	pAvailability		another possible time slot for the invited to submit their availability
+	 */
 	public void addAvailability(Availability pAvailability)
 	{
-		this.eventAvailabilities.add(pAvailability.getId());
+		this.availabilities.add(pAvailability.getId());
 	}
 }

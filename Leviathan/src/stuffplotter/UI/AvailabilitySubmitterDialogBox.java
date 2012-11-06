@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.client.EventService;
+import stuffplotter.client.EventServiceAsync;
 import stuffplotter.misc.CloseClickHandler;
 import stuffplotter.shared.DayContainer;
+import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -27,15 +32,20 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 	final private VerticalPanel vertPanel = new VerticalPanel();
 	// horizontal panel to display all the DaySelections objects
 	final private HorizontalPanel horPanel = new HorizontalPanel();
+	// event service used to submit availability
+	final private EventServiceAsync evtSvc = GWT.create(EventService.class);
+	// username of the user accessing the avability submitter
+	final private String userName;
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public AvailabilitySubmitterDialogBox()
+	public AvailabilitySubmitterDialogBox(String userName)
 	{
 		super();
+		this.userName = userName;
 		initializeWindow();
 	}
 	
@@ -103,9 +113,40 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				List<MonthContainer> selectedValues = retrieveSubmissions();
-				String result = "";
+				final List<MonthContainer> selectedValues = retrieveSubmissions();
+				
+				Event dummy = new Event(userName);
+				evtSvc.createEvent(dummy, new AsyncCallback<Event>()
+						{
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert(caught.toString());
+							}
+		
+							@Override
+							public void onSuccess(Event result) {
+								evtSvc.addScheduler(result.getId(), selectedValues, new AsyncCallback<Void>()
+										{
+											@Override
+											public void onFailure(Throwable caught) {
+												caught.printStackTrace();
+												Window.alert(caught.toString());
+												// make a call to delete event
+											}
+						
+											@Override
+											public void onSuccess(Void result) {
+												Window.alert("Dummy event is now proposed:\n" +
+														"See data store for its Scheduler Id and its list of Availability Ids (Timeslots)");
+											}
+										});
+								
+							}
+						});
+				
 				// temporary for each loop to help display selected intervals
+				/*
+				String result = "";
 				for(MonthContainer value : selectedValues)
 				{
 					String month = value.getMonth().displayName();
@@ -124,9 +165,10 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 					}
 					
 				}
+				*/
 				
 				hide();
-				Window.alert(result);
+				//Window.alert(result);
 			}
 		});
 		panel.add(submitBtn);

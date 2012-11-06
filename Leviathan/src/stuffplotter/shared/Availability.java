@@ -14,6 +14,9 @@ public class Availability implements Serializable
 	private Date time;
 	private Integer votes;
 	
+	/**
+	 * No arg constructor for Availability class
+	 */
 	public Availability()
 	{
 

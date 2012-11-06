@@ -32,7 +32,7 @@ public interface EventServiceAsync {
 	 * 			eventTimes		the list of month containers that contains proposed times for the event
 	 * 			callback		the callback object	
 	 */
-	void createScheduler(Long eventId, List<MonthContainer> eventTimes, AsyncCallback<Void> callback);
+	void addScheduler(Long eventId, List<MonthContainer> eventTimes, AsyncCallback<Void> callback);
 	
 	
 	/**

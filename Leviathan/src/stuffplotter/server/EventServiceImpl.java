@@ -1,5 +1,6 @@
 package stuffplotter.server;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -38,16 +39,18 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 	
 	/**
-	 * Adds a Scheduler to an Event
-	 * @pre 	true
-	 * @post	true
-	 * @param 	pEventId			the id of the event
+	 * Method to add a Scheduler to an Event
+	 * 
+	 * @pre 	pMonthContainers != null
+	 * @post	sets eventScheduler and eventStatus for the persistent event whose key is pEventId
+	 * 
+	 * @param 	pEventId			the id of the event that the scheduler is bound to
 	 * 			pMonthContainers	the list of month containers containing the proposed times for the event
 	 */
 	@Override
-	public void createScheduler(Long pEventId, List<MonthContainer> pMonthContainers)
+	public void addScheduler(Long pEventId, List<MonthContainer> pMonthContainers)
 	{
-		Scheduler scheduler = new Scheduler(pEventId);
+		Scheduler scheduler = new Scheduler();
 		
 		for (MonthContainer mc : pMonthContainers)
 		{
@@ -59,7 +62,11 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 					int month = mc.getMonth().getIndex();
 					int day = Integer.parseInt(dc.getDay());
 					int hour = dc.getTimeSlots().get(i);
-					Date date = new Date(year, month, day, hour, 0);
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.set(year, month, day, hour, 0);
+					Date date = calendar.getTime();
+					
 					Availability availability = new Availability(date);
 					dbstore.store(availability);
 					scheduler.addAvailability(availability);
@@ -68,6 +75,10 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		}
 		
 		dbstore.store(scheduler);
+		Event event = dbstore.fetchEvent(pEventId);
+		event.setEventScheduler(scheduler.getId());
+		event.setEventStatus(Event.Status.PROPOSED);
+		dbstore.store(event);
 	}
 	
 	

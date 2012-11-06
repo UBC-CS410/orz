@@ -21,8 +21,7 @@ public class Event implements Serializable {
 	
 	public enum Status 
 	{
-		CREATED, 	// Before setting up Scheduler
-		INVITED, 	// Scheduler is set up and invites are sent
+		PROPOSED, 	// Scheduler is set up, invites can be sent
 		SCHEDULED, 	// Date is finalized 
 		FINISHED	// Event is completed and open to scoring
 	};
@@ -75,7 +74,6 @@ public class Event implements Serializable {
 	public Event(String eventOwner)
 	{
 		this.eventOwner = eventOwner;
-		this.eventStatus = Status.CREATED;
 	}
 	
 	/**
@@ -243,6 +241,46 @@ public class Event implements Serializable {
 		this.eventCost = eventCost;
 	}
 	
+	/**
+	 * @pre true;
+	 * @post true;
+	 * @return the eventScheduler
+	 */
+	public Long getEventScheduler()
+	{
+		return eventScheduler;
+	}
+
+	/**
+	 * @pre		eventScheduler is a valid data store id
+	 * @post 	this.eventScheduler == eventScheduler
+	 * @param 	eventScheduler 	the eventScheduler to set
+	 */
+	public void setEventScheduler(Long eventScheduler)
+	{
+		this.eventScheduler = eventScheduler;
+	}
+
+	/**
+	 * @pre 	true;
+	 * @post 	true;
+	 * @return 	the eventStatus
+	 */
+	public Status getEventStatus()
+	{
+		return eventStatus;
+	}
+
+	/**
+	 * @pre		true;
+	 * @post	this.eventStatus == eventStatus
+	 * @param 	eventStatus the eventStatus to set
+	 */
+	public void setEventStatus(Status eventStatus)
+	{
+		this.eventStatus = eventStatus;
+	}
+
 	/**
 	 * Retrieves the type of the event.
 	 * @pre true;

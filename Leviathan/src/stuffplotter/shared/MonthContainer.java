@@ -1,6 +1,7 @@
 package stuffplotter.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.UI.MonthPanel.Month;
@@ -15,8 +16,17 @@ public class MonthContainer implements Serializable
 	private List<DayContainer> days;
 	
 	/**
+	 * No arg constructor for MonthContainer
+	 * @pre		true;
+	 * @post 	true;
+	 */
+	public MonthContainer() {
+		
+	}
+	
+	/**
 	 * Constructor for a month object.
-	 * @pre month != null && year != null;
+	 * @pre month != null && year != null && days != null;
 	 * @post this.month.equals(month) && this.year.equals(year) &&
 	 * 		 this.days.equals(days);
 	 * @param month - the month.

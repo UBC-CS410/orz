@@ -9,8 +9,10 @@ import stuffplotter.UI.AvailabilitySubmitterDialogBox;
 import stuffplotter.UI.EventCreationDialogBox;
 import stuffplotter.UI.EventLocationSearchPanel;
 import stuffplotter.UI.FriendFinderDialogBox;
+import stuffplotter.UI.MonthPanel.Month;
 import stuffplotter.UI.TopRightPanel;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.DayContainer;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
 
@@ -129,13 +131,13 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		
-		final Button availBtn = new Button("Avail");
+		final Button availBtn = new Button("Test Setup Scheduler (also submit availability UI)");
 		availBtn.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				AvailabilitySubmitterDialogBox availSubmitter = new AvailabilitySubmitterDialogBox();
+				AvailabilitySubmitterDialogBox availSubmitter = new AvailabilitySubmitterDialogBox(account.getUserName());
 				availSubmitter.show();
 			}
 		});
@@ -150,46 +152,6 @@ public class Leviathan implements EntryPoint
 			}
 		});
 		
-		
-		final Button createEventBtn2 = new Button("Create Dummy Event");
-		createEventBtn2.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				EventServiceAsync eventService = GWT.create(EventService.class);
-				Event newEvent = new Event(account.getUserName());
-				eventService.createEvent(newEvent, new AsyncCallback<Event>()
-						{
-							@Override
-							public void onFailure(Throwable caught) {
-								Window.alert(caught.toString());
-							}
-		
-							@Override
-							public void onSuccess(Event result) {
-								Window.alert("Event " + result.getId() + " was created.");
-								testEventId = result.getId();
-							}
-						});
-				
-				List<MonthContainer> newTimes = new ArrayList<MonthContainer>();
-				eventService.createScheduler(testEventId, newTimes, new AsyncCallback<Void>()
-						{
-							@Override
-							public void onFailure(Throwable caught) {
-								Window.alert(caught.toString());
-							}
-		
-							@Override
-							public void onSuccess(Void result) {
-								Window.alert("Scheduler was added to dummy event.");
-							}
-						});
-			}
-		});
-		
-
 		final Button findFriends = new Button("Find Friends");
 		
 		
@@ -364,7 +326,6 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("addExp").add(lvlView);
 		RootPanel.get("eventCreation").add(createEventBtn);
-		RootPanel.get("eventCreation").add(createEventBtn2);
 		RootPanel.get("availSub").add(availBtn);
 		RootPanel.get("friendFinder").add(findFriends);
 		RootPanel.get("friendFinder").add(testInput);
