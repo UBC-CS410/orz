@@ -35,6 +35,7 @@ public class Account implements Serializable {
 	private List<String> userFriends = new ArrayList<String>();
 	private List<String> pendingFriends = new ArrayList<String>();
 	private List<Long> userEvents = new ArrayList<Long>();
+	private List<Notification> userNotification = new ArrayList<Notification>();
 
 	/* Record information */
 	private int userLevel;
@@ -63,10 +64,13 @@ public class Account implements Serializable {
 
 		this.userFriends = new ArrayList<String>();
 		this.userEvents = new ArrayList<Long>();
+		this.userNotification = new ArrayList<Notification>();
 
 		this.userLevel = 0;
 		this.userExperience = 0;
 		this.userAchievements = new ArrayList<Achievement>();
+		
+		this.userTitle = "Newbie";
 	}
 
 	/**
@@ -302,6 +306,15 @@ public class Account implements Serializable {
 			return this.userFriends.add(userId);
 		}
 		return false;
+	}
+	
+	
+	public List<Notification>  getUserNotification(){
+		return this.userNotification;
+	}
+	
+	public String getUserTitle(){
+		return this.userTitle;
 	}
 
 
