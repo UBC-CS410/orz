@@ -84,7 +84,7 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	@Override
 	public void retrieveSubmission(Event event)
 	{
-		//event.setTimeSheet(this.timeSheet.retrieveSubmission());
+		event.setTimeSheet(this.timeSheet.retrieveSubmission());
 	}
 }
 

@@ -97,7 +97,7 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 	@Override
 	public void retrieveSubmission(Event event)
 	{
-		event.addGuests(this.getSelectedFriends());
+		event.setGuests(this.getSelectedFriends());
 	}
 	
 	/**

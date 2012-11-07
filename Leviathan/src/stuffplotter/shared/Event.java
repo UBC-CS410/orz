@@ -2,34 +2,48 @@ package stuffplotter.shared;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-
-import java.util.Vector;
 
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import com.google.gwt.maps.client.geom.LatLng;
 import com.googlecode.objectify.annotation.Entity;
 
 /**
  * Class to hold all the information for an event.
  */
 @Entity
-public class Event implements Serializable {
-	
+public class Event implements Serializable
+{	
 	public enum Status 
 	{
-		PROPOSED, 	// Scheduler is set up, invites can be sent
-		SCHEDULED, 	// Date is finalized 
-		FINISHED	// Event is completed and open to scoring
+		/**
+		 * Scheduler is set up, invites can be sent.
+		 */
+		PROPOSED,
+		
+		/**
+		 * Date for event is finalized.
+		 */
+		SCHEDULED,
+		
+		/**
+		 * Event is completed and open to scoring.
+		 */
+		FINISHED
 	};
 	
 	public enum Span 
 	{
-		HOURS, 		// Single day event
-		DAYS		// Multiple day event
+		/**
+		 * For single day event.
+		 */
+		HOURS,
+		
+		/**
+		 * For a multiple day event.
+		 */
+		DAYS
 	};
 	
 	@Id private Long eventId;
@@ -47,7 +61,11 @@ public class Event implements Serializable {
 	private Status eventStatus;
 	private Span eventSpan;
 	
-	//private List<MonthContainer> timeSheet;
+	/**
+	 * Proposed times for an event.  Temporary stored in the event class until an
+	 * associated Scheduler is created. 
+	 */
+	@Transient private List<MonthContainer> timeSheet;
 	private List<String> eventHosts;
 	private List<String> eventGuests;
 	
@@ -212,7 +230,7 @@ public class Event implements Serializable {
 	/**
 	 * Set the duration of the event.
 	 * @pre eventDuration >= 0;
-	 * @post this.eventDuration == eventDuration;
+	 * @post this.eventDuration.equals(eventDuration);
 	 * @param eventDuration - the duration of the event.
 	 */
 	public void setDuration(String eventDuration)
@@ -224,7 +242,7 @@ public class Event implements Serializable {
 	 * Retrieves the cost of the event.
 	 * @pre true;
 	 * @post true;
-	 * @return the eventCost
+	 * @return the cost of the event.
 	 */
 	public String getCost()
 	{
@@ -243,6 +261,7 @@ public class Event implements Serializable {
 	}
 	
 	/**
+	 * Get the ID of the EventSchedular associated with the event.
 	 * @pre true;
 	 * @post true;
 	 * @return the eventScheduler
@@ -253,6 +272,7 @@ public class Event implements Serializable {
 	}
 
 	/**
+	 * Set the EventSchedular for the event.
 	 * @pre		eventScheduler is a valid data store id
 	 * @post 	this.eventScheduler == eventScheduler
 	 * @param 	eventScheduler 	the eventScheduler to set
@@ -266,7 +286,7 @@ public class Event implements Serializable {
 	 * Get the status of the event.
 	 * @pre 	true;
 	 * @post 	true;
-	 * @return 	the eventStatus
+	 * @return 	the eventStatus.
 	 */
 	public Status getStatus()
 	{
@@ -277,7 +297,7 @@ public class Event implements Serializable {
 	 * Update the status of the event.
 	 * @pre		true;
 	 * @post	this.eventStatus == eventStatus
-	 * @param 	eventStatus the eventStatus to set
+	 * @param 	eventStatus - the status of the event.
 	 */
 	public void setStatus(Status eventStatus)
 	{
@@ -285,7 +305,7 @@ public class Event implements Serializable {
 	}
 	
 	/**
-	 * Get the list of event hosts
+	 * Get the list of event hosts.
 	 * @pre 	true;
 	 * @post 	true;
 	 * @return 	the eventHosts
@@ -296,10 +316,10 @@ public class Event implements Serializable {
 	}
 
 	/**
-	 * Add a co-host to the event
+	 * Add a co-host to the event.
 	 * @pre		true;
 	 * @post 	this.eventHosts.size() += 1;
-	 * @param 	eventHosts the eventHosts to set
+	 * @param 	eventHost - the eventHost to add.
 	 */
 	public void addHost(String eventHost)
 	{
@@ -321,7 +341,7 @@ public class Event implements Serializable {
 	 * Invite a guest to the event.
 	 * @pre 	true;
 	 * @post 	this.eventGuests.size() += 1;
-	 * @param 	guestList - the list of guests for the event.
+	 * @param 	eventGuest - guest to add to the event.
 	 */
 	public void addGuest(String eventGuest)
 	{
@@ -332,11 +352,11 @@ public class Event implements Serializable {
 	 * Invite a list of guests to the event
 	 * @pre 	true;
 	 * @post 	this.eventGuests.size() += eventGuests.size();
-	 * @param 	guestList - the list of guests for the event.
+	 * @param 	eventGuests - the list of guests for the event.
 	 */
-	public void addGuests(List<String> eventGuests)
+	public void setGuests(List<String> eventGuests)
 	{
-		this.eventGuests.addAll(eventGuests);
+		this.eventGuests = eventGuests;
 	}
 
 	/**
@@ -398,10 +418,32 @@ public class Event implements Serializable {
 	 * Add a comment to the event. 
 	 * @pre		String != null && String != ""
 	 * @post 	true
-	 * @param 	eventComments 	an eventComment to add
+	 * @param 	eventComments - an eventComment to add.
 	 */
 	public void addComment(String eventComment)
 	{
 		this.eventComments.add(eventComment);
+	}
+
+	/**
+	 * Method to get the proposed times for an event.
+	 * @pre true;
+	 * @post true;
+	 * @param retrieveSubmission
+	 */
+	public List<MonthContainer> getTimeSheet()
+	{
+		return this.timeSheet;
+	}
+	
+	/**
+	 * Method to set the proposed times for an event.
+	 * @pre retrieveSubmission != null && retrieveSubmission.size() > 0;
+	 * @post true;
+	 * @param proposedTimes - proposed times for the event.
+	 */
+	public void setTimeSheet(List<MonthContainer> proposedTimes)
+	{
+		this.timeSheet = proposedTimes;
 	}
 }
