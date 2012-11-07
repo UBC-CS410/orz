@@ -158,7 +158,7 @@ public class EventCreationDialogBox extends DialogBox
 					public void onSuccess(Event result)
 					{
 						hide();
-						new NotificationDialogBox(taskName, "The Event: result.getName() " +
+						new NotificationDialogBox(taskName, "The Event: " + result.getName() +
 												  "was created successfully!");
 					}
 					
