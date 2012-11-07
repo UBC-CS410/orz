@@ -15,16 +15,20 @@ public abstract class Notification
 	 */
 	private Long id;
 	private NotificationType type;
+	private String notificationFor;
+	private String notificationFrom;
 	
 	/**
 	 * Constructor for a Notification.
 	 * @pre true;
 	 * @post true;
 	 */
-	public Notification(Long id, NotificationType type)
+	public Notification(Long id, NotificationType type, String fromUser, String forUser)
 	{
 		this.id = id;
 		this.type = type;
+		this.notificationFrom = fromUser;
+		this.notificationFor = forUser;
 	}
 	
 	/**
@@ -47,6 +51,28 @@ public abstract class Notification
 	public NotificationType getType()
 	{
 		return this.type;
+	}
+	
+	/**
+	 * Retrieve the name of the user who generated the notification.
+	 * @pre true;
+	 * @post true;
+	 * @return the name of the user who generated the notification.
+	 */
+	public String getFrom()
+	{
+		return this.notificationFrom;
+	}
+	
+	/**
+	 * Retrieve the name of the user who the notification is for.
+	 * @pre true;
+	 * @post true;
+	 * @return the name of the user who the notification is for.
+	 */
+	public String getFor()
+	{
+		return this.notificationFor;
 	}
 	
 	/**
