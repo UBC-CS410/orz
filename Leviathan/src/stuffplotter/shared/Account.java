@@ -302,11 +302,9 @@ public class Account implements Serializable
 	 */
 	public boolean confirmFriendReq(String userId)
 	{
-		if(this.pendingFriends.remove(userId))
-		{
-			return this.userFriends.add(userId);
-		}
-		return false;
+		this.pendingFriends.remove(userId);
+		return this.userFriends.add(userId);
+
 	}
 	
 	

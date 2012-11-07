@@ -18,6 +18,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class EventServiceImpl extends RemoteServiceServlet implements EventService
 {
 	private DatabaseStore dbstore = new DatabaseStore();
+	private EmailService email = new EmailService();
 	
 	/**
 	 * Adds an Event to the data store and the host's eventList
@@ -34,7 +35,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		Account account = dbstore.fetchAccount(pEvent.getOwner());
 		account.addUserEvent(event.getId());
 		dbstore.store(account);
-		
+		email.sendEvent(event);
 		return event;
 	}
 	
