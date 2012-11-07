@@ -17,8 +17,8 @@ import com.googlecode.objectify.annotation.Entity;
  */
 
 @Entity
-public class Account implements Serializable {
-
+public class Account implements Serializable
+{
 	/* Session information */
 	@Transient private boolean userSession;
 	@Transient private String userLogin;
@@ -35,7 +35,7 @@ public class Account implements Serializable {
 	private List<String> userFriends = new ArrayList<String>();
 	private List<String> pendingFriends = new ArrayList<String>();
 	private List<Long> userEvents = new ArrayList<Long>();
-	private List<Notification> userNotification = new ArrayList<Notification>();
+	private List<Notification> userNotifications = new ArrayList<Notification>();
 
 	/* Record information */
 	private int userLevel;
@@ -58,13 +58,14 @@ public class Account implements Serializable {
 	 * @param pName 	google account nickname
 	 * @param pEmail	google account email
 	 */
-	public Account(String pName, String pEmail) {
+	public Account(String pName, String pEmail)
+	{
 		this.userName = pName;
 		this.userEmail = pEmail;
 
 		this.userFriends = new ArrayList<String>();
 		this.userEvents = new ArrayList<Long>();
-		this.userNotification = new ArrayList<Notification>();
+		this.userNotifications = new ArrayList<Notification>();
 
 		this.userLevel = 0;
 		this.userExperience = 0;
@@ -309,11 +310,13 @@ public class Account implements Serializable {
 	}
 	
 	
-	public List<Notification>  getUserNotification(){
-		return this.userNotification;
+	public List<Notification>  getUserNotifications()
+	{
+		return this.userNotifications;
 	}
 	
-	public String getUserTitle(){
+	public String getUserTitle()
+	{
 		return this.userTitle;
 	}
 

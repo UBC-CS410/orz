@@ -1,6 +1,9 @@
 package stuffplotter.UI;
 
+import java.util.List;
+
 import stuffplotter.shared.Account;
+import stuffplotter.shared.Notification;
 
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -13,6 +16,7 @@ public class TopRightPanel extends HorizontalPanel
 {
 	private String userName;
 	private Anchor logoutLink;
+	private List<Notification> notifications;
 	
 	/**
 	 * Constructor for TopRightPanel.
@@ -26,6 +30,7 @@ public class TopRightPanel extends HorizontalPanel
 	{
 		super();
 		this.userName = userAccount.getUserName();
+		this.notifications = userAccount.getUserNotifications();
 		this.logoutLink = new Anchor("Logout", userAccount.getLogout());
 		this.initializeUI();
 	}
@@ -37,8 +42,10 @@ public class TopRightPanel extends HorizontalPanel
 	 */
 	private void initializeUI()
 	{
+		this.add(new Label("Notifications"));
 		this.add(new Label("Welcome " + this.userName + "!"));
 		this.add(new Label("|"));
 		this.add(this.logoutLink);
+		this.add(new UserNotificationsPopupPanel(this.notifications));
 	}
 }

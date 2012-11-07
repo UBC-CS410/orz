@@ -1,5 +1,7 @@
 package stuffplotter.shared;
 
+import com.google.gwt.user.client.ui.SimplePanel;
+
 /**
  * Class to hold the information for a user notification.
  */
@@ -7,7 +9,7 @@ public abstract class Notification
 {
 	public enum NotificationType
 	{
-		FRIENDREQUEST, EVENTINVITE;
+		FRIENDREQUEST, EVENTINVITATION;
 	}
 	
 	/**
@@ -20,8 +22,13 @@ public abstract class Notification
 	
 	/**
 	 * Constructor for a Notification.
-	 * @pre true;
-	 * @post true;
+	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;
+	 * @post this.id == id && this.type.equals(type) &&
+	 * 		 this.notificationFrom.equals(fromUser) && this.notificationFor.equals(forUser);
+	 * @param id - the ID of what generated the notification.
+	 * @param type - the type of the notification.
+	 * @param fromUser - the user the generated the notification.
+	 * @param forUser - the user the notification is for.
 	 */
 	public Notification(Long id, NotificationType type, String fromUser, String forUser)
 	{
@@ -81,5 +88,5 @@ public abstract class Notification
 	 * @post true;
 	 * @return the message for the notification.
 	 */
-	public abstract String generateMessage();
+	public abstract SimplePanel generateMessage();
 }
