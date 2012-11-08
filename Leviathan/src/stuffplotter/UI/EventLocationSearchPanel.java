@@ -39,8 +39,8 @@ public class EventLocationSearchPanel extends VerticalPanel
 		super();
 		this.googleMap = map;
 		this.eventInfo = eventInfo;
-		this.defaultPageResults();
 		this.initializeUI();
+		this.defaultPageResults();
 	}
 	
 	/**
@@ -54,9 +54,11 @@ public class EventLocationSearchPanel extends VerticalPanel
 		HorizontalPanel topSearchElementsHolder = new HorizontalPanel();
 		TextBox searchBox = new TextBox();
 		Button searchButton = new Button("Search");
-		this.initializeSearchButton(searchBox, searchButton);
+		Button clearButton = new Button("Clear");
+		this.initializeSearchButtons(searchBox, searchButton, clearButton);
 		topSearchElementsHolder.add(searchBox);
 		topSearchElementsHolder.add(searchButton);
+		topSearchElementsHolder.add(clearButton);
 		
 		// create bottom section
 		HorizontalPanel botSearchElementsHolder = new HorizontalPanel();
@@ -110,8 +112,9 @@ public class EventLocationSearchPanel extends VerticalPanel
 	 * @post true;
 	 * @param searchBox - the TextBox to get input from the user for a location.
 	 * @param searchButton - the Button to press when submitting query.
+	 * @param clearButton - the Button to clear search results.
 	 */
-	private void initializeSearchButton(TextBox searchBox, Button searchButton)
+	private void initializeSearchButtons(TextBox searchBox, Button searchButton, Button clearButton)
 	{
 		final TextBox searchInput = searchBox;
 		searchButton.addClickHandler(new ClickHandler()
@@ -150,6 +153,16 @@ public class EventLocationSearchPanel extends VerticalPanel
 				Geocoder geocoder = new Geocoder();
 				geocoder.getLocations(searchInput.getText(), callback);
 			}
+		});
+		
+		clearButton.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				searchInput.setText("");
+				defaultPageResults();
+			}	
 		});
 	}
 	
@@ -239,10 +252,13 @@ public class EventLocationSearchPanel extends VerticalPanel
 	private void defaultPageResults()
 	{
 		locationsFound = null;
+		this.googleMap.clearOverlays();
+		this.numOfResults.setText("Type in the location of the event.");
 		this.eventInfo.setLocationText("");
 		this.eventInfo.setCoordinates(null);
 		currentLocationIndex = 0;
 		totalNumLocations = 0;
+		this.disablePagingButtons();
 	}
 	
 	/**

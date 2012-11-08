@@ -4,6 +4,7 @@ import java.util.List;
 
 import stuffplotter.shared.Notification;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
@@ -34,10 +35,18 @@ public class UserNotificationsPopupPanel extends PopupPanel
 	private void initializeUI()
 	{
 		userList = new FlexTable();
-		
-		for(int i = 0; i < userNotifications.size(); i++)
+		if(userNotifications.isEmpty())
 		{
-			userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
+			userList.setWidget(0, 0, new Label("No new notifications."));
 		}
+		else
+		{
+			for(int i = 0; i < userNotifications.size(); i++)
+			{
+				userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
+			}
+		}
+		
+		this.add(userList);
 	}
 }
