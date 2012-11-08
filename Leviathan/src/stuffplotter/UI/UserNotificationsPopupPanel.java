@@ -39,7 +39,5 @@ public class UserNotificationsPopupPanel extends PopupPanel
 		{
 			userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
 		}
-		
-		this.setGlassEnabled(true);
 	}
 }
