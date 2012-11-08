@@ -24,7 +24,7 @@ public class FriendNotification extends Notification
 	public SimplePanel generateMessage()
 	{
 		SimplePanel notificationPanel = new SimplePanel();
-		notificationPanel.add(new Label("Friend request by " + this.getFrom()));
+		notificationPanel.add(new Label("You have a friend request from " + this.getFrom()));
 		return notificationPanel;
 	}
 

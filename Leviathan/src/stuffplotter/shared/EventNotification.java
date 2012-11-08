@@ -29,7 +29,7 @@ public class EventNotification extends Notification
 	public SimplePanel generateMessage()
 	{
 		SimplePanel notificationPanel = new SimplePanel();
-		notificationPanel.add(new Label("Event by " + this.getFrom()));
+		notificationPanel.add(new Label("You have been invited to an event by " + this.getFrom()));
 		return notificationPanel;
 	}
 
