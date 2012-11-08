@@ -14,6 +14,7 @@ import com.googlecode.objectify.NotFoundException;
 public class AccountServiceImpl extends RemoteServiceServlet implements AccountService {
 	
 	private DatabaseStore dbstore = new DatabaseStore();
+	private EmailService email = new EmailService();
 
 	@Override
 	public Account login(String requestUri) {
@@ -43,12 +44,26 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 
 	@Override
 	public void addFriend(Account acc, String friend) {
-		Account temp = dbstore.fetchAccount(friend);
-		if(!temp.getPendingFriends().contains(acc.getUserName()))
+		Account temp = null;
+		try
 		{
-			temp.addPendingRequest(acc.getUserName());
-			dbstore.store(temp);	
+			 temp = dbstore.fetchAccount(friend);
 		}
+		catch(NotFoundException nfe) 
+		{
+		      temp = new Account(friend, friend+"@gmail.com");
+		      dbstore.store(temp); // register account
+		      email.sendNewUser(friend, acc.getUserName());
+		}
+		finally
+		{
+			if(!temp.getPendingFriends().contains(acc.getUserName()))
+			{
+				temp.addPendingRequest(acc.getUserName());
+				dbstore.store(temp);	
+			}
+		}
+
 		
 	}
 
