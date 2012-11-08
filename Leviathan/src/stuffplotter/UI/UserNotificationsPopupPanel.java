@@ -3,9 +3,16 @@ package stuffplotter.UI;
 import java.util.List;
 
 import stuffplotter.shared.Notification;
+
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 /**
  * Class to display a user's notifications 
@@ -13,6 +20,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 public class UserNotificationsPopupPanel extends PopupPanel
 {
 	private FlexTable userList;
+	private FocusPanel scrollHolder;
+	private ScrollPanel notificationHolder;
 	private List<Notification> userNotifications;
 	
 	/**
@@ -23,6 +32,8 @@ public class UserNotificationsPopupPanel extends PopupPanel
 	public UserNotificationsPopupPanel(List<Notification> notifications)
 	{
 		super(false);
+		this.scrollHolder = new FocusPanel();
+		this.notificationHolder = new ScrollPanel();
 		this.userNotifications = notifications;
 		initializeUI();
 	}
@@ -46,7 +57,36 @@ public class UserNotificationsPopupPanel extends PopupPanel
 				userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
 			}
 		}
+
+		this.scrollHolder.addBlurHandler(new BlurHandler()
+		{
+			@Override
+			public void onBlur(BlurEvent event)
+			{
+				hide();
+			}	
+		});
 		
-		this.add(userList);
+		this.notificationHolder.add(userList);
+		this.scrollHolder.add(notificationHolder);
+		this.add(scrollHolder);
+	}
+	
+	/**
+	 * Change the visibility of the notification window.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void toggleVisibility()
+	{
+		if(this.isShowing())
+		{
+			this.hide();
+		}
+		else
+		{
+			this.show();
+			this.scrollHolder.setFocus(true);
+		}
 	}
 }

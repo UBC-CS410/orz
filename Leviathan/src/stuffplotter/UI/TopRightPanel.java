@@ -19,6 +19,7 @@ public class TopRightPanel extends HorizontalPanel
 	private String userName;
 	private Anchor logoutLink;
 	private List<Notification> notifications;
+	private UserNotificationsPopupPanel popup;
 	
 	/**
 	 * Constructor for TopRightPanel.
@@ -33,6 +34,7 @@ public class TopRightPanel extends HorizontalPanel
 		super();
 		this.userName = userAccount.getUserName();
 		this.notifications = userAccount.getUserNotifications();
+		this.popup = new UserNotificationsPopupPanel(notifications);
 		this.logoutLink = new Anchor("Logout", userAccount.getLogout());
 		this.initializeUI();
 	}
@@ -50,8 +52,7 @@ public class TopRightPanel extends HorizontalPanel
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				UserNotificationsPopupPanel popup = new UserNotificationsPopupPanel(notifications);
-				popup.show();
+				popup.toggleVisibility();
 			}
 		});
 		
