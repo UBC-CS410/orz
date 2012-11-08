@@ -5,6 +5,8 @@ import java.util.List;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Notification;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -42,10 +44,21 @@ public class TopRightPanel extends HorizontalPanel
 	 */
 	private void initializeUI()
 	{
-		this.add(new Label("Notifications"));
+		Label notificationsLabel = new Label("Notifications");
+		notificationsLabel.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				UserNotificationsPopupPanel popup = new UserNotificationsPopupPanel(notifications);
+				popup.show();
+			}
+		});
+		
+		this.add(notificationsLabel);
+		this.add(new Label(" | "));
 		this.add(new Label("Welcome " + this.userName + "!"));
-		this.add(new Label("|"));
+		this.add(new Label(" | "));
 		this.add(this.logoutLink);
-		this.add(new UserNotificationsPopupPanel(this.notifications));
 	}
 }
