@@ -1,6 +1,4 @@
-package stuffplotter.UI;
-
-import java.util.List;
+package stuffplotter.ui.events;
 
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.Label;

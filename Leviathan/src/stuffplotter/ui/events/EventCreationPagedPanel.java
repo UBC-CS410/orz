@@ -1,4 +1,4 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;

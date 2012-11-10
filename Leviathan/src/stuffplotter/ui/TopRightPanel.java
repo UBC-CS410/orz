@@ -1,4 +1,4 @@
-package stuffplotter.UI;
+package stuffplotter.ui;
 
 import java.util.List;
 

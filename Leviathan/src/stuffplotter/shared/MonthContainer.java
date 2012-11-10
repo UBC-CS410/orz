@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.ui.events.MonthPanel.Month;
 
 /**
  * Class to hold the days selected for an event.

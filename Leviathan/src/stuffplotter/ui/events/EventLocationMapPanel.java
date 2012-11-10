@@ -1,4 +1,4 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;

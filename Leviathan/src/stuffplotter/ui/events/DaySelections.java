@@ -1,4 +1,4 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import java.util.ArrayList;
 import java.util.List;

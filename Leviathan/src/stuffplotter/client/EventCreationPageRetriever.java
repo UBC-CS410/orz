@@ -9,11 +9,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
-import stuffplotter.UI.EventDateSelectionPanel;
-import stuffplotter.UI.EventInfoInputPanel;
-import stuffplotter.UI.EventInfoPanel;
-import stuffplotter.UI.FriendSelectionPanel;
-import stuffplotter.UI.TimeSheetPanel;
+import stuffplotter.ui.events.EventDateSelectionPanel;
+import stuffplotter.ui.events.EventInfoInputPanel;
+import stuffplotter.ui.events.EventInfoPanel;
+import stuffplotter.ui.events.FriendSelectionPanel;
+import stuffplotter.ui.events.TimeSheetPanel;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.shared.MonthContainer;
 

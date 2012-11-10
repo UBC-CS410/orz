@@ -1,8 +1,8 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import java.util.Date;
 
-import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.ui.events.MonthPanel.Month;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Event;

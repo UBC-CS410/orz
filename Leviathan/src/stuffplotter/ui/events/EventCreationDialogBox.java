@@ -1,4 +1,4 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.EventService;
@@ -7,6 +7,7 @@ import stuffplotter.misc.CloseClickHandler;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
+import stuffplotter.ui.NotificationDialogBox;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -163,7 +164,7 @@ public class EventCreationDialogBox extends DialogBox
 					{
 						hide();
 						new NotificationDialogBox(taskName, "The Event: " + result.getName() +
-												  "was created successfully!");
+												  " was created successfully!");
 					}
 					
 					@Override

@@ -1,9 +1,9 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.ui.events.MonthPanel.Month;
 import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;

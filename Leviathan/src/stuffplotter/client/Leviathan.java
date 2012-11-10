@@ -3,11 +3,11 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.UI.AccountPanel;
-import stuffplotter.UI.AvailabilitySubmitterDialogBox;
-import stuffplotter.UI.EventCreationDialogBox;
-import stuffplotter.UI.FriendFinderDialogBox;
-import stuffplotter.UI.TopRightPanel;
+import stuffplotter.ui.events.EventCreationDialogBox;
+import stuffplotter.ui.TopRightPanel;
+import stuffplotter.ui.AccountPanel;
+import stuffplotter.ui.events.AvailabilitySubmitterDialogBox;
+import stuffplotter.ui.FriendFinderDialogBox;
 import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;

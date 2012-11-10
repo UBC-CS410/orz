@@ -1,4 +1,4 @@
-package stuffplotter.UI;
+package stuffplotter.ui.events;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
