@@ -9,9 +9,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("events")
-public interface EventService extends RemoteService {
-	Event createEvent(Event newEvent);
-	void addScheduler(Long eventId, List<MonthContainer> eventTimes);
+public interface EventService extends RemoteService
+{
+	Event createEvent(Event newEvent, List<MonthContainer> timeSlots);
 	
 	Event retrieveEvent(Long eventId);
 	void updateEvent(Event modifiedEvent);

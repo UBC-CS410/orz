@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import stuffplotter.client.EventCreationPageRetriever;
+
 import com.googlecode.objectify.annotation.Entity;
 
 /**
@@ -85,14 +87,20 @@ public class Event implements Serializable
 	}
 	
 	/**
-	 * Event constructor that sets basic information
-	 * @pre eventOwner != null;
-	 * @post this.eventOwner.equals(eventOwner);
-	 * @param eventOwner - the owner of the event.
+	 * Event constructor that sets information from EventCreationDialogBox UI.
+	 * @pre eventRetriever != null;
+	 * @post true;
+	 * @param eventRetriever - the EventCreationPageRetriever containing the information
+	 * 						   for the event.
 	 */
-	public Event(String eventOwner)
+	public Event(EventCreationPageRetriever eventRetriever)
 	{
-		this.eventOwner = eventOwner;
+		this.eventOwner = eventRetriever.getOwner();
+		this.eventName = eventRetriever.getName();
+		this.eventLocation = eventRetriever.getLocation();
+		this.eventCoordinates = eventRetriever.getCoordinates();
+		this.eventDuration = eventRetriever.getDuration();
+		this.eventCost = eventRetriever.getCost();
 	}
 	
 	/**

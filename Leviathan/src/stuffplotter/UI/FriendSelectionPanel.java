@@ -7,6 +7,7 @@ import java.util.List;
 
 import stuffplotter.client.AccountService;
 import stuffplotter.client.AccountServiceAsync;
+import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
@@ -86,42 +87,27 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 		this.add(friendList);
 		this.setSize(panelWidth, panelHeight);
 	}
-	
-	/**
-	 * Method to retrieve the submission information from the FlexTable.
-	 * @pre event != null;
-	 * @post true;
-	 * @param event - the Event to have its fields populated with before sending to
-	 * 				  the backend.
-	 */
-	@Override
-	public void retrieveSubmission(Event event)
-	{
-		event.setGuests(this.getSelectedFriends());
-	}
-	
+
 	/**
 	 * Helper method to retrieve the friends selected to invite to an event.
 	 * @pre true;
 	 * @post true;
-	 * @return the list of friends to invite to the event.
+	 * @return the list of friends (populated in the UI) to invite to the event.
 	 */
-	private List<String> getSelectedFriends()
+	public FlexTable getFriendList()
 	{
-		List<String> selectedFriends = new ArrayList<String>();
-		
-		Iterator<Widget> iterator = this.friendList.iterator();
-		
-		// while loop to retrieve the selected friends
-		while(iterator.hasNext())
-		{
-			CheckBox friend = (CheckBox) iterator.next();
-			if(friend.getValue())
-			{
-				selectedFriends.add(friend.getFormValue());
-			}
-		}
-		
-		return selectedFriends;
+		return this.friendList;
+	}
+	
+	/**
+	 * Method to accept an EventCreationPageVisitor and have it perform certain tasks.
+	 * @pre eventVisitor != null;
+	 * @post true;
+	 * @param eventVisitor - the EventCreationPageVisitor to accept.
+	 */
+	@Override
+	public void accept(EventCreationPageVisitor eventVisitor)
+	{
+		eventVisitor.visit(this);
 	}
 }

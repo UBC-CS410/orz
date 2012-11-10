@@ -1,5 +1,6 @@
 package stuffplotter.UI;
 
+import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
@@ -50,12 +51,13 @@ public class EventCreationPagedPanel extends DeckPanel
 	}
 	
 	/**
-	 * Helper method to retrieve the information for a new Event and add it to the database.
-	 * @pre createdEvent != null;
+	 * Helper method to retrieve the information for a new event.
+	 * @pre eventPageVisitor != null;
 	 * @post true;
-	 * @param createdEvent - the Event to fill with the information from the UI.
+	 * @param eventPageVisitor - the EventCreationPageVisitor to visit each of the
+	 * 							 EventCreationDialogBox pages.
 	 */
-	public void populateEventInfo(Event createdEvent)
+	public void retrieveEventInfo(EventCreationPageVisitor eventPageVisitor)
 	{	
 		// for loop to retrieve the information for the event from each page
 		for(int i = 0; i < this.getWidgetCount(); i++)
@@ -63,7 +65,7 @@ public class EventCreationPagedPanel extends DeckPanel
 			Widget page = this.getWidget(i);
 			if(page instanceof EventSubmittable)
 			{
-				((EventSubmittable) page).retrieveSubmission(createdEvent);
+				((EventSubmittable) page).accept(eventPageVisitor);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package stuffplotter.UI;
 import java.util.Date;
 
 import stuffplotter.UI.MonthPanel.Month;
+import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Event;
 
@@ -75,16 +76,25 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	}
 
 	/**
-	 * Method to retrieve the submission information from the TimeSheetPanel.
-	 * @pre event != null;
+	 * Retrieve the TimeSheetPanel for the EventDateSelectionPanel.
+	 * @pre true;
 	 * @post true;
-	 * @param event - the Event to have its fields populated with before sending to
-	 * 				  the backend.
+	 */
+	public TimeSheetPanel getTimeSheetPanel()
+	{
+		return this.timeSheet;
+	}
+	
+	/**
+	 * Method to accept an EventCreationPageVisitor and have it perform certain tasks.
+	 * @pre eventVisitor != null;
+	 * @post true;
+	 * @param eventVisitor - the EventCreationPageVisitor to accept.
 	 */
 	@Override
-	public void retrieveSubmission(Event event)
+	public void accept(EventCreationPageVisitor eventVisitor)
 	{
-		event.setTimeSheet(this.timeSheet.retrieveSubmission());
+		eventVisitor.visit(this);
 	}
 }
 

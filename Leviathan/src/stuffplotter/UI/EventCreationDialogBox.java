@@ -1,8 +1,10 @@
 package stuffplotter.UI;
 
+import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.EventService;
 import stuffplotter.client.EventServiceAsync;
 import stuffplotter.misc.CloseClickHandler;
+import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 
@@ -30,6 +32,7 @@ public class EventCreationDialogBox extends DialogBox
 	private Button nextBtn;
 	private HandlerRegistration nextAction;
 	private HandlerRegistration submitAction;
+	private EventCreationPageRetriever eventInfoRetriever;
 	private Event eventToCreate;
 	
 	/**
@@ -42,7 +45,7 @@ public class EventCreationDialogBox extends DialogBox
 		super();
 		VerticalPanel vertPanel = new VerticalPanel();
 		HorizontalPanel btnHolder = new HorizontalPanel();
-		this.eventToCreate = new Event(userAccount.getUserName());
+		this.eventInfoRetriever = new EventCreationPageRetriever(userAccount.getUserName());
 		this.eventPages = new EventCreationPagedPanel(userAccount);
 		vertPanel.add(this.eventPages);
 		this.initializeButtons();
@@ -57,14 +60,14 @@ public class EventCreationDialogBox extends DialogBox
 	}
 	
 	/**
-	 * Method to populate an Event with the values from the UI.
-	 * @pre event != null;
+	 * Method to retrieve the event information using an EventCreationPageVisitor.
+	 * @pre eventVisitor != null;
 	 * @post true;
-	 * @param event - the Event to populate with the values from the UI.
+	 * @param eventVisitor - the EventCreationPageVisitor to retrieve the event information.
 	 */
-	public void submitEvent(Event event)
+	public void retrieveEventInfo(EventCreationPageVisitor eventVisitor)
 	{
-		this.eventPages.populateEventInfo(event);
+		this.eventPages.retrieveEventInfo(eventVisitor);
 	}
 	
 	/**
@@ -150,9 +153,10 @@ public class EventCreationDialogBox extends DialogBox
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				submitEvent(eventToCreate);
+				retrieveEventInfo(eventInfoRetriever);
+				eventToCreate = new Event(eventInfoRetriever);
 				EventServiceAsync eventService = GWT.create(EventService.class);
-				eventService.createEvent(eventToCreate, new AsyncCallback<Event>()
+				eventService.createEvent(eventToCreate, eventInfoRetriever.getSelectedTimeSlots(), new AsyncCallback<Event>()
 				{	
 					@Override
 					public void onSuccess(Event result)

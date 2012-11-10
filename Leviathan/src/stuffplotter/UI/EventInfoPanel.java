@@ -1,7 +1,7 @@
 package stuffplotter.UI;
 
+import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
-import stuffplotter.shared.Event;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -21,6 +21,16 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable
 	public EventInfoPanel()
 	{
 		super();
+		this.initializeUI();
+	}
+
+	/**
+	 * Method to initialize the UI.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void initializeUI()
+	{
 		HorizontalPanel infoHolder = new HorizontalPanel();
 		eventInputPanel = new EventInfoInputPanel();
 		EventLocationMapPanel mapPanel = new EventLocationMapPanel(eventInputPanel);
@@ -28,22 +38,28 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable
 		infoHolder.add(mapPanel);
 		this.add(infoHolder);
 	}
-
+	
 	/**
-	 * Method to retrieve the submission information from the EventInfoPanel.
-	 * @pre event != null;
+	 * Method to retrieve the EventInfoInputPanel containing the general information for the
+	 * event.
+	 * @pre true;
 	 * @post true;
-	 * @param event - the Event to have its fields populated with before sending to
-	 * 				  the backend.
+	 * @return the EventInputPanel for the EventInfoPanel.
+	 */
+	public EventInfoInputPanel getEventInfoInputPanel()
+	{
+		return this.eventInputPanel;
+	}
+	
+	/**
+	 * Method to accept an EventCreationPageVisitor and have it perform certain tasks.
+	 * @pre eventVisitor != null;
+	 * @post true;
+	 * @param eventVisitor - the EventCreationPageVisitor to accept.
 	 */
 	@Override
-	public void retrieveSubmission(Event event)
+	public void accept(EventCreationPageVisitor eventVisitor)
 	{
-		event.setName(eventInputPanel.getName());
-		event.setLocation(eventInputPanel.getLocation());
-		event.setCoordinates(eventInputPanel.getMapCoordinatesAsArray());
-		event.setCost(eventInputPanel.getCost());
-		event.setDuration(eventInputPanel.getDuration());
-		event.setDescription(eventInputPanel.getDescription());
+		eventVisitor.visit(this);
 	}
 }
