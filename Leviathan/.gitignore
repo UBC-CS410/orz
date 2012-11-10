@@ -37,3 +37,4 @@ Thumbs.db
 /war/WEB-INF/appengine-generated
 /war/WEB-INF/classes
 /war/leviathan
+/war/stuffplotter.Leviathan.JUnit
