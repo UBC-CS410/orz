@@ -26,26 +26,21 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Class to make the window for submitting availabilities for an event.
  */
-public class AvailabilitySubmitterDialogBox extends DialogBox {
-
+public class AvailabilitySubmitterDialogBox extends DialogBox
+{
 	// vertical panel to hold all the components in top-down order
 	final private VerticalPanel vertPanel = new VerticalPanel();
 	// horizontal panel to display all the DaySelections objects
 	final private HorizontalPanel horPanel = new HorizontalPanel();
-	// event service used to submit availability
-	final private EventServiceAsync evtSvc = GWT.create(EventService.class);
-	// username of the user accessing the avability submitter
-	final private String userName;
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public AvailabilitySubmitterDialogBox(String userName)
+	public AvailabilitySubmitterDialogBox(List<MonthContainer> timeSlotsAvailable)
 	{
 		super();
-		this.userName = userName;
 		initializeWindow();
 	}
 	
@@ -114,38 +109,8 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 			public void onClick(ClickEvent event)
 			{
 				final List<MonthContainer> selectedValues = retrieveSubmissions();
-				
-				Event dummy = new Event(userName);
-				evtSvc.createEvent(dummy, new AsyncCallback<Event>()
-						{
-							@Override
-							public void onFailure(Throwable caught) {
-								Window.alert(caught.toString());
-							}
-		
-							@Override
-							public void onSuccess(Event result) {
-								evtSvc.addScheduler(result.getId(), selectedValues, new AsyncCallback<Void>()
-										{
-											@Override
-											public void onFailure(Throwable caught) {
-												caught.printStackTrace();
-												Window.alert(caught.toString());
-												// make a call to delete event
-											}
-						
-											@Override
-											public void onSuccess(Void result) {
-												Window.alert("Dummy event is now proposed:\n" +
-														"See data store for its Scheduler Id and its list of Availability Ids (Timeslots)");
-											}
-										});
-								
-							}
-						});
-				
-				// temporary for each loop to help display selected intervals
-				/*
+							
+				//temporary for each loop to help display selected intervals
 				String result = "";
 				for(MonthContainer value : selectedValues)
 				{
@@ -165,10 +130,9 @@ public class AvailabilitySubmitterDialogBox extends DialogBox {
 					}
 					
 				}
-				*/
 				
 				hide();
-				//Window.alert(result);
+				Window.alert(result);
 			}
 		});
 		panel.add(submitBtn);
