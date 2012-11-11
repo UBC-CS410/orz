@@ -11,6 +11,7 @@ public class ViewSelectorPanel extends HorizontalPanel
 	private Button homeBtn;
 	private Button accountBtn;
 	private Button eventsBtn;
+	private Button friendsBtn;
 	private Button achievementsBtn;
 	
 	/**
@@ -34,11 +35,13 @@ public class ViewSelectorPanel extends HorizontalPanel
 		this.homeBtn = new Button("Home");
 		this.accountBtn = new Button("Account");
 		this.eventsBtn = new Button("Events");
+		this.friendsBtn = new Button("Friends");
 		this.achievementsBtn = new Button("Achievements");
 		
 		this.add(this.homeBtn);
 		this.add(this.accountBtn);
 		this.add(this.eventsBtn);
+		this.add(this.friendsBtn);
 		this.add(this.achievementsBtn);
 	}
 	
@@ -75,6 +78,17 @@ public class ViewSelectorPanel extends HorizontalPanel
 		return this.eventsBtn;
 	}
 
+	/**
+	 * Retrieves the friends button.
+	 * @pre true;
+	 * @post true;
+	 * @return the friends button.
+	 */
+	public Button getFriendsBtn()
+	{
+		return this.friendsBtn;
+	}
+	
 	/**
 	 * Retrieves the achievements button.
 	 * @pre true;

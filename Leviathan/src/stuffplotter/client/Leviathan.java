@@ -185,6 +185,14 @@ public class Leviathan implements EntryPoint
 				simulatedPages.showView(View.EVENTS);
 			}	
 		});
+		viewSelections.getFriendsBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.FRIENDS);
+			}	
+		});
 		viewSelections.getAchievementsBtn().addClickHandler(new ClickHandler()
 		{
 			@Override
