@@ -7,7 +7,8 @@ import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface EventServiceAsync {	
+public interface EventServiceAsync
+{	
 	/**
 	 * Adds an Event to the data store and the host's eventList
 	 * @pre 	true;

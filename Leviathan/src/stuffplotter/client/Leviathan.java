@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import stuffplotter.ui.events.EventCreationDialogBox;
+import stuffplotter.ui.ApplicationPagingSimulator;
+import stuffplotter.ui.ApplicationPagingSimulator.View;
 import stuffplotter.ui.TopRightPanel;
 import stuffplotter.ui.AccountPanel;
+import stuffplotter.ui.ViewSelectorPanel;
 import stuffplotter.ui.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.ui.FriendFinderDialogBox;
 import stuffplotter.shared.Account;
@@ -155,6 +158,42 @@ public class Leviathan implements EntryPoint
 		});
 	*/	
 		
+		// testing view selection and simulated pages
+		ViewSelectorPanel viewSelections = new ViewSelectorPanel();
+		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator(account);
+		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.HOME);
+			}	
+		});
+		viewSelections.getAccountBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.ACCOUNT);
+			}	
+		});
+		viewSelections.getEventsBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.EVENTS);
+			}	
+		});
+		viewSelections.getAchievementsBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.ACHIEVEMENTS);
+			}	
+		});
+		
 		// testing top right panel for logged in user
 		TopRightPanel topRightPanel = new TopRightPanel(account);
 		
@@ -164,5 +203,7 @@ public class Leviathan implements EntryPoint
 		RootPanel.get("calMapContainter").add(calMapHolder);
 		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("topRightPanel").add(topRightPanel);
+		RootPanel.get("viewSelections").add(viewSelections);
+		RootPanel.get("simulatedPages").add(simulatedPages);
 	}
 }
