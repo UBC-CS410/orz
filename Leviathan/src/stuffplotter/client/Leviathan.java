@@ -81,25 +81,7 @@ public class Leviathan implements EntryPoint
 	}
 	
 	public void loadUI()
-	{
-		// testing calendar stuff
-		Calendar calendar = new Calendar();
-		calendar.setWidth("500px");
-		calendar.setHeight("400px");
-
-		//Displays the month View
-		calendar.setView(CalendarViews.MONTH);
-		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>()
-		{
-			@Override
-			public void onTimeBlockClick(TimeBlockClickEvent<Date> event)
-			{
-				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
-				String[] calendarValues = dayFormat.format(event.getTarget()).toString().split(",");
-				Window.alert(calendarValues[1]);
-			}
-		});
-						
+	{						
 		final Button createEventBtn = new Button("Create Event");
 		createEventBtn.addClickHandler(new ClickHandler()
 		{
@@ -204,11 +186,7 @@ public class Leviathan implements EntryPoint
 		
 		// testing top right panel for logged in user
 		TopRightPanel topRightPanel = new TopRightPanel(account);
-		
-		HorizontalPanel calMapHolder = new HorizontalPanel();
-		calMapHolder.add(calendar);
-		
-		RootPanel.get("calMapContainter").add(calMapHolder);
+
 		RootPanel.get("eventCreation").add(createEventBtn);
 		RootPanel.get("topRightPanel").add(topRightPanel);
 		RootPanel.get("viewSelections").add(viewSelections);
