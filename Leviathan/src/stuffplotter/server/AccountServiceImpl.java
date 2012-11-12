@@ -17,27 +17,19 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	private EmailService email = new EmailService();
 
 	@Override
-	public Account login(String requestUri) {
+	public Account registerAccount(String hostUri) {
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
-	    
 	    Account account = null;
 
-	    if (user != null) {
-	    	
-	      try {
-	    	  account = dbstore.fetchAccount(user.getNickname());
-	      } catch (NotFoundException nfe) {
-		      account = new Account(user.getNickname(), user.getEmail());
-		      dbstore.store(account); // register account
-	      } finally {
-		      account.setSession(true);
-		      account.setLogout(userService.createLogoutURL(requestUri));  
-	      }
-	    } else {
-	      account = new Account();
-	      account.setSession(false);
-	      account.setLogin(userService.createLoginURL(requestUri));
+	    try {
+    	  account = dbstore.fetchAccount(user.getNickname());
+	    } catch (NotFoundException nfe) {
+	      account = new Account(user.getNickname(), user.getEmail());
+	      dbstore.store(account); // register account
+	    } finally {
+    	  account.setLoginUrl(userService.createLoginURL(hostUri));
+    	  account.setLogoutUrl(userService.createLogoutURL(account.getLoginUrl()));
 	    }
 	    return account;
 	}

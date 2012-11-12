@@ -24,6 +24,9 @@ import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.api.gwt.services.calendar.shared.model.CalendarList;
 import com.google.api.gwt.services.calendar.shared.model.Events;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -46,8 +49,7 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
  */
 public class Leviathan implements EntryPoint
 {
-	
-	private final String redirectUrl = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private final String hostpage = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
 	
 	/**
@@ -55,29 +57,22 @@ public class Leviathan implements EntryPoint
 	 */
 	public void onModuleLoad()
 	{
-		
 		AccountServiceAsync accountService = GWT.create(AccountService.class);
 		
-		accountService.login(redirectUrl, new AsyncCallback<Account>()
+		accountService.registerAccount(hostpage, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
-	        	
+	        	Window.alert("Failed to register account.");
 	        }
 
 	        public void onSuccess(Account result)
 	        {
 	          account = result;
-	          if(account.inSession())
-	          {
-	        	  loadUI();
-	          }
-	          else
-	          {
-	        	  Window.Location.assign(account.getLogin());
-	          }
+	          loadUI();
 	        }
 		});
+		
 	}
 	
 	public void loadUI()

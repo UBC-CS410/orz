@@ -36,7 +36,7 @@ public class TopRightPanel extends HorizontalPanel
 		this.userName = userAccount.getUserName();
 		this.notifications = userAccount.getUserNotifications();
 		this.popup = new UserNotificationsPopupPanel(notifications);
-		this.logoutLink = new Anchor("Logout", userAccount.getLogout());
+		this.logoutLink = new Anchor("Logout", userAccount.getLogoutUrl());
 		this.initializeUI();
 	}
 	

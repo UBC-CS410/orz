@@ -20,9 +20,8 @@ import com.googlecode.objectify.annotation.Entity;
 public class Account implements Serializable
 {
 	/* Session information */
-	@Transient private boolean userSession;
-	@Transient private String userLogin;
-	@Transient private String userLogout;
+	@Transient private String userLoginUrl;
+	@Transient private String userLogoutUrl;
 
 	/* Basic information */
 	@Id
@@ -75,53 +74,35 @@ public class Account implements Serializable
 	}
 
 	/**
-	 * Determines if user is in a google account session.
-	 * @return 	true if user is in a session
-	 * 			false otherwise
-	 */
-	public boolean inSession() {
-		return userSession;
-	}
-
-	/**
-	 * Flags whether user is in a google account session.
-	 * @param pBool		true if user is starting a session
-	 * 					false if user is ending a session
-	 */
-	public void setSession(boolean pBool) {
-		userSession = pBool;
-	}
-
-	/**
 	 * Retrieves the URI that redirects user to google accounts
 	 * @return 	the URI string to display in an anchor
 	 */
-	public String getLogin() {
-		return userLogin;
+	public String getLoginUrl() {
+		return userLoginUrl;
 	}
 
 	/**
 	 * Stores the URI that redirects user to google accounts
 	 * @param pUri	the URI string to store, links to google accounts
 	 */
-	public void setLogin(String pUri) {
-		userLogin = pUri;
+	public void setLoginUrl(String pUri) {
+		userLoginUrl = pUri;
 	}
 
 	/**
 	 * Retrieves the URI that logs out user from google accounts
 	 * @return the stored URI to display in an anchor
 	 */
-	public String getLogout() {
-		return userLogout;
+	public String getLogoutUrl() {
+		return userLogoutUrl;
 	}
 
 	/**
 	 * Stores the URI that logs out user from google accounts
 	 * @param pUri	the URI string to store, links to google accounts
 	 */
-	public void setLogout(String pUri) {
-		userLogout = pUri;
+	public void setLogoutUrl(String pUri) {
+		userLogoutUrl = pUri;
 	}
 
 
