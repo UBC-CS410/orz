@@ -10,11 +10,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Class to display the events page view.
  */
-public class EventsPagePanel extends SimplePanel
+public class EventsPagePanel extends VerticalPanel
 {
 	// remove account from here to model MVP pattern
 	private Account account;
@@ -49,5 +50,6 @@ public class EventsPagePanel extends SimplePanel
 			}
 		});
 		this.add(createEventBtn);
+		this.add(new EventsBrowserPanel());
 	}
 }
