@@ -78,7 +78,7 @@ public class ApplicationPagingSimulator extends DeckPanel
 		HomePagePanel homePage = new HomePagePanel();
 		
 		// initialize User Account page
-		AccountPagePanel accountPage = new AccountPagePanel();
+		AccountPagePanel accountPage = new AccountPagePanel(this.loggedInUser);
 		
 		// initialize User Events page
 		EventsPagePanel eventsPage = new EventsPagePanel(this.loggedInUser);
