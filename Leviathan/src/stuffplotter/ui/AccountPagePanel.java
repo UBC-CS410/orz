@@ -2,7 +2,6 @@ package stuffplotter.ui;
 
 import stuffplotter.shared.Account;
 
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**

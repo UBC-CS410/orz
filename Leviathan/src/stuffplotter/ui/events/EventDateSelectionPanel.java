@@ -5,7 +5,6 @@ import java.util.Date;
 import stuffplotter.ui.events.MonthPanel.Month;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
-import stuffplotter.shared.Event;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;

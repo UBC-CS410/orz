@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.ui.events.MonthPanel.Month;
-import stuffplotter.client.EventService;
-import stuffplotter.client.EventServiceAsync;
 import stuffplotter.misc.CloseClickHandler;
 import stuffplotter.shared.DayContainer;
-import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;

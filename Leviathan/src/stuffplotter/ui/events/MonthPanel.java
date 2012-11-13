@@ -1,6 +1,5 @@
 package stuffplotter.ui.events;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

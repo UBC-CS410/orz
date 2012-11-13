@@ -1,5 +1,10 @@
 package stuffplotter.ui;
 
+import stuffplotter.presenters.AccountPagePresenter;
+import stuffplotter.presenters.AchievementsPagePresenter;
+import stuffplotter.presenters.EventsPagePresenter;
+import stuffplotter.presenters.FriendsPagePresenter;
+import stuffplotter.presenters.HomePagePresenter;
 import stuffplotter.shared.Account;
 
 import com.google.gwt.user.client.ui.DeckPanel;
@@ -9,6 +14,12 @@ import com.google.gwt.user.client.ui.DeckPanel;
  */
 public class ApplicationPagingSimulator extends DeckPanel
 {
+	private HomePagePresenter homePresenter;
+	private AccountPagePresenter accountPresenter;
+	private EventsPagePresenter eventsPresenter;
+	private FriendsPagePresenter friendsPresenter;
+	private AchievementsPagePresenter achievementsPresenter;
+	
 	/**
 	 * enum to help determine which page to display.
 	 */
@@ -85,6 +96,7 @@ public class ApplicationPagingSimulator extends DeckPanel
 		
 		// initialize User Friends page
 		FriendsPagePanel friendsPage = new FriendsPagePanel();
+		this.friendsPresenter = new FriendsPagePresenter(friendsPage);
 		
 		// initialize User Achievements page
 		AchievementsPagePanel achievementsPanel = new AchievementsPagePanel();
