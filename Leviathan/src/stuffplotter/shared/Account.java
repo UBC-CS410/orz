@@ -17,24 +17,25 @@ import com.googlecode.objectify.annotation.Entity;
  */
 
 @Entity
-public class Account implements Serializable {
-	@Id private String userId;
-	
+public class Account implements Serializable
+{
 	/* Session information */
-	@Transient private boolean userSession;
-	@Transient private String userLogin;
-	@Transient private String userLogout;
-	
+	@Transient private String userLoginUrl;
+	@Transient private String userLogoutUrl;
+
 	/* Basic information */
+	@Id
 	private String userName;
 	private String userEmail;
 	private int userAge;
 	private String userPhone;
-	
+
 	/* Social information */
 	private List<String> userFriends = new ArrayList<String>();
+	private List<String> pendingFriends = new ArrayList<String>();
 	private List<Long> userEvents = new ArrayList<Long>();
-	
+	private List<Notification> userNotifications = new ArrayList<Notification>();
+
 	/* Record information */
 	private int userLevel;
 	private long userExperience;
@@ -42,89 +43,68 @@ public class Account implements Serializable {
 
 	/* Custom information */
 	private String userTitle;
-	
+
 	/** 
 	 * Account Constructor 
 	 */
 	public Account() {
 		// do nothing
 	}
-	
+
 	/**
 	 * Account Constructor that sets google account information
 	 * @param pId 		google account id
 	 * @param pName 	google account nickname
 	 * @param pEmail	google account email
 	 */
-	public Account(String pId, String pName, String pEmail) {
-		this.userId = pId;
+	public Account(String pName, String pEmail)
+	{
 		this.userName = pName;
 		this.userEmail = pEmail;
-		
+
 		this.userFriends = new ArrayList<String>();
 		this.userEvents = new ArrayList<Long>();
-		
+		this.userNotifications = new ArrayList<Notification>();
+
 		this.userLevel = 0;
 		this.userExperience = 0;
 		this.userAchievements = new ArrayList<Achievement>();
+		
+		this.userTitle = "Newbie";
 	}
-	
-	/**
-	 * Determines if user is in a google account session.
-	 * @return 	true if user is in a session
-	 * 			false otherwise
-	 */
-	public boolean inSession() {
-		return userSession;
-	}
-	
-	/**
-	 * Flags whether user is in a google account session.
-	 * @param pBool		true if user is starting a session
-	 * 					false if user is ending a session
-	 */
-	public void setSession(boolean pBool) {
-		userSession = pBool;
-	}
-	
+
 	/**
 	 * Retrieves the URI that redirects user to google accounts
 	 * @return 	the URI string to display in an anchor
 	 */
-	public String getLogin() {
-		return userLogin;
+	public String getLoginUrl() {
+		return userLoginUrl;
 	}
-	
+
 	/**
 	 * Stores the URI that redirects user to google accounts
 	 * @param pUri	the URI string to store, links to google accounts
 	 */
-	public void setLogin(String pUri) {
-		userLogin = pUri;
+	public void setLoginUrl(String pUri) {
+		userLoginUrl = pUri;
 	}
-	
+
 	/**
 	 * Retrieves the URI that logs out user from google accounts
 	 * @return the stored URI to display in an anchor
 	 */
-	public String getLogout() {
-		return userLogout;
+	public String getLogoutUrl() {
+		return userLogoutUrl;
 	}
-	
+
 	/**
 	 * Stores the URI that logs out user from google accounts
 	 * @param pUri	the URI string to store, links to google accounts
 	 */
-	public void setLogout(String pUri) {
-		userLogout = pUri;
+	public void setLogoutUrl(String pUri) {
+		userLogoutUrl = pUri;
 	}
-	
-	/**
-	 * @return the userId
-	 */
-	public String getUserId() {
-		return userId;
-	}
+
 
 	/**
 	 * @return the userName
@@ -246,7 +226,79 @@ public class Account implements Serializable {
 	public void setUserAchievements(List<Achievement> userAchievements) {
 		this.userAchievements = userAchievements;
 	}
+
+	/**
+	 * Gets the pending list of friends
+	 * @return returns the pending list of friends
+	 */
+	public List<String> getPendingFriends(){
+		return this.pendingFriends;
+	}
+
+	/**
+	 * This adds the pending user to thier pending list.
+	 * @param pendingUser
+	 * @return
+	 */
+	public boolean addPendingRequest(String pendingUser){
+		return this.pendingFriends.add(pendingUser);
+	}
+
+	/**
+	 * This moves user from the pending list into the friend list
+	 * 
+	 * @param pendingUser The pending user that will be accepted as a friend
+	 * @return returns true if transfer of friends was successful
+	 */
+	public boolean acceptFriendRequest(String pendingUser){
+		if(this.pendingFriends.remove(pendingUser)){
+			this.userFriends.add(pendingUser);
+			return true;
+		}else{
+			return false;
+		}	
+
+	}
+
+	/**
+	 * This denies the friend request
+	 * 
+	 * @param pendingUser The pending user that will be denied as a friend
+	 * @return returns true if successful
+	 */
+	public boolean denyFriendRequest(String pendingUser){
+		return this.pendingFriends.remove(pendingUser);
+	}
+
+
+	/**
+	 * This confirms a friend requests by removing the user from the pending
+	 * list into the friend list
+	 * 
+	 * 
+	 * @pre The confirmed user must be in the pending list
+	 * @post The confirmed user is now in the friends list
+	 * @param userId
+	 * @return true if successful, false otherwise
+	 */
+	public boolean confirmFriendReq(String userId)
+	{
+		this.pendingFriends.remove(userId);
+		return this.userFriends.add(userId);
+
+	}
 	
 	
+	public List<Notification>  getUserNotifications()
+	{
+		return this.userNotifications;
+	}
+	
+	public String getUserTitle()
+	{
+		return this.userTitle;
+	}
+
+
 
 }

@@ -29,7 +29,7 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>
-  <source path='UI'/>
+  <source path='ui'/>
   <source path='misc'/>
 
 </module>
