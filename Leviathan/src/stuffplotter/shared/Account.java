@@ -8,7 +8,7 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import stuffplotter.server.AchievementVisitor;
+import stuffplotter.server.RecordVisitor;
 
 import com.googlecode.objectify.annotation.Entity;
 
@@ -40,7 +40,7 @@ public class Account implements Serializable
 
 	/* Record information */
 	private int userLevel;
-	private long userExperience;
+	private int userExperience;
 	private List<Achievement> userAchievements; 
 
 	/* Custom information */
@@ -214,14 +214,14 @@ public class Account implements Serializable
 	/**
 	 * @return the userExperience
 	 */
-	public long getUserExperience() {
+	public int getUserExperience() {
 		return userExperience;
 	}
 
 	/**
 	 * @param userExperience the userExperience to set
 	 */
-	public void setUserExperience(long userExperience) {
+	public void setUserExperience(int userExperience) {
 		this.userExperience = userExperience;
 	}
 
@@ -318,7 +318,7 @@ public class Account implements Serializable
 
 	}
 	
-	public void accept(AchievementVisitor visitor)
+	public void accept(RecordVisitor visitor)
 	{
 		visitor.visit(this);
 	}

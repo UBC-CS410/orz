@@ -14,7 +14,7 @@ import stuffplotter.shared.Event;
  * @author Matt
  *
  */
-public class AchievementChecker implements AchievementVisitor
+public class AchievementChecker implements RecordVisitor
 {
 	private Account user;
 	private Event event;
@@ -24,6 +24,7 @@ public class AchievementChecker implements AchievementVisitor
 	private int numFriends;
 	private int numHostedEvents;
 	private int numParticipatedEvents;
+	final private int ACHIEVEMENTXP = 100;
 	
 	
 	public AchievementChecker()
@@ -43,6 +44,11 @@ public class AchievementChecker implements AchievementVisitor
 		this.numParticipatedEvents = account.getNumberOfParticipatedEvents();
 		
 		checkAccountAchievements();
+		
+		LevelSystem leveler = new LevelSystem(account);
+		for(int i = 0; i<unlockAchievements.size(); i++)
+			leveler.addExperience(ACHIEVEMENTXP);
+			
 		displayAchievements();
 	}
 	

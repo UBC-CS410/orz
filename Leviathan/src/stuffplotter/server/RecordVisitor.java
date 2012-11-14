@@ -9,7 +9,7 @@ import stuffplotter.shared.Event;
  * @author Matt
  *
  */
-public interface AchievementVisitor
+public interface RecordVisitor
 {
 	/**
 	 * Visits the account

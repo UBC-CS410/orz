@@ -3,8 +3,9 @@ package stuffplotter.server;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 
-public class AchievementRecordUpdater implements AchievementVisitor
+public class AchievementRecordUpdater implements RecordVisitor
 {
+	/*flags to update*/
 	private boolean incLogin = false;
 	private boolean incEventCreated = false;
 	private boolean incEventParticipated = false;
