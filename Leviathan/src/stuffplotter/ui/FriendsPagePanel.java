@@ -1,5 +1,7 @@
 package stuffplotter.ui;
 
+import stuffplotter.ui.util.ScrollDisplayPanel;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -10,9 +12,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class FriendsPagePanel extends HorizontalPanel
 {
+	private static final int NUMOFCOLUMNS = 3;
 	private Button addFriend;
 	private Button searchFriends;
-	private FriendListPanel friendDisplay;
+	private ScrollDisplayPanel friendDisplay;
 	
 	/**
 	 * Constructor for the FriendsPagePanel.
@@ -38,7 +41,14 @@ public class FriendsPagePanel extends HorizontalPanel
 		buttonHolder.add(this.addFriend);
 		buttonHolder.add(this.searchFriends);
 		this.add(buttonHolder);
-		this.add(new Label("Display of Friends"));
+		this.friendDisplay = new ScrollDisplayPanel(NUMOFCOLUMNS);
+		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.add(this.friendDisplay);
 	}
 	
 	/**
@@ -69,7 +79,7 @@ public class FriendsPagePanel extends HorizontalPanel
 	 * @post true;
 	 * @return the Friend List panel.
 	 */
-	public FriendListPanel getFriendListPanel()
+	public ScrollDisplayPanel getFriendListPanel()
 	{
 		return this.friendDisplay;
 	}
