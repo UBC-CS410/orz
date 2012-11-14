@@ -5,6 +5,13 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 public class FriendNotification extends Notification
 {
+	
+	public enum FriendNotificationType
+	{
+		FRIENDREQUEST, FRIENDACCEPTED
+	}
+	
+	private FriendNotificationType friendType;
 	/**
 	 * Constructor for a FriendNotification.
 	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;
@@ -15,9 +22,11 @@ public class FriendNotification extends Notification
 	 * @param fromUser - the user that created the event.
 	 * @param forUser - the guest invited to the event.
 	 */
-	public FriendNotification(Long id, NotificationType type, String fromUser, String forUser)
+	public FriendNotification(String fromUser, FriendNotificationType type)
 	{
-		super(id, type, fromUser, forUser);
+		super(NotificationType.FRIENDREQUEST, fromUser);
+		this.friendType = type;
+		
 	}
 
 	@Override
@@ -27,5 +36,17 @@ public class FriendNotification extends Notification
 		notificationPanel.add(new Label("You have a friend request from " + this.getFrom()));
 		return notificationPanel;
 	}
+
+	public FriendNotificationType getFriendType()
+	{
+		return friendType;
+	}
+
+	public void setFriendType(FriendNotificationType type)
+	{
+		this.friendType = type;
+	}
+	
+
 
 }
