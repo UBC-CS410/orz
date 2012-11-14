@@ -329,11 +329,6 @@ public class Account implements Serializable
 		return this.userNotifications;
 	}
 	
-	public boolean addUserNotifications(Notification notification)
-	{
-		return this.userNotifications.add(notification);
-	}
-	
 	public String getUserTitle()
 	{
 		return this.userTitle;

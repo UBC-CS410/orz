@@ -7,7 +7,6 @@ import com.google.gwt.user.client.Window;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Achievement;
-import stuffplotter.shared.AchievementNotification;
 import stuffplotter.shared.Event;
 
 /**
@@ -47,12 +46,8 @@ public class AchievementChecker implements RecordVisitor
 		checkAccountAchievements();
 		
 		LevelSystem leveler = new LevelSystem(account);
-		for(Achievement achievement : unlockAchievements)
-		{
+		for(int i = 0; i<unlockAchievements.size(); i++)
 			leveler.addExperience(ACHIEVEMENTXP);
-			account.addUserNotifications(new AchievementNotification(achievement.getDisplay()));
-		}
-			
 			
 		displayAchievements();
 	}

@@ -10,8 +10,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class EventNotification extends Notification
 {
-	
-	
 	/**
 	 * Constructor for a EventNotification.
 	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;
@@ -22,9 +20,9 @@ public class EventNotification extends Notification
 	 * @param fromUser - the user that created the event.
 	 * @param forUser - the guest invited to the event.
 	 */
-	public EventNotification(String fromUser)
+	public EventNotification(Long id, NotificationType type, String fromUser, String forUser)
 	{
-		super(NotificationType.EVENTINVITATION, fromUser);
+		super(id, type, fromUser, forUser);
 	}
 
 	@Override

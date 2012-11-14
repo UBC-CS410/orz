@@ -4,8 +4,6 @@ import java.util.List;
 
 import stuffplotter.client.AccountService;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.FriendNotification;
-import stuffplotter.shared.FriendNotification.FriendNotificationType;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -54,7 +52,6 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 			if(!temp.getPendingFriends().contains(acc.getUserName()))
 			{
 				temp.addPendingRequest(acc.getUserName());
-				temp.addUserNotifications(new FriendNotification(acc.getUserName(), FriendNotificationType.FRIENDREQUEST)); //adds notification
 				dbstore.store(temp);	
 			}
 		}
@@ -85,9 +82,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		temp.confirmFriendReq(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.confirmFriendReq(acc.getUserName());
-		temp.addUserNotifications(new FriendNotification(newFriend.getUserName(), FriendNotificationType.FRIENDACCEPTED));
 		dbstore.store(temp);
-		newFriend.addUserNotifications(new FriendNotification(temp.getUserName(), FriendNotificationType.FRIENDACCEPTED));
 		dbstore.store(newFriend);
 	}
 
