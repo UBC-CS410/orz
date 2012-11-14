@@ -21,10 +21,10 @@ import com.google.gwt.user.client.ui.ScrollPanel;
  */
 public class FriendSelectionPanel extends ScrollPanel implements EventSubmittable
 {
-	private int numOfColumns = 3;
+	private static final int NUMOFCOLUMNS = 3;
 	private FlexTable friendList;
-	final private String panelWidth = "500px";
-	final private String panelHeight = "300px";
+	private static final String PANELWIDTH = "500px";
+	private static final String PANELHEIGHT = "300px";
 	
 	/**
 	 * Constructor for FriendSelectionPanel.
@@ -70,7 +70,7 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 				{
 					friendList.setWidget(rowCount, colCount, new CheckBox(friend));
 					colCount++;
-					if(colCount == numOfColumns)
+					if(colCount == NUMOFCOLUMNS)
 					{
 						colCount = 0;
 						rowCount++;
@@ -80,7 +80,7 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 		});
 		
 		this.add(friendList);
-		this.setSize(panelWidth, panelHeight);
+		this.setSize(PANELWIDTH, PANELHEIGHT);
 	}
 
 	/**
