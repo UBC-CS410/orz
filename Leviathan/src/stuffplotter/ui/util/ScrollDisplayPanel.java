@@ -17,13 +17,27 @@ public class ScrollDisplayPanel extends ScrollPanel
 	private FlexTable displayedComponents;
 	
 	/**
-	 * Constructor for the ScrollDisplayPanel.
+	 * Constructor for the ScrollDisplayPanel, the number of columns to display will be
+	 * one column.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
 	public ScrollDisplayPanel()
 	{
 		super();
+		this.initializeUI();
+	}
+
+	/**
+	 * Constructor for the ScrollDisplayPanel, will display with the given number of columns.
+	 * @pre true;
+	 * @post this.isVisible() == true;
+	 * @param numOfColumns - the number of columns to have in the display.
+	 */
+	public ScrollDisplayPanel(int numOfColumns)
+	{
+		super();
+		this.numberOfColumns = numOfColumns;
 		this.initializeUI();
 	}
 	
@@ -62,6 +76,8 @@ public class ScrollDisplayPanel extends ScrollPanel
 	 */
 	public void clearDisplay()
 	{
+		this.currentColumn = 0;
+		this.currentRow = 0;
 		this.displayedComponents.removeAllRows();
 	}
 	
