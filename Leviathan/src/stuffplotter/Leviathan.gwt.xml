@@ -31,5 +31,6 @@
   <source path='shared'/>
   <source path='ui'/>
   <source path='misc'/>
+  <source path='presenters'/>
 
 </module>
