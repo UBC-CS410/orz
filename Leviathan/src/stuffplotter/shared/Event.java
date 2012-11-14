@@ -22,6 +22,8 @@ public class Event implements Serializable {
 	private List<String> eventHosts;
 	private List<String> eventGuests;
 	
+	public int eventRating;
+	public List<String> eventComments;
 	/**
 	 * Event constructor.
 	 */

@@ -6,8 +6,9 @@ public enum Achievement {
     COMPLETE_FIRST_EVENT("Hang over"), 
     FULL_EVENT_ATTENDANCE("Full house!");
     
+    //Achievement information
     private int achId;
-	private String display;
+	private String name; //
 
     /**
      * Achievement constructor. 
@@ -16,8 +17,22 @@ public enum Achievement {
      * @param the string display for an achievement
      */
     private Achievement(String pStr) {
-            this.display = pStr;
+            this.name = pStr;
     }
+
+	/**
+	 * @return the achId
+	 */
+	public String getAchName() {
+		return name;
+	}
+
+	/**
+	 * @param achId the achId to set
+	 */
+	public void setAchName(String name) {
+		this.name = name;
+	}
 
     
 

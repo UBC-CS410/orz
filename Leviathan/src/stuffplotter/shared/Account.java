@@ -244,7 +244,7 @@ public class Account implements Serializable {
 	 * @param userAchievements the userAchievements to set
 	 */
 	public void setUserAchievements(List<Achievement> userAchievements) {
-		this.userAchievements = userAchievements;
+		this.userAchievements = userAchievements;							//add user achievement here?
 	}
 	
 	
