@@ -107,6 +107,13 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		dbstore.store(newFriend);
 		
 	}
+
+	@Override
+	public void saveAccount(Account acc)
+	{
+		dbstore.store(acc);
+		
+	}
 	
 	
 

@@ -11,6 +11,8 @@ import stuffplotter.ui.AccountPanel;
 import stuffplotter.ui.ViewSelectorPanel;
 import stuffplotter.ui.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.ui.FriendFinderDialogBox;
+import stuffplotter.server.AchievementChecker;
+import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
@@ -57,7 +59,7 @@ public class Leviathan implements EntryPoint
 	 */
 	public void onModuleLoad()
 	{
-		AccountServiceAsync accountService = GWT.create(AccountService.class);
+		final AccountServiceAsync accountService = GWT.create(AccountService.class);
 		
 		accountService.registerAccount(hostpage, new AsyncCallback<Account>()
 		{
@@ -69,6 +71,25 @@ public class Leviathan implements EntryPoint
 	        public void onSuccess(Account result)
 	        {
 	          account = result;
+	          account.accept(new AchievementRecordUpdater().incrementLogin());
+	          account.accept(new AchievementChecker());
+	          accountService.saveAccount(account, new AsyncCallback<Void>(){
+
+				@Override
+				public void onFailure(Throwable caught)
+				{
+					Window.alert("Save Fail");
+					
+				}
+
+				@Override
+				public void onSuccess(Void result)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+	        	  
+	          });
 	          loadUI();
 	        }
 		});

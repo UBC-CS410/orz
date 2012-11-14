@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface AccountServiceAsync {
 	void registerAccount(String hostUri, AsyncCallback<Account> callback);
 	void addFriend(Account acc, String friend, AsyncCallback<Void> callback);
+	void saveAccount(Account acc, AsyncCallback<Void> callback);
 	void getFriends(Account acc, AsyncCallback<List<String>> callback);
 	void getAccount(String userId, AsyncCallback<Account> callback);
 	void getPendingFriends(Account acc, AsyncCallback<List<String>> callback);

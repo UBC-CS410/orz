@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import stuffplotter.server.AchievementVisitor;
+
 import com.googlecode.objectify.annotation.Entity;
 
 
@@ -43,6 +45,12 @@ public class Account implements Serializable
 
 	/* Custom information */
 	private String userTitle;
+	
+	/* Achievement Info*/
+	private int numberOfLogins;
+	private int numberOfHostedEvents;
+	private int numberOfParticipatedEvents;
+	
 
 	/** 
 	 * Account Constructor 
@@ -71,6 +79,10 @@ public class Account implements Serializable
 		this.userAchievements = new ArrayList<Achievement>();
 		
 		this.userTitle = "Newbie";
+		
+		this.numberOfLogins = 0;
+		this.numberOfHostedEvents = 0;
+		this.numberOfParticipatedEvents = 0;
 	}
 
 	/**
@@ -226,6 +238,24 @@ public class Account implements Serializable
 	public void setUserAchievements(List<Achievement> userAchievements) {
 		this.userAchievements = userAchievements;
 	}
+	
+	/**
+	 * This method adds achievements as well as checks for duplicates
+	 * @pre
+	 * @post
+	 * @param achievements to be added
+	 * @return
+	 */
+	public boolean addUserAchievements(List<Achievement> achievements)
+	{
+		for(int i = 0; i<achievements.size(); i++)
+		{
+			if(this.userAchievements.contains(achievements.get(i)))
+				achievements.remove(i);
+		}
+		
+		return this.userAchievements.addAll(achievements);
+	}
 
 	/**
 	 * Gets the pending list of friends
@@ -288,6 +318,11 @@ public class Account implements Serializable
 
 	}
 	
+	public void accept(AchievementVisitor visitor)
+	{
+		visitor.visit(this);
+	}
+	
 	
 	public List<Notification>  getUserNotifications()
 	{
@@ -297,6 +332,37 @@ public class Account implements Serializable
 	public String getUserTitle()
 	{
 		return this.userTitle;
+	}
+
+	public int getNumberOfLogins()
+	{
+		return numberOfLogins;
+	}
+
+	public void setNumberOfLogins(int numberOfLogins)
+	{
+		this.numberOfLogins = numberOfLogins;
+	}
+
+
+	public int getNumberOfParticipatedEvents()
+	{
+		return numberOfParticipatedEvents;
+	}
+
+	public void setNumberOfParticipatedEvents(int numberOfParticipatedEvents)
+	{
+		this.numberOfParticipatedEvents = numberOfParticipatedEvents;
+	}
+
+	public int getNumberOfHostedEvents()
+	{
+		return numberOfHostedEvents;
+	}
+
+	public void setNumberOfHostedEvents(int numberOfHostedEvents)
+	{
+		this.numberOfHostedEvents = numberOfHostedEvents;
 	}
 
 

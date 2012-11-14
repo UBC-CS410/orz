@@ -1,6 +1,8 @@
 package stuffplotter.shared;
 
 public enum Achievement {
+	
+	FIRST_LOG_IN("Logged in for the First Timed"),
     CREATE_FIRST_EVENT("Party time!"), 
     ADD_FIRST_FRIEND("Not a loner"), 
     COMPLETE_FIRST_EVENT("Hang over"), 
@@ -17,6 +19,10 @@ public enum Achievement {
      */
     private Achievement(String pStr) {
             this.display = pStr;
+    }
+    
+    public String getDisplay(){
+    	return this.display;
     }
 
     
