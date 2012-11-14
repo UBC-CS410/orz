@@ -2,19 +2,23 @@ package stuffplotter.ui;
 
 import stuffplotter.shared.Account;
 import stuffplotter.ui.events.EventCreationDialogBox;
+import stuffplotter.ui.util.ScrollDisplayPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Class to display the events page view.
  */
-public class EventsPagePanel extends VerticalPanel
+public class EventsPagePanel extends HorizontalPanel
 {
 	// remove account from here to model MVP pattern
 	private Account account;
+	private ScrollDisplayPanel eventsDisplay;
 	
 	/**
 	 * Constructor for the EventsPagePanel.
@@ -35,6 +39,14 @@ public class EventsPagePanel extends VerticalPanel
 	 */
 	private void initializeUI()
 	{
+		VerticalPanel buttonHolder = new VerticalPanel();
+		this.eventsDisplay = new ScrollDisplayPanel();
+		this.eventsDisplay.addElement(new Label("Display of Events"));
+		this.eventsDisplay.addElement(new Label("Display of Events"));
+		this.eventsDisplay.addElement(new Label("Display of Events"));
+		this.eventsDisplay.addElement(new Label("Display of Events"));
+		this.eventsDisplay.addElement(new Label("Display of Events"));
+		this.eventsDisplay.addElement(new Label("Display of Events"));
 		Button createEventBtn = new Button("Create Event");
 		createEventBtn.addClickHandler(new ClickHandler()
 		{
@@ -45,7 +57,9 @@ public class EventsPagePanel extends VerticalPanel
 				 eventCreation = new EventCreationDialogBox(account);
 			}
 		});
-		this.add(createEventBtn);
-		this.add(new EventsBrowserPanel());
+		buttonHolder.add(createEventBtn);
+		buttonHolder.add(new EventsBrowserPanel());
+		this.add(buttonHolder);
+		this.add(eventsDisplay);
 	}
 }
