@@ -8,23 +8,25 @@ import stuffplotter.client.AccountServiceAsync;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;
+import stuffplotter.ui.util.ScrollDisplayPanel;
 
-import com.google.gwt.core.shared.GWT;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Class to display the friends to select to invite to an event.
  */
-public class FriendSelectionPanel extends ScrollPanel implements EventSubmittable
+public class FriendSelectionPanel extends SimplePanel implements EventSubmittable
 {
-	private int numOfColumns = 3;
-	private FlexTable friendList;
-	final private String panelWidth = "500px";
-	final private String panelHeight = "300px";
+	private static final int NUMOFCOLUMNS = 3;
+	private ScrollDisplayPanel friendDisplayer;
+	private static final String PANELWIDTH = "500px";
+	private static final String PANELHEIGHT = "300px";
 	
 	/**
 	 * Constructor for FriendSelectionPanel.
@@ -34,7 +36,6 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 	public FriendSelectionPanel(Account userAccount)
 	{
 		super();
-		this.friendList = new FlexTable();
 		this.initializeUI(userAccount);
 	}
 
@@ -46,14 +47,17 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 	 */
 	private void initializeUI(Account userAccount)
 	{	
+		this.friendDisplayer = new ScrollDisplayPanel(NUMOFCOLUMNS);
+		this.friendDisplayer.setSize(PANELWIDTH, PANELHEIGHT);
+		
 		AccountServiceAsync accountService = GWT.create(AccountService.class);
 		accountService.getFriends(userAccount, new AsyncCallback<List<String>>()
 		{
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				friendList.removeAllRows();
-				friendList.setWidget(0, 0, new Label("Failed to retrieve friends, please" +
+				friendDisplayer.clearDisplay();
+				friendDisplayer.addElement(new Label("Failed to retrieve friends, please" +
 						"try again later."));
 			}
 
@@ -62,25 +66,16 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 			{
 				Collections.sort(friends);
 				
-				int rowCount = 0;
-				int colCount = 0;
-				
 				// for each loop to populate the list of friends to select from
 				for(String friend : friends)
 				{
-					friendList.setWidget(rowCount, colCount, new CheckBox(friend));
-					colCount++;
-					if(colCount == numOfColumns)
-					{
-						colCount = 0;
-						rowCount++;
-					}
+					friendDisplayer.addElement(new CheckBox(friend));
 				}
 			}
 		});
 		
-		this.add(friendList);
-		this.setSize(panelWidth, panelHeight);
+		this.add(friendDisplayer);
+		this.setSize(PANELWIDTH, PANELHEIGHT);
 	}
 
 	/**
@@ -91,7 +86,7 @@ public class FriendSelectionPanel extends ScrollPanel implements EventSubmittabl
 	 */
 	public FlexTable getFriendList()
 	{
-		return this.friendList;
+		return this.friendDisplayer.getDisplayer();
 	}
 	
 	/**

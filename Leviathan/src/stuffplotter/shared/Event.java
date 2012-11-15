@@ -78,6 +78,7 @@ public class Event implements Serializable
 	private Double eventScore;
 	
 	
+	public int eventRating;
 	/**
 	 * Event constructor.
 	 */

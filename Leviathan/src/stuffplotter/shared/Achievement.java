@@ -8,12 +8,14 @@ public enum Achievement {
     COMPLETE_FIRST_EVENT("Hang over"), 
     FULL_EVENT_ATTENDANCE("Full house!");
     
+    //Achievement information
     private int achId;
-	private String display;
+	private String display; //
 
     /**
      * Achievement constructor. 
      * NOTE: Java enum constructor must be private
+     * remove this later
      * 
      * @param the string display for an achievement
      */

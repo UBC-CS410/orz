@@ -9,7 +9,7 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.ui.NotificationDialogBox;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
