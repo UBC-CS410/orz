@@ -1,21 +1,30 @@
 package stuffplotter.presenters;
 
-import stuffplotter.ui.FriendsPagePanel;
+import com.google.gwt.user.client.ui.HasWidgets;
+
+import stuffplotter.views.FriendsPageView;
 
 /**
  * Class for the Friends Page presenter.
  */
-public class FriendsPagePresenter
+public class FriendsPagePresenter implements Presenter
 {
-	private FriendsPagePanel friendsView;
+	private FriendsPageView friendsView;
 	
 	/**
 	 * Constructor for the FriendsPagePresenter.
 	 * @pre friendsView != null;
 	 * @post true;
 	 */
-	public FriendsPagePresenter(FriendsPagePanel friendsView)
+	public FriendsPagePresenter(FriendsPageView friendsView)
 	{
 		this.friendsView = friendsView;
+	}
+
+	@Override
+	public void go(HasWidgets container)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

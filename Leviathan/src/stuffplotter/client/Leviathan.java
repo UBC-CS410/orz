@@ -1,9 +1,16 @@
 package stuffplotter.client;
 
-import stuffplotter.ui.ApplicationPagingSimulator;
-import stuffplotter.ui.ApplicationPagingSimulator.View;
-import stuffplotter.ui.TopRightPanel;
-import stuffplotter.ui.ViewSelectorPanel;
+import java.util.Date;
+import java.util.List;
+
+import stuffplotter.views.ApplicationPagingSimulator;
+import stuffplotter.views.ApplicationPagingSimulator.View;
+import stuffplotter.views.account.AccountPanel;
+import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
+import stuffplotter.views.events.EventCreationDialogBox;
+import stuffplotter.views.friends.FriendFinderDialogBox;
+import stuffplotter.views.global.MenuBarPanel;
+import stuffplotter.views.global.TopRightPanel;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
@@ -152,8 +159,8 @@ public class Leviathan implements EntryPoint
 	*/	
 		
 		// testing view selection and simulated pages
-		ViewSelectorPanel viewSelections = new ViewSelectorPanel();
-		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator(account);
+		MenuBarPanel viewSelections = new MenuBarPanel();
+		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator();
 		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
 		{
 			@Override
