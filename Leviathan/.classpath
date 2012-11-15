@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<classpathentry kind="src" path="src"/>
-<classpathentry kind="src" output="test-classes" path="test"/>
-<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-cal-0.9.3.1.jar"/>
-<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.1.2.jar"/>
-<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
-<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.1.jar"/>
-<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-calendar-v3-0.3-alpha.jar"/>
-<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet-deps.jar"/>
-<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine"/>
-<classpathentry kind="output" path="war/WEB-INF/classes"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" output="test-classes" path="test"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-cal-0.9.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dnd-3.1.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-calendar-v3-0.3-alpha.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet-deps.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-asl-1.9.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-1.12.0-beta.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-appengine-1.12.0-beta.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

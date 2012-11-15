@@ -1,99 +1,105 @@
 package stuffplotter.client;
 
-import java.util.Date;
-import java.util.List;
-
-import stuffplotter.ui.events.EventCreationDialogBox;
 import stuffplotter.ui.ApplicationPagingSimulator;
 import stuffplotter.ui.ApplicationPagingSimulator.View;
 import stuffplotter.ui.TopRightPanel;
-import stuffplotter.ui.AccountPanel;
 import stuffplotter.ui.ViewSelectorPanel;
-import stuffplotter.ui.events.AvailabilitySubmitterDialogBox;
-import stuffplotter.ui.FriendFinderDialogBox;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
 
-import com.bradrydzewski.gwt.calendar.client.Calendar;
-import com.bradrydzewski.gwt.calendar.client.CalendarViews;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
-import com.google.api.gwt.client.GoogleApiRequestTransport;
-import com.google.api.gwt.client.OAuth2Login;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
-import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
-import com.google.api.gwt.services.calendar.shared.model.CalendarList;
-import com.google.api.gwt.services.calendar.shared.model.Events;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Leviathan implements EntryPoint
 {
-	private final String hostpage = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
+	private String token = null;
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad()
 	{
-		final AccountServiceAsync accountService = GWT.create(AccountService.class);
-		
-		accountService.registerAccount(hostpage, new AsyncCallback<Account>()
+		this.token = Window.Location.getHref().substring(this.url.length());
+		if (this.token.length() == 0)
 		{
-	        public void onFailure(Throwable error)
-	        {
-	        	Window.alert("Failed to register account.");
-	        }
-
-	        public void onSuccess(Account result)
-	        {
-	          account = result;
-	          account.accept(new AchievementRecordUpdater().incrementLogin());
-	          account.accept(new AchievementChecker());
-	          accountService.saveAccount(account, new AsyncCallback<Void>(){
-
-				@Override
-				public void onFailure(Throwable caught)
-				{
-					Window.alert("Save Fail");
-					
-				}
-
-				@Override
-				public void onSuccess(Void result)
-				{
-					// TODO Auto-generated method stub
-					
-				}
-	        	  
-	          });
-	          loadUI();
-	        }
-		});
+			this.loadUser();
+		}
+		else
+		{	
+			final AccountServiceAsync accountService = GWT.create(AccountService.class);
+			accountService.login(this.url, this.token, new AsyncCallback<Account>()
+			{
+		        public void onFailure(Throwable error)
+		        {
+		        	Window.alert("registerAccount failed");
+		        }
+	
+		        public void onSuccess(Account result)
+		        {
+		          account = result;
+		          account.accept(new AchievementRecordUpdater().incrementLogin());
+		          account.accept(new AchievementChecker());
+		          accountService.saveAccount(account, new AsyncCallback<Void>(){
+	
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Save Fail");
+						
+					}
+	
+					@Override
+					public void onSuccess(Void result)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+		        	  
+		          });
+		          loadUI();
+		        }
+			});
+		}
+	}
+	
+	public void loadUser()
+	{
+		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
+		String REDIRECT_URL = this.url;
+		/**
+		 * API Access
+		 * To prevent abuse, Google places limits on API requests. Using a valid OAuth token or API key allows you to exceed anonymous limits by connecting requests back to your project.
+		 * 
+		 * Product name:	stuffplotter
+		 * Google account:	allenylzhou@gmail.com
+		 * 
+		 * Client ID:	1024938108271.apps.googleusercontent.com
+		 * Email address:	1024938108271@developer.gserviceaccount.com
+		 * Client secret:	xNa3bfxI67U9rGJypDVcMZ34
+		 * Redirect URIs:	http://127.0.0.1:8888/Leviathan.html?gwt.codesvr=127.0.0.1:9997
+		 * 					stuffplotter.appspot.com
+		 * JavaScript origins:	none
+		 */
+		String CLIENT_ID = "1024938108271.apps.googleusercontent.com"; // available from the APIs console
+		String GOOGLE_PROFILE_SCOPE = "https://www.googleapis.com/auth/userinfo.profile";
 		
+		String oauth2Request = AUTH_URL + "?";
+		oauth2Request += "scope=" + GOOGLE_PROFILE_SCOPE + "&";
+		oauth2Request += "redirect_uri=" + REDIRECT_URL + "&";
+		oauth2Request += "response_type=token&";
+		oauth2Request += "client_id=" + CLIENT_ID + "&";
+		Window.Location.assign(oauth2Request);
 	}
 	
 	public void loadUI()
