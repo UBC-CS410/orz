@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
-import stuffplotter.ui.AccountPanel;
-import stuffplotter.ui.events.AvailabilitySubmitterDialogBox;
+import stuffplotter.views.account.AccountPanel;
+import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.MonthContainer;
 
