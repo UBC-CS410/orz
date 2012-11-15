@@ -1,8 +1,8 @@
 package stuffplotter.views.events;
 
 import stuffplotter.client.EventCreationPageRetriever;
-import stuffplotter.client.EventService;
-import stuffplotter.client.EventServiceAsync;
+import stuffplotter.client.services.EventService;
+import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.misc.CloseClickHandler;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.shared.Account;

@@ -2,7 +2,7 @@ package stuffplotter.server;
 
 import java.util.List;
 
-import stuffplotter.client.RecordService;
+import stuffplotter.client.services.RecordService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Achievement;
 

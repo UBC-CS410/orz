@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.client.EventService;
+import stuffplotter.client.services.EventService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.DayContainer;

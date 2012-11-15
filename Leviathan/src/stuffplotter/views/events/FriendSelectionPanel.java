@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import stuffplotter.client.AccountService;
-import stuffplotter.client.AccountServiceAsync;
+import stuffplotter.client.services.AccountService;
+import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;

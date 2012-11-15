@@ -2,7 +2,7 @@ package stuffplotter.server;
 
 import java.util.List;
 
-import stuffplotter.client.AccountService;
+import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
 
 import com.google.appengine.api.users.User;

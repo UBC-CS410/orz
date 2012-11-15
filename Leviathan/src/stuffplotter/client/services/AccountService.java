@@ -1,7 +1,7 @@
 /**
  * 
  */
-package stuffplotter.client;
+package stuffplotter.client.services;
 
 import java.util.List;
 

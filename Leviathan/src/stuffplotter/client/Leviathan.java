@@ -11,6 +11,8 @@ import stuffplotter.views.events.EventCreationDialogBox;
 import stuffplotter.views.friends.FriendFinderDialogBox;
 import stuffplotter.views.global.MenuBarPanel;
 import stuffplotter.views.global.TopRightPanel;
+import stuffplotter.client.services.AccountService;
+import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
