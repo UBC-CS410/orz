@@ -41,13 +41,13 @@ public class EventCreationDialogBox extends DialogBox
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventCreationDialogBox(Account userAccount)
+	public EventCreationDialogBox()
 	{
 		super();
 		VerticalPanel vertPanel = new VerticalPanel();
 		HorizontalPanel btnHolder = new HorizontalPanel();
-		this.eventInfoRetriever = new EventCreationPageRetriever(userAccount.getUserName());
-		this.eventPages = new EventCreationPagedPanel(userAccount);
+		this.eventInfoRetriever = new EventCreationPageRetriever("TO FIX");
+		this.eventPages = new EventCreationPagedPanel();
 		vertPanel.add(this.eventPages);
 		this.initializeButtons();
 		btnHolder.add(backBtn);

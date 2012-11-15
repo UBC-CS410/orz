@@ -147,7 +147,7 @@ public class Leviathan implements EntryPoint
 		
 		// testing view selection and simulated pages
 		MenuBarPanel viewSelections = new MenuBarPanel();
-		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator(account);
+		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator();
 		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
 		{
 			@Override

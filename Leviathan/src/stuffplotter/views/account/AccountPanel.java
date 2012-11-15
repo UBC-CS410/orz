@@ -1,7 +1,5 @@
 package stuffplotter.views.account;
 
-import stuffplotter.shared.Account;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -13,18 +11,21 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class AccountPanel extends SimplePanel
 {
-	private Account userAccount;
 	private VerticalPanel informationHolder;
+	private Button editBtn;
+	private InfoPanel nameField;
+	private InfoPanel emailField;
+	private InfoPanel phoneField;
+	private InfoPanel ageField;
 	
 	/**
 	 * Constructor for AccountPanel.
 	 * @pre userAccount != null;
 	 * @post this.isVisible() == true;
 	 */
-	public AccountPanel(Account userAccount)
+	public AccountPanel()
 	{
 		super();
-		this.userAccount = userAccount;
 		this.initializeUI();
 	}
 	
@@ -36,13 +37,17 @@ public class AccountPanel extends SimplePanel
 	private void initializeUI()
 	{
 		this.informationHolder = new VerticalPanel();
+		editBtn = new Button("Edit");
+		nameField = new InfoPanel("Name","");
+		emailField = new InfoPanel("Email","");
+		phoneField = new InfoPanel("Phone","");
+		ageField = new InfoPanel("Age","");
 		this.informationHolder.add(new Label("Account Information"));
-		this.informationHolder.add(new Button("Edit"));
-		this.informationHolder.add(new InfoPanel("Name", this.userAccount.getUserName()));
-		this.informationHolder.add(new InfoPanel("Email", this.userAccount.getUserEmail()));
-		this.informationHolder.add(new InfoPanel("Phone", this.userAccount.getUserPhone()));
-		int userAge = this.userAccount.getUserAge();
-		this.informationHolder.add(new InfoPanel("Age", String.valueOf(userAge)));
+		this.informationHolder.add(editBtn);
+		this.informationHolder.add(nameField);
+		this.informationHolder.add(emailField);
+		this.informationHolder.add(phoneField);
+		this.informationHolder.add(ageField);
 		this.add(informationHolder);
 	}
 	
@@ -71,16 +76,5 @@ public class AccountPanel extends SimplePanel
 				this.add(new Label("--"));
 			}
 		}
-	}
-	
-	/**
-	 * Method to return the underlying account of the AccountPanel.
-	 * @pre true;
-	 * @post true;
-	 * @return the Account of the AccountPanel.
-	 */
-	public Account getAccount()
-	{
-		return this.userAccount;
 	}
 }

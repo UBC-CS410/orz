@@ -1,5 +1,6 @@
 package stuffplotter.views.events;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,10 +34,10 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	 * @pre userAccount != null;
 	 * @post this.isVisible() == true;
 	 */
-	public FriendSelectionPanel(Account userAccount)
+	public FriendSelectionPanel()
 	{
 		super();
-		this.initializeUI(userAccount);
+		this.initializeUI();
 	}
 
 	/**
@@ -45,35 +46,25 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	 * @post true;
 	 * @param userAccount
 	 */
-	private void initializeUI(Account userAccount)
+	private void initializeUI()
 	{	
 		this.friendDisplayer = new ScrollDisplayPanel(NUMOFCOLUMNS);
 		this.friendDisplayer.setSize(PANELWIDTH, PANELHEIGHT);
 		
-		AccountServiceAsync accountService = GWT.create(AccountService.class);
-		accountService.getFriends(userAccount, new AsyncCallback<List<String>>()
-		{
-			@Override
-			public void onFailure(Throwable caught)
-			{
-				friendDisplayer.clearDisplay();
-				friendDisplayer.addElement(new Label("Failed to retrieve friends, please" +
-						"try again later."));
-			}
-
-			@Override
-			public void onSuccess(List<String> friends)
-			{
-				Collections.sort(friends);
-				
-				// for each loop to populate the list of friends to select from
-				for(String friend : friends)
-				{
-					friendDisplayer.addElement(new CheckBox(friend));
-				}
-			}
-		});
+		List<String> toDo = new ArrayList<String>();
+		toDo.add("Refactor");
+		toDo.add("Event");
+		toDo.add("Creation");
+		toDo.add("UI!!!");
 		
+		Collections.sort(toDo);
+				
+		// for each loop to populate the list of friends to select from
+		for(String friend : toDo)
+		{
+			friendDisplayer.addElement(new CheckBox(friend));
+		}
+						
 		this.add(friendDisplayer);
 		this.setSize(PANELWIDTH, PANELHEIGHT);
 	}

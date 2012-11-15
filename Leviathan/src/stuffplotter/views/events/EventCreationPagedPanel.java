@@ -19,10 +19,10 @@ public class EventCreationPagedPanel extends DeckPanel
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventCreationPagedPanel(Account userAccount)
+	public EventCreationPagedPanel()
 	{
 		super();
-		this.initializePages(userAccount);
+		this.initializePages();
 		this.showWidget(0);
 	}
 	
@@ -32,7 +32,7 @@ public class EventCreationPagedPanel extends DeckPanel
 	 * @post true;
 	 * @param userAccount - the account of the user to populate the pages with.
 	 */
-	private void initializePages(Account userAccount)
+	private void initializePages()
 	{
 		// initialize Page 1
 		EventInfoPanel page1Panel = new EventInfoPanel();
@@ -42,7 +42,7 @@ public class EventCreationPagedPanel extends DeckPanel
 		EventDateSelectionPanel page2Panel = new EventDateSelectionPanel(timeSheet);
 
 		// initialize Page 3
-		FriendSelectionPanel page3Panel = new FriendSelectionPanel(userAccount);
+		FriendSelectionPanel page3Panel = new FriendSelectionPanel();
 		
 		this.add(page1Panel);
 		this.add(page2Panel);

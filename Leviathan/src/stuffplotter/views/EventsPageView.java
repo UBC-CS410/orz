@@ -1,6 +1,5 @@
 package stuffplotter.views;
 
-import stuffplotter.shared.Account;
 import stuffplotter.views.events.EventCreationDialogBox;
 import stuffplotter.views.events.EventsBrowserPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
@@ -17,19 +16,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class EventsPageView extends HorizontalPanel
 {
-	// remove account from here to model MVP pattern
-	private Account account;
 	private ScrollDisplayPanel eventsDisplay;
+	private EventCreationDialogBox eventCreation;
 	
 	/**
 	 * Constructor for the EventsPagePanel.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventsPageView(Account account)
+	public EventsPageView()
 	{
 		super();
-		this.account = account;
 		this.initializeUI();
 	}
 	
@@ -51,11 +48,11 @@ public class EventsPageView extends HorizontalPanel
 		Button createEventBtn = new Button("Create Event");
 		createEventBtn.addClickHandler(new ClickHandler()
 		{
-			EventCreationDialogBox eventCreation = null;
+
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				 eventCreation = new EventCreationDialogBox(account);
+				 eventCreation = new EventCreationDialogBox();
 			}
 		});
 		buttonHolder.add(createEventBtn);

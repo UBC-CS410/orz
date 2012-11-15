@@ -27,7 +27,7 @@ public class UITests extends GWTTestCase
 	public static void setUpBeforeClass() throws Exception
 	{
 		userAccount = new Account("UserName", "Email");
-		accountPanel = new AccountPanel(userAccount);
+		accountPanel = new AccountPanel();
 		userAvail = new AvailabilitySubmitterDialogBox(new ArrayList<MonthContainer>());
 	}
 	
@@ -37,17 +37,6 @@ public class UITests extends GWTTestCase
 		userAccount = null;
 		accountPanel = null;
 		userAvail = null;
-	}
-	
-	/**
-	 * Test to ensure that the account gets stored in the AccountPanel and is retrievable.
-	 */
-	@Test
-	public void testGetAccount()
-	{
-		assertNotNull(accountPanel.getAccount());
-		assertEquals("UserName", accountPanel.getAccount().getUserName());
-		assertEquals("UserName", accountPanel.getAccount().getUserEmail());
 	}
 	
 	/**

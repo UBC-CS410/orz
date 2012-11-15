@@ -1,6 +1,5 @@
 package stuffplotter.views;
 
-import stuffplotter.shared.Account;
 import stuffplotter.views.account.AccountPanel;
 
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -17,10 +16,10 @@ public class AccountPageView extends SimplePanel
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public AccountPageView(Account account)
+	public AccountPageView()
 	{
 		super();
-		this.initializeUI(account);
+		this.initializeUI();
 	}
 	
 	/**
@@ -28,8 +27,8 @@ public class AccountPageView extends SimplePanel
 	 * @pre true;
 	 * @post true;
 	 */
-	private void initializeUI(Account account)
+	private void initializeUI()
 	{
-		this.add(new AccountPanel(account));
+		this.add(new AccountPanel());
 	}
 }

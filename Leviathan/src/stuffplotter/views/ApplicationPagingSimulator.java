@@ -1,10 +1,5 @@
 package stuffplotter.views;
 
-import stuffplotter.presenters.AccountPagePresenter;
-import stuffplotter.presenters.AchievementsPagePresenter;
-import stuffplotter.presenters.EventsPagePresenter;
-import stuffplotter.presenters.FriendsPagePresenter;
-import stuffplotter.presenters.HomePagePresenter;
 import stuffplotter.shared.Account;
 
 import com.google.gwt.user.client.ui.DeckPanel;
@@ -13,12 +8,12 @@ import com.google.gwt.user.client.ui.DeckPanel;
  * Class to simulate paged views for the applications. 
  */
 public class ApplicationPagingSimulator extends DeckPanel
-{
-	private HomePagePresenter homePresenter;
-	private AccountPagePresenter accountPresenter;
-	private EventsPagePresenter eventsPresenter;
-	private FriendsPagePresenter friendsPresenter;
-	private AchievementsPagePresenter achievementsPresenter;
+{	
+	private HomePageView homePage;
+	private AccountPageView accountPage;
+	private EventsPageView eventsPage;
+	private FriendsPageView friendsPage;
+	private AchievementsPageView achievementsPanel;
 	
 	/**
 	 * enum to help determine which page to display.
@@ -52,17 +47,14 @@ public class ApplicationPagingSimulator extends DeckPanel
 		}
 	};
 	
-	private Account loggedInUser;
-	
 	/**
 	 * Constructor for ApplicationPagingSimluator.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public ApplicationPagingSimulator(Account userAccount)
+	public ApplicationPagingSimulator()
 	{
 		super();
-		loggedInUser = userAccount;
 		this.initializePages();
 		this.showWidget(0);
 	}
@@ -86,25 +78,79 @@ public class ApplicationPagingSimulator extends DeckPanel
 	private void initializePages()
 	{
 		// initialize Home page
-		HomePageView homePage = new HomePageView();
+		homePage = new HomePageView();
 		
 		// initialize User Account page
-		AccountPageView accountPage = new AccountPageView(this.loggedInUser);
+		accountPage = new AccountPageView();
 		
 		// initialize User Events page
-		EventsPageView eventsPage = new EventsPageView(this.loggedInUser);
+		eventsPage = new EventsPageView();
 		
 		// initialize User Friends page
-		FriendsPageView friendsPage = new FriendsPageView();
-		this.friendsPresenter = new FriendsPagePresenter(friendsPage);
+		friendsPage = new FriendsPageView();
 		
 		// initialize User Achievements page
-		AchievementsPageView achievementsPanel = new AchievementsPageView();
+		achievementsPanel = new AchievementsPageView();
 		
 		this.add(homePage);
 		this.add(accountPage);
 		this.add(eventsPage);
 		this.add(friendsPage);
 		this.add(achievementsPanel);
+	}
+
+	/**
+	 * Retrieve the view for the Home page.
+	 * @pre true;
+	 * @post true;
+	 * @return the view for the Home page.
+	 */
+	public HomePageView getHomeView()
+	{
+		return this.homePage;
+	}
+
+	/**
+	 * Retrieve the view for the Account page.
+	 * @pre true;
+	 * @post true;
+	 * @return the view for the Account page.
+	 */
+	public AccountPageView getAccountView()
+	{
+		return this.accountPage;
+	}
+
+	/**
+	 * Retrieve the view for the Events page.
+	 * @pre true;
+	 * @post true;
+	 * @return the view for the Events page.
+	 */
+	public EventsPageView getEventsView()
+	{
+		return this.eventsPage;
+	}
+
+	/**
+	 * Retrieve the view for the Friends page.
+	 * @pre true;
+	 * @post true;
+	 * @return the view for the Friends page.
+	 */
+	public FriendsPageView getFriendsView()
+	{
+		return this.friendsPage;
+	}
+
+	/**
+	 * Retrieve the view for the Achievements page.
+	 * @pre true;
+	 * @post true;
+	 * @return the view for the Achievements page.
+	 */
+	public AchievementsPageView getAchievementsView()
+	{
+		return this.achievementsPanel;
 	}
 }
