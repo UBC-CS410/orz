@@ -3,11 +3,16 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.UI.AccountPanel;
-import stuffplotter.UI.AvailabilitySubmitterDialogBox;
-import stuffplotter.UI.EventCreationDialogBox;
-import stuffplotter.UI.FriendFinderDialogBox;
-import stuffplotter.UI.TopRightPanel;
+import stuffplotter.ui.events.EventCreationDialogBox;
+import stuffplotter.ui.ApplicationPagingSimulator;
+import stuffplotter.ui.ApplicationPagingSimulator.View;
+import stuffplotter.ui.TopRightPanel;
+import stuffplotter.ui.AccountPanel;
+import stuffplotter.ui.ViewSelectorPanel;
+import stuffplotter.ui.events.AvailabilitySubmitterDialogBox;
+import stuffplotter.ui.FriendFinderDialogBox;
+import stuffplotter.server.AchievementChecker;
+import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
@@ -20,23 +25,24 @@ import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.api.gwt.services.calendar.shared.model.CalendarList;
-import com.google.api.gwt.services.calendar.shared.model.Event;
 import com.google.api.gwt.services.calendar.shared.model.Events;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.control.LargeMapControl3D;
-import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
@@ -45,187 +51,54 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
  */
 public class Leviathan implements EntryPoint
 {
-	
-	private final String redirectUrl = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private final String hostpage = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
-	private int friendCount = 0;
+	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad()
 	{
+		final AccountServiceAsync accountService = GWT.create(AccountService.class);
 		
-		AccountServiceAsync accountService = GWT.create(AccountService.class);
-		
-		accountService.login(redirectUrl, new AsyncCallback<Account>()
+		accountService.registerAccount(hostpage, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
-	        	
+	        	Window.alert("Failed to register account.");
 	        }
 
 	        public void onSuccess(Account result)
 	        {
 	          account = result;
-	          if(account.inSession())
-	          {
-	        	  loadUI();
-	          }
-	          else
-	          {
-	        	  Window.Location.assign(account.getLogin());
-	          }
+	          account.accept(new AchievementRecordUpdater().incrementLogin());
+	          account.accept(new AchievementChecker());
+	          accountService.saveAccount(account, new AsyncCallback<Void>(){
+
+				@Override
+				public void onFailure(Throwable caught)
+				{
+					Window.alert("Save Fail");
+					
+				}
+
+				@Override
+				public void onSuccess(Void result)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+	        	  
+	          });
+	          loadUI();
 	        }
 		});
+		
 	}
 	
 	public void loadUI()
-	{
-		// testing calendar stuff
-		Calendar calendar = new Calendar();
-		calendar.setWidth("500px");
-		calendar.setHeight("400px");
-
-		//Displays the month View
-		calendar.setView(CalendarViews.MONTH);
-		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>()
-		{
-			@Override
-			public void onTimeBlockClick(TimeBlockClickEvent<Date> event)
-			{
-				// TODO Auto-generated method stub
-				Window.alert(Integer.toString(event.getTarget().getDate()));
-			}
-		});
-		
-		// testing map stuff
-		MapWidget map = new MapWidget(LatLng.newInstance(49, -123), 8);
-		map.setSize("500px", "500px");
-		map.setScrollWheelZoomEnabled(true);
-		map.addControl(new LargeMapControl3D());
-		map.setGoogleBarEnabled(true);
-		
-		// testing Toy Level System
-		final LevelSystem lvlSys = new LevelSystem();
-
-		VerticalPanel lvlView = new VerticalPanel();
-		final Button addExpBtn = new Button("Up Vote");
-		final Button addfriend = new Button("Add Friend");
-		final Button getfriends = new Button("Get Friends");
-		final Label lvlLabel = new Label("Level: 1");
-		final Label expLabel = new Label("Experience: 0");
-		
-		lvlView.add(lvlLabel);
-		lvlView.add(expLabel);
-		lvlView.add(addExpBtn);
-		lvlView.add(addfriend);
-		lvlView.add(getfriends);
-		
-		addfriend.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event) {
-				AccountServiceAsync accountService = GWT.create(AccountService.class);
-				friendCount++;
-				final String testFriend = "TestFriend_"+friendCount;
-				account.addUserFriend(testFriend);
-				accountService.addFriend(account, testFriend, new AsyncCallback<Void>(){
-
-					@Override
-					public void onFailure(Throwable caught) 
-					{
-						Window.alert("Failed");
-					}
-
-					@Override
-					public void onSuccess(Void result) 
-					{
-						Window.alert("Friend: "+testFriend+" has been added");
-					}
-					
-				});
-				
-			}
-			
-		});
-		
-		getfriends.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event) {
-				AccountServiceAsync accountService = GWT.create(AccountService.class);
-				accountService.getFriends(account, new AsyncCallback<List<String>>(){
-
-					@Override
-					public void onFailure(Throwable caught) {
-					Window.alert("Failure");
-						
-					}
-
-					@Override
-					public void onSuccess(List<String> result) {
-						String test = "";
-						for (int i=0; i<result.size();i++){
-							test = test + result.get(i) + "/n";
-						}
-						
-						Window.alert(test);
-						
-					}
-					
-				});
-				
-			}
-			
-		});
-		
-		
-		addExpBtn.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				lvlSys.addExperience(50);
-				expLabel.setText("Experience: " + Integer.toString(lvlSys.getCurrentExperience()));
-				lvlLabel.setText("Level: " + Integer.toString(lvlSys.getCurrentLevel()));
-			}	
-		});
-		
-		final Button availBtn = new Button("Avail");
-		availBtn.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				AvailabilitySubmitterDialogBox availSubmitter = new AvailabilitySubmitterDialogBox();
-				availSubmitter.show();
-			}
-		});
-		
-		final Button createEventBtn = new Button("Create Event");
-		createEventBtn.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				EventCreationDialogBox eventCreation = new EventCreationDialogBox();
-				eventCreation.show();
-			}
-		});
-
-		final Button findFriends = new Button("Find Friends");
-		findFriends.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				FriendFinderDialogBox friendDialog = new FriendFinderDialogBox();
-				friendDialog.show();
-			}	
-		});
-		
+	{						
+		/*		
 		// test code to read from user's Google Calendar
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
@@ -233,7 +106,8 @@ public class Leviathan implements EntryPoint
 		{
 
 			@Override
-			public void onFailure(Exception reason) {
+			public void onFailure(Exception reason)
+			{
 				// TODO Auto-generated method stub
 				Window.alert(reason.getMessage());				
 			}
@@ -241,7 +115,6 @@ public class Leviathan implements EntryPoint
 			@Override
 			public void onSuccess(Void result)
 			{
-				Window.alert("Authorized");
 				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
 				{
 					@Override
@@ -266,31 +139,61 @@ public class Leviathan implements EntryPoint
 								Window.alert(result);
 							}
 						});
-						
-						Window.alert(calRequest.toString());
 					}
 				});
 			}	
 		});
+	*/	
 		
-		// testing user account panel
-		AccountPanel userAccountPanel = new AccountPanel(account);
+		// testing view selection and simulated pages
+		ViewSelectorPanel viewSelections = new ViewSelectorPanel();
+		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator(account);
+		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.HOME);
+			}	
+		});
+		viewSelections.getAccountBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.ACCOUNT);
+			}	
+		});
+		viewSelections.getEventsBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.EVENTS);
+			}	
+		});
+		viewSelections.getFriendsBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.FRIENDS);
+			}	
+		});
+		viewSelections.getAchievementsBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				simulatedPages.showView(View.ACHIEVEMENTS);
+			}	
+		});
 		
 		// testing top right panel for logged in user
 		TopRightPanel topRightPanel = new TopRightPanel(account);
-		
-		HorizontalPanel calMapHolder = new HorizontalPanel();
-		calMapHolder.add(calendar);
-		calMapHolder.add(map);
-		
-		// Add the nameField and sendButton to the RootPanel
-		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("calMapContainter").add(calMapHolder);
-		RootPanel.get("addExp").add(lvlView);
-		RootPanel.get("eventCreation").add(createEventBtn);
-		RootPanel.get("availSub").add(availBtn);
-		RootPanel.get("friendFinder").add(findFriends);
-		RootPanel.get("userAccount").add(userAccountPanel);
+
 		RootPanel.get("topRightPanel").add(topRightPanel);
+		RootPanel.get("viewSelections").add(viewSelections);
+		RootPanel.get("simulatedPages").add(simulatedPages);
 	}
 }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("achievement")
 public interface RecordService extends RemoteService {
-	void addAchievement(Account acc, Achievement id);
-	Achievement getAchievments(Account acc, List<Achievement> achievements);
+	void addExperience(String user, int xp);
+	void unlockAchievement(String user, Achievement id);
+	Achievement getAchievments(String user, List<Achievement> achievements);
 }

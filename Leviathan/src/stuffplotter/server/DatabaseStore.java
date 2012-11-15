@@ -1,14 +1,12 @@
 package stuffplotter.server;
 
-import java.security.Key;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.Scheduler;
+import stuffplotter.shared.Availability;
 
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
@@ -25,6 +23,8 @@ public class DatabaseStore {
 	{
 		ObjectifyService.register(Account.class);
 		ObjectifyService.register(Event.class);
+		ObjectifyService.register(Scheduler.class);
+		ObjectifyService.register(Availability.class);
 	}
 	
 	/**
@@ -36,12 +36,39 @@ public class DatabaseStore {
 	}
 	
 	/**
-	 * Stores an object to the data store using Objectify
+	 * Stores an Account to the data store using Objectify
 	 * @param pAcct	the Account to be stored
 	 */	
-	public void store(Object pObj) {
+	public void store(Account pAct) {
 		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pObj);
+		ofy.put(pAct);
+	}
+	
+	/**
+	 * Stores an Event to the data store using Objectify
+	 * @param pEvt	the Event to be stored
+	 */	
+	public void store(Event pEvt) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pEvt);
+	}
+	
+	/**
+	 * Stores a Scheduler to the data store using Objectify
+	 * @param pSch	the Scheduler to be stored
+	 */	
+	public void store(Scheduler pSch) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pSch);
+	}
+	
+	/**
+	 * Stores an Availability to the data store using Objectify
+	 * @param pSch	the Scheduler to be stored
+	 */	
+	public void store(Availability pAvl) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pAvl);
 	}
 	
 	/**

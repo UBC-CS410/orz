@@ -1,0 +1,26 @@
+Hi team ORZ,
+
+How is going on with your project? 
+Please send me an email and update me about your project status. 
+Your email should contains about your current task each of your team is doing now and the decision you made through last week 
+Your report should be sth like this: 
+
+1. John doe 
+	. Adding menu: adding menu for page x blah blah 
+	. Designing Icons : blah blah ...
+	. ....
+2. Ron wood 
+	. Creating views: blah ... 
+	. ......
+
+
+For decision part: 
+This part should contains specially your decision how you are going to address:
+	1- static analysis
+	2- security analysis 
+	3- testing and test plan 
+
+If some part of this email is vague please let me know. 
+
+Cheers, 
+Reza

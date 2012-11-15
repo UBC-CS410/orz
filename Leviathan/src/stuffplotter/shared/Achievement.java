@@ -1,6 +1,8 @@
 package stuffplotter.shared;
 
 public enum Achievement {
+	
+	FIRST_LOG_IN("Logged in for the First Timed"),
     CREATE_FIRST_EVENT("Party time!"), 
     ADD_FIRST_FRIEND("Not a loner"), 
     COMPLETE_FIRST_EVENT("Hang over"), 
@@ -8,7 +10,7 @@ public enum Achievement {
     
     //Achievement information
     private int achId;
-	private String name; //
+	private String display; //
 
     /**
      * Achievement constructor. 
@@ -18,22 +20,12 @@ public enum Achievement {
      * @param the string display for an achievement
      */
     private Achievement(String pStr) {
-            this.name = pStr;
+            this.display = pStr;
     }
-
-	/**
-	 * @return the achId
-	 */
-	public String getAchName() {
-		return name;
-	}
-
-	/**
-	 * @param achId the achId to set
-	 */
-	public void setAchName(String name) {
-		this.name = name;
-	}
+    
+    public String getDisplay(){
+    	return this.display;
+    }
 
     
 

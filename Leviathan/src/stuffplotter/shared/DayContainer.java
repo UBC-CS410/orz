@@ -1,14 +1,25 @@
 package stuffplotter.shared;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class to hold the time intervals selected for an event.
  */
-public class DayContainer
+public class DayContainer implements Serializable
 {
 	private String day;
 	private List<Integer> timeSlots;
+	
+	/**
+	 * No arg constructor for DayContainer
+	 * @pre		true;
+	 * @post 	true;
+	 */
+	public DayContainer() {
+		
+	}
 	
 	/**
 	 * Constructor for a Day, containing the time slots selected for an event.

@@ -1,20 +1,24 @@
-package stuffplotter.client;
+package stuffplotter.server;
+
+import stuffplotter.shared.Account;
 
 /**
  * Class to handle leveling for users.
  */
 public class LevelSystem {
 	
-	private int currentLevel;
+	private Account user;
 	private int currentExp;
+	private int currentLevel;
 	
 	/**
 	 * Default constructor for level system.
 	 */
-	public LevelSystem()
+	public LevelSystem(Account user)
 	{
-		this.currentLevel = 1;
-		this.currentExp = 0;
+		this.user = user;
+		this.currentExp = user.getUserExperience();
+		this.currentLevel = user.getUserLevel();
 	}
 	
 	/**
@@ -25,6 +29,8 @@ public class LevelSystem {
 	{
 		this.currentExp += expAmount;
 		tryLevelUp(this.currentLevel, this.currentExp);
+		user.setUserExperience(currentExp);
+		user.setUserLevel(currentLevel);
 	}
 	
 	/**
@@ -33,6 +39,7 @@ public class LevelSystem {
 	private void incrementLevel()
 	{
 		this.currentLevel++;
+		user.setUserLevel(currentLevel);
 	}
 	
 	/**
