@@ -32,6 +32,7 @@ Icon?
 Thumbs.db
 
 *.tmp
+*.prefs
 /gwt-unitCache
 /war/WEB-INF/deploy
 /war/WEB-INF/appengine-generated
