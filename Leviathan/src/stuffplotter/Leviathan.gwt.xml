@@ -30,7 +30,7 @@
   <source path='client'/>
   <source path='server'/>
   <source path='shared'/>
-  <source path='ui'/>
+  <source path='views'/>
   <source path='misc'/>
   <source path='presenters'/>
 
