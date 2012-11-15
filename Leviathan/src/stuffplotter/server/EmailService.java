@@ -1,6 +1,5 @@
 package stuffplotter.server;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -12,8 +11,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import stuffplotter.shared.Event;
-
-import com.google.gwt.user.client.Window;
 
 /**
  * This is the EmailService class. It will handle sending out emails from
@@ -64,7 +61,8 @@ public class EmailService {
 		}
 		catch(MessagingException e)
 		{
-			Window.alert(e.toString());
+			System.out.println(e.toString());
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -89,7 +87,8 @@ public class EmailService {
 		}
 		catch(MessagingException e)
 		{
-			Window.alert(e.toString());
+			System.out.println(e.toString());
+			System.out.println(e.getMessage());
 		}
 	}
 	

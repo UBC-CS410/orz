@@ -1,6 +1,7 @@
 package stuffplotter.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,12 +72,11 @@ public class Event implements Serializable
 	private List<String> eventInvitees;
 	private List<String> eventAttendees;
 	
-	private String eventType;
 	private String eventDescription;
 	private List<String> eventComments;
 	
+	private Double[] eventRatings;
 	private Double eventScore;
-	
 	
 	public int eventRating;
 	/**
@@ -102,6 +102,10 @@ public class Event implements Serializable
 		this.eventCoordinates = eventRetriever.getCoordinates();
 		this.eventDuration = eventRetriever.getDuration();
 		this.eventCost = eventRetriever.getCost();
+		
+		this.eventInvitees = new ArrayList<String>();
+		this.eventAttendees = new ArrayList<String>();
+		this.eventComments = new ArrayList<String>();
 	}
 	
 	/**
@@ -366,28 +370,6 @@ public class Event implements Serializable
 	public void addAttendee(String eventAttendee)
 	{
 		this.eventAttendees.add(eventAttendee);
-	}
-	
-	/**
-	 * Retrieves the type of the event.
-	 * @pre true;
-	 * @post true;
-	 * @return the type of the event.
-	 */
-	public String getType()
-	{
-		return this.eventType;
-	}
-
-	/**
-	 * Set the type of the event.
-	 * @pre eventType != null;
-	 * @post this.eventType.equals(eventType);
-	 * @param eventType - the type of the event.
-	 */
-	public void setType(String eventType)
-	{
-		this.eventType = eventType;
 	}
 
 	/**
