@@ -69,14 +69,14 @@ public class EmailService {
 	}
 	
 	public void sendEvent(Event event){
-		InternetAddress[] recipientEmails = new InternetAddress[event.getGuests().size()+1];
+		InternetAddress[] recipientEmails = new InternetAddress[event.getInvitees().size()+1];
 
 		try
 		{
-			for(int i=0; i<event.getGuests().size();i++){
-				recipientEmails[i] = new InternetAddress(event.getGuests().get(i)+"@gmail.com");
+			for(int i=0; i<event.getInvitees().size();i++){
+				recipientEmails[i] = new InternetAddress(event.getInvitees().get(i)+"@gmail.com");
 			}
-			recipientEmails[event.getGuests().size()] = new InternetAddress(event.getOwner()+"@gmail.com");
+			recipientEmails[event.getInvitees().size()] = new InternetAddress(event.getOwner()+"@gmail.com");
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ADMIN_USERNAME));

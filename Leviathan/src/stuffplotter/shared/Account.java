@@ -229,7 +229,7 @@ public class Account implements Serializable
 	 * @return the userAchievements
 	 */
 	public List<Achievement> getUserAchievements() {
-		return userAchievements;
+		return this.userAchievements;
 	}
 
 	/**

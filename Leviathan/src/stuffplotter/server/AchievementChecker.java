@@ -76,11 +76,11 @@ public class AchievementChecker implements RecordVisitor
 	 * @post
 	 */
 	private void checkAccountAchievements()
-	{
-		if(!userAchievements.contains(Achievement.FIRST_LOG_IN))
+	{		
+		if(!this.userAchievements.contains(Achievement.FIRST_LOG_IN))
 			firstLoggedIn();
 		
-		if(!userAchievements.contains(Achievement.ADD_FIRST_FRIEND))
+		if(!this.userAchievements.contains(Achievement.ADD_FIRST_FRIEND))
 			addFirstFriend();
 		
 		this.user.addUserAchievements(unlockAchievements);
@@ -94,13 +94,13 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void checkEventAchievements()
 	{
-		if(!userAchievements.contains(Achievement.CREATE_FIRST_EVENT))
+		if(!this.userAchievements.contains(Achievement.CREATE_FIRST_EVENT))
 			createFirstEvent();
 		
-		if(!userAchievements.contains(Achievement.COMPLETE_FIRST_EVENT))
+		if(!this.userAchievements.contains(Achievement.COMPLETE_FIRST_EVENT))
 			completeFirstEvent();
 		
-		if(!userAchievements.contains(Achievement.FULL_EVENT_ATTENDANCE))
+		if(!this.userAchievements.contains(Achievement.FULL_EVENT_ATTENDANCE))
 			fullEventAttendance();
 		
 		
@@ -182,7 +182,7 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void fullEventAttendance()
 	{
-		if(this.event.getGuests().size() >=0)
+		if(this.event.getInvitees().size() >=0)
 			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
 	}
 

@@ -68,8 +68,8 @@ public class Event implements Serializable
 	 * associated Scheduler is created. 
 	 */
 	@Transient private List<MonthContainer> timeSheet;
-	private List<String> eventHosts;
-	private List<String> eventGuests;
+	private List<String> eventInvitees;
+	private List<String> eventAttendees;
 	
 	private String eventType;
 	private String eventDescription;
@@ -312,62 +312,62 @@ public class Event implements Serializable
 	{
 		this.eventStatus = eventStatus;
 	}
+
+	/**
+	 * Get the list of invitees to the event.
+	 * @pre 	true;
+	 * @post 	true;
+	 * @return 	the users invited to the event.
+	 */
+	public List<String> getInvitees()
+	{
+		return this.eventInvitees;
+	}
+	
+	/**
+	 * Add a user to the list of invitees.
+	 * @pre 	eventInvitee != null;
+	 * @post 	this.eventInvitees.size() += 1;
+	 * @param 	eventInvitee - user to invite to the event.
+	 */
+	public void addInvitee(String eventInvitee)
+	{
+		this.eventInvitees.add(eventInvitee);
+	}
+	
+	/**
+	 * Sets the initial list of invitees to the event
+	 * @pre 	eventInvitees != null;
+	 * @post 	this.eventInvitees.size() += eventInvitees.size();
+	 * @param 	eventInvitee - the list of user to invite to the event.
+	 */
+	public void setInvitees(List<String> eventInvitees)
+	{
+		this.eventInvitees = eventInvitees;
+	}
 	
 	/**
 	 * Get the list of event hosts.
 	 * @pre 	true;
 	 * @post 	true;
-	 * @return 	the eventHosts
+	 * @return 	the users attending the event
 	 */
-	public List<String> getHosts()
+	public List<String> getAttendees()
 	{
-		return eventHosts;
+		return this.eventAttendees;
 	}
 
 	/**
-	 * Add a co-host to the event.
-	 * @pre		true;
-	 * @post 	this.eventHosts.size() += 1;
-	 * @param 	eventHost - the eventHost to add.
+	 * Add an attendee to the event.
+	 * @pre		eventAttendee != null;
+	 * @post 	this.eventAttendees.size() += 1;
+	 * @param 	eventAttendee - the user who accepted an invite to the event
 	 */
-	public void addHost(String eventHost)
+	public void addAttendee(String eventAttendee)
 	{
-		this.eventHosts.add(eventHost);
-	}
-
-	/**
-	 * Get the list of guests invited to the event.
-	 * @pre 	true;
-	 * @post 	true;
-	 * @return 	the guests invited to the event.
-	 */
-	public List<String> getGuests()
-	{
-		return this.eventGuests;
+		this.eventAttendees.add(eventAttendee);
 	}
 	
-	/**
-	 * Invite a guest to the event.
-	 * @pre 	true;
-	 * @post 	this.eventGuests.size() += 1;
-	 * @param 	eventGuest - guest to add to the event.
-	 */
-	public void addGuest(String eventGuest)
-	{
-		this.eventGuests.add(eventGuest);
-	}
-	
-	/**
-	 * Invite a list of guests to the event
-	 * @pre 	true;
-	 * @post 	this.eventGuests.size() += eventGuests.size();
-	 * @param 	eventGuests - the list of guests for the event.
-	 */
-	public void setGuests(List<String> eventGuests)
-	{
-		this.eventGuests = eventGuests;
-	}
-
 	/**
 	 * Retrieves the type of the event.
 	 * @pre true;
