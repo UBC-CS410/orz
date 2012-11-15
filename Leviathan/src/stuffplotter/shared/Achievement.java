@@ -13,6 +13,7 @@ public enum Achievement {
     /**
      * Achievement constructor. 
      * NOTE: Java enum constructor must be private
+     * remove this later
      * 
      * @param the string display for an achievement
      */
