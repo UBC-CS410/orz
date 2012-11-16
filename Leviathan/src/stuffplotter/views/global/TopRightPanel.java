@@ -2,6 +2,7 @@ package stuffplotter.views.global;
 
 import java.util.List;
 
+import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Notification;
 
@@ -14,7 +15,7 @@ import com.google.gwt.user.client.ui.Label;
 /**
  * Class to display logged in user's identity and log out button at top of application.
  */
-public class TopRightPanel extends HorizontalPanel
+public class TopRightPanel extends HorizontalPanel implements TopBarView
 {
 	private String userName;
 	private Anchor logoutLink;

@@ -1,12 +1,22 @@
 package stuffplotter.presenters;
 
 import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
+import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
+import stuffplotter.presenters.TopBarPresenter.TopBarView;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 public class AppController implements Presenter
 {
+	public interface MasterViewer
+	{
+		public TopBarView getTopPanel();
+		public MenuBarView getMenuPanel();
+		public MainView getMainView();
+	}
+	
 	private final HandlerManager eventBus;
 	private final ServiceRepository serviceRepo;
 	private HasWidgets masterView;

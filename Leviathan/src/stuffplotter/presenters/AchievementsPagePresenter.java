@@ -7,11 +7,10 @@ import com.google.gwt.user.client.ui.HasWidgets;
  */
 public class AchievementsPagePresenter implements Presenter
 {
-	private HomePagePresenter homePresenter;
-	private AccountPagePresenter accountPresenter;
-	private EventsPagePresenter eventsPresenter;
-	private FriendsPagePresenter friendsPresenter;
-	private AchievementsPagePresenter achievementsPresenter;
+	public interface AchievementsView
+	{
+		//public AchievementsPanel getAchievementsPanel(); // create presenter for this 
+	}
 	
 	private void bind()
 	{

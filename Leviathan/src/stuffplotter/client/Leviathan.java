@@ -3,37 +3,57 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.views.ApplicationPagingSimulator;
-import stuffplotter.views.ApplicationPagingSimulator.View;
+import stuffplotter.views.ApplicationPagingView;
 import stuffplotter.views.account.AccountPanel;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationDialogBox;
 import stuffplotter.views.friends.FriendFinderDialogBox;
 import stuffplotter.views.global.MenuBarPanel;
-
 import stuffplotter.views.global.TopRightPanel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
-
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
 
+import com.bradrydzewski.gwt.calendar.client.Calendar;
+import com.bradrydzewski.gwt.calendar.client.CalendarViews;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.google.api.gwt.client.GoogleApiRequestTransport;
 import com.google.api.gwt.client.OAuth2Login;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
+import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.api.gwt.services.calendar.shared.model.CalendarList;
+import com.google.api.gwt.services.calendar.shared.model.Events;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Leviathan implements EntryPoint
 {
-	private String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private final String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
 	
 	/**
@@ -184,7 +204,7 @@ public class Leviathan implements EntryPoint
 		
 		// testing view selection and simulated pages
 		MenuBarPanel viewSelections = new MenuBarPanel();
-		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator();
+		final ApplicationPagingView simulatedPages = new ApplicationPagingView();
 		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
 		{
 			@Override

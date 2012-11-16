@@ -1,12 +1,14 @@
 package stuffplotter.views;
 
+import stuffplotter.presenters.AchievementsPagePresenter.AchievementsView;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Class to display the achievements page view.
  */
-public class AchievementsPageView extends SimplePanel
+public class AchievementsPageView extends SimplePanel implements AchievementsView
 {
 	/**
 	 * Constructor for the AchievementsPagePanel.

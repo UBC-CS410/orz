@@ -2,6 +2,8 @@ package stuffplotter.views;
 
 import java.util.Date;
 
+import stuffplotter.presenters.HomePagePresenter.HomeView;
+
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
@@ -14,7 +16,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 /**
  * Class to display the home page view.
  */
-public class HomePageView extends SimplePanel
+public class HomePageView extends SimplePanel implements HomeView
 {
 	/**
 	 * Constructor for the HomePagePanel.
