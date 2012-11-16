@@ -53,7 +53,7 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
  */
 public class Leviathan implements EntryPoint
 {
-	private final String hostpage = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private final String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
 	
 	/**
@@ -61,41 +61,96 @@ public class Leviathan implements EntryPoint
 	 */
 	public void onModuleLoad()
 	{
-		final AccountServiceAsync accountService = GWT.create(AccountService.class);
-		
-		accountService.registerAccount(hostpage, new AsyncCallback<Account>()
+		final AccountServiceAsync accountService = GWT.create(AccountService.class);			
+		accountService.login(url, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
-	        	Window.alert("Failed to register account.");
+	        	Window.alert("login failed again");
 	        }
 
 	        public void onSuccess(Account result)
-	        {
-	          account = result;
-	          account.accept(new AchievementRecordUpdater().incrementLogin());
-	          account.accept(new AchievementChecker());
-	          accountService.saveAccount(account, new AsyncCallback<Void>(){
+	        {	        	
+	    		if (Window.Location.getHash().length() > 0)
+	    		{
+	    			accountService.loadProfile(result, Window.Location.getHash(), new AsyncCallback<Void>()
+	    			{
 
-				@Override
-				public void onFailure(Throwable caught)
-				{
-					Window.alert("Save Fail");
-					
-				}
+	    				@Override
+	    				public void onFailure(Throwable caught)
+	    				{
+	    					// TODO Auto-generated method stub
+	    					
+	    				}
 
-				@Override
-				public void onSuccess(Void result)
-				{
-					// TODO Auto-generated method stub
-					
-				}
-	        	  
-	          });
-	          loadUI();
+	    				@Override
+	    				public void onSuccess(Void result)
+	    				{
+	    					Window.Location.assign(url);
+	    				}
+	    		
+	    			});
+	    		}
+	    		else if (!result.getUserAccessPermission())
+	    		{
+	        		requestProfile();
+	    		}
+	    		else
+	    		{
+	    			account = result;
+	    			account.accept(new AchievementRecordUpdater().incrementLogin());
+	    			account.accept(new AchievementChecker());
+	    			accountService.saveAccount(account, new AsyncCallback<Void>()
+	    			{
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							Window.alert("save failed");
+							
+						}
+		
+						@Override
+						public void onSuccess(Void result)
+						{
+							// TODO Auto-generated method stub
+							
+						}
+		        	  
+		        	});
+		        	loadUI();
+	    		}
 	        }
 		});
 		
+	}
+	
+	public void requestProfile()
+	{
+		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
+		String REDIRECT_URL = this.url;
+		/**
+		 * API Access
+		 * To prevent abuse, Google places limits on API requests. Using a valid OAuth token or API key allows you to exceed anonymous limits by connecting requests back to your project.
+		 * 
+		 * Product name:	stuffplotter
+		 * Google account:	allenylzhou@gmail.com
+		 * 
+		 * Client ID:	1024938108271.apps.googleusercontent.com
+		 * Email address:	1024938108271@developer.gserviceaccount.com
+		 * Client secret:	xNa3bfxI67U9rGJypDVcMZ34
+		 * Redirect URIs:	http://127.0.0.1:8888/Leviathan.html?gwt.codesvr=127.0.0.1:9997
+		 * 					stuffplotter.appspot.com
+		 * JavaScript origins:	none
+		 */
+		String CLIENT_ID = "1024938108271.apps.googleusercontent.com"; // available from the APIs console
+		String GOOGLE_PROFILE_SCOPE = "https://www.googleapis.com/auth/userinfo.profile";
+		
+		String oauth2Request = AUTH_URL + "?";
+		oauth2Request += "scope=" + GOOGLE_PROFILE_SCOPE + "&";
+		oauth2Request += "redirect_uri=" + REDIRECT_URL + "&";
+		oauth2Request += "response_type=token&";
+		oauth2Request += "client_id=" + CLIENT_ID + "&";
+		Window.Location.assign(oauth2Request);
 	}
 	
 	public void loadUI()

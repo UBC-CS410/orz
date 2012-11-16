@@ -12,7 +12,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("account")
 public interface AccountService extends RemoteService {
-	Account registerAccount(String hostUri);
+	Account login(String back);
+	void loadProfile(Account account, String hash);
 	void addFriend(Account acc, String friend);
 	void saveAccount(Account acc);
 	List<String> getFriends(Account acc);

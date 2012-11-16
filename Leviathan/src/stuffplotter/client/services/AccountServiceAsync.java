@@ -7,7 +7,8 @@ import stuffplotter.shared.Account;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AccountServiceAsync {
-	void registerAccount(String hostUri, AsyncCallback<Account> callback);
+	void login(String back, AsyncCallback<Account> callback);
+	void loadProfile(Account account, String hash, AsyncCallback<Void> callback);
 	void addFriend(Account acc, String friend, AsyncCallback<Void> callback);
 	void saveAccount(Account acc, AsyncCallback<Void> callback);
 	void getFriends(Account acc, AsyncCallback<List<String>> callback);
