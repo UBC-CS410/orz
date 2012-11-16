@@ -4,7 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
+import stuffplotter.shared.AchievementNotification;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.EventNotification;
+import stuffplotter.shared.FriendNotification;
+import stuffplotter.shared.Notification;
 import stuffplotter.shared.Scheduler;
 import stuffplotter.shared.Availability;
 
@@ -22,6 +27,11 @@ public class DatabaseStore {
 	static
 	{
 		ObjectifyService.register(Account.class);
+		ObjectifyService.register(AccountStatistic.class);
+		ObjectifyService.register(Notification.class);
+		ObjectifyService.register(AchievementNotification.class);
+		ObjectifyService.register(FriendNotification.class);
+		ObjectifyService.register(EventNotification.class);
 		ObjectifyService.register(Event.class);
 		ObjectifyService.register(Scheduler.class);
 		ObjectifyService.register(Availability.class);

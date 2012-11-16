@@ -98,25 +98,6 @@ public class Leviathan implements EntryPoint
 	    		else
 	    		{
 	    			account = result;
-	    			account.accept(new AchievementRecordUpdater().incrementLogin());
-	    			account.accept(new AchievementChecker());
-	    			accountService.saveAccount(account, new AsyncCallback<Void>()
-	    			{
-						@Override
-						public void onFailure(Throwable caught)
-						{
-							Window.alert("save failed");
-							
-						}
-		
-						@Override
-						public void onSuccess(Void result)
-						{
-							// TODO Auto-generated method stub
-							
-						}
-		        	  
-		        	});
 		        	loadUI();
 	    		}
 	        }

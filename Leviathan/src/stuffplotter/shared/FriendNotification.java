@@ -22,6 +22,11 @@ public class FriendNotification extends Notification
 	 * @param fromUser - the user that created the event.
 	 * @param forUser - the guest invited to the event.
 	 */
+	
+	public FriendNotification()
+	{
+		
+	}
 	public FriendNotification(FriendNotificationType type, String fromUser)
 	{
 		super(NotificationType.FRIENDREQUEST, fromUser);

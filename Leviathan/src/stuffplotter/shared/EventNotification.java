@@ -27,6 +27,11 @@ public class EventNotification extends Notification
 	 * @param fromUser - the user that created the event.
 	 * @param forUser - the guest invited to the event.
 	 */
+	public EventNotification()
+	{
+		
+	}
+	
 	public EventNotification(String fromUser, EventNotificationType type)
 	{
 		super(NotificationType.EVENTINVITATION, fromUser);

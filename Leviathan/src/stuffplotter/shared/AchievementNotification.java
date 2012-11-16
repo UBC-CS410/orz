@@ -6,6 +6,10 @@ import com.google.gwt.user.client.ui.SimplePanel;
 public class AchievementNotification extends Notification
 {
 
+	public AchievementNotification()
+	{
+		
+	}
 	public AchievementNotification(String achievement)
 	{
 		super(NotificationType.ACHIEVEMENTGET, achievement);

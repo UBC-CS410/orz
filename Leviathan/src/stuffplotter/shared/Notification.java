@@ -1,13 +1,16 @@
 package stuffplotter.shared;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Id;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Class to hold the information for a user notification.
  */
-public abstract class Notification
+public abstract class Notification implements Serializable
 {
 	public enum NotificationType
 	{
@@ -17,11 +20,17 @@ public abstract class Notification
 	/**
 	 * ID of what generated the notification.
 	 */
+	@Id private Long notificationId;
 	private NotificationType type;
 	private String notificationFrom;
 	private boolean newNotification = true;
 	private Date notificationTime;
-
+	
+	
+	public Notification()
+	{
+		notificationTime = new Date();
+	}
 	/**
 	 * Constructor for a Notification.
 	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;

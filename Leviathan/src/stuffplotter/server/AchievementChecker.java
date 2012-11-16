@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.Window;
 
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Achievement;
 import stuffplotter.shared.Event;
 
@@ -17,6 +18,7 @@ import stuffplotter.shared.Event;
 public class AchievementChecker implements RecordVisitor
 {
 	private Account user;
+	private AccountStatistic userStats;
 	private Event event;
 	private List<Achievement> userAchievements;
 	private List<Achievement> unlockAchievements;
@@ -36,12 +38,13 @@ public class AchievementChecker implements RecordVisitor
 	public void visit(Account account)
 	{
 		this.user = account;
+		this.userStats = account.getUserStats();
 		this.userAchievements = account.getUserAchievements();
 		this.unlockAchievements = new ArrayList<Achievement>();
-		this.numLogins = account.getNumberOfLogins();
+		this.numLogins = userStats.getNumberOfLogins();
 		this.numFriends = account.getUserFriends().size();
-		this.numHostedEvents = account.getNumberOfHostedEvents();
-		this.numParticipatedEvents = account.getNumberOfParticipatedEvents();
+		this.numHostedEvents = userStats.getNumberOfHostedEvents();
+		this.numParticipatedEvents = userStats.getNumberOfParticipatedEvents();
 		
 		checkAccountAchievements();
 		
@@ -56,13 +59,14 @@ public class AchievementChecker implements RecordVisitor
 	public void visit(Account account, Event event)
 	{
 		this.user = account;
+		this.userStats = account.getUserStats();
 		this.event = event;
 		this.userAchievements = account.getUserAchievements();
 		this.unlockAchievements = new ArrayList<Achievement>();
-		this.numLogins = account.getNumberOfLogins();
+		this.numLogins = userStats.getNumberOfLogins();
 		this.numFriends = account.getUserFriends().size();
-		this.numHostedEvents = account.getNumberOfHostedEvents();
-		this.numParticipatedEvents = account.getNumberOfParticipatedEvents();
+		this.numHostedEvents = userStats.getNumberOfHostedEvents();
+		this.numParticipatedEvents = userStats.getNumberOfParticipatedEvents();
 		
 		checkEventAchievements();
 		displayAchievements();

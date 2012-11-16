@@ -27,7 +27,6 @@ public class Account implements Serializable
 
 	/* Basic information */
 	@Id
-	private String userName;
 	private String userEmail;
 	private int userAge;
 	private String userPhone;
@@ -47,14 +46,13 @@ public class Account implements Serializable
 	private int userLevel;
 	private int userExperience;
 	private List<Achievement> userAchievements; 
+	private AccountStatistic userStats;
 
 	/* Custom information */
 	private String userTitle;
 	
 	/* Achievement information */
-	private int numberOfLogins;
-	private int numberOfHostedEvents;
-	private int numberOfParticipatedEvents;	
+
 
 	/** 
 	 * Account Constructor 
@@ -66,13 +64,11 @@ public class Account implements Serializable
 
 	/**
 	 * Account Constructor that sets google account information
-	 * @param pId 		google account id
-	 * @param pName 	google account nickname
 	 * @param pEmail	google account email
+	 * @param pId 		google account id
 	 */
-	public Account(String pName, String pEmail)
+	public Account(String pEmail)
 	{
-		this.userName = pName;
 		this.userEmail = pEmail;
 
 		this.userFriends = new ArrayList<String>();
@@ -85,9 +81,7 @@ public class Account implements Serializable
 		
 		this.userTitle = "Newbie";
 		
-		this.numberOfLogins = 0;
-		this.numberOfHostedEvents = 0;
-		this.numberOfParticipatedEvents = 0;
+		//this.setUserStats(new AccountStatistic(pEmail));
 	}
 
 	/**
@@ -122,13 +116,6 @@ public class Account implements Serializable
 		userLogoutUrl = pUri;
 	}
 
-
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
 
 	/**
 	 * @return the userEmail
@@ -405,37 +392,14 @@ public class Account implements Serializable
 		return this.userTitle;
 	}
 
-	public int getNumberOfLogins()
+	public AccountStatistic getUserStats()
 	{
-		return numberOfLogins;
+		return userStats;
 	}
 
-	public void setNumberOfLogins(int numberOfLogins)
+	public void setUserStats(AccountStatistic userStats)
 	{
-		this.numberOfLogins = numberOfLogins;
+		this.userStats = userStats;
 	}
-
-
-	public int getNumberOfParticipatedEvents()
-	{
-		return numberOfParticipatedEvents;
-	}
-
-	public void setNumberOfParticipatedEvents(int numberOfParticipatedEvents)
-	{
-		this.numberOfParticipatedEvents = numberOfParticipatedEvents;
-	}
-
-	public int getNumberOfHostedEvents()
-	{
-		return numberOfHostedEvents;
-	}
-
-	public void setNumberOfHostedEvents(int numberOfHostedEvents)
-	{
-		this.numberOfHostedEvents = numberOfHostedEvents;
-	}
-
-
 
 }
