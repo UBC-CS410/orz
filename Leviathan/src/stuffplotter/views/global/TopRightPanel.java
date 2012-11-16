@@ -33,7 +33,7 @@ public class TopRightPanel extends HorizontalPanel implements TopBarView
 	public TopRightPanel(Account userAccount)
 	{
 		super();
-		this.userName = userAccount.getUserName();
+		this.userName = userAccount.getUserEmail();
 		this.notifications = userAccount.getUserNotifications();
 		this.popup = new UserNotificationsPopupPanel(notifications);
 		this.logoutLink = new Anchor("Logout", userAccount.getLogoutUrl());
