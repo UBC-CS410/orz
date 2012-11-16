@@ -15,6 +15,7 @@ import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
 
+import com.google.api.gwt.client.OAuth2Login;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -30,57 +31,76 @@ public class Leviathan implements EntryPoint
 {
 	private String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
-	private String token = null;
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad()
 	{
-		this.token = Window.Location.getHref().substring(this.url.length());
-		if (this.token.length() == 0)
+		final AccountServiceAsync accountService = GWT.create(AccountService.class);			
+		accountService.login(url, new AsyncCallback<Account>()
 		{
-			this.loadUser();
-		}
-		else
-		{	
-			final AccountServiceAsync accountService = GWT.create(AccountService.class);
-			accountService.login(this.url, this.token, new AsyncCallback<Account>()
-			{
-		        public void onFailure(Throwable error)
-		        {
-		        	Window.alert("registerAccount failed");
-		        }
-	
-		        public void onSuccess(Account result)
-		        {
-		          account = result;
-		          account.accept(new AchievementRecordUpdater().incrementLogin());
-		          account.accept(new AchievementChecker());
-		          accountService.saveAccount(account, new AsyncCallback<Void>(){
-	
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						Window.alert("Save Fail");
-						
-					}
-	
-					@Override
-					public void onSuccess(Void result)
-					{
-						// TODO Auto-generated method stub
-						
-					}
+	        public void onFailure(Throwable error)
+	        {
+	        	Window.alert("login failed again");
+	        }
+
+	        public void onSuccess(Account result)
+	        {	        	
+	    		if (Window.Location.getHash().length() > 0)
+	    		{
+	    			accountService.loadProfile(result, Window.Location.getHash(), new AsyncCallback<Void>()
+	    			{
+
+	    				@Override
+	    				public void onFailure(Throwable caught)
+	    				{
+	    					// TODO Auto-generated method stub
+	    					
+	    				}
+
+	    				@Override
+	    				public void onSuccess(Void result)
+	    				{
+	    					Window.Location.assign(url);
+	    				}
+	    		
+	    			});
+	    		}
+	    		else if (!result.getUserAccessPermission())
+	    		{
+	        		requestProfile();
+	    		}
+	    		else
+	    		{
+	    			account = result;
+	    			account.accept(new AchievementRecordUpdater().incrementLogin());
+	    			account.accept(new AchievementChecker());
+	    			accountService.saveAccount(account, new AsyncCallback<Void>()
+	    			{
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							Window.alert("save failed");
+							
+						}
+		
+						@Override
+						public void onSuccess(Void result)
+						{
+							// TODO Auto-generated method stub
+							
+						}
 		        	  
-		          });
-		          loadUI();
-		        }
-			});
-		}
+		        	});
+		        	loadUI();
+	    		}
+	        }
+		});
+		
 	}
 	
-	public void loadUser()
+	public void requestProfile()
 	{
 		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
 		String REDIRECT_URL = this.url;

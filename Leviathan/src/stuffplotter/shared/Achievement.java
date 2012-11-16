@@ -2,7 +2,7 @@ package stuffplotter.shared;
 
 public enum Achievement {
 	
-	FIRST_LOG_IN("Logged in for the First Timed"),
+	FIRST_LOG_IN("Logged in for the First Time"),
     CREATE_FIRST_EVENT("Party time!"), 
     ADD_FIRST_FRIEND("Not a loner"), 
     COMPLETE_FIRST_EVENT("Hang over"), 

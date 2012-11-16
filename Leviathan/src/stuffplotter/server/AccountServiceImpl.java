@@ -27,8 +27,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	private DatabaseStore dbstore = new DatabaseStore();
 	private EmailService email = new EmailService();
 
+	/**
+	 * Create a new Account for the current user or get an existing account.
+	 * @pre	true;
+	 * @post true;
+	 * @return current user Account
+	 */
 	@Override
-	public Account login(String redirect, String token) {
+	public Account login(String back) {
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
 	    
@@ -37,25 +43,29 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
     	  account = dbstore.fetchAccount(user.getNickname());
 	    } catch (NotFoundException nfe) {
 	      account = new Account(user.getNickname(), user.getEmail());
-	      account = this.fillUserinfo(account, token);
-	      this.saveAccount(account); // registers a new account
+	      this.saveAccount(account); 
 	    } finally {
-    	  account.setLoginUrl(userService.createLoginURL(redirect));
+    	  account.setLoginUrl(userService.createLoginURL(back));
     	  account.setLogoutUrl(userService.createLogoutURL(account.getLoginUrl()));
-	    }
-	    
-	    
+	    } 
 	    return account;
 	}
 	
-	private Account fillUserinfo(Account account, String token) 
+	@Override
+	public void loadProfile(Account account, String hash)
 	{
-		String accessToken = token.substring(0, token.indexOf('&'));
-		String accessRequest = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + accessToken;
+		String token = "";
+		try {
+			//TODO: Learn to use java regex
+			token = hash.substring(1, hash.indexOf('&'));
+		} catch (StringIndexOutOfBoundsException ex) {
+			return;
+		}
 		
+		String request = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&" + token;
 		final StringBuffer r = new StringBuffer();
         try {
-            final URL u = new URL(accessRequest);
+            final URL u = new URL(request);
             final URLConnection uc = u.openConnection();
             final int end = 1000;
             InputStreamReader isr = null;
@@ -64,27 +74,25 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
                 isr = new InputStreamReader(uc.getInputStream());
                 br = new BufferedReader(isr);
                 final int chk = 0;
-                while ((accessRequest = br.readLine()) != null) {
+                while ((request = br.readLine()) != null) {
                     if ((chk >= 0) && ((chk < end))) {
-                        r.append(accessRequest).append('\n');
+                        r.append(request).append('\n');
                     }
                 }
             } catch (final java.net.ConnectException cex) {
                 r.append(cex.getMessage());
             } catch (final Exception ex) {
-                System.out.println(ex.toString() + " : " + ex.getMessage());
+                ex.printStackTrace();
             } finally {
                 try {
                     br.close();
                 } catch (final Exception ex) {
-                	System.out.println(ex.toString() + " : " + ex.getMessage());
+                	ex.printStackTrace();
                 }
             }
         } catch (final Exception e) {
-        	System.out.println(e.toString() + " : " + e.getMessage());
+        	e.printStackTrace();
         }
-        
-        System.out.println(r.toString());
         
         try {
             final JsonFactory f = new JsonFactory();
@@ -95,20 +103,20 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
                 final String fieldname = jp.getCurrentName();
                 jp.nextToken();
                 if ("picture".equals(fieldname)) {
-                    System.out.println(jp.getText());
+                    account.setUserProfilePicture(jp.getText());
                 } else if ("name".equals(fieldname)) {
-                	System.out.println(jp.getText());
-                } else if ("email".equals(fieldname)) {
-                	System.out.println(jp.getText());
+                	account.setUserFullName(jp.getText());
                 }
             }
         } catch (final JsonParseException e) {
-        	System.out.println(e.toString() + " : " + e.getMessage());
+        	e.printStackTrace();
         } catch (final IOException e) {
-        	System.out.println(e.toString() + " : " + e.getMessage());
+        	e.printStackTrace();
+        } finally {
+        	account.setUserAccessPermission(true);
+        	this.saveAccount(account);
         }
         
-		return account;
 	}
 	
 	@Override

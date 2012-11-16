@@ -12,12 +12,13 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("account")
 public interface AccountService extends RemoteService {
-	Account login(String redirect, String token);
-	void addFriend(Account acc, String friend);
+	Account login(String back);
+	void loadProfile(Account account, String hash);
+	Account getAccount(String userId);
 	void saveAccount(Account acc);
+	void addFriend(Account acc, String friend);
 	List<String> getFriends(Account acc);
 	List<String> getPendingFriends(Account acc);
-	Account getAccount(String userId);
 	void confirmFriendReq(Account acc, String friend);
 	void removeFriend(Account acc, String friend);
 	void declineFriendReq(Account acc, String friend);

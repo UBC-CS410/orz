@@ -31,6 +31,11 @@ public class Account implements Serializable
 	private String userEmail;
 	private int userAge;
 	private String userPhone;
+	
+	/* Google information */
+	private boolean userAccessPermission = false;
+	private String userFullName;
+	private String userProfilePicture;
 
 	/* Social information */
 	private List<String> userFriends = new ArrayList<String>();
@@ -46,17 +51,17 @@ public class Account implements Serializable
 	/* Custom information */
 	private String userTitle;
 	
-	/* Achievement Info*/
+	/* Achievement information */
 	private int numberOfLogins;
 	private int numberOfHostedEvents;
-	private int numberOfParticipatedEvents;
-	
+	private int numberOfParticipatedEvents;	
 
 	/** 
 	 * Account Constructor 
 	 */
 	public Account() {
 		// do nothing
+		this.userAchievements = new ArrayList<Achievement>();
 	}
 
 	/**
@@ -165,6 +170,72 @@ public class Account implements Serializable
 	 */
 	public void setUserPhone(String userPhone) {
 		this.userPhone = userPhone;
+	}
+	
+	/**
+	 * Determine whether user gave permission to access their Google profile information.
+	 * @pre true;
+	 * @post true;
+	 * @return true if yes or false if no
+	 */
+	public boolean getUserAccessPermission()
+	{
+		return this.userAccessPermission;
+	}
+	
+	/**
+	 * Marks whether user gave permission to access their Google profile information
+	 * @pre true;
+	 * @post this.userAccessPermission == userAccessPermission;
+	 * @param true if yes or false if no
+	 */
+	public void setUserAccessPermission(boolean userAccessPermission)
+	{
+		this.userAccessPermission = userAccessPermission;
+	}
+	
+	/**
+	 * Get the user's full name.
+	 * @pre true;
+	 * @post true;
+	 * @return userFullName
+	 */
+	public String getUserFullName() 
+	{
+		return this.userFullName;
+	}
+	
+	/**
+	 * Set the user's full name
+	 * @pre userFullName != null;
+	 * @post this.userFullName == userFullName;
+	 * @param String containing user's full name
+	 */
+	public void setUserFullName(String userFullName)
+	{
+		this.userFullName = userFullName;
+	}
+	
+	/**
+	 * Get the url to user's profile picture.
+	 * @pre true;
+	 * @post true;
+	 * @return userProfilePicture
+	 */
+	public String getUserProfilePicture() 
+	{
+		return this.userProfilePicture;
+	}
+	
+	/**
+	 * Set the url to user's profile picture
+	 * @pre userProfilePicture != null;
+	 * @post this.userProfilePicture == userProfilePicture;
+	 * @param String containing url to user's profile picture
+	 */
+	public void setUserProfilePicture(String userProfilePicture)
+	{
+		this.userProfilePicture = userProfilePicture;
 	}
 
 	/**
