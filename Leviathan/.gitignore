@@ -39,4 +39,4 @@ Thumbs.db
 /war/WEB-INF/classes
 /war/leviathan
 /war/stuffplotter.Leviathan.JUnit
-Leviathan/war/WEB-INF/appengine-web.xml
+/war/WEB-INF/appengine-web.xml
