@@ -7,7 +7,13 @@ import com.google.gwt.user.client.ui.HasWidgets;
  */
 public class AccountPagePresenter implements Presenter
 {
-
+	public interface AccountView
+	{
+		//public AccountPanel getAccountPanel(); // create presenter for this
+		//public StatsPanel getStatisticsPanel(); // create presenter for this
+	}
+	
+	
 	private void bind()
 	{
 		// TODO Auto-generated method stub

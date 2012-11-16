@@ -1,5 +1,6 @@
 package stuffplotter.views;
 
+import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.user.client.ui.Button;
@@ -10,7 +11,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Class to display the friends page view.
  */
-public class FriendsPageView extends HorizontalPanel
+public class FriendsPageView extends HorizontalPanel implements FriendsView
 {
 	private static final int NUMOFCOLUMNS = 3;
 	private Button addFriend;

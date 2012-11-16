@@ -1,5 +1,6 @@
 package stuffplotter.views;
 
+import stuffplotter.presenters.AccountPagePresenter.AccountView;
 import stuffplotter.views.account.AccountPanel;
 
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -7,10 +8,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 /**
  * Class to display the account page view.
  */
-public class AccountPageView extends SimplePanel
+public class AccountPageView extends SimplePanel implements AccountView
 {
-	// Note temporary keep account in this view, need to model MVP better
-	
 	/**
 	 * Constructor for the AccountPagePanel.
 	 * @pre true;

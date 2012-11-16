@@ -1,12 +1,14 @@
 package stuffplotter.views.global;
 
+import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 /**
  * Class to display the links to change the view for the application.
  */
-public class MenuBarPanel extends HorizontalPanel
+public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 {
 	private Button homeBtn;
 	private Button accountBtn;

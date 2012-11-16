@@ -3,8 +3,7 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.views.ApplicationPagingSimulator;
-import stuffplotter.views.ApplicationPagingSimulator.View;
+import stuffplotter.views.ApplicationPagingView;
 import stuffplotter.views.account.AccountPanel;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationDialogBox;
@@ -13,6 +12,7 @@ import stuffplotter.views.global.MenuBarPanel;
 import stuffplotter.views.global.TopRightPanel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
@@ -149,7 +149,7 @@ public class Leviathan implements EntryPoint
 		
 		// testing view selection and simulated pages
 		MenuBarPanel viewSelections = new MenuBarPanel();
-		final ApplicationPagingSimulator simulatedPages = new ApplicationPagingSimulator();
+		final ApplicationPagingView simulatedPages = new ApplicationPagingView();
 		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
 		{
 			@Override

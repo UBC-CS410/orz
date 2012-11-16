@@ -7,7 +7,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
  */
 public class HomePagePresenter implements Presenter
 {
-
+	public interface HomeView
+	{
+		//public CalendarWidget getCalendar(); // create presenter for this
+		//public NewsFeedPanel getNewsFeed(); // create presenter for this
+	}
 
 	private void bind()
 	{

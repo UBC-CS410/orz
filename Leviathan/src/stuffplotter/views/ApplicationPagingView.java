@@ -1,13 +1,15 @@
 package stuffplotter.views;
 
-import stuffplotter.shared.Account;
+
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
 
 import com.google.gwt.user.client.ui.DeckPanel;
 
 /**
- * Class to simulate paged views for the applications. 
+ * Class to simulate paged views for the application; pages between the Home, Account,
+ * Events, Friends, and Achievements views.
  */
-public class ApplicationPagingSimulator extends DeckPanel
+public class ApplicationPagingView extends DeckPanel implements MainView
 {	
 	private HomePageView homePage;
 	private AccountPageView accountPage;
@@ -16,43 +18,11 @@ public class ApplicationPagingSimulator extends DeckPanel
 	private AchievementsPageView achievementsPanel;
 	
 	/**
-	 * enum to help determine which page to display.
-	 */
-	public enum View
-	{
-		HOME(0), ACCOUNT(1), EVENTS(2), FRIENDS(3), ACHIEVEMENTS(4);
-		
-		private int index;
-		
-		/**
-		 * Constructor to bind enum to a 0 based index.
-		 * @pre index >= 0;
-		 * @post this.index == index;
-		 * @param index - the index of the page.
-		 */
-		private View(int index)
-		{
-			this.index = index;
-		}
-		
-		/**
-		 * Method to get the index for the given enum.
-		 * @pre true;
-		 * @post true;
-		 * @return	the index of the View.
-		 */
-		public int getIndex()
-		{
-			return this.index;
-		}
-	};
-	
-	/**
 	 * Constructor for ApplicationPagingSimluator.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public ApplicationPagingSimulator()
+	public ApplicationPagingView()
 	{
 		super();
 		this.initializePages();

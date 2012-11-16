@@ -1,5 +1,6 @@
 package stuffplotter.presenters;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 import stuffplotter.views.FriendsPageView;
@@ -9,6 +10,13 @@ import stuffplotter.views.FriendsPageView;
  */
 public class FriendsPagePresenter implements Presenter
 {
+	public interface FriendsView
+	{
+		public HasClickHandlers getAddFriendBtn();
+		public HasClickHandlers getSearchFriendsBtn();
+		//public FriendList getFriendDisplay() create presenter for this 
+	}
+	
 	private FriendsPageView friendsView;
 	
 	/**
