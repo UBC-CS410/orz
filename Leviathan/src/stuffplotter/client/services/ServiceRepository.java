@@ -22,4 +22,37 @@ public class ServiceRepository
 		eventService = GWT.create(EventService.class);
 		recordService = GWT.create(RecordService.class);
 	}
+
+	/**
+	 * Retrieve the account service.
+	 * @pre true;
+	 * @post true;
+	 * @return the account service.
+	 */
+	public AccountServiceAsync getAccountService()
+	{
+		return this.accountService;
+	}
+
+	/**
+	 * Retrieve the event service.
+	 * @pre true;
+	 * @post true;
+	 * @return the event service.
+	 */
+	public EventServiceAsync getEventService()
+	{
+		return this.eventService;
+	}
+
+	/**
+	 * Retrieve the record service.
+	 * @pre true;
+	 * @post true;
+	 * @return the record service.
+	 */
+	public RecordServiceAsync getRecordService()
+	{
+		return this.recordService;
+	}
 }

@@ -13,11 +13,16 @@ public class AchievementsPagePresenter implements Presenter
 	private FriendsPagePresenter friendsPresenter;
 	private AchievementsPagePresenter achievementsPresenter;
 	
+	private void bind()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void go(HasWidgets container)
 	{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

@@ -24,11 +24,20 @@ public class AppController implements Presenter
 		this.eventBus = eventBus;
 	}
 	
+	/**
+	 * Add handlers to objects.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void bind()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void go(HasWidgets container)
 	{
-		// TODO Auto-generated method stub
-
+		this.masterView = container;
 	}
-
 }
