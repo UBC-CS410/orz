@@ -98,6 +98,7 @@ public class Leviathan implements EntryPoint
 	    		else
 	    		{
 	    			account = result;
+	    			
 		        	loadUI();
 	    		}
 	        }
