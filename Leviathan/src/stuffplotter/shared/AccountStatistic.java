@@ -15,7 +15,7 @@ public class AccountStatistic implements Serializable
 	
 	private int userLevel;
 	private int userExperience;
-	private List<AchievementDescription> userAchievements; 
+	private List<Achievement> userAchievements; 
 	
 	private int numberOfLogins;
 	private int numberOfHostedEvents;
@@ -28,7 +28,7 @@ public class AccountStatistic implements Serializable
 		this.numberOfHostedEvents = 0;
 		this.numberOfParticipatedEvents = 0;
 		this.setNumberOfFriends(0);
-		this.userAchievements = new ArrayList<AchievementDescription>();
+		this.userAchievements = new ArrayList<Achievement>();
 	}
 	
 	public AccountStatistic(String user)
@@ -38,7 +38,7 @@ public class AccountStatistic implements Serializable
 		this.numberOfHostedEvents = 0;
 		this.numberOfParticipatedEvents = 0;
 		this.setNumberOfFriends(0);
-		this.userAchievements = new ArrayList<AchievementDescription>();
+		this.userAchievements = new ArrayList<Achievement>();
 	}
 	
 	public void accept (RecordVisitor visitor)
@@ -127,12 +127,12 @@ public class AccountStatistic implements Serializable
 		this.userExperience = userExperience;
 	}
 
-	public List<AchievementDescription> getUserAchievements()
+	public List<Achievement> getUserAchievements()
 	{
 		return userAchievements;
 	}
 
-	public void setUserAchievements(List<AchievementDescription> userAchievements)
+	public void setUserAchievements(List<Achievement> userAchievements)
 	{
 		this.userAchievements = userAchievements;
 	}
@@ -144,7 +144,7 @@ public class AccountStatistic implements Serializable
 	 * @param achievements to be added
 	 * @return
 	 */
-	public boolean addUserAchievements(List<AchievementDescription> achievements)
+	public boolean addUserAchievements(List<Achievement> achievements)
 	{
 		for(int i = 0; i<achievements.size(); i++)
 		{

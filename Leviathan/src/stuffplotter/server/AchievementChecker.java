@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Window;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
-import stuffplotter.shared.AchievementDescription;
+import stuffplotter.shared.Achievement;
 import stuffplotter.shared.Event;
 
 /**
@@ -19,8 +19,8 @@ public class AchievementChecker implements RecordVisitor
 {
 	private AccountStatistic user;
 	private Event event;
-	private List<AchievementDescription> userAchievements;
-	private List<AchievementDescription> unlockAchievements;
+	private List<Achievement> userAchievements;
+	private List<Achievement> unlockAchievements;
 	private int numLogins;
 	private int numFriends;
 	private int numHostedEvents;
@@ -30,7 +30,7 @@ public class AchievementChecker implements RecordVisitor
 	
 	public AchievementChecker()
 	{
-		this.unlockAchievements = new ArrayList<AchievementDescription>();
+		this.unlockAchievements = new ArrayList<Achievement>();
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class AchievementChecker implements RecordVisitor
 	{
 		this.user = user;
 		this.userAchievements = user.getUserAchievements();
-		this.unlockAchievements = new ArrayList<AchievementDescription>();
+		this.unlockAchievements = new ArrayList<Achievement>();
 		this.numLogins = user.getNumberOfLogins();
 		this.numFriends = user.getNumberOfFriends();
 		this.numHostedEvents = user.getNumberOfHostedEvents();
@@ -59,7 +59,7 @@ public class AchievementChecker implements RecordVisitor
 		this.user = user;
 		this.event = event;
 		this.userAchievements = user.getUserAchievements();
-		this.unlockAchievements = new ArrayList<AchievementDescription>();
+		this.unlockAchievements = new ArrayList<Achievement>();
 		this.numLogins = user.getNumberOfLogins();
 		this.numFriends = user.getNumberOfFriends();
 		this.numHostedEvents = user.getNumberOfHostedEvents();
@@ -78,10 +78,10 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void checkAccountAchievements()
 	{		
-		if(!this.userAchievements.contains(AchievementDescription.FIRST_LOG_IN))
+		if(!this.userAchievements.contains(Achievement.FIRST_LOG_IN))
 			firstLoggedIn();
 		
-		if(!this.userAchievements.contains(AchievementDescription.ADD_FIRST_FRIEND))
+		if(!this.userAchievements.contains(Achievement.ADD_FIRST_FRIEND))
 			addFirstFriend();
 		
 		this.user.addUserAchievements(unlockAchievements);
@@ -95,13 +95,13 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void checkEventAchievements()
 	{
-		if(!this.userAchievements.contains(AchievementDescription.CREATE_FIRST_EVENT))
+		if(!this.userAchievements.contains(Achievement.CREATE_FIRST_EVENT))
 			createFirstEvent();
 		
-		if(!this.userAchievements.contains(AchievementDescription.COMPLETE_FIRST_EVENT))
+		if(!this.userAchievements.contains(Achievement.COMPLETE_FIRST_EVENT))
 			completeFirstEvent();
 		
-		if(!this.userAchievements.contains(AchievementDescription.FULL_EVENT_ATTENDANCE))
+		if(!this.userAchievements.contains(Achievement.FULL_EVENT_ATTENDANCE))
 			fullEventAttendance();
 		
 		
@@ -116,12 +116,12 @@ public class AchievementChecker implements RecordVisitor
 	private void displayAchievements()
 	{
 
-		String text = "Unlocked Achievement(s):\n";
+		String text = "Achievement(s) Unlocked:\n";
 		if(!this.unlockAchievements.isEmpty())
 		{
 			for(int i = 0; i<this.unlockAchievements.size(); i++)
 			{
-				text = text + this.unlockAchievements.get(i).getDisplay() + "\n";
+				text = text+this.unlockAchievements.get(i).getName() +"  -  "+this.unlockAchievements.get(i).getMsg()+"\n";
 			}
 			Window.alert(text);
 		}
@@ -138,7 +138,7 @@ public class AchievementChecker implements RecordVisitor
 	private void firstLoggedIn()
 	{
 		if(this.numLogins>=1)
-			this.unlockAchievements.add(AchievementDescription.FIRST_LOG_IN);
+			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
 	}
 	
 	
@@ -150,7 +150,7 @@ public class AchievementChecker implements RecordVisitor
 	private void createFirstEvent()
 	{
 		if(this.numHostedEvents>=1)
-			this.unlockAchievements.add(AchievementDescription.CREATE_FIRST_EVENT);
+			this.unlockAchievements.add(Achievement.CREATE_FIRST_EVENT);
 	}
 	
 	
@@ -162,7 +162,7 @@ public class AchievementChecker implements RecordVisitor
 	private void addFirstFriend()
 	{
 		if(this.numFriends>=1)
-			this.unlockAchievements.add(AchievementDescription.ADD_FIRST_FRIEND);
+			this.unlockAchievements.add(Achievement.ADD_FIRST_FRIEND);
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class AchievementChecker implements RecordVisitor
 	private void completeFirstEvent()
 	{
 		if(this.numParticipatedEvents>=1)
-			this.unlockAchievements.add(AchievementDescription.FIRST_LOG_IN);
+			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
 	}
 	
 	/**
@@ -184,7 +184,7 @@ public class AchievementChecker implements RecordVisitor
 	private void fullEventAttendance()
 	{
 		if(this.event.getInvitees().size() >=0)
-			this.unlockAchievements.add(AchievementDescription.FIRST_LOG_IN);
+			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
 	}
 
 
