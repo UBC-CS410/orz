@@ -4,7 +4,7 @@ import java.util.List;
 
 import stuffplotter.client.services.RecordService;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.Achievement;
+import stuffplotter.shared.AchievementDescription;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -32,14 +32,14 @@ public class RecordServiceImpl extends RemoteServiceServlet implements RecordSer
 	 * 			id 		enum of the unlocked achievement
 	 */
 	@Override
-	public void unlockAchievement(String user, Achievement id)
+	public void unlockAchievement(String user, AchievementDescription id)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Achievement getAchievments(String user, List<Achievement> achievements)
+	public AchievementDescription getAchievments(String user, List<AchievementDescription> achievements)
 	{
 		// TODO Auto-generated method stub
 		return null;

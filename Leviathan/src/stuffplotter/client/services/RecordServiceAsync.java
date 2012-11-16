@@ -3,7 +3,7 @@ package stuffplotter.client.services;
 import java.util.List;
 
 import stuffplotter.shared.Account;
-import stuffplotter.shared.Achievement;
+import stuffplotter.shared.AchievementDescription;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -28,6 +28,6 @@ public interface RecordServiceAsync {
 	 * @param	id 			enum of the unlocked achievement
 	 * @param	callback	AsyncCallback object of type Void
 	 */
-	void unlockAchievement(String user, Achievement id, AsyncCallback<Void> callback);
-	void getAchievments(String user, List<Achievement> achievements, AsyncCallback<Achievement> callback);
+	void unlockAchievement(String user, AchievementDescription id, AsyncCallback<Void> callback);
+	void getAchievments(String user, List<AchievementDescription> achievements, AsyncCallback<AchievementDescription> callback);
 }

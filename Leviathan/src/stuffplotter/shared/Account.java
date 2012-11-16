@@ -42,24 +42,14 @@ public class Account implements Serializable
 	private List<Long> userEvents = new ArrayList<Long>();
 	private List<Notification> userNotifications = new ArrayList<Notification>();
 
-	/* Record information */
-	private int userLevel;
-	private int userExperience;
-	private List<Achievement> userAchievements; 
-	private AccountStatistic userStats;
-
 	/* Custom information */
 	private String userTitle;
-	
-	/* Achievement information */
-
 
 	/** 
 	 * Account Constructor 
 	 */
 	public Account() {
 		// do nothing
-		this.userAchievements = new ArrayList<Achievement>();
 	}
 
 	/**
@@ -74,14 +64,8 @@ public class Account implements Serializable
 		this.userFriends = new ArrayList<String>();
 		this.userEvents = new ArrayList<Long>();
 		this.userNotifications = new ArrayList<Notification>();
-
-		this.userLevel = 0;
-		this.userExperience = 0;
-		this.userAchievements = new ArrayList<Achievement>();
-		
 		this.userTitle = "Newbie";
-		
-		//this.setUserStats(new AccountStatistic(pEmail));
+
 	}
 
 	/**
@@ -256,66 +240,6 @@ public class Account implements Serializable
 	}
 
 	/**
-	 * @return the userLevel
-	 */
-	public int getUserLevel() {
-		return userLevel;
-	}
-
-	/**
-	 * @param userLevel the userLevel to set
-	 */
-	public void setUserLevel(int userLevel) {
-		this.userLevel = userLevel;
-	}
-
-	/**
-	 * @return the userExperience
-	 */
-	public int getUserExperience() {
-		return userExperience;
-	}
-
-	/**
-	 * @param userExperience the userExperience to set
-	 */
-	public void setUserExperience(int userExperience) {
-		this.userExperience = userExperience;
-	}
-
-	/**
-	 * @return the userAchievements
-	 */
-	public List<Achievement> getUserAchievements() {
-		return this.userAchievements;
-	}
-
-	/**
-	 * @param userAchievements the userAchievements to set
-	 */
-	public void setUserAchievements(List<Achievement> userAchievements) {
-		this.userAchievements = userAchievements;							//add user achievement here?
-	}
-	
-	/**
-	 * This method adds achievements as well as checks for duplicates
-	 * @pre
-	 * @post
-	 * @param achievements to be added
-	 * @return
-	 */
-	public boolean addUserAchievements(List<Achievement> achievements)
-	{
-		for(int i = 0; i<achievements.size(); i++)
-		{
-			if(this.userAchievements.contains(achievements.get(i)))
-				achievements.remove(i);
-		}
-		
-		return this.userAchievements.addAll(achievements);
-	}
-
-	/**
 	 * Gets the pending list of friends
 	 * @return returns the pending list of friends
 	 */
@@ -376,11 +300,6 @@ public class Account implements Serializable
 
 	}
 	
-	public void accept(RecordVisitor visitor)
-	{
-		visitor.visit(this);
-	}
-	
 	
 	public List<Notification>  getUserNotifications()
 	{
@@ -390,16 +309,6 @@ public class Account implements Serializable
 	public String getUserTitle()
 	{
 		return this.userTitle;
-	}
-
-	public AccountStatistic getUserStats()
-	{
-		return userStats;
-	}
-
-	public void setUserStats(AccountStatistic userStats)
-	{
-		this.userStats = userStats;
 	}
 
 }

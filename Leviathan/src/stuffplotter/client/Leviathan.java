@@ -12,10 +12,13 @@ import stuffplotter.views.global.MenuBarPanel;
 import stuffplotter.views.global.TopRightPanel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
+import stuffplotter.client.services.AccountStatsService;
+import stuffplotter.client.services.AccountStatsServiceAsync;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -55,6 +58,7 @@ public class Leviathan implements EntryPoint
 {
 	private final String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
 	private Account account = null;
+	private AccountStatistic astat = null;
 	
 	/**
 	 * This is the entry point method.
@@ -98,6 +102,24 @@ public class Leviathan implements EntryPoint
 	    		else
 	    		{
 	    			account = result;
+	    			
+	    			final AccountStatsServiceAsync aStatService = GWT.create(AccountStatsService.class);	
+	    			aStatService.getStats(result.getUserEmail(), new AsyncCallback<AccountStatistic>(){
+
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							Window.alert("Fail to retrieve User Stats...");
+							
+						}
+
+						@Override
+						public void onSuccess(AccountStatistic result)
+						{
+							astat = result;
+						}
+	    				
+	    			});
 	    			
 		        	loadUI();
 	    		}

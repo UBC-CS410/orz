@@ -1,6 +1,6 @@
 package stuffplotter.server;
 
-import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Event;
 
 public class LevelUpdater implements RecordVisitor
@@ -13,7 +13,7 @@ public class LevelUpdater implements RecordVisitor
 	
 	
 	@Override
-	public void visit(Account account)
+	public void visit(AccountStatistic account)
 	{
 		LevelSystem leveler = new LevelSystem(account);
 		if(madeFriend)
@@ -31,7 +31,7 @@ public class LevelUpdater implements RecordVisitor
 	}
 
 	@Override
-	public void visit(Account account, Event event)
+	public void visit(AccountStatistic account, Event event)
 	{
 
 	}

@@ -1,20 +1,20 @@
 package stuffplotter.server;
 
-import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 
 /**
  * Class to handle leveling for users.
  */
 public class LevelSystem {
 	
-	private Account user;
+	private AccountStatistic user;
 	private int currentExp;
 	private int currentLevel;
 	
 	/**
 	 * Default constructor for level system.
 	 */
-	public LevelSystem(Account user)
+	public LevelSystem(AccountStatistic user)
 	{
 		this.user = user;
 		this.currentExp = user.getUserExperience();

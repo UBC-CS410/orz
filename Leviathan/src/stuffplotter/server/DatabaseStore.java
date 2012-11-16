@@ -55,6 +55,15 @@ public class DatabaseStore {
 	}
 	
 	/**
+	 * Stores an AccountStatistic to the data store using Objectify
+	 * @param pAcct	the Account to be stored
+	 */	
+	public void store(AccountStatistic pActStats) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pActStats);
+	}
+	
+	/**
 	 * Stores an Event to the data store using Objectify
 	 * @param pEvt	the Event to be stored
 	 */	
@@ -80,6 +89,18 @@ public class DatabaseStore {
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pAvl);
 	}
+	
+	/**
+	 * Fetches an Account from the data store using Objectify
+	 * @param pId 	the id of the Account
+	 * @return		the Account that is associated with the specified id
+	 */
+	public AccountStatistic fetchAccountStats(String pId) {
+		Objectify ofy = ObjectifyService.begin();
+		AccountStatistic acctStats = ofy.get(AccountStatistic.class, pId);
+		return acctStats;
+	}
+	
 	
 	/**
 	 * Fetches an Account from the data store using Objectify

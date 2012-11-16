@@ -1,6 +1,6 @@
 package stuffplotter.server;
 
-import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Event;
 
 public class AchievementRecordUpdater implements RecordVisitor
@@ -11,12 +11,12 @@ public class AchievementRecordUpdater implements RecordVisitor
 	private boolean incEventParticipated = false;
 
 	@Override
-	public void visit(Account account)
+	public void visit(AccountStatistic account)
 	{
 		
 		if(incLogin)
 		{
-			account.getUserStats().increamentLogin();
+			account.increamentLogin();
 		}
 			
 		
@@ -25,15 +25,15 @@ public class AchievementRecordUpdater implements RecordVisitor
 
 
 	@Override
-	public void visit(Account account, Event event)
+	public void visit(AccountStatistic account, Event event)
 	{
 		if(incEventCreated)
 		{
-			account.getUserStats().increamentHostedEvents();
+			account.increamentHostedEvents();
 		}
 		if(incEventParticipated)
 		{
-			account.getUserStats().increamentParticipatedEvents();
+			account.increamentParticipatedEvents();
 		}
 		
 		

@@ -1,6 +1,7 @@
 package stuffplotter.server;
 
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Event;
 
 /**
@@ -12,18 +13,13 @@ import stuffplotter.shared.Event;
 public interface RecordVisitor
 {
 	/**
-	 * Visits the account
+	 * Visits the accountStatistic
 	 * @pre
 	 * @post
 	 * @param account
 	 */
-	public void visit(Account account);
-	/**
-	 * Visits the account and event simultaneously
-	 * @pre
-	 * @post
-	 * @param account
-	 * @param event
-	 */
-	public void visit(Account account, Event event);
+	public void visit(AccountStatistic account);
+
+
+	public void visit(AccountStatistic account, Event event);
 }
