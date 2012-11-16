@@ -25,11 +25,14 @@ public class AccountStatsServiceImpl extends RemoteServiceServlet implements Acc
 		}
 		
 		astat.increamentLogin();
-		
-		
-		
 		dbstore.store(astat);
 		return astat;
+	}
+
+	@Override
+	public void save(AccountStatistic astat)
+	{
+		dbstore.store(astat);
 	}
 
 }

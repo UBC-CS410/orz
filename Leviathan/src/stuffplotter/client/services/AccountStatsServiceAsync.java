@@ -8,5 +8,6 @@ public interface AccountStatsServiceAsync
 {
 
 	void getStats(String userEmail, AsyncCallback<AccountStatistic> callback);
+	void save(AccountStatistic astat, AsyncCallback<Void> asyncCallback);
 
 }

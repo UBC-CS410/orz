@@ -9,4 +9,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface AccountStatsService extends RemoteService
 {
 	AccountStatistic getStats(String userEmail);
+	void save(AccountStatistic astat);
 }

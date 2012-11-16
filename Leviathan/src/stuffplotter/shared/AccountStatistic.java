@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Id;
 
+import stuffplotter.server.RecordVisitor;
+
 public class AccountStatistic implements Serializable
 {
 	@Id
@@ -37,6 +39,11 @@ public class AccountStatistic implements Serializable
 		this.numberOfParticipatedEvents = 0;
 		this.setNumberOfFriends(0);
 		this.userAchievements = new ArrayList<AchievementDescription>();
+	}
+	
+	public void accept (RecordVisitor visitor)
+	{
+		visitor.visit(this);
 	}
 	
 	public void increamentLogin()

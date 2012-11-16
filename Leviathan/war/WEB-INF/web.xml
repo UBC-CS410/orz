@@ -31,6 +31,16 @@
     <url-pattern>/leviathan/account</url-pattern>
   </servlet-mapping>
   
+      <servlet>
+    <servlet-name>accountStatsServlet</servlet-name>
+    <servlet-class>stuffplotter.server.AccountStatsServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>accountStatsServlet</servlet-name>
+    <url-pattern>/leviathan/astats</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Leviathan.html</welcome-file>

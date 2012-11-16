@@ -117,6 +117,24 @@ public class Leviathan implements EntryPoint
 						public void onSuccess(AccountStatistic result)
 						{
 							astat = result;
+							astat.accept(new AchievementChecker());
+							aStatService.save(astat, new AsyncCallback<Void>(){
+
+								@Override
+								public void onFailure(Throwable arg0)
+								{
+									Window.alert("Fail to save stats");
+									
+								}
+
+								@Override
+								public void onSuccess(Void arg0)
+								{
+									// TODO Auto-generated method stub
+									
+								}
+								
+							});
 						}
 	    				
 	    			});

@@ -117,11 +117,11 @@ public class AchievementChecker implements RecordVisitor
 	{
 
 		String text = "Unlocked Achievement(s):\n";
-		if(!unlockAchievements.isEmpty())
+		if(!this.unlockAchievements.isEmpty())
 		{
-			for(int i = 0; i<unlockAchievements.size(); i++)
+			for(int i = 0; i<this.unlockAchievements.size(); i++)
 			{
-				text = text + unlockAchievements.get(i).getDisplay() + "\n";
+				text = text + this.unlockAchievements.get(i).getDisplay() + "\n";
 			}
 			Window.alert(text);
 		}
