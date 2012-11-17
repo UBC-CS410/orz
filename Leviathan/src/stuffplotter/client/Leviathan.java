@@ -14,6 +14,8 @@ import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.AccountStatsService;
 import stuffplotter.client.services.AccountStatsServiceAsync;
+import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.presenters.AppController;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.AchievementRecordUpdater;
@@ -39,6 +41,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
@@ -269,10 +272,14 @@ public class Leviathan implements EntryPoint
 		});
 		
 		// testing top right panel for logged in user
-		TopBarPanel topRightPanel = new TopBarPanel(account);
+		TopBarPanel topRightPanel = new TopBarPanel();
 
-		RootPanel.get("topRightPanel").add(topRightPanel);
-		RootPanel.get("viewSelections").add(viewSelections);
+		
+		// MVP Code NEW!
+		ServiceRepository applicationServices = new ServiceRepository();
+		HandlerManager eventBus = new HandlerManager(null);
+		AppController appViewer = new AppController(applicationServices, eventBus);
+		
 		RootPanel.get("simulatedPages").add(simulatedPages);
 	}
 }

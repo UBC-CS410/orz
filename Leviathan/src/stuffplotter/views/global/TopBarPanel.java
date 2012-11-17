@@ -28,15 +28,10 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	 * @post this.isVisible() == true && 
 	 * 		 this.userName.equals(userAccount.getUserName()) &&
 	 * 		 this.logouLink.getHref().equals(userAccount.getLogout());
-	 * @param userAccount - the Account of the user that is logged in.
 	 */
-	public TopBarPanel(Account userAccount)
+	public TopBarPanel()
 	{
 		super();
-		this.userName = userAccount.getUserEmail();
-		this.notifications = userAccount.getUserNotifications();
-		this.popup = new UserNotificationsPopupPanel(notifications);
-		this.logoutLink = new Anchor("Logout", userAccount.getLogoutUrl());
 		this.initializeUI();
 	}
 	
