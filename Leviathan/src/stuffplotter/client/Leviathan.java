@@ -9,7 +9,7 @@ import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationDialogBox;
 import stuffplotter.views.friends.FriendFinderDialogBox;
 import stuffplotter.views.global.MenuBarPanel;
-import stuffplotter.views.global.TopRightPanel;
+import stuffplotter.views.global.TopBarPanel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.AccountStatsService;
@@ -269,7 +269,7 @@ public class Leviathan implements EntryPoint
 		});
 		
 		// testing top right panel for logged in user
-		TopRightPanel topRightPanel = new TopRightPanel(account);
+		TopBarPanel topRightPanel = new TopBarPanel(account);
 
 		RootPanel.get("topRightPanel").add(topRightPanel);
 		RootPanel.get("viewSelections").add(viewSelections);

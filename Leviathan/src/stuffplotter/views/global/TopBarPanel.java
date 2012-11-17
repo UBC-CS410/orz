@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Label;
 /**
  * Class to display logged in user's identity and log out button at top of application.
  */
-public class TopRightPanel extends HorizontalPanel implements TopBarView
+public class TopBarPanel extends HorizontalPanel implements TopBarView
 {
 	private String userName;
 	private Anchor logoutLink;
@@ -30,7 +30,7 @@ public class TopRightPanel extends HorizontalPanel implements TopBarView
 	 * 		 this.logouLink.getHref().equals(userAccount.getLogout());
 	 * @param userAccount - the Account of the user that is logged in.
 	 */
-	public TopRightPanel(Account userAccount)
+	public TopBarPanel(Account userAccount)
 	{
 		super();
 		this.userName = userAccount.getUserEmail();

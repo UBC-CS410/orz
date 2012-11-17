@@ -26,7 +26,7 @@ public class UITests extends GWTTestCase
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
 	{
-		userAccount = new Account("UserName", "Email");
+		//userAccount = new Account("UserName", "Email");
 		accountPanel = new AccountPanel();
 		userAvail = new AvailabilitySubmitterDialogBox(new ArrayList<MonthContainer>());
 	}
