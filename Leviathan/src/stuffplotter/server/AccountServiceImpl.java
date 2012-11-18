@@ -14,6 +14,7 @@ import org.codehaus.jackson.JsonToken;
 
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AuthenticationException;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -52,17 +53,10 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	}
 	
 	@Override
-	public void loadProfile(Account account, String hash)
+	public void loadProfile(Account account, String token) throws AuthenticationException
 	{
-		String token = "";
-		try {
-			//TODO: Learn to use java regex
-			token = hash.substring(1, hash.indexOf('&'));
-		} catch (StringIndexOutOfBoundsException ex) {
-			return;
-		}
-		
-		String request = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&" + token;
+		String request = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token;
+		System.out.println(request);
 		final StringBuffer r = new StringBuffer();
         try {
             final URL u = new URL(request);
@@ -112,11 +106,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
         	e.printStackTrace();
         } catch (final IOException e) {
         	e.printStackTrace();
-        } finally {
-        	account.setUserAccessPermission(true);
-        	this.saveAccount(account);
         }
         
+        if(account.getUserFullName() == null) {
+        	throw new AuthenticationException();
+        } else {
+            account.setUserRefreshToken(token);
+            this.saveAccount(account);
+        }
 	}
 	
 	@Override

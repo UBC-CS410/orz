@@ -32,8 +32,8 @@ public class Account implements Serializable
 	private String userPhone;
 	
 	/* Google information */
-	private boolean userAccessPermission = false;
-	private String userFullName;
+	private String userRefreshToken;
+	private String userFullName = null;
 	private String userProfilePicture;
 
 	/* Social information */
@@ -144,25 +144,25 @@ public class Account implements Serializable
 	}
 	
 	/**
-	 * Determine whether user gave permission to access their Google profile information.
+	 * Get the user's refresh token for access to their Google calendar.
 	 * @pre true;
 	 * @post true;
-	 * @return true if yes or false if no
+	 * @return userRefreshToken
 	 */
-	public boolean getUserAccessPermission()
+	public String getUserRefreshToken()
 	{
-		return this.userAccessPermission;
+		return this.userRefreshToken;
 	}
 	
 	/**
-	 * Marks whether user gave permission to access their Google profile information
+	 * Set the user's refresh token for access to their Google calendar
 	 * @pre true;
-	 * @post this.userAccessPermission == userAccessPermission;
-	 * @param true if yes or false if no
+	 * @post this.userRefreshToken == userRefreshToken;
+	 * @param userRefreshToken
 	 */
-	public void setUserAccessPermission(boolean userAccessPermission)
+	public void setUserRefreshToken(String userRefreshToken)
 	{
-		this.userAccessPermission = userAccessPermission;
+		this.userRefreshToken = userRefreshToken;
 	}
 	
 	/**

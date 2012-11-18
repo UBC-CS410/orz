@@ -3,6 +3,7 @@ package stuffplotter.client.services;
 import java.util.List;
 
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AuthenticationException;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

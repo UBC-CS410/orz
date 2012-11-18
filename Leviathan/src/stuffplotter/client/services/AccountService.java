@@ -6,6 +6,7 @@ package stuffplotter.client.services;
 import java.util.List;
 
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AuthenticationException;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -13,7 +14,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("account")
 public interface AccountService extends RemoteService {
 	Account login(String back);
-	void loadProfile(Account account, String hash);
+	void loadProfile(Account account, String hash) throws AuthenticationException;
 	void addFriend(Account acc, String friend);
 	void saveAccount(Account acc);
 	List<String> getFriends(Account acc);

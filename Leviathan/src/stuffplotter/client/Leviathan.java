@@ -9,6 +9,7 @@ import stuffplotter.presenters.AppController;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
+import stuffplotter.shared.AuthenticationException;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -16,6 +17,8 @@ import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.api.gwt.client.GoogleApiRequestTransport;
 import com.google.api.gwt.client.OAuth2Login;
+import com.google.api.gwt.oauth2.client.Auth;
+import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
@@ -42,52 +45,31 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
 public class Leviathan implements EntryPoint
 {
 	private final String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private final AccountServiceAsync accountService = GWT.create(AccountService.class);
 	private Account account = null;
-	private AccountStatistic astat = null;
+	private AccountStatistic accountStatistic = null;
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad()
-	{
-		final AccountServiceAsync accountService = GWT.create(AccountService.class);			
+	{		
 		accountService.login(url, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
-	        	Window.alert("login failed again");
+	        	Window.alert("login failed");
 	        }
 
 	        public void onSuccess(Account result)
-	        {	        	
-	    		if (Window.Location.getHash().length() > 0)
+	        {	
+	        	account = result;
+	        	if (account.getUserFullName() == null)
 	    		{
-	    			accountService.loadProfile(result, Window.Location.getHash(), new AsyncCallback<Void>()
-	    			{
-
-	    				@Override
-	    				public void onFailure(Throwable caught)
-	    				{
-	    					// TODO Auto-generated method stub
-	    					
-	    				}
-
-	    				@Override
-	    				public void onSuccess(Void result)
-	    				{
-	    					Window.Location.assign(url);
-	    				}
-	    		
-	    			});
-	    		}
-	    		else if (!result.getUserAccessPermission())
-	    		{
-	        		requestProfile();
+	        		loadUP();
 	    		}
 	    		else
 	    		{
-	    			account = result;
-	    			
 	    			final AccountStatsServiceAsync aStatService = GWT.create(AccountStatsService.class);	
 	    			aStatService.getStats(result.getUserEmail(), new AsyncCallback<AccountStatistic>(){
 
@@ -101,9 +83,9 @@ public class Leviathan implements EntryPoint
 						@Override
 						public void onSuccess(AccountStatistic result)
 						{
-							astat = result;
-							astat.accept(new AchievementChecker());
-							aStatService.save(astat, new AsyncCallback<Void>(){
+							accountStatistic = result;
+							accountStatistic.accept(new AchievementChecker());
+							aStatService.save(accountStatistic, new AsyncCallback<Void>() {
 
 								@Override
 								public void onFailure(Throwable arg0)
@@ -131,10 +113,9 @@ public class Leviathan implements EntryPoint
 		
 	}
 	
-	public void requestProfile()
+	public void loadUP()
 	{
 		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-		String REDIRECT_URL = this.url;
 		/**
 		 * API Access
 		 * To prevent abuse, Google places limits on API requests. Using a valid OAuth token or API key allows you to exceed anonymous limits by connecting requests back to your project.
@@ -151,24 +132,58 @@ public class Leviathan implements EntryPoint
 		 */
 		String CLIENT_ID = "1024938108271.apps.googleusercontent.com"; // available from the APIs console
 		String GOOGLE_PROFILE_SCOPE = "https://www.googleapis.com/auth/userinfo.profile";
+		String GOOGLE_CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
 		
+		AuthRequest oauth2Request = new AuthRequest(AUTH_URL, CLIENT_ID)
+	    .withScopes(GOOGLE_PROFILE_SCOPE, GOOGLE_CALENDAR_SCOPE); // Can specify multiple scopes here
+		
+		Auth.get().login(oauth2Request, new Callback<String, Throwable>() {
+			  @Override
+			  public void onSuccess(String token) {
+	    			accountService.loadProfile(account, token, new AsyncCallback<Void>()
+	    			{
+
+	    				@Override
+	    				public void onFailure(Throwable caught)
+	    				{
+	    					if (caught instanceof AuthenticationException)
+	    					{
+	    						Window.alert("authentication error");
+	    					}
+	    				}
+
+	    				@Override
+	    				public void onSuccess(Void result)
+	    				{
+	    					Window.Location.assign(url);
+	    				}
+	    			});
+			  }
+			  @Override
+			  public void onFailure(Throwable caught) {
+				  Window.Location.assign(url);
+			  }
+		});
+		
+		/*
 		String oauth2Request = AUTH_URL + "?";
 		oauth2Request += "scope=" + GOOGLE_PROFILE_SCOPE + "&";
 		oauth2Request += "redirect_uri=" + REDIRECT_URL + "&";
 		oauth2Request += "response_type=token&";
 		oauth2Request += "client_id=" + CLIENT_ID + "&";
 		Window.Location.assign(oauth2Request);
+		*/
+		
 	}
 	
 	public void loadUI()
 	{						
-		/*		
+		/*	
 		// test code to read from user's Google Calendar
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
 		OAuth2Login.get().authorize("933841708791.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
 		{
-
 			@Override
 			public void onFailure(Exception reason)
 			{
@@ -207,7 +222,7 @@ public class Leviathan implements EntryPoint
 				});
 			}	
 		});
-	*/			
+		*/		
 
 		ServiceRepository applicationServices = new ServiceRepository();
 		HandlerManager eventBus = new HandlerManager(null);
