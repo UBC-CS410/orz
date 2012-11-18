@@ -58,6 +58,5 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		this.add(new Label(" | "));
 		this.add(new Label("Welcome " + this.userName + "!"));
 		this.add(new Label(" | "));
-		this.add(this.logoutLink);
 	}
 }

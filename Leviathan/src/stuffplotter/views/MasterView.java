@@ -22,9 +22,23 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	 */
 	public MasterView()
 	{
+		super();
+		this.initializeUI();
+	}
+	
+	/**
+	 * Helper method to initialize the UI and add it to the panel.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void initializeUI()
+	{
 		this.topBarPanel = new TopBarPanel();
 		this.menuBarPanel = new MenuBarPanel();
 		this.mainPagingPanel = new ApplicationPagingView();
+		this.add(topBarPanel);
+		this.add(menuBarPanel);
+		this.add(mainPagingPanel);
 	}
 	
 	@Override
@@ -44,5 +58,4 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	{
 		return this.mainPagingPanel;
 	}
-
 }

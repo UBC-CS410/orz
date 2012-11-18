@@ -226,7 +226,7 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 	*/	
-		
+	/*	
 		// testing view selection and simulated pages
 		MenuBarPanel viewSelections = new MenuBarPanel();
 		final ApplicationPagingView simulatedPages = new ApplicationPagingView();
@@ -270,16 +270,10 @@ public class Leviathan implements EntryPoint
 				simulatedPages.showView(View.ACHIEVEMENTS);
 			}	
 		});
-		
-		// testing top right panel for logged in user
-		TopBarPanel topRightPanel = new TopBarPanel();
-
-		
-		// MVP Code NEW!
+		*/
 		ServiceRepository applicationServices = new ServiceRepository();
 		HandlerManager eventBus = new HandlerManager(null);
 		AppController appViewer = new AppController(applicationServices, eventBus);
-		
-		RootPanel.get("simulatedPages").add(simulatedPages);
+		appViewer.go(RootPanel.get("appPanel"));
 	}
 }
