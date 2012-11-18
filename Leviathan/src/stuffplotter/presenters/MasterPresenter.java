@@ -1,6 +1,3 @@
-/**
- * 
- */
 package stuffplotter.presenters;
 
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
