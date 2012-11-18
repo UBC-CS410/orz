@@ -6,6 +6,7 @@ import java.util.List;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.AchievementNotification;
+import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.EventNotification;
 import stuffplotter.shared.FriendNotification;
@@ -35,6 +36,7 @@ public class DatabaseStore {
 		ObjectifyService.register(Event.class);
 		ObjectifyService.register(Scheduler.class);
 		ObjectifyService.register(Availability.class);
+		ObjectifyService.register(Comment.class);
 	}
 	
 	/**
@@ -88,6 +90,15 @@ public class DatabaseStore {
 	public void store(Availability pAvl) {
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pAvl);
+	}
+	
+	/**
+	 * Stores a Comment to the data store using Objectify
+	 * @param pSch	the Scheduler to be stored
+	 */	
+	public void store(Comment pCmt) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pCmt);
 	}
 	
 	/**
