@@ -5,6 +5,7 @@ import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
+import stuffplotter.shared.Account;
 import stuffplotter.views.MasterView;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -53,6 +54,7 @@ public class MasterPresenter implements Presenter
 		public Widget asWidget();
 	}
 	
+	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final MasterView masterView;
@@ -65,11 +67,12 @@ public class MasterPresenter implements Presenter
 	 * @param eventBus - the event bus for the application.
 	 * @param display - the MasterView to associate with the MasterPresenter.
 	 */
-	public MasterPresenter(ServiceRepository appServices, HandlerManager eventBus, MasterView display)
+	public MasterPresenter(ServiceRepository appServices, HandlerManager eventBus, MasterView display, Account user)
 	{
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.masterView = display;
+		this.appUser = user;
 	}
 
 	/**
@@ -102,7 +105,12 @@ public class MasterPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				masterView.getMainView().showView(View.EVENTS);
+				Presenter eventsPagePresenter = new EventsPagePresenter(
+						appServices.getEventService(), 
+						eventBus, 
+						masterView.getMainView(), 
+						appUser);
+				eventsPagePresenter.go(masterView);
 			}
 		});
 		

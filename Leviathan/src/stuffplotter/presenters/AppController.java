@@ -51,7 +51,7 @@ public class AppController implements Presenter
 	{
 		bind();
 		this.container = container;	
-		Presenter presenter = new MasterPresenter(this.rpcServices, this.eventBus, new MasterView());
+		Presenter presenter = new MasterPresenter(this.rpcServices, this.eventBus, new MasterView(), this.account);
 		presenter.go(this.container);
 	}
 }

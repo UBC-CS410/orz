@@ -23,7 +23,7 @@ public class MenuBarPresenter implements Presenter
 	private final ServiceRepository appServies;
 	private final HandlerManager eventBus;
 	
-	private final MenuBarView navigator;
+	private final MenuBarView menuBarView;
 		
 	/**
 	 * Constructor for the MenuBarPresenter.
@@ -36,7 +36,7 @@ public class MenuBarPresenter implements Presenter
 	{
 		this.appServies = appServices;
 		this.eventBus = eventBus;
-		this.navigator = display;
+		this.menuBarView = display;
 	}
 	
 	private void bind()
@@ -48,6 +48,6 @@ public class MenuBarPresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
-		container.add(this.navigator.asWidget());
+		container.add(this.menuBarView.asWidget());
 	}
 }

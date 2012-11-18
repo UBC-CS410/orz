@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import stuffplotter.client.services.EventServiceAsync;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventCreationDialogBox;
@@ -30,7 +32,7 @@ public class EventsPagePresenter implements Presenter
 		public HasClickHandlers getCurrentEventsBtn();
 		public HasClickHandlers getPastEventsBtn();
 		public void setDisplay(List<Event> toDisplay);
-		public Long getClickedId(ClickEvent event);
+		public Long getClickedRowIndex(ClickEvent event);
 		public Widget asWidget();
 		//public EventList getEventList(); // create presenter for this 
 	}
@@ -50,16 +52,15 @@ public class EventsPagePresenter implements Presenter
 	 * @param eventsView
 	 * @param eventsUser
 	 */
-	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, EventsView eventsView, Account eventsUser)
+	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, MainView mainView, Account eventsUser)
 	{
 		this.eventService = eventService;
 		this.eventBus = eventBus;
-		this.eventsView = eventsView;
+		this.eventsView = mainView.getEventsView();
+		mainView.showView(View.EVENTS);
 		
 		this.currentAccount = eventsUser;
-		
 		fetchCurrentEvents();
-		this.eventsView.setDisplay(currentEvents);
 	}
 	
 	private void bind()
@@ -69,7 +70,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				eventCreator = new EventCreationDialogBox();
+				eventCreator = new EventCreationDialogBox(currentAccount.getUserEmail(), eventsView, currentEvents);
 			}
 			
 		});
@@ -88,7 +89,6 @@ public class EventsPagePresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
-		container.add(eventsView.asWidget());
 	}
 	
 	private void fetchCurrentEvents()
@@ -105,6 +105,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result;
+				eventsView.setDisplay(currentEvents);
 			}
 		});
 	}

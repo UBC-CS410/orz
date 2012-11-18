@@ -1,11 +1,13 @@
 package stuffplotter.views.events;
 
+import java.util.List;
+
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.services.EventService;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.misc.CloseClickHandler;
 import stuffplotter.misc.EventCreationPageVisitor;
-import stuffplotter.shared.Account;
+import stuffplotter.presenters.EventsPagePresenter.EventsView;
 import stuffplotter.shared.Event;
 import stuffplotter.views.util.NotificationDialogBox;
 
@@ -28,6 +30,7 @@ public class EventCreationDialogBox extends DialogBox
 	final private String nextButtonText = "Next";
 	final private String submitButtonText = "Submit";
 	final private String taskName = "Creating New Event"; 
+	
 	private EventCreationPagedPanel eventPages;
 	private Button backBtn;
 	private Button nextBtn;
@@ -36,17 +39,24 @@ public class EventCreationDialogBox extends DialogBox
 	private EventCreationPageRetriever eventInfoRetriever;
 	private Event eventToCreate;
 	
+	private EventsView eventsView;
+	private List<Event> eventsCreated;
+	
+	
 	/**
 	 * Constructor for the EventCreationDialogBox class.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventCreationDialogBox()
+	public EventCreationDialogBox(final String creatorEmail, final EventsView onSubmitView, final List<Event> listOfEvents)
 	{
 		super();
+		eventsView = onSubmitView;
+		eventsCreated = listOfEvents;
+		
 		VerticalPanel vertPanel = new VerticalPanel();
 		HorizontalPanel btnHolder = new HorizontalPanel();
-		this.eventInfoRetriever = new EventCreationPageRetriever("TO FIX");
+		this.eventInfoRetriever = new EventCreationPageRetriever(creatorEmail);
 		this.eventPages = new EventCreationPagedPanel();
 		vertPanel.add(this.eventPages);
 		this.initializeButtons();
@@ -165,6 +175,8 @@ public class EventCreationDialogBox extends DialogBox
 						hide();
 						new NotificationDialogBox(taskName, "The Event: " + result.getName() +
 												  " was created successfully!");
+						eventsCreated.add(result);
+						eventsView.setDisplay(eventsCreated);
 					}
 					
 					@Override
