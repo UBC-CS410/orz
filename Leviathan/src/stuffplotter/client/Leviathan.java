@@ -1,24 +1,12 @@
 package stuffplotter.client;
 
-import java.util.Date;
-import java.util.List;
-
-import stuffplotter.views.ApplicationPagingView;
-import stuffplotter.views.account.AccountPanel;
-import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
-import stuffplotter.views.events.EventCreationDialogBox;
-import stuffplotter.views.friends.FriendFinderDialogBox;
-import stuffplotter.views.global.MenuBarPanel;
-import stuffplotter.views.global.TopBarPanel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.AccountStatsService;
 import stuffplotter.client.services.AccountStatsServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.AppController;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.server.AchievementChecker;
-import stuffplotter.server.AchievementRecordUpdater;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 
@@ -43,15 +31,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
@@ -229,8 +211,7 @@ public class Leviathan implements EntryPoint
 
 		ServiceRepository applicationServices = new ServiceRepository();
 		HandlerManager eventBus = new HandlerManager(null);
-		AppController appViewer = new AppController(applicationServices, eventBus);
+		AppController appViewer = new AppController(applicationServices, eventBus, account);
 		appViewer.go(RootPanel.get());
-
 	}
 }

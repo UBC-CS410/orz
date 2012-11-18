@@ -4,19 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import stuffplotter.client.services.AccountService;
-import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**

@@ -40,19 +40,19 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	}
 		
 	@Override
-	public TopBarView getTopPanel()
+	public TopBarView getTopView()
 	{
 		return this.topBarView;
 	}
 
 	@Override
-	public MenuBarView getMenuPanel()
+	public MenuBarView getMenuView()
 	{
 		return this.menuBarView;
 	}
 
 	@Override
-	public MainView getMainPanel()
+	public MainView getMainView()
 	{
 		return this.mainView;
 	}

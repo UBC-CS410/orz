@@ -5,6 +5,7 @@ import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
+import stuffplotter.shared.Account;
 import stuffplotter.views.MasterView;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,6 +19,7 @@ public class AppController implements Presenter
 	private final HandlerManager eventBus;
 	private final ServiceRepository rpcServices;	
 	private HasWidgets container;
+	private Account account;
 	
 	/**
 	 * Constructor for the AppController.
@@ -25,15 +27,17 @@ public class AppController implements Presenter
 	 * @post true;
 	 * @param serviceRepository - a repository containing all the asynchronous services.
 	 * @param eventBus - the HandlerManager to help components signal other components.
+	 * @param account - the user account that is accessing the application.
 	 */
-	public AppController(ServiceRepository serviceRepository, HandlerManager eventBus)
+	public AppController(ServiceRepository serviceRepository, HandlerManager eventBus, Account account)
 	{
 		this.rpcServices = serviceRepository;
 		this.eventBus = eventBus;
+		this.account = account;
 	}
 	
 	/**
-	 * Add handlers to objects.
+	 * Helper method to add the handlers.
 	 * @pre true;
 	 * @post true;
 	 */

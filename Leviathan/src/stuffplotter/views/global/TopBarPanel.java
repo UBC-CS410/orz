@@ -3,7 +3,6 @@ package stuffplotter.views.global;
 import java.util.List;
 
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Notification;
 
 import com.google.gwt.event.dom.client.ClickEvent;
