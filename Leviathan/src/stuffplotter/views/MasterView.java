@@ -1,13 +1,9 @@
 package stuffplotter.views;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import stuffplotter.presenters.AppController.MasterViewer;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.views.global.MenuBarPanel;
@@ -51,5 +47,4 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	{
 		return this;
 	}
-
 }

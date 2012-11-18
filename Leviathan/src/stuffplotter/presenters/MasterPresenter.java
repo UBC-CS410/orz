@@ -33,10 +33,10 @@ public class MasterPresenter implements Presenter
 	@Override
 	public void go(final HasWidgets container)
 	{
-		Presenter topBarPresenter = new TopBarPresenter();
+		Presenter topBarPresenter = new TopBarPresenter(null, null);
 		topBarPresenter.go((HasWidgets) masterView);
 		
-		Presenter menuBarPresenter = new MenuBarPresenter();
+		Presenter menuBarPresenter = new MenuBarPresenter(null, null);
 		menuBarPresenter.go((HasWidgets) masterView);
 		
 		container.add(masterView.asWidget());

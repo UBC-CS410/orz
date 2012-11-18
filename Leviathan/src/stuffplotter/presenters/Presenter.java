@@ -11,8 +11,7 @@ public interface Presenter
 	 * Initialize the application.
 	 * @pre true;
 	 * @post true;
-	 * @param container - the container to set as the View associated with the AppController
-	 * 					  or the container to set the View for (for children presenters).
+	 * @param container - the container to add the views to (in general).
 	 */
 	public void go(final HasWidgets container);
 }

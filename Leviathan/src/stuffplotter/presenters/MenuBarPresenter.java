@@ -7,6 +7,10 @@ import stuffplotter.views.global.MenuBarPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+
+import stuffplotter.client.services.ServiceRepository;
+import com.google.gwt.event.shared.HandlerManager;
+
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,16 +26,24 @@ public class MenuBarPresenter implements Presenter
 		public Widget asWidget();
 	}
 	
+	private final ServiceRepository appServies;
+	private final HandlerManager eventBus;
+	
 	private final MenuBarView navigator;
 	private final ApplicationPagingView pager;
 		
 	/**
-	 * Constructor
-	 * @pre
-	 * @post
+	 * Constructor for the MenuBarPresenter.
+	 * @pre true;
+	 * @post true;
+	 * @param appServices - the repository containing all the services available for the app.
+	 * @param eventBus - the event bus for the app.
 	 */
-	public MenuBarPresenter()
+	public MenuBarPresenter(ServiceRepository appServices, HandlerManager eventBus)
 	{
+		this.appServies = appServices;
+		this.eventBus = eventBus;
+		
 		this.navigator = new MenuBarPanel();
 		this.pager = new ApplicationPagingView();
 	}
@@ -82,7 +94,6 @@ public class MenuBarPresenter implements Presenter
 				pager.showView(View.ACHIEVEMENTS);
 			}	
 		});
-		
 	}
 	
 	@Override
@@ -92,5 +103,4 @@ public class MenuBarPresenter implements Presenter
 		container.add(navigator.asWidget());
 		container.add(pager.asWidget());
 	}
-
 }

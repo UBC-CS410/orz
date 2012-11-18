@@ -1,11 +1,13 @@
 package stuffplotter.presenters;
 
+import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.AccountPagePresenter.AccountView;
 import stuffplotter.presenters.AchievementsPagePresenter.AchievementsView;
 import stuffplotter.presenters.EventsPagePresenter.EventsView;
 import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
 import stuffplotter.presenters.HomePagePresenter.HomeView;
 
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 public class ApplicationPagingPresenter implements Presenter
@@ -44,19 +46,77 @@ public class ApplicationPagingPresenter implements Presenter
 			}
 		};
 		
+		/**
+		 * Retrieve the panel that displays the home page.
+		 * @pre true;
+		 * @post true;
+		 * @return the panel that displays the home page.
+		 */
 		public HomeView getHomeView();
+		
+		/**
+		 * Retrieve the panel that displays the accounts page.
+		 * @pre true;
+		 * @post true;
+		 * @return the panel that displays the accounts page.
+		 */
 		public AccountView getAccountView();
+		
+		/**
+		 * Retrieve the panel that displays the events page. 
+		 * @pre true;
+		 * @post true;
+		 * @return the panel that displays the events page.
+		 */
 		public EventsView getEventsView();
+		
+		/**
+		 * Retrieve the panel that displays the friends page.
+		 * @pre true;
+		 * @post true;
+		 * @return the panel that displays the friends page.
+		 */
 		public FriendsView getFriendsView();
+		
+		/**
+		 * Retrieve the panel that displays the achievements page.
+		 * @pre true;
+		 * @post true;
+		 * @return the panel that displays the achievements page.
+		 */
 		public AchievementsView getAchievementsView();
+		
+		/**
+		 * Display the view that is indicated by the param view. 
+		 * @pre view != null;
+		 * @post true;
+		 * @param view - the View to switch the main view to.
+		 */
 		public void showView(View view); 
+	}
+	
+	private final ServiceRepository appServices;
+	private final HandlerManager eventBus;
+	private final MainView mainViewDisplay;
+	
+	/**
+	 * Constructor for the ApplicationPagingPresenter.
+	 * @pre true;
+	 * @post this.isVisible() == true;
+	 * @param appServices - the repository containing all the services available for the app.
+	 * @param eventBus - the event bus for the app.
+	 * @param display - the MainView to associate with the ApplicationPagingPresenter.
+	 */
+	public ApplicationPagingPresenter(ServiceRepository appServices, HandlerManager eventBus, MainView display)
+	{
+		this.appServices = appServices;
+		this.eventBus = eventBus;
+		this.mainViewDisplay = display;
 	}
 	
 	@Override
 	public void go(HasWidgets container)
 	{
-		// TODO Auto-generated method stub
-
+		// Don't this method use since this panel uses DeckPanel to achieve paging.
 	}
-
 }

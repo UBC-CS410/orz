@@ -226,7 +226,7 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 	*/	
-		
+	/*	
 		// testing view selection and simulated pages
 		/*
 		MenuBarPanel viewSelections = new MenuBarPanel();
