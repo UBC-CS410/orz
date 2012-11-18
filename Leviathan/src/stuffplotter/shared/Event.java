@@ -102,6 +102,9 @@ public class Event implements Serializable
 		this.eventCoordinates = eventRetriever.getCoordinates();
 		this.eventDuration = eventRetriever.getDuration();
 		this.eventCost = eventRetriever.getCost();
+		this.eventDescription = eventRetriever.getDescription();
+		
+		this.eventDate = null;
 		
 		this.eventInvitees = new ArrayList<String>();
 		this.eventAttendees = new ArrayList<String>();

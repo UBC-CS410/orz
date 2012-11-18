@@ -1,14 +1,11 @@
 package stuffplotter.views.events;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
-import stuffplotter.shared.Event;
-import com.google.gwt.user.client.ui.SimplePanel;
-
-public class EventPreviewPanel extends SimplePanel
+public class EventPreviewPanel extends VerticalPanel
 {
-
+	
 	
 	/**
 	 * Constructor for EventsPreviewPanel
@@ -16,11 +13,11 @@ public class EventPreviewPanel extends SimplePanel
 	 * @post this.isVisible() == true
 	 * 
 	 */
-	public EventPreviewPanel()
+	public EventPreviewPanel(String name, String time, String desc)
 	{
-
+		this.add(new Label("Event: " + name));
+		this.add(new Label("Time: " + time));
+		this.add(new Label(desc));
 	}
-	
-
 		
 }

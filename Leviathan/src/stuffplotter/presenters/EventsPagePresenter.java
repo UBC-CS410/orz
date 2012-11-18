@@ -9,9 +9,11 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
+import stuffplotter.views.events.EventCreationDialogBox;
 
 /**
  * Class for the Events Page presenter.
@@ -37,26 +39,46 @@ public class EventsPagePresenter implements Presenter
 	private final HandlerManager eventBus;
 	private final EventsView eventsView;
 	
+	private EventCreationDialogBox eventCreator;
+	
 	/**
-	 * Constructor
-	 * @pre
+	 * Constructor for an EventsPagePresenter.
+	 * @pre eventService != null && eventBus != null && eventsView != null && eventsUser != null;
 	 * @post
+	 * @param eventService
+	 * @param eventBus
+	 * @param eventsView
+	 * @param eventsUser
 	 */
-	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, EventsView eventsView)
+	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, EventsView eventsView, Account eventsUser)
 	{
 		this.eventService = eventService;
 		this.eventBus = eventBus;
 		this.eventsView = eventsView;
+		
+		this.currentAccount = eventsUser;
+		
+		fetchCurrentEvents();
+		this.eventsView.setDisplay(currentEvents);
 	}
 	
 	private void bind()
 	{
+		eventsView.getCreateEventBtn().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				eventCreator = new EventCreationDialogBox();
+			}
+			
+		});
+		
 		eventsView.getCurrentEventsBtn().addClickHandler(new ClickHandler() {
 	
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				
+				eventsView.setDisplay(currentEvents);
 			}
 		});
 
@@ -66,13 +88,25 @@ public class EventsPagePresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
-		container.clear();
 		container.add(eventsView.asWidget());
 	}
 	
 	private void fetchCurrentEvents()
 	{
+		eventService.retrieveEvents(currentAccount.getUserEvents(), new AsyncCallback<List<Event>>() {
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				// TODO Auto-generated method stub
+				
+			}
 
+			@Override
+			public void onSuccess(List<Event> result)
+			{
+				currentEvents = result;
+			}
+		});
 	}
 	
 	private void fetchPastEvents()

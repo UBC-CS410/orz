@@ -6,6 +6,7 @@ import java.util.List;
 import stuffplotter.presenters.EventsPagePresenter.EventsView;
 import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventCreationDialogBox;
+import stuffplotter.views.events.EventPreviewPanel;
 import stuffplotter.views.events.EventsBrowserPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
@@ -66,17 +67,7 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 		
 		this.add(actionBar);
 		this.add(displayPanel);
-
-		Button createEventBtn = new Button("Create Event");
-		createEventBtn.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				 eventCreation = new EventCreationDialogBox();
-			}
-		});
+		
 	}
 
 	/**
@@ -115,7 +106,23 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 		this.displayIds.clear();
 		
 		this.displayIds.add(new Long(0));
-		this.displayPanel.addElement(new Label("New Event"));	
+		for (int i = 0; i < toDisplay.size(); i++)
+		{
+			String name, time, desc; 
+			name = toDisplay.get(i).getName();
+			if(toDisplay.get(i).getDate() == null)
+			{
+				time = "Time: TBD";
+			}
+			else
+			{
+				time = toDisplay.get(i).getDate().toString();
+			}
+			desc = toDisplay.get(i).getDescription();
+			
+			EventPreviewPanel rowPanel = new EventPreviewPanel(name, time, desc);
+			this.displayPanel.addElement(rowPanel);
+		}
 	}
 
 	/**
