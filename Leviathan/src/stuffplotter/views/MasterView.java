@@ -54,7 +54,7 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	}
 
 	@Override
-	public MainView getMainView()
+	public MainView getMainPanel()
 	{
 		return this.mainPagingPanel;
 	}

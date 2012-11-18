@@ -5,6 +5,8 @@ import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.views.MasterView;
+import stuffplotter.views.global.MenuBarPanel;
+import stuffplotter.views.global.TopBarPanel;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -35,12 +37,12 @@ public class AppController implements Presenter
 		 * @post true;
 		 * @return the MainView which has the simulated pages for the different pages.
 		 */
-		public MainView getMainView();
+		public MainView getMainPanel();
 	}
 	
 	private final HandlerManager eventBus;
 	private final ServiceRepository serviceRepo;
-	private HasWidgets masterView;
+	private MasterViewer masterView;
 	
 	/**
 	 * Constructor for the AppController.
@@ -62,7 +64,9 @@ public class AppController implements Presenter
 	 */
 	private void bind()
 	{
-		
+		new TopBarPresenter(serviceRepo, eventBus, this.masterView.getTopPanel());
+		new MenuBarPresenter(serviceRepo, eventBus, this.masterView.getMenuPanel());
+		new ApplicationPagingPresenter(serviceRepo, eventBus, this.masterView.getMainPanel());
 	}
 	
 	@Override

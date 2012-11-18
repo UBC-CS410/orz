@@ -75,6 +75,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 	 * @post true;
 	 * @return the view for the Home page.
 	 */
+	@Override
 	public HomePageView getHomeView()
 	{
 		return this.homePage;
@@ -86,6 +87,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 	 * @post true;
 	 * @return the view for the Account page.
 	 */
+	@Override
 	public AccountPageView getAccountView()
 	{
 		return this.accountPage;
@@ -97,6 +99,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 	 * @post true;
 	 * @return the view for the Events page.
 	 */
+	@Override
 	public EventsPageView getEventsView()
 	{
 		return this.eventsPage;
@@ -108,6 +111,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 	 * @post true;
 	 * @return the view for the Friends page.
 	 */
+	@Override
 	public FriendsPageView getFriendsView()
 	{
 		return this.friendsPage;
@@ -119,6 +123,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 	 * @post true;
 	 * @return the view for the Achievements page.
 	 */
+	@Override
 	public AchievementsPageView getAchievementsView()
 	{
 		return this.achievementsPanel;
