@@ -3,7 +3,8 @@ package stuffplotter.views;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import stuffplotter.presenters.AppController.MasterViewer;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
+import stuffplotter.presenters.MasterPresenter.MasterViewer;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.views.global.MenuBarPanel;
@@ -13,6 +14,7 @@ public class MasterView extends VerticalPanel implements MasterViewer
 {
 	private TopBarView topBarView;
 	private MenuBarView menuBarView;
+	private MainView mainView; 
 	
 	/**
 	 * Constructor for the MasterView.
@@ -21,8 +23,20 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	 */
 	public MasterView()
 	{
+		this.initializeUI();
+	}
+	
+	/**
+	 * Helper method to initialize the UI.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void initializeUI()
+	{
+		// MasterView contains other Views, but Views can only be added via asWidget() in go()
 		this.topBarView = new TopBarPanel();
-		this.menuBarView = new MenuBarPanel();		
+		this.menuBarView = new MenuBarPanel();
+		this.mainView = new ApplicationPagingView();
 	}
 		
 	@Override
@@ -37,12 +51,13 @@ public class MasterView extends VerticalPanel implements MasterViewer
 		return this.menuBarView;
 	}
 
-	/**
-	 * Returns this as a widget so that other views can add this
-	 * @pre true;
-	 * @post true;
-	 * @return this;
-	 */
+	@Override
+	public MainView getMainPanel()
+	{
+		return this.mainView;
+	}
+	
+	@Override
 	public Widget asWidget()
 	{
 		return this;

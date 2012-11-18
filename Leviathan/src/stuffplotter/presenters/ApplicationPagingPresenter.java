@@ -9,6 +9,7 @@ import stuffplotter.presenters.HomePagePresenter.HomeView;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ApplicationPagingPresenter implements Presenter
 {
@@ -92,7 +93,15 @@ public class ApplicationPagingPresenter implements Presenter
 		 * @post true;
 		 * @param view - the View to switch the main view to.
 		 */
-		public void showView(View view); 
+		public void showView(View view);
+		
+		/**
+		 * Retrieve the MainView as a widget.
+		 * @pre true;
+		 * @post true;
+		 * @return the MainView as a widget.
+		 */
+		public Widget asWidget();
 	}
 	
 	private final ServiceRepository appServices;
@@ -117,6 +126,6 @@ public class ApplicationPagingPresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
-		// Don't this method use since this panel uses DeckPanel to achieve paging.
+		container.add(this.mainViewDisplay.asWidget());
 	}
 }

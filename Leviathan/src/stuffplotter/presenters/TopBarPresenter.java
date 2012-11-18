@@ -26,11 +26,11 @@ public class TopBarPresenter implements Presenter
 	 * @param appServices - the repository containing all the services available for the app.
 	 * @param eventBus - the event bus for the app.
 	 */
-	public TopBarPresenter(ServiceRepository appServices, HandlerManager eventBus)
+	public TopBarPresenter(ServiceRepository appServices, HandlerManager eventBus, TopBarView display)
 	{
 		this.appServices = appServices;
 		this.eventBus = eventBus;
-		this.topBarDisplay = new TopBarPanel();
+		this.topBarDisplay = display;
 	}
 		
 	@Override

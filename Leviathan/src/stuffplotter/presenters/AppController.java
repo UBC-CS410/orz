@@ -15,32 +15,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class AppController implements Presenter
 {
-	public interface MasterViewer
-	{
-		/**
-		 * Retrieve the top panel which has the banner and top right panel stuff.
-		 * @pre true;
-		 * @post true;
-		 * @return the TopBarView which has the banner and top right panel stuff.
-		 */
-		public TopBarView getTopPanel();
-		
-		/**
-		 * Retrieve the page options panel which has the "links" to the different pages. 
-		 * @pre true;
-		 * @post true;
-		 * @return the MenuBarView which has the "links" to the different pages.
-		 */
-		public MenuBarView getMenuPanel();
-		
-		public Widget asWidget();
-	}
-	
 	private final HandlerManager eventBus;
-	private final ServiceRepository rpcServices;
-	
+	private final ServiceRepository rpcServices;	
 	private HasWidgets container;
-
 	
 	/**
 	 * Constructor for the AppController.
@@ -68,12 +45,9 @@ public class AppController implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
-
 		bind();
-		this.container = container;
-	
-		Presenter presenter = new MasterPresenter();
+		this.container = container;	
+		Presenter presenter = new MasterPresenter(this.rpcServices, this.eventBus, new MasterView());
 		presenter.go(this.container);
-
 	}
 }
