@@ -2,11 +2,16 @@ package stuffplotter.presenters;
 
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
+import stuffplotter.views.MasterView;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 
 public class AppController implements Presenter
 {
@@ -14,12 +19,13 @@ public class AppController implements Presenter
 	{
 		public TopBarView getTopPanel();
 		public MenuBarView getMenuPanel();
-		public MainView getMainView();
+		public Widget asWidget();
 	}
 	
 	private final HandlerManager eventBus;
-	private final ServiceRepository serviceRepo;
-	private HasWidgets masterView;
+	private final ServiceRepository rpcServices;
+	
+	private HasWidgets container;
 	
 	/**
 	 * Constructor for the AppController.
@@ -30,7 +36,7 @@ public class AppController implements Presenter
 	 */
 	public AppController(ServiceRepository serviceRepository, HandlerManager eventBus)
 	{
-		this.serviceRepo = serviceRepository;
+		this.rpcServices = serviceRepository;
 		this.eventBus = eventBus;
 	}
 	
@@ -41,13 +47,17 @@ public class AppController implements Presenter
 	 */
 	private void bind()
 	{
-		// TODO Auto-generated method stub
-		
+
 	}
 	
 	@Override
 	public void go(HasWidgets container)
 	{
-		this.masterView = container;
+		bind();
+		this.container = container;
+	
+		Presenter presenter = new MasterPresenter();
+		presenter.go(this.container);
+		
 	}
 }

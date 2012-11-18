@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display logged in user's identity and log out button at top of application.
@@ -58,6 +59,17 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		this.add(new Label(" | "));
 		this.add(new Label("Welcome " + this.userName + "!"));
 		this.add(new Label(" | "));
-		this.add(this.logoutLink);
+		//this.add(this.logoutLink); ERROR: LOGOUT LINK IS NOT INITIALIZED
+	}
+	
+	/**
+	 * Returns this as a widget so that other views can add this
+	 * @pre true;
+	 * @post true;
+	 * @return this;
+	 */
+	public Widget asWidget()
+	{
+		return this;
 	}
 }

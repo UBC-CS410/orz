@@ -1,9 +1,13 @@
 package stuffplotter.views;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import stuffplotter.presenters.AppController.MasterViewer;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
+import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.views.global.MenuBarPanel;
@@ -11,9 +15,8 @@ import stuffplotter.views.global.TopBarPanel;
 
 public class MasterView extends VerticalPanel implements MasterViewer
 {
-	private TopBarPanel topBarPanel;
-	private MenuBarPanel menuBarPanel;
-	private ApplicationPagingView mainPagingPanel;
+	private TopBarView topBarView;
+	private MenuBarView menuBarView;
 	
 	/**
 	 * Constructor for the MasterView.
@@ -22,27 +25,31 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	 */
 	public MasterView()
 	{
-		this.topBarPanel = new TopBarPanel();
-		this.menuBarPanel = new MenuBarPanel();
-		this.mainPagingPanel = new ApplicationPagingView();
+		this.topBarView = new TopBarPanel();
+		this.menuBarView = new MenuBarPanel();		
 	}
-	
+		
 	@Override
 	public TopBarView getTopPanel()
 	{
-		return this.topBarPanel;
+		return this.topBarView;
 	}
 
 	@Override
 	public MenuBarView getMenuPanel()
 	{
-		return this.menuBarPanel;
+		return this.menuBarView;
 	}
 
-	@Override
-	public MainView getMainView()
+	/**
+	 * Returns this as a widget so that other views can add this
+	 * @pre true;
+	 * @post true;
+	 * @return this;
+	 */
+	public Widget asWidget()
 	{
-		return this.mainPagingPanel;
+		return this;
 	}
 
 }

@@ -4,6 +4,7 @@ import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the links to change the view for the application.
@@ -53,6 +54,7 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 	 * @post true;
 	 * @return the home button.
 	 */
+	@Override
 	public Button getHomeBtn()
 	{
 		return this.homeBtn;
@@ -64,6 +66,7 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 	 * @post true;
 	 * @return the account button.
 	 */
+	@Override
 	public Button getAccountBtn()
 	{
 		return this.accountBtn;
@@ -75,6 +78,7 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 	 * @post true;
 	 * @return the events button.
 	 */
+	@Override
 	public Button getEventsBtn()
 	{
 		return this.eventsBtn;
@@ -86,6 +90,7 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 	 * @post true;
 	 * @return the friends button.
 	 */
+	@Override
 	public Button getFriendsBtn()
 	{
 		return this.friendsBtn;
@@ -97,8 +102,20 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 	 * @post true;
 	 * @return the achievements button.
 	 */
+	@Override
 	public Button getAchievementsBtn()
 	{
 		return this.achievementsBtn;
+	}
+	
+	/**
+	 * Returns this as a widget so that other views can add this
+	 * @pre true;
+	 * @post true;
+	 * @return this;
+	 */
+	public Widget asWidget()
+	{
+		return this;
 	}
 }
