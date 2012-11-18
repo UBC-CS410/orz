@@ -225,63 +225,12 @@ public class Leviathan implements EntryPoint
 				});
 			}	
 		});
-	*/	
-	/*	
-		// testing view selection and simulated pages
-		/*
-		MenuBarPanel viewSelections = new MenuBarPanel();
-		final ApplicationPagingView simulatedPages = new ApplicationPagingView();
-		viewSelections.getHomeBtn().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				simulatedPages.showView(View.HOME);
-			}	
-		});
-		viewSelections.getAccountBtn().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				simulatedPages.showView(View.ACCOUNT);
-			}	
-		});
-		viewSelections.getEventsBtn().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				simulatedPages.showView(View.EVENTS);
-			}	
-		});
-		viewSelections.getFriendsBtn().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				simulatedPages.showView(View.FRIENDS);
-			}	
-		});
-		viewSelections.getAchievementsBtn().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				simulatedPages.showView(View.ACHIEVEMENTS);
-			}	
-		});
-		
-		// testing top right panel for logged in user
-		TopBarPanel topRightPanel = new TopBarPanel();
-		*/
+	*/			
 
-		// MVP Code NEW!
 		ServiceRepository applicationServices = new ServiceRepository();
 		HandlerManager eventBus = new HandlerManager(null);
 		AppController appViewer = new AppController(applicationServices, eventBus);
 		appViewer.go(RootPanel.get());
-		
-		//RootPanel.get("simulatedPages").add(simulatedPages);
+
 	}
 }
