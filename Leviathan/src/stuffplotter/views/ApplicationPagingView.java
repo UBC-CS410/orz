@@ -66,7 +66,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 		this.add(accountPage);
 		this.add(eventsPage);
 		this.add(friendsPage);
-		this.add(achievementsPanel);
+		//this.add(achievementsPanel);
 	}
 
 	/**

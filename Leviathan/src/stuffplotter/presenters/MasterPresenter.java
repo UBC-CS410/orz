@@ -57,7 +57,7 @@ public class MasterPresenter implements Presenter
 	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
-	private final MasterView masterView;
+	private final MasterViewer masterView;
 	
 	/**
 	 * Constructor for the MasterPresenter.
@@ -67,7 +67,7 @@ public class MasterPresenter implements Presenter
 	 * @param eventBus - the event bus for the application.
 	 * @param display - the MasterView to associate with the MasterPresenter.
 	 */
-	public MasterPresenter(ServiceRepository appServices, HandlerManager eventBus, MasterView display, Account user)
+	public MasterPresenter(ServiceRepository appServices, HandlerManager eventBus, MasterViewer display, Account user)
 	{
 		this.appServices = appServices;
 		this.eventBus = eventBus;
@@ -110,7 +110,7 @@ public class MasterPresenter implements Presenter
 						eventBus, 
 						masterView.getMainView(), 
 						appUser);
-				eventsPagePresenter.go(masterView);
+				eventsPagePresenter.go((HasWidgets) masterView);
 			}
 		});
 		
@@ -141,17 +141,17 @@ public class MasterPresenter implements Presenter
 		Presenter topBarPresenter = new TopBarPresenter(this.appServices,
 														this.eventBus,
 														this.masterView.getTopView());
-		topBarPresenter.go(this.masterView);
+		topBarPresenter.go((HasWidgets) this.masterView);
 		
 		Presenter menuBarPresenter = new MenuBarPresenter(this.appServices,
 														  this.eventBus,
 														  this.masterView.getMenuView());
-		menuBarPresenter.go(this.masterView);
+		menuBarPresenter.go((HasWidgets) this.masterView);
 		
 		Presenter mainViewPresenter = new ApplicationPagingPresenter(this.appServices,
 																	 this.eventBus,
 																	 this.masterView.getMainView());
-		mainViewPresenter.go(this.masterView);
+		mainViewPresenter.go((HasWidgets) this.masterView);
 		
 		container.add(this.masterView.asWidget());
 	}

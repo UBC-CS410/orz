@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the friends page view.
@@ -83,5 +84,12 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	public ScrollDisplayPanel getFriendListPanel()
 	{
 		return this.friendDisplay;
+	}
+	
+
+	@Override
+	public Widget asWidget()
+	{
+		return this;
 	}
 }
