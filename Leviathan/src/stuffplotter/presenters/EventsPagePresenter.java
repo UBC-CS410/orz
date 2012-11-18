@@ -60,7 +60,29 @@ public class EventsPagePresenter implements Presenter
 		mainView.showView(View.EVENTS);
 		
 		this.currentAccount = eventsUser;
-		fetchCurrentEvents();
+		fetchCurrentEventsFromUser();
+	}
+	
+	/**
+	 * Constructor for an EventsPagePresenter.
+	 * @pre eventService != null && eventBus != null && eventsView != null && eventsUser != null && eventsList != null;
+	 * @post
+	 * @param eventService
+	 * @param eventBus
+	 * @param eventsView
+	 * @param eventsUser
+	 * @param eventsList - updated list of events
+	 */
+	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, MainView mainView, Account eventsUser, List<Event> eventsList)
+	{
+		this.eventService = eventService;
+		this.eventBus = eventBus;
+		this.eventsView = mainView.getEventsView();
+		mainView.showView(View.EVENTS);
+		
+		this.currentAccount = eventsUser;
+		this.currentEvents = eventsList;
+		this.eventsView.setDisplay(currentEvents);
 	}
 	
 	private void bind()
@@ -91,7 +113,7 @@ public class EventsPagePresenter implements Presenter
 		bind();
 	}
 	
-	private void fetchCurrentEvents()
+	private void fetchCurrentEventsFromUser()
 	{
 		eventService.retrieveEvents(currentAccount.getUserEvents(), new AsyncCallback<List<Event>>() {
 			@Override
@@ -110,7 +132,7 @@ public class EventsPagePresenter implements Presenter
 		});
 	}
 	
-	private void fetchPastEvents()
+	private void fetchPastEventsFromUser()
 	{
 		
 	}
