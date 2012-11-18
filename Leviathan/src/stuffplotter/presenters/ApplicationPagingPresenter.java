@@ -126,6 +126,11 @@ public class ApplicationPagingPresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
+		Presenter friendsPresenter = new FriendsPagePresenter(this.appServices,
+															  this.eventBus,
+															  this.mainViewDisplay.getFriendsView());
+		friendsPresenter.go((HasWidgets) this.mainViewDisplay);
+		
 		container.add(this.mainViewDisplay.asWidget());
 	}
 }
