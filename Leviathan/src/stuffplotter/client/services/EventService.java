@@ -12,10 +12,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface EventService extends RemoteService
 {
 	Event createEvent(Event newEvent, List<MonthContainer> timeSlots);
-	
 	Event retrieveEvent(Long eventId);
-	void updateEvent(Event modifiedEvent);
+	List<Event> retrieveEvents(List<Long> eventIds);
 	
+	void updateEvent(Event modifiedEvent);
 	void deleteEvent();
 	void rateEvent();
 }

@@ -3,12 +3,14 @@ package stuffplotter.presenters;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import stuffplotter.client.services.EventServiceAsync;
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 
 /**
@@ -16,7 +18,9 @@ import stuffplotter.shared.Event;
  */
 public class EventsPagePresenter implements Presenter
 {
-
+	private Account currentAccount;
+	private List<Event> currentEvents;
+	private List<Event> pastEvents;
 	
 	public interface EventsView
 	{
@@ -47,8 +51,15 @@ public class EventsPagePresenter implements Presenter
 	
 	private void bind()
 	{
-		// TODO Auto-generated method stub
-		
+		eventsView.getCurrentEventsBtn().addClickHandler(new ClickHandler() {
+	
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				
+			}
+		});
+
 	}
 	
 	@Override
@@ -57,6 +68,16 @@ public class EventsPagePresenter implements Presenter
 		bind();
 		container.clear();
 		container.add(eventsView.asWidget());
+	}
+	
+	private void fetchCurrentEvents()
+	{
+
+	}
+	
+	private void fetchPastEvents()
+	{
+		
 	}
 
 }

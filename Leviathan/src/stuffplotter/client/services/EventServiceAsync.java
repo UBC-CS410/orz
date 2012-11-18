@@ -29,6 +29,15 @@ public interface EventServiceAsync
 	void retrieveEvent(Long eventId, AsyncCallback<Event> callback);
 	
 	/**
+	 * Retrieves a List of Events from the data store
+	 * @pre 	eventIds comes from an account's event list
+	 * @post	true
+	 * @param 	eventIds - the list of ids of events to retrieve
+	 * 			callback - the callback object
+	 */
+	void retrieveEvents(List<Long> eventIds, AsyncCallback<List<Event>> callback);
+	
+	/**
 	 * Modifies an Event by changing one of its fields
 	 * @pre 	modifiedEvent is not null
 	 * @post	changes the persistent members of an Event

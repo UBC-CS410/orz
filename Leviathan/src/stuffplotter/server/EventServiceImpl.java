@@ -1,5 +1,6 @@
 package stuffplotter.server;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -86,13 +87,37 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		dbstore.store(event);
 	}
 	
-	
+	/**
+	 * Retrieves an Event from the data store by id
+	 * @pre 	eventId comes from an account's event list
+	 * @post	true
+	 * @param 	eventId - the id of the event to retrieve
+	 * 			callback - the callback object
+	 */
 	@Override
 	public Event retrieveEvent(Long pEventId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return dbstore.fetchEvent(pEventId);
 	}
+	
+	/**
+	 * Retrieves a List of Events from the data store by id
+	 * @pre 	eventIds comes from an account's event list
+	 * @post	true
+	 * @param 	eventIds - the list of ids of events to retrieve
+	 * 			callback - the callback object
+	 */
+	@Override
+	public List<Event> retrieveEvents(List<Long> pEventIds)
+	{
+		List<Event> events = new ArrayList<Event>();
+		for (int i = 0; i < pEventIds.size(); i++)
+		{
+			events.add(dbstore.fetchEvent(pEventIds.get(i)));
+		}
+		return events;
+	}
+	
 
 	/**
 	 * Modifies an Event by changing one of its fields 
