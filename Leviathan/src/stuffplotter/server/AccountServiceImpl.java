@@ -41,7 +41,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    
 	    Account account = null;
 	    try {
-    	  account = dbstore.fetchAccount(user.getNickname());
+    	  account = dbstore.fetchAccount(user.getEmail());
 	    } catch (NotFoundException nfe) {
 	      account = new Account(user.getEmail());
 	      this.saveAccount(account); 
