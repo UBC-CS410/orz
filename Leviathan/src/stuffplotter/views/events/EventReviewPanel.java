@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.TextArea;
  * @author farez
  * Class for displaying meta information about the event such as comments and ratings
  */
-public class EventReview extends HorizontalPanel {
+public class EventReviewPanel extends HorizontalPanel {
 
 	//public Rating rating = new Rating();
 	public HorizontalPanel CommentPanel = new HorizontalPanel();

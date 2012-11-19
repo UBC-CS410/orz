@@ -35,9 +35,10 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 	{
 		super();
 		
+		createButton = new Button("Create Event");
 		browseButton = new Button("View Current Events");
 		historyButton = new Button("View Past Events");
-		createButton = new Button("Create Event");
+
 		displayPanel = new ScrollDisplayPanel();
 		
 		this.initializeUI();

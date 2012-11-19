@@ -47,8 +47,9 @@ public class EventsPagePresenter implements Presenter
 	
 	/**
 	 * Constructor for an EventsPagePresenter.
+	 * Presents a list of events from the user.
 	 * @pre appServices != null && eventBus != null && display != null && user != null;
-	 * @post true;
+	 * @post this.currentEvents == this.appUser.getUserEvents();
 	 * @param appServices - the mapped services
 	 * @param eventBus - the global event bus
 	 * @param display - the view to present
