@@ -34,26 +34,36 @@ public class Scheduler implements Serializable
 	
 	/**
 	 * Method to get the id of the scheduler
-	 * 
 	 * @pre		true
 	 * @post	true
-	 * 
 	 * @return	the data store generated id of the scheduler
 	 */
-	public Long getId() {
+	public Long getId() 
+	{
 		return this.id;
 	}
 	
 	/**
+	 * Method to get the list of ids for availabilities
+	 * @return 
+	 * @pre true;
+	 * @post true;
+	 * @return availabilities
+	 */
+	public List<Long> getAvailabilities()
+	{
+		return this.availabilities;
+	}
+	
+	/**
 	 * Method to add an availability to the scheduler
-	 * 
 	 * @pre		true
 	 * @post	this.availabilities size is increased by 1
-	 * 
 	 * @param 	pAvailability		another possible time slot for the invited to submit their availability
 	 */
 	public void addAvailability(Availability pAvailability)
 	{
 		this.availabilities.add(pAvailability.getId());
 	}
+	
 }

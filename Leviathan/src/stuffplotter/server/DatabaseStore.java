@@ -136,6 +136,28 @@ public class DatabaseStore {
 	}
 	
 	/**
+	 * Fetches a Scheduler from the data store using Objectify
+	 * @param pId 	the id of the Scheduler
+	 * @return		the Scheduler that is associated with the specified id
+	 */
+	public Scheduler fetchScheduler(Long pId) {
+		Objectify ofy = ObjectifyService.begin();
+		Scheduler sch = ofy.get(Scheduler.class, pId);
+		return sch;
+	}
+	
+	/**
+	 * Fetches an Availability from the data store using Objectify
+	 * @param pId 	the id of the Availability
+	 * @return		the Availability that is associated with the specified id
+	 */
+	public Availability fetchAvailability(Long pId) {
+		Objectify ofy = ObjectifyService.begin();
+		Availability avl = ofy.get(Availability.class, pId);
+		return avl;
+	}
+	
+	/**
 	 * Searches for Events by Account
 	 * @param pId	the id of the Account
 	 * @return		the list of Events owned by the specified Account, list could be empty

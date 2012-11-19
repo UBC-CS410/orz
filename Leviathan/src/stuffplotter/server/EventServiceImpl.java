@@ -16,6 +16,7 @@ import stuffplotter.shared.Scheduler;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+@SuppressWarnings("serial")
 public class EventServiceImpl extends RemoteServiceServlet implements EventService
 {
 	private DatabaseStore dbstore = new DatabaseStore();
@@ -52,7 +53,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @pre 	pMonthContainers != null
 	 * @post	sets eventScheduler and eventStatus for the persistent event whose key is pEventId
 	 * @param 	pEventId			the id of the event that the scheduler is bound to
-	 * 			pMonthContainers	the list of month containers containing the proposed times for the event
+	 * @param	pMonthContainers	the list of month containers containing the proposed times for the event
 	 */
 	private void addScheduler(Long pEventId, List<MonthContainer> pMonthContainers)
 	{
@@ -92,7 +93,6 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @pre 	eventId comes from an account's event list
 	 * @post	true
 	 * @param 	eventId - the id of the event to retrieve
-	 * 			callback - the callback object
 	 */
 	@Override
 	public Event retrieveEvent(Long pEventId)
@@ -105,7 +105,6 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @pre 	eventIds comes from an account's event list
 	 * @post	true
 	 * @param 	eventIds - the list of ids of events to retrieve
-	 * 			callback - the callback object
 	 */
 	@Override
 	public List<Event> retrieveEvents(List<Long> pEventIds)
@@ -118,9 +117,28 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		return events;
 	}
 	
+	/**
+	 * Retrieves a list of Availabilities from a Scheduler
+	 * @pre 	pSchedulerId is valid
+	 * @post	true
+	 * @param 	pSchedulerId - the id of the Scheduler to retrieve from
+	 */
+	@Override
+	public List<Availability> retrieveAvailabilities(Long pSchedulerId)
+	{
+		Scheduler scheduler = dbstore.fetchScheduler(pSchedulerId);
+		List<Long> fetchIds = scheduler.getAvailabilities();
+		List<Availability> fetched = new ArrayList<Availability>();
+		for (int i = 0; i < fetchIds.size(); i++)
+		{
+			fetched.add(dbstore.fetchAvailability(fetchIds.get(i)));
+		}
+		return fetched;
+	}
+	
 
 	/**
-	 * Modifies an Event by changing one of its fields 
+	 * Updates an Event by changing one of its fields 
 	 * @pre 	modifiedEvent is not null
 	 * @post	changes the persistent members of an Event
 	 * @param 	pEvent	the modified event with field changes
@@ -129,6 +147,22 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	public void updateEvent(Event pEvent)
 	{
 		dbstore.store(pEvent);
+	}
+	
+	/**
+	 * Updates a Scheduler by incrementing the vote on the specified availabilities
+	 * @pre availabilityIds != null;
+	 * @post for each Availability avl, avl.getVote += 1;
+	 */
+	@Override
+	public void updateScheduler(List<Long> availabilityIds)
+	{
+		for (int i = 0; i < availabilityIds.size(); i++)
+		{
+			Availability toUpdate = dbstore.fetchAvailability(availabilityIds.get(i));
+			toUpdate.incrementVote();
+			dbstore.store(toUpdate);
+		}
 	}
 
 	
