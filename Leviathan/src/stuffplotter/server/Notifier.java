@@ -40,19 +40,14 @@ public class Notifier
 			}
 			
 		});
-		this.user = result;
 
 	}
 	
 	public void addNotification(Achievement ach)
 	{
-		// Wait till user is not null
-		while(user==null)
-		{
-			
-		}
-		Notification notification = new AchievementNotification(user.getUserEmail(), ach);
-		this.user.addUserNotification(notification);
+
+//		Notification notification = new AchievementNotification(user.getUserEmail(), ach);
+//		this.user.addUserNotification(notification);
 	}
 	
 }

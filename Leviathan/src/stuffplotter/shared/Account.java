@@ -313,6 +313,17 @@ public class Account implements Serializable
 		this.userNotifications.add(0, notification);
 	}
 	
+	public void readNotification()
+	{
+		for(Notification notification : this.userNotifications)
+		{
+			//if(notification.getNotificationTime() > )
+			notification.setNewNotification(false);
+		}
+	}
+	
+	
+	
 	
 	public List<Notification>  getUserNotifications()
 	{

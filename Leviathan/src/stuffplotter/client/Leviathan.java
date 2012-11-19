@@ -11,33 +11,17 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.AuthenticationException;
 
-import com.bradrydzewski.gwt.calendar.client.Calendar;
-import com.bradrydzewski.gwt.calendar.client.CalendarViews;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
-import com.google.api.gwt.client.GoogleApiRequestTransport;
-import com.google.api.gwt.client.OAuth2Login;
+
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
-import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
-import com.google.api.gwt.services.calendar.shared.model.CalendarList;
-import com.google.api.gwt.services.calendar.shared.model.Events;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.web.bindery.requestfactory.shared.Receiver;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -97,7 +81,7 @@ public class Leviathan implements EntryPoint
 								@Override
 								public void onSuccess(Void arg0)
 								{
-									// TODO Auto-generated method stub
+									
 									
 								}
 								

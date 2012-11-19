@@ -31,7 +31,7 @@ public abstract class Notification implements Serializable
 	
 	public Notification()
 	{
-		notificationTime = new Date();
+		setNotificationTime(new Date());
 		this.setNotificationDisplay("");
 	}
 	/**
@@ -48,7 +48,7 @@ public abstract class Notification implements Serializable
 	{
 		this.type = type;
 		this.notificationFrom = from;
-		this.notificationTime = new Date();
+		this.setNotificationTime(new Date());
 		this.setNotificationDisplay("");
 	}
 
@@ -80,6 +80,19 @@ public abstract class Notification implements Serializable
 	public void setNotificationDisplay(String notificationDisplay)
 	{
 		this.notificationDisplay = notificationDisplay;
+	}
+	
+	public void setNewNotification(boolean bool)
+	{
+		this.newNotification = bool;
+	}
+	public Date getNotificationTime()
+	{
+		return notificationTime;
+	}
+	public void setNotificationTime(Date notificationTime)
+	{
+		this.notificationTime = notificationTime;
 	}
 
 }

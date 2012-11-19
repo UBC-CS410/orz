@@ -11,6 +11,9 @@ import stuffplotter.server.RecordVisitor;
 public class AccountStatistic implements Serializable
 {
 	@Id
+	/**
+	 * The account ID.
+	 */
 	private String accountEmail;
 	
 	private int userLevel;
