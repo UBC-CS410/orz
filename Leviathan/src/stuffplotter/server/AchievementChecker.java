@@ -25,6 +25,7 @@ public class AchievementChecker implements RecordVisitor
 	private int numFriends;
 	private int numHostedEvents;
 	private int numParticipatedEvents;
+
 	final private int ACHIEVEMENTXP = 100;
 	
 	
@@ -85,6 +86,13 @@ public class AchievementChecker implements RecordVisitor
 			addFirstFriend();
 		
 		this.user.addUserAchievements(unlockAchievements);
+		
+		Notifier notifier = new Notifier(user.getAccountEmail());
+		for(Achievement ach : unlockAchievements)
+		{
+			notifier.addNotification(ach);
+		}
+		
 	}
 
 

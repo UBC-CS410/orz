@@ -26,10 +26,13 @@ public abstract class Notification implements Serializable
 	private boolean newNotification = true;
 	private Date notificationTime;
 	
+	protected String notificationDisplay;
+	
 	
 	public Notification()
 	{
 		notificationTime = new Date();
+		this.setNotificationDisplay("");
 	}
 	/**
 	 * Constructor for a Notification.
@@ -46,6 +49,7 @@ public abstract class Notification implements Serializable
 		this.type = type;
 		this.notificationFrom = from;
 		this.notificationTime = new Date();
+		this.setNotificationDisplay("");
 	}
 
 	/**
@@ -69,13 +73,13 @@ public abstract class Notification implements Serializable
 	{
 		return this.notificationFrom;
 	}
+	public String getNotificationDisplay()
+	{
+		return notificationDisplay;
+	}
+	public void setNotificationDisplay(String notificationDisplay)
+	{
+		this.notificationDisplay = notificationDisplay;
+	}
 
-
-	/**
-	 * Method to generate the message for the notification.
-	 * @pre true;
-	 * @post true;
-	 * @return the message for the notification.
-	 */
-	public abstract SimplePanel generateMessage();
 }

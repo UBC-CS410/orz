@@ -38,12 +38,5 @@ public class EventNotification extends Notification
 		this.eventType = type;
 	}
 
-	@Override
-	public SimplePanel generateMessage()
-	{
-		SimplePanel notificationPanel = new SimplePanel();
-		notificationPanel.add(new Label("You have been invited to an event by " + this.getFrom()));
-		return notificationPanel;
-	}
 
 }

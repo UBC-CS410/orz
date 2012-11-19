@@ -33,13 +33,6 @@ public class FriendNotification extends Notification
 		this.friendType = type;
 	}
 
-	@Override
-	public SimplePanel generateMessage()
-	{
-		SimplePanel notificationPanel = new SimplePanel();
-		notificationPanel.add(new Label("You have a friend request from " + this.getFrom()));
-		return notificationPanel;
-	}
 
 	public FriendNotificationType getFriendType()
 	{

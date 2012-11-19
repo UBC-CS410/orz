@@ -52,7 +52,7 @@ public class UserNotificationsPopupPanel extends PopupPanel
 		{
 			for(int i = 0; i < userNotifications.size(); i++)
 			{
-				userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
+				//userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
 			}
 		}
 
@@ -64,7 +64,7 @@ public class UserNotificationsPopupPanel extends PopupPanel
 				hide();
 			}	
 		});
-		
+
 		this.notificationHolder.add(userList);
 		this.scrollHolder.add(notificationHolder);
 		this.add(scrollHolder);

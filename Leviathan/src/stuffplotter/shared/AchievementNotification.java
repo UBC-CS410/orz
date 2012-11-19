@@ -5,22 +5,28 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 public class AchievementNotification extends Notification
 {
-
+	
+	private Achievement achievement;
+	
 	public AchievementNotification()
 	{
 		
 	}
-	public AchievementNotification(String achievement)
+	public AchievementNotification(String user, Achievement ach)
 	{
-		super(NotificationType.ACHIEVEMENTGET, achievement);
+		super(NotificationType.ACHIEVEMENTGET, user);
+		this.achievement = ach;
+		this.setNotificationDisplay(ach);
+		
+		
+	}
+	
+	
+	public void setNotificationDisplay(Achievement ach){
+		String display = "You have unlocked the achievement, "+ach.getName();
+		this.notificationDisplay = display;
 	}
 
-	@Override
-	public SimplePanel generateMessage()
-	{
-		SimplePanel notificationPanel = new SimplePanel();
-		notificationPanel.add(new Label("You have unlocked a new achievment " + this.getFrom()));
-		return notificationPanel;
-	}
+
 
 }

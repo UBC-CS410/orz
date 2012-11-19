@@ -301,6 +301,19 @@ public class Account implements Serializable
 	}
 	
 	
+	/**
+	 * Adds the new notification at the start of the list and shifts
+	 * the rest of the elements to the right.
+	 * @pre
+	 * @post
+	 * @param notification
+	 */
+	public void addUserNotification(Notification notification)
+	{
+		this.userNotifications.add(0, notification);
+	}
+	
+	
 	public List<Notification>  getUserNotifications()
 	{
 		return this.userNotifications;
