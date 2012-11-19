@@ -6,6 +6,7 @@ import stuffplotter.presenters.AchievementsPagePresenter.AchievementsView;
 import stuffplotter.presenters.EventsPagePresenter.EventsView;
 import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
 import stuffplotter.presenters.HomePagePresenter.HomeView;
+import stuffplotter.shared.Account;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -104,6 +105,7 @@ public class ApplicationPagingPresenter implements Presenter
 		public Widget asWidget();
 	}
 	
+	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final MainView mainViewDisplay;
@@ -116,8 +118,9 @@ public class ApplicationPagingPresenter implements Presenter
 	 * @param eventBus - the event bus for the app.
 	 * @param display - the MainView to associate with the ApplicationPagingPresenter.
 	 */
-	public ApplicationPagingPresenter(ServiceRepository appServices, HandlerManager eventBus, MainView display)
+	public ApplicationPagingPresenter(ServiceRepository appServices, HandlerManager eventBus, MainView display, Account user)
 	{
+		this.appUser = user;
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.mainViewDisplay = display;
@@ -126,11 +129,40 @@ public class ApplicationPagingPresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
-		Presenter friendsPresenter = new FriendsPagePresenter(this.appServices,
-															  this.eventBus,
-															  this.mainViewDisplay.getFriendsView());
+		/**
+		 * DO NOT CHANGE THE ORDER IN WHICH THE PRESENTERS ARE CALLED
+		 */
+		Presenter homePresenter = new HomePagePresenter(
+				this.appServices,
+				this.eventBus,
+				this.mainViewDisplay.getHomeView());
+		homePresenter.go((HasWidgets) this.mainViewDisplay);
+		
+		Presenter accountPresenter = new AccountPagePresenter(
+				this.appServices,
+				this.eventBus,
+				this.mainViewDisplay.getAccountView());
+		accountPresenter.go((HasWidgets) this.mainViewDisplay);
+		
+		Presenter eventsPresenter = new EventsPagePresenter(
+				this.appServices,
+				this.eventBus,
+				this.mainViewDisplay.getEventsView(),
+				this.appUser);
+		eventsPresenter.go((HasWidgets) this.mainViewDisplay);
+		
+		Presenter friendsPresenter = new FriendsPagePresenter(
+				this.appServices,
+				this.eventBus,
+				this.mainViewDisplay.getFriendsView());
 		friendsPresenter.go((HasWidgets) this.mainViewDisplay);
 		
+		Presenter achievementsPresenter = new AchievementsPagePresenter(
+				this.appServices,
+				this.eventBus,
+				this.mainViewDisplay.getAchievementsView());
+		achievementsPresenter.go((HasWidgets) this.mainViewDisplay);
+	
 		container.add(this.mainViewDisplay.asWidget());
 	}
 }

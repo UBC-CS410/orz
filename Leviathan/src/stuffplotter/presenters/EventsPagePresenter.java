@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import stuffplotter.client.services.EventServiceAsync;
+import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.shared.Account;
@@ -22,7 +23,6 @@ import stuffplotter.views.events.EventCreationDialogBox;
  */
 public class EventsPagePresenter implements Presenter
 {
-	private Account currentAccount;
 	private List<Event> currentEvents;
 	private List<Event> pastEvents;
 	
@@ -37,54 +37,39 @@ public class EventsPagePresenter implements Presenter
 		//public EventList getEventList(); // create presenter for this 
 	}
 	
-	private final EventServiceAsync eventService;
+	private final Account appUser;
+	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final EventsView eventsView;
 	
+	//Change to eventCreationDialogPresenter
 	private EventCreationDialogBox eventCreator;
 	
 	/**
 	 * Constructor for an EventsPagePresenter.
-	 * @pre eventService != null && eventBus != null && eventsView != null && eventsUser != null;
-	 * @post
-	 * @param eventService
-	 * @param eventBus
-	 * @param eventsView
-	 * @param eventsUser
+	 * @pre appServices != null && eventBus != null && display != null && user != null;
+	 * @post true;
+	 * @param appServices - the mapped services
+	 * @param eventBus - the global event bus
+	 * @param display - the view to present
+	 * @param user - the current user
 	 */
-	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, MainView mainView, Account eventsUser)
+	public EventsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, EventsView display, Account user)
 	{
-		this.eventService = eventService;
-		this.eventBus = eventBus;
-		this.eventsView = mainView.getEventsView();
-		mainView.showView(View.EVENTS);
+		this.appServices = appServices;
+		this.appUser = user;
 		
-		this.currentAccount = eventsUser;
+		this.eventBus = eventBus;
+		this.eventsView = display;
+				
 		fetchCurrentEventsFromUser();
 	}
 	
 	/**
-	 * Constructor for an EventsPagePresenter.
-	 * @pre eventService != null && eventBus != null && eventsView != null && eventsUser != null && eventsList != null;
-	 * @post
-	 * @param eventService
-	 * @param eventBus
-	 * @param eventsView
-	 * @param eventsUser
-	 * @param eventsList - updated list of events
+	 * Bind events view components to handlers
+	 * @pre true
+	 * @post true
 	 */
-	public EventsPagePresenter(EventServiceAsync eventService, HandlerManager eventBus, MainView mainView, Account eventsUser, List<Event> eventsList)
-	{
-		this.eventService = eventService;
-		this.eventBus = eventBus;
-		this.eventsView = mainView.getEventsView();
-		mainView.showView(View.EVENTS);
-		
-		this.currentAccount = eventsUser;
-		this.currentEvents = eventsList;
-		this.eventsView.setDisplay(currentEvents);
-	}
-	
 	private void bind()
 	{
 		eventsView.getCreateEventBtn().addClickHandler(new ClickHandler() {
@@ -92,7 +77,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				eventCreator = new EventCreationDialogBox(currentAccount.getUserEmail(), eventsView, currentEvents);
+				eventCreator = new EventCreationDialogBox(appUser.getUserEmail(), eventsView, currentEvents);
 			}
 			
 		});
@@ -107,15 +92,27 @@ public class EventsPagePresenter implements Presenter
 
 	}
 	
+	/**
+	 * Present the events view
+	 * @pre true;
+	 * @post this.eventsView.isVisible() == true;
+	 */
 	@Override
 	public void go(HasWidgets container)
 	{
 		bind();
+		container.add(this.eventsView.asWidget());
 	}
 	
+	/**
+	 * 
+	 * @pre
+	 * @post
+	 */
 	private void fetchCurrentEventsFromUser()
 	{
-		eventService.retrieveEvents(currentAccount.getUserEvents(), new AsyncCallback<List<Event>>() {
+		EventServiceAsync eventService = appServices.getEventService();
+		eventService.retrieveEvents(appUser.getUserEvents(), new AsyncCallback<List<Event>>() {
 			@Override
 			public void onFailure(Throwable caught)
 			{
@@ -132,6 +129,11 @@ public class EventsPagePresenter implements Presenter
 		});
 	}
 	
+	/**
+	 * 
+	 * @pre
+	 * @post
+	 */
 	private void fetchPastEventsFromUser()
 	{
 		

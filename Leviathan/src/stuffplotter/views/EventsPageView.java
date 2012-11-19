@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the events page view.
@@ -130,7 +131,9 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 		return rowIndex;
 	}
 	
-	
-	
-
+	@Override
+	public Widget asWidget()
+	{
+		return this;
+	}
 }

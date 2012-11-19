@@ -12,6 +12,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the home page view.
@@ -57,5 +58,11 @@ public class HomePageView extends SimplePanel implements HomeView
 		HorizontalPanel calMapHolder = new HorizontalPanel();
 		calMapHolder.add(calendar);
 		this.add(calMapHolder);
+	}
+	
+	@Override
+	public Widget asWidget()
+	{
+		return this;
 	}
 }

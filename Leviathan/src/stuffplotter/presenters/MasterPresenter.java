@@ -105,12 +105,7 @@ public class MasterPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				Presenter eventsPagePresenter = new EventsPagePresenter(
-						appServices.getEventService(), 
-						eventBus, 
-						masterView.getMainView(), 
-						appUser);
-				eventsPagePresenter.go((HasWidgets) masterView);
+				masterView.getMainView().showView(View.EVENTS);
 			}
 		});
 		
@@ -150,8 +145,11 @@ public class MasterPresenter implements Presenter
 		
 		Presenter mainViewPresenter = new ApplicationPagingPresenter(this.appServices,
 																	 this.eventBus,
-																	 this.masterView.getMainView());
+																	 this.masterView.getMainView(),
+																	 this.appUser);
 		mainViewPresenter.go((HasWidgets) this.masterView);
+		
+		masterView.getMainView().showView(View.HOME);
 		
 		container.add(this.masterView.asWidget());
 	}

@@ -37,50 +37,39 @@ public class FriendsPagePresenter implements Presenter
 	
 	/**
 	 * Constructor for the FriendsPagePresenter.
-	 * @pre friendsView != null;
+	 * @pre @pre appServices != null && eventBus != null && display != null && user != null;
 	 * @post true;
 	 * @param appServices - the repository containing all the services available for the application.
 	 * @param eventBus - the event bus for the application.
 	 * @param display - the FriendsView to associate with the FriendsPagePresenter.
 	 */
-	public FriendsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, FriendsView friendsView)
+	public FriendsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, FriendsView display)
 	{
 		this.appServices = appServices;
 		this.eventBus = eventBus;
-		this.friendsView = friendsView;
+		this.friendsView = display;
 	}
 
-
+	/**
+	 * Bind friends view components to handlers
+	 * @pre true
+	 * @post true
+	 */
 	private void bind()
 	{
 		// TODO Auto-generated method stub
 		
 	}
 	
+	/**
+	 * Present the friends view
+	 * @pre true;
+	 * @post this.homeView.isVisible() == true;
+	 */
 	@Override
 	public void go(HasWidgets container)
 	{
-		Iterator<Widget> asdf = container.iterator();
-		int count = 0;
-		while(asdf.hasNext())
-		{
-			asdf.next();
-			count++;
-		}
-		
-		Window.alert("Count: " + String.valueOf(count));
-		// Doesn't seem to add FriendsView...
+		bind();
 		container.add(this.friendsView.asWidget());
-		container.add(new SimplePanel());
-		
-		Iterator<Widget> asdf2 = container.iterator();
-		int count2 = 0;
-		while(asdf2.hasNext())
-		{
-			asdf2.next();
-			count2++;
-		}
-		
-		Window.alert("Count: " + String.valueOf(count2));
 	}
 }

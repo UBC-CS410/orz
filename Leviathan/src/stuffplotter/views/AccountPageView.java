@@ -4,6 +4,7 @@ import stuffplotter.presenters.AccountPagePresenter.AccountView;
 import stuffplotter.views.account.AccountPanel;
 
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the account page view.
@@ -29,5 +30,11 @@ public class AccountPageView extends SimplePanel implements AccountView
 	private void initializeUI()
 	{
 		this.add(new AccountPanel());
+	}
+	
+	@Override
+	public Widget asWidget()
+	{
+		return this;
 	}
 }
