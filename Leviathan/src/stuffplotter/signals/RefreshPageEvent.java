@@ -3,7 +3,7 @@ package stuffplotter.signals;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that gets fired when the page needs to be freshed.
+ * Event that gets fired when the page needs to be refreshed.
  */
 public class RefreshPageEvent extends GwtEvent<RefreshPageEventHandler>
 {
@@ -12,7 +12,7 @@ public class RefreshPageEvent extends GwtEvent<RefreshPageEventHandler>
 	@Override
 	public Type<RefreshPageEventHandler> getAssociatedType()
 	{
-		return this.TYPE;
+		return TYPE;
 	}
 
 	@Override
