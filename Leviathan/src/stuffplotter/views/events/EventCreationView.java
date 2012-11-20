@@ -1,19 +1,19 @@
 package stuffplotter.views.events;
 
-import java.util.List;
-
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.services.EventService;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.misc.CloseClickHandler;
 import stuffplotter.misc.EventCreationPageVisitor;
-import stuffplotter.presenters.EventsPagePresenter.EventsView;
+import stuffplotter.misc.EventSubmittable;
+import stuffplotter.presenters.EventCreationPresenter.CreateEventView;
 import stuffplotter.shared.Event;
 import stuffplotter.views.util.NotificationDialogBox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -25,34 +25,29 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Class to display the window for creating events.
  */
-public class EventCreationDialogBox extends DialogBox
+public class EventCreationView extends DialogBox implements CreateEventView
 {
-	final private String nextButtonText = "Next";
-	final private String submitButtonText = "Submit";
-	final private String taskName = "Creating New Event"; 
+	private static final String NEXTBUTTONTEXT = "Next";
+	private static final String SUBMITBUTTONTEXT = "Submit";
+	private static final String TASKNAME = "Creating New Event"; 
 	
 	private EventCreationPagedPanel eventPages;
 	private Button backBtn;
 	private Button nextBtn;
+	private Button cancelBtn;
 	private HandlerRegistration nextAction;
 	private HandlerRegistration submitAction;
 	private EventCreationPageRetriever eventInfoRetriever;
 	private Event eventToCreate;
-	
-	private EventsView eventsView;
-	private List<Event> eventsCreated;
-	
 	
 	/**
 	 * Constructor for the EventCreationDialogBox class.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public EventCreationDialogBox(final String creatorEmail, final EventsView onSubmitView, final List<Event> listOfEvents)
+	public EventCreationView(final String creatorEmail)
 	{
 		super();
-		eventsView = onSubmitView;
-		eventsCreated = listOfEvents;
 		
 		VerticalPanel vertPanel = new VerticalPanel();
 		HorizontalPanel btnHolder = new HorizontalPanel();
@@ -66,7 +61,7 @@ public class EventCreationDialogBox extends DialogBox
 		this.initializeCancelBtn(btnHolder);
 		this.add(vertPanel);
 		this.center();
-		this.setText(taskName);
+		this.setText(TASKNAME);
 		this.setGlassEnabled(true);
 	}
 	
@@ -90,7 +85,7 @@ public class EventCreationDialogBox extends DialogBox
 	 */
 	private void initializeCancelBtn(Panel panel)
 	{
-		Button cancelBtn = new Button("Cancel");
+		cancelBtn = new Button("Cancel");
 		cancelBtn.addClickHandler(new CloseClickHandler(this));
 		panel.add(cancelBtn);
 	}
@@ -116,7 +111,7 @@ public class EventCreationDialogBox extends DialogBox
 				{
 					backBtn.setEnabled(false);
 				}
-				if(nextBtn.getText().equals(submitButtonText))
+				if(nextBtn.getText().equals(SUBMITBUTTONTEXT))
 				{
 					submitAction.removeHandler();
 					setAsNextButton();
@@ -134,7 +129,7 @@ public class EventCreationDialogBox extends DialogBox
 	 */
 	private void setAsNextButton()
 	{
-		this.nextBtn.setText(this.nextButtonText);
+		this.nextBtn.setText(NEXTBUTTONTEXT);
 		nextAction = this.nextBtn.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -158,7 +153,7 @@ public class EventCreationDialogBox extends DialogBox
 	 */
 	private void setAsSubmitButton()
 	{
-		this.nextBtn.setText(this.submitButtonText);
+		this.nextBtn.setText(SUBMITBUTTONTEXT);
 		submitAction = this.nextBtn.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -173,21 +168,49 @@ public class EventCreationDialogBox extends DialogBox
 					public void onSuccess(Event result)
 					{
 						hide();
-						new NotificationDialogBox(taskName, "The Event: " + result.getName() +
+						new NotificationDialogBox(TASKNAME, "The Event: " + result.getName() +
 												  " was created successfully!");
-						eventsCreated.add(result);
-						eventsView.setDisplay(eventsCreated);
 					}
 					
 					@Override
 					public void onFailure(Throwable caught)
 					{
 						hide();
-						new NotificationDialogBox(taskName, "Unfortunately your event " +
+						new NotificationDialogBox(TASKNAME, "Unfortunately your event " +
 								"failed to be created, please try again later.");
 					}
 				});
 			}	
 		});
+	}
+
+	@Override
+	public EventSubmittable getCurrentPage()
+	{
+		return this.eventPages.getCurrentPage();
+	}
+
+	@Override
+	public HasClickHandlers getCancelBtn()
+	{
+		return this.cancelBtn;
+	}
+
+	@Override
+	public HasClickHandlers getNextBtn()
+	{
+		return this.nextBtn;
+	}
+
+	@Override
+	public void nextPage()
+	{
+		this.eventPages.nextPage();
+	}
+
+	@Override
+	public void previousPage()
+	{
+		this.eventPages.previousPage();
 	}
 }

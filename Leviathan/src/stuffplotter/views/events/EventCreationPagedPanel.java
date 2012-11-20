@@ -33,6 +33,8 @@ public class EventCreationPagedPanel extends DeckPanel
 	 */
 	private void initializePages()
 	{
+		//IMPORTANT: Only panels that implement EventSubmittable can be added to this panel.
+		
 		// initialize Page 1
 		EventInfoPanel page1Panel = new EventInfoPanel();
 		
@@ -66,6 +68,17 @@ public class EventCreationPagedPanel extends DeckPanel
 				((EventSubmittable) page).accept(eventPageVisitor);
 			}
 		}
+	}
+	
+	/**
+	 * Retrieve the currently displayed EventSubmittable panel.
+	 * @pre true;
+	 * @post true;
+	 * @return the currently displayed EventSubmittable panel.
+	 */
+	public EventSubmittable getCurrentPage()
+	{
+		return (EventSubmittable) this.getWidget(this.getVisibleWidget());
 	}
 	
 	/**

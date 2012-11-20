@@ -16,7 +16,7 @@ import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
 import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
-import stuffplotter.views.events.EventCreationDialogBox;
+import stuffplotter.views.events.EventCreationView;
 
 /**
  * Class for the Events Page presenter.
@@ -41,9 +41,6 @@ public class EventsPagePresenter implements Presenter
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final EventsView eventsView;
-	
-	//Change to eventCreationDialogPresenter
-	private EventCreationDialogBox eventCreator;
 	
 	/**
 	 * Constructor for an EventsPagePresenter.
@@ -78,7 +75,10 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				eventCreator = new EventCreationDialogBox(appUser.getUserEmail(), eventsView, currentEvents);
+				Presenter presenter = new EventCreationPresenter(appServices,
+																 eventBus,
+																 new EventCreationView(appUser.getUserEmail()));
+				presenter.go(null);
 			}
 			
 		});
