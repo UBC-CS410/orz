@@ -175,10 +175,22 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 
 	@Override
 	public void confirmFriendReq(Account acc, String friend) {
+		Notification myFriendAccept = new FriendNotification(FriendNotificationType.FRIENDACCEPTED, friend, acc.getUserEmail());
+		Notification myselfAccept = new FriendNotification(FriendNotificationType.FRIENDACCEPTED,  acc.getUserEmail(), friend);
+		
+		dbstore.store(myFriendAccept);
+		dbstore.store(myselfAccept);
+		Long myFriendId = myFriendAccept.getNotificationId();
+		Long myselfAcceptLong = myselfAccept.getNotificationId();
+		
 		Account temp = dbstore.fetchAccount(acc.getUserEmail());
 		temp.confirmFriendReq(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.confirmFriendReq(acc.getUserEmail());
+		
+		temp.addUserNotification(myselfAcceptLong);
+		newFriend.addUserNotification(myFriendId);
+		
 		dbstore.store(temp);
 		dbstore.store(newFriend);
 	}
