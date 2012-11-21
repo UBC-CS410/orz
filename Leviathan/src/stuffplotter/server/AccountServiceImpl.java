@@ -15,6 +15,8 @@ import org.codehaus.jackson.JsonToken;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
+import stuffplotter.shared.FriendNotification;
+import stuffplotter.shared.FriendNotification.FriendNotificationType;
 import stuffplotter.shared.Notification;
 
 import com.google.appengine.api.users.User;
@@ -132,6 +134,10 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	@Override
 	public void addFriend(Account acc, String friend) {
 		Account temp = null;
+		Notification newFriendNot = new FriendNotification(FriendNotificationType.FRIENDREQUEST, friend, acc.getUserEmail());
+		dbstore.store(newFriendNot);
+		Long notId = newFriendNot.getNotificationId();
+		
 		try
 		{
 			 temp = dbstore.fetchAccount(friend);
@@ -147,6 +153,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 			if(!temp.getPendingFriends().contains(acc.getUserEmail()))
 			{
 				temp.addPendingRequest(acc.getUserEmail());
+				temp.addUserNotification(notId);
 				dbstore.store(temp);	
 			}
 		}

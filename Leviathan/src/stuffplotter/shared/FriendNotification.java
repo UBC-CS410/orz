@@ -31,6 +31,7 @@ public class FriendNotification extends Notification
 	{
 		super(NotificationType.FRIENDREQUEST, forUser, fromUser);
 		this.friendType = type;
+		this.setNotificationDisplay(type, fromUser);
 	}
 
 
@@ -42,6 +43,16 @@ public class FriendNotification extends Notification
 	public void setFriendType(FriendNotificationType type)
 	{
 		this.friendType = type;
+	}
+	
+	public void setNotificationDisplay(FriendNotificationType type, String fromUser)
+	{
+		if(type.equals(FriendNotificationType.FRIENDREQUEST))
+		{
+			String display = fromUser + " would like to add you as a friend!";
+			this.notificationDisplay = display;
+		}
+		
 	}
 
 
