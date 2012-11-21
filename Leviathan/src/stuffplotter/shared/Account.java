@@ -32,15 +32,15 @@ public class Account implements Serializable
 	private String userPhone;
 	
 	/* Google information */
-	private String userRefreshToken;
-	private String userFullName = null;
+	private String userRefreshToken = null;
+	private String userFullName;
 	private String userProfilePicture;
 
 	/* Social information */
 	private List<String> userFriends = new ArrayList<String>();
 	private List<String> pendingFriends = new ArrayList<String>();
 	private List<Long> userEvents = new ArrayList<Long>();
-	private List<Long> userNotifications = new ArrayList<Long>();
+	private List<Notification> userNotifications = new ArrayList<Notification>();
 
 	/* Custom information */
 	private String userTitle;
@@ -63,7 +63,7 @@ public class Account implements Serializable
 
 		this.userFriends = new ArrayList<String>();
 		this.userEvents = new ArrayList<Long>();
-		this.userNotifications = new ArrayList<Long>();
+		this.userNotifications = new ArrayList<Notification>();
 		this.userTitle = "Newbie";
 
 	}
@@ -308,25 +308,24 @@ public class Account implements Serializable
 	 * @post
 	 * @param notification
 	 */
-	public void addUserNotification(Long notification)
+	public void addUserNotification(Notification notification)
 	{
 		this.userNotifications.add(0, notification);
 	}
 	
-	
-//	public void readNotification()
-//	{
-//		for(Notification notification : this.userNotifications)
-//		{
-//			//if(notification.getNotificationTime() > )
-//			notification.setNewNotification(false);
-//		}
-//	}
-	
+	public void readNotification()
+	{
+		for(Notification notification : this.userNotifications)
+		{
+			//if(notification.getNotificationTime() > )
+			notification.setNewNotification(false);
+		}
+	}
 	
 	
 	
-	public List<Long>  getUserNotifications()
+	
+	public List<Notification>  getUserNotifications()
 	{
 		return this.userNotifications;
 	}
