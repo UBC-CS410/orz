@@ -50,8 +50,10 @@ public class AppController implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
-		this.container = container;	
+		this.container = container;
+		
 		Presenter presenter = new MasterPresenter(this.rpcServices, this.eventBus, new MasterView(), this.account);
 		presenter.go(this.container);
+		
 	}
 }

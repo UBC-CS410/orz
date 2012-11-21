@@ -2,15 +2,16 @@ package stuffplotter.views;
 
 import java.util.List;
 
-import stuffplotter.presenters.EventsPagePresenter.EventsView;
+import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
 import stuffplotter.shared.Event;
-import stuffplotter.views.events.EventPreviewPanel;
+import stuffplotter.views.events.EventsListView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLTable;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -18,13 +19,12 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Class to display the events page view.
  */
-public class EventsPageView extends HorizontalPanel implements EventsView
+public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 {
 	private final Button createButton;
-	private final Button browseButton;
-	private final Button historyButton;
-	
-	private ScrollDisplayPanel displayPanel;
+	private final Button listCurrentButton;
+	private final Button listPastButton;
+	private ScrollDisplayPanel listPanel;
 	
 	/**
 	 * Constructor for the EventsPagePanel.
@@ -36,12 +36,10 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 		super();
 		
 		createButton = new Button("Create Event");
-		browseButton = new Button("View Current Events");
-		historyButton = new Button("View Past Events");
+		listCurrentButton = new Button("View Current Events");
+		listPastButton = new Button("View Past Events");
 
-		displayPanel = new ScrollDisplayPanel();
-		
-		this.initializeUI();
+		listPanel = new ScrollDisplayPanel();
 	}
 	
 	/**
@@ -51,20 +49,21 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 	 */
 	private void initializeUI()
 	{
+		this.clear();
 		VerticalPanel actionBar = new VerticalPanel();
 		actionBar.add(createButton);
-		actionBar.add(browseButton);
-		actionBar.add(historyButton);
+		actionBar.add(listCurrentButton);
+		actionBar.add(listPastButton);
 		
 		this.add(actionBar);
-		this.add(displayPanel);
+		this.add(listPanel);
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public HasClickHandlers getCreateEventBtn()
+	public HasClickHandlers getCreateButton()
 	{
 		return this.createButton;
 	}
@@ -73,27 +72,40 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 	 * 
 	 */
 	@Override
-	public HasClickHandlers getCurrentEventsBtn()
+	public HasClickHandlers getListCurrentButton()
 	{
-		return this.browseButton;
+		return this.listCurrentButton;
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public HasClickHandlers getPastEventsBtn()
+	public HasClickHandlers getListPastButton()
 	{
-		return this.historyButton;
+		return this.listPastButton;
+	}
+	
+	@Override
+	public HasClickHandlers getEventsList()
+	{
+		return this.listPanel.getDisplayer();
+	}
+	
+	@Override
+	public void hideEventsList()
+	{
+		this.remove(this.listPanel);
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public void setDisplay(List<Event> toDisplay)
+	public void initializeView(List<Event> toDisplay)
 	{
-		this.displayPanel.clearDisplay();
+		this.initializeUI();
+		this.listPanel.clearDisplay();
 		for (int i = 0; i < toDisplay.size(); i++)
 		{
 			String name, time, desc; 
@@ -108,8 +120,8 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 			}
 			desc = toDisplay.get(i).getDescription();
 			
-			EventPreviewPanel rowPanel = new EventPreviewPanel(name, time, desc);
-			this.displayPanel.addElement(rowPanel);
+			EventsListView rowPanel = new EventsListView(name, time, desc);
+			this.listPanel.addElement(rowPanel);
 		}
 	}
 
@@ -117,18 +129,16 @@ public class EventsPageView extends HorizontalPanel implements EventsView
 	 * 
 	 */
 	@Override
-	public Long getClickedRowIndex(ClickEvent event)
+	public int getClickedEvent(ClickEvent event)
 	{
-		long rowIndex = -1;
-		HTMLTable.Cell cell = this.displayPanel.getDisplayer().getCellForEvent(event);
+		int rowIndex = -1;
+		HTMLTable.Cell cell = this.listPanel.getDisplayer().getCellForEvent(event);
 		
 		if (cell != null) 
 		{
-			if (cell.getCellIndex() > 0) 
-			{
-				rowIndex = cell.getRowIndex();
-			}
+			rowIndex = cell.getRowIndex();
 		}
+		
 		return rowIndex;
 	}
 	

@@ -3,7 +3,7 @@ package stuffplotter.views.events;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EventPreviewPanel extends VerticalPanel
+public class EventsListView extends VerticalPanel
 {
 	
 	
@@ -13,7 +13,7 @@ public class EventPreviewPanel extends VerticalPanel
 	 * @post this.isVisible() == true
 	 * 
 	 */
-	public EventPreviewPanel(String name, String time, String desc)
+	public EventsListView(String name, String time, String desc)
 	{
 		this.add(new Label("Event: " + name));
 		this.add(new Label("Time: " + time));

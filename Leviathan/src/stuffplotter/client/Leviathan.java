@@ -48,53 +48,48 @@ public class Leviathan implements EntryPoint
 	        public void onSuccess(Account result)
 	        {	
 	        	account = result;
-	        	if (account.getUserFullName() == null)
+	        	if (account.getUserRefreshToken() == null)
 	    		{
 	        		loadUP();
 	    		}
-	    		else
-	    		{
-	    			final AccountStatsServiceAsync aStatService = GWT.create(AccountStatsService.class);	
-	    			aStatService.getStats(result.getUserEmail(), new AsyncCallback<AccountStatistic>(){
+	    		   		
+    			final AccountStatsServiceAsync aStatService = GWT.create(AccountStatsService.class);	
+    			aStatService.getStats(result.getUserEmail(), new AsyncCallback<AccountStatistic>(){
 
-						@Override
-						public void onFailure(Throwable caught)
-						{
-							Window.alert("Fail to retrieve User Stats...");
-							
-						}
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Fail to retrieve User Stats...");
+						
+					}
 
-						@Override
-						public void onSuccess(AccountStatistic result)
-						{
-							accountStatistic = result;
-							accountStatistic.accept(new AchievementChecker());
-							aStatService.save(accountStatistic, new AsyncCallback<Void>() {
+					@Override
+					public void onSuccess(AccountStatistic result)
+					{
+						accountStatistic = result;
+						accountStatistic.accept(new AchievementChecker());
+						aStatService.save(accountStatistic, new AsyncCallback<Void>() {
 
-								@Override
-								public void onFailure(Throwable arg0)
-								{
-									Window.alert("Fail to save stats");
-									
-								}
-
-								@Override
-								public void onSuccess(Void arg0)
-								{
-									
-									
-								}
+							@Override
+							public void onFailure(Throwable arg0)
+							{
+								Window.alert("Fail to save stats");
 								
-							});
-						}
-	    				
-	    			});
-	    			
-		        	loadUI();
-	    		}
+							}
+
+							@Override
+							public void onSuccess(Void arg0)
+							{
+								
+								
+							}
+							
+						});
+					}	
+	    		});	
+    			loadUI();
 	        }
-		});
-		
+		});	
 	}
 	
 	public void loadUP()
@@ -139,7 +134,7 @@ public class Leviathan implements EntryPoint
 	    				@Override
 	    				public void onSuccess(Void result)
 	    				{
-	    					Window.Location.assign(url);
+	    					//Window.Location.assign(url);
 	    				}
 	    			});
 			  }
@@ -206,11 +201,14 @@ public class Leviathan implements EntryPoint
 				});
 			}	
 		});
-		*/		
-
+		*/
+		System.out.println("loading UI");
+		
 		ServiceRepository applicationServices = new ServiceRepository();
 		HandlerManager eventBus = new HandlerManager(null);
 		AppController appViewer = new AppController(applicationServices, eventBus, account);
 		appViewer.go(RootPanel.get());
+		
+		System.out.println("loading finished");
 	}
 }

@@ -17,6 +17,7 @@ import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventCreationView;
+import stuffplotter.views.events.EventView;
 
 /**
  * Class for the Events Page presenter.
@@ -25,22 +26,24 @@ public class EventsPagePresenter implements Presenter
 {
 	private List<Event> currentEvents;
 	private List<Event> pastEvents;
+	private boolean listCurrent = true;
 	
-	public interface EventsView
+	public interface EventsPageViewer
 	{
-		public HasClickHandlers getCreateEventBtn();
-		public HasClickHandlers getCurrentEventsBtn();
-		public HasClickHandlers getPastEventsBtn();
-		public void setDisplay(List<Event> toDisplay);
-		public Long getClickedRowIndex(ClickEvent event);
+		public HasClickHandlers getCreateButton();
+		public HasClickHandlers getListCurrentButton();
+		public HasClickHandlers getListPastButton();
+		public void initializeView(List<Event> toDisplay);
+		public HasClickHandlers getEventsList();
+		public void hideEventsList();
+		public int getClickedEvent(ClickEvent event);
 		public Widget asWidget();
-		//public EventList getEventList(); // create presenter for this 
 	}
 	
 	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
-	private final EventsView eventsView;
+	private final EventsPageViewer eventsView;
 	
 	/**
 	 * Constructor for an EventsPagePresenter.
@@ -52,7 +55,7 @@ public class EventsPagePresenter implements Presenter
 	 * @param display - the view to present
 	 * @param user - the current user
 	 */
-	public EventsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, EventsView display, Account user)
+	public EventsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, EventsPageViewer display, Account user)
 	{
 		this.appServices = appServices;
 		this.appUser = user;
@@ -70,7 +73,7 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		eventsView.getCreateEventBtn().addClickHandler(new ClickHandler() {
+		eventsView.getCreateButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event)
@@ -83,12 +86,33 @@ public class EventsPagePresenter implements Presenter
 			
 		});
 		
-		eventsView.getCurrentEventsBtn().addClickHandler(new ClickHandler() {
+		eventsView.getListCurrentButton().addClickHandler(new ClickHandler() {
 	
 			@Override
 			public void onClick(ClickEvent event) {
-				eventsView.setDisplay(currentEvents);
+				eventsView.initializeView(currentEvents);
 			}
+		});
+		
+		eventsView.getEventsList().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				Event clicked;
+				if(listCurrent)
+					clicked = currentEvents.get(eventsView.getClickedEvent(event));
+				else
+					clicked = pastEvents.get(eventsView.getClickedEvent(event));
+				eventsView.hideEventsList();
+				
+				Presenter presenter = new EventViewPresenter(
+						appServices,
+						eventBus,
+						new EventView(clicked));
+				presenter.go((HasWidgets) eventsView);
+			}
+			
 		});
 
 	}
@@ -125,7 +149,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result;
-				eventsView.setDisplay(currentEvents);
+				eventsView.initializeView(currentEvents);
 			}
 		});
 	}

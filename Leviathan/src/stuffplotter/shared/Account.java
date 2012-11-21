@@ -32,8 +32,8 @@ public class Account implements Serializable
 	private String userPhone;
 	
 	/* Google information */
-	private String userRefreshToken;
-	private String userFullName = null;
+	private String userRefreshToken = null;
+	private String userFullName;
 	private String userProfilePicture;
 
 	/* Social information */

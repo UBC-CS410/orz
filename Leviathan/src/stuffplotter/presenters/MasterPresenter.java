@@ -138,10 +138,12 @@ public class MasterPresenter implements Presenter
 														this.masterView.getTopView());
 		topBarPresenter.go((HasWidgets) this.masterView);
 		
+		
 		Presenter menuBarPresenter = new MenuBarPresenter(this.appServices,
 														  this.eventBus,
 														  this.masterView.getMenuView());
 		menuBarPresenter.go((HasWidgets) this.masterView);
+		
 		
 		Presenter mainViewPresenter = new ApplicationPagingPresenter(this.appServices,
 																	 this.eventBus,

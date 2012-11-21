@@ -3,7 +3,7 @@ package stuffplotter.presenters;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.AccountPagePresenter.AccountView;
 import stuffplotter.presenters.AchievementsPagePresenter.AchievementsView;
-import stuffplotter.presenters.EventsPagePresenter.EventsView;
+import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
 import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
 import stuffplotter.presenters.HomePagePresenter.HomeView;
 import stuffplotter.shared.Account;
@@ -70,7 +70,7 @@ public class ApplicationPagingPresenter implements Presenter
 		 * @post true;
 		 * @return the panel that displays the events page.
 		 */
-		public EventsView getEventsView();
+		public EventsPageViewer getEventsView();
 		
 		/**
 		 * Retrieve the panel that displays the friends page.
