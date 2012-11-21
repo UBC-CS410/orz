@@ -7,6 +7,8 @@ import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventsListView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
+import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
@@ -40,6 +42,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		listPastButton = new Button("View Past Events");
 
 		listPanel = new ScrollDisplayPanel();
+		listPanel.getDisplayer().getElement().getStyle().setCursor(Cursor.DEFAULT);
 	}
 	
 	/**

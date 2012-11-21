@@ -30,7 +30,7 @@ public class HomePageView extends SimplePanel implements HomeView
 		this.initializeUI();
 	}
 	
-	/**
+	/**gwt load widget using ajax
 	 * Helper method to initialize the UI.
 	 * @pre true;
 	 * @post true;
