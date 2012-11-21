@@ -100,25 +100,6 @@ public class EventCreationView extends DialogBox implements CreateEventView
 		backBtn = new Button("Back");
 		nextBtn = new Button();
 		this.backBtn.setEnabled(false);
-		
-		this.backBtn.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				eventPages.previousPage();
-				if(!eventPages.hasPreviousPage())
-				{
-					backBtn.setEnabled(false);
-				}
-				if(nextBtn.getText().equals(SUBMITBUTTONTEXT))
-				{
-					submitAction.removeHandler();
-					setAsNextButton();
-				}
-			}	
-		});
-		
 		this.setAsNextButton();
 	}
 	
@@ -197,6 +178,12 @@ public class EventCreationView extends DialogBox implements CreateEventView
 	}
 
 	@Override
+	public HasClickHandlers getBackBtn()
+	{
+		return this.backBtn;
+	}
+	
+	@Override
 	public HasClickHandlers getNextBtn()
 	{
 		return this.nextBtn;
@@ -212,5 +199,17 @@ public class EventCreationView extends DialogBox implements CreateEventView
 	public void previousPage()
 	{
 		this.eventPages.previousPage();
+	}
+	
+	@Override
+	public boolean hasNextPage()
+	{
+		return this.eventPages.hasNextPage();
+	}
+	
+	@Override
+	public boolean hasPreviousPage()
+	{
+		return this.eventPages.hasPreviousPage();
 	}
 }

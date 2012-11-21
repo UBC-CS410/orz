@@ -3,6 +3,8 @@ package stuffplotter.presenters;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.misc.EventSubmittable;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -27,7 +29,20 @@ public class EventCreationPresenter implements Presenter
 		 */
 		public HasClickHandlers getCancelBtn();
 		
+		/**
+		 * Retrieve the Back "button".
+		 * @pre true;
+		 * @post true;
+		 * @return the Back "button".
+		 */
+		public HasClickHandlers getBackBtn();
 		
+		/**
+		 * Retrieve the Next/Submit "button" (changes depending on if it is the last page).
+		 * @pre true;
+		 * @post true;
+		 * @return the Next/Submit "button".
+		 */
 		public HasClickHandlers getNextBtn();
 		
 		/**
@@ -38,11 +53,27 @@ public class EventCreationPresenter implements Presenter
 		public void nextPage();
 		
 		/**
+		 * Determines if there is a next page for creating an event.
+		 * @pre true;
+		 * @post true;
+		 * @return true if there is a next page, false otherwise.
+		 */
+		public boolean hasNextPage();
+		
+		/**
 		 * Go to the previous page of the event creation procedure if it exists.
 		 * @pre true;
 		 * @post true;
 		 */
 		public void previousPage();
+		
+		/**
+		 * Determines if there is a previous page for creating an event.
+		 * @pre true;
+		 * @post true;
+		 * @return true if there is a previous page, false otherwise.
+		 */
+		public boolean hasPreviousPage();
 	}
 	
 	private final ServiceRepository appServices;
@@ -71,7 +102,23 @@ public class EventCreationPresenter implements Presenter
 	 */
 	private void bind()
 	{
-		
+		this.createEventDialogBox.getBackBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				createEventDialogBox.previousPage();
+				if(!createEventDialogBox.hasPreviousPage())
+				{
+					//this.createEventDialogBox.getBackBtn().setEnabled(false);
+				}
+			/*	if(nextBtn.getText().equals(SUBMITBUTTONTEXT))
+				{
+					submitAction.removeHandler();
+					setAsNextButton();
+				}*/
+			}	
+		});
 	}
 	
 	/**
