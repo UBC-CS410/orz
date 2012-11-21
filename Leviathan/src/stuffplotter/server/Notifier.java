@@ -5,7 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import stuffplotter.client.services.AccountService;
 import stuffplotter.client.services.AccountServiceAsync;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Achievement;
 import stuffplotter.shared.AchievementNotification;
 import stuffplotter.shared.Notification;
@@ -13,41 +12,29 @@ import stuffplotter.shared.Notification;
 public class Notifier
 {
 	
-	private Account user;
+	AccountServiceAsync accountService = GWT.create(AccountService.class);
 	
-	public Notifier()
-	{
-		
-	}
 	
-	public Notifier(String user)
+	public void addNotification(String user, Achievement ach)
 	{
-		final Account result = null;
-		AccountServiceAsync accountService = GWT.create(AccountService.class);
-		accountService.getAccount(user, new AsyncCallback<Account>(){
+		Notification notification = new AchievementNotification(ach, user);
+		accountService.addNotification(user, notification, new AsyncCallback<Void>(){
 
 			@Override
-			public void onFailure(Throwable arg0)
+			public void onFailure(Throwable caught)
 			{
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
-			public void onSuccess(Account arg0)
+			public void onSuccess(Void result)
 			{
-				Account result = arg0;
-			}
-			
-		});
-
-	}
-	
-	public void addNotification(Achievement ach)
-	{
-
-//		Notification notification = new AchievementNotification(user.getUserEmail(), ach);
-//		this.user.addUserNotification(notification);
+				
+				
+			}}
+			);
+		
 	}
 	
 }

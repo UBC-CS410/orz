@@ -4,6 +4,7 @@ import java.util.List;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
+import stuffplotter.shared.Notification;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -18,4 +19,6 @@ public interface AccountServiceAsync {
 	void confirmFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
 	void removeFriend(Account acc, String friend, AsyncCallback<Void> callback);
 	void declineFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
+	void addNotification(String user, Notification notification,
+			AsyncCallback<Void> callback);
 }

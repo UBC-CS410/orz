@@ -27,9 +27,9 @@ public class FriendNotification extends Notification
 	{
 		
 	}
-	public FriendNotification(FriendNotificationType type, String fromUser)
+	public FriendNotification(FriendNotificationType type, String forUser, String fromUser)
 	{
-		super(NotificationType.FRIENDREQUEST, fromUser);
+		super(NotificationType.FRIENDREQUEST, forUser, fromUser);
 		this.friendType = type;
 	}
 

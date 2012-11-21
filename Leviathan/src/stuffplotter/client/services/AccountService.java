@@ -7,6 +7,7 @@ import java.util.List;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
+import stuffplotter.shared.Notification;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -23,4 +24,5 @@ public interface AccountService extends RemoteService {
 	void confirmFriendReq(Account acc, String friend);
 	void removeFriend(Account acc, String friend);
 	void declineFriendReq(Account acc, String friend);
+	void addNotification(String user, Notification notification);
 }

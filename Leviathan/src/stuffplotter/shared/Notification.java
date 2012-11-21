@@ -22,6 +22,7 @@ public abstract class Notification implements Serializable
 	 */
 	@Id private Long notificationId;
 	private NotificationType type;
+	private String notificationFor;
 	private String notificationFrom;
 	private boolean newNotification = true;
 	private Date notificationTime;
@@ -44,14 +45,20 @@ public abstract class Notification implements Serializable
 	 * @param from - the user the generated the notification.
 	 * @param forUser - the user the notification is for.
 	 */
-	public Notification(NotificationType type, String from)
+	public Notification(NotificationType type, String foruser, String from)
 	{
 		this.type = type;
 		this.notificationFrom = from;
+		this.notificationFor = foruser;
 		this.setNotificationTime(new Date());
 		this.setNotificationDisplay("");
 	}
 
+	
+	public Long getNotificationId(){
+		return this.notificationId;
+	}
+	
 	/**
 	 * Method to retrieve the type of the notification.
 	 * @pre true;

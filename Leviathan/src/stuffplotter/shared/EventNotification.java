@@ -32,9 +32,10 @@ public class EventNotification extends Notification
 		
 	}
 	
-	public EventNotification(String fromUser, EventNotificationType type)
+	public EventNotification(EventNotificationType type, String foruser, String from)
 	{
-		super(NotificationType.EVENTINVITATION, fromUser);
+		
+		super(NotificationType.EVENTINVITATION, foruser, from);
 		this.eventType = type;
 	}
 

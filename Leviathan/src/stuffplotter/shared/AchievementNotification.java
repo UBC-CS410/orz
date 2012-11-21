@@ -12,9 +12,9 @@ public class AchievementNotification extends Notification
 	{
 		
 	}
-	public AchievementNotification(String user, Achievement ach)
+	public AchievementNotification(Achievement ach, String user)
 	{
-		super(NotificationType.ACHIEVEMENTGET, user);
+		super(NotificationType.ACHIEVEMENTGET, user, user);
 		this.achievement = ach;
 		this.setNotificationDisplay(ach);
 		

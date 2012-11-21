@@ -15,6 +15,7 @@ import org.codehaus.jackson.JsonToken;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
+import stuffplotter.shared.Notification;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -194,6 +195,18 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		newFriend.getPendingFriends().remove(acc.getUserEmail());
 		dbstore.store(temp);
 		dbstore.store(newFriend);
+		
+	}
+
+	@Override
+	public void addNotification(String user, Notification notification)
+	{
+		dbstore.store(notification);
+		Long notID = notification.getNotificationId();
+		
+		Account account = dbstore.fetchAccount(user);
+		account.addUserNotification(notID);
+		dbstore.store(account);
 		
 	}
 

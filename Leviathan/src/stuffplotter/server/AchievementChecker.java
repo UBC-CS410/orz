@@ -67,6 +67,11 @@ public class AchievementChecker implements RecordVisitor
 		this.numParticipatedEvents = user.getNumberOfParticipatedEvents();
 		
 		checkEventAchievements();
+		
+		LevelSystem leveler = new LevelSystem(user);
+		for(int i = 0; i<unlockAchievements.size(); i++)
+			leveler.addExperience(ACHIEVEMENTXP);
+		
 		displayAchievements();
 	}
 	
@@ -87,10 +92,10 @@ public class AchievementChecker implements RecordVisitor
 		
 		this.user.addUserAchievements(unlockAchievements);
 		
-		Notifier notifier = new Notifier(user.getAccountEmail());
+		Notifier notifier = new Notifier();
 		for(Achievement ach : unlockAchievements)
 		{
-			notifier.addNotification(ach);
+			notifier.addNotification(user.getAccountEmail(), ach);
 		}
 		
 	}

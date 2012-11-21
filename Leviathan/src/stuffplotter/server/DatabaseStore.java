@@ -96,6 +96,15 @@ public class DatabaseStore {
 	 * Stores a Comment to the data store using Objectify
 	 * @param pSch	the Scheduler to be stored
 	 */	
+	public void store(Notification pNotif) {
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(pNotif);
+	}
+	
+	/**
+	 * Stores a Comment to the data store using Objectify
+	 * @param pSch	the Scheduler to be stored
+	 */	
 	public void store(Comment pCmt) {
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pCmt);
