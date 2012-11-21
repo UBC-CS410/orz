@@ -3,6 +3,7 @@ package stuffplotter.views;
 import stuffplotter.presenters.AccountPagePresenter.AccountView;
 import stuffplotter.views.account.AccountPanel;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -19,6 +20,7 @@ public class AccountPageView extends SimplePanel implements AccountView
 	public AccountPageView()
 	{
 		super();
+
 		this.initializeUI();
 	}
 	

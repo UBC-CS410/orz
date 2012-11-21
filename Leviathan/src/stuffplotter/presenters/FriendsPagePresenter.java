@@ -1,16 +1,19 @@
 package stuffplotter.presenters;
 
-import java.util.Iterator;
+import java.util.List;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.views.FriendsPageView;
+import stuffplotter.shared.Account;
+
 
 /**
  * Class for the Friends Page presenter.
@@ -21,6 +24,10 @@ public class FriendsPagePresenter implements Presenter
 	{
 		public HasClickHandlers getAddFriendBtn();
 		public HasClickHandlers getSearchFriendsBtn();
+		public String getFriendBoxText();
+		public void clearFriendBoxText();
+		public void addPendingUsers(String pendUser, Account appUser);
+		
 		//public FriendList getFriendDisplay() create presenter for this
 		/**
 		 * Retrieve the FriendsView as a Widget.
@@ -29,8 +36,10 @@ public class FriendsPagePresenter implements Presenter
 		 * @return the FriendsView as a Widget.
 		 */
 		public Widget asWidget();
+		
 	}
 	
+	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final FriendsView friendsView;
@@ -43,12 +52,17 @@ public class FriendsPagePresenter implements Presenter
 	 * @param eventBus - the event bus for the application.
 	 * @param display - the FriendsView to associate with the FriendsPagePresenter.
 	 */
-	public FriendsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, FriendsView display)
+	public FriendsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, FriendsView display, Account user)
 	{
+		this.appUser = user;
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.friendsView = display;
+		
+		fetchPendingFriends();
 	}
+
+
 
 	/**
 	 * Bind friends view components to handlers
@@ -57,7 +71,26 @@ public class FriendsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		// TODO Auto-generated method stub
+		friendsView.getAddFriendBtn().addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				appServices.getAccountService().addFriend(appUser, friendsView.getFriendBoxText(), new AsyncCallback<Void>(){
+					@Override
+					public void onFailure(Throwable caught)
+					{
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						friendsView.clearFriendBoxText();
+					}
+				});
+			}
+		});
+		
 		
 	}
 	
@@ -71,5 +104,29 @@ public class FriendsPagePresenter implements Presenter
 	{
 		bind();
 		container.add(this.friendsView.asWidget());
+	}
+	
+	private void fetchPendingFriends()
+	{
+		AccountServiceAsync accountService = appServices.getAccountService();
+		accountService.getPendingFriends(appUser, new AsyncCallback<List<String>>(){
+
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				
+				
+			}
+
+			@Override
+			public void onSuccess(List<String> result)
+			{
+				for(String pendUser: result)
+				{
+					friendsView.addPendingUsers(pendUser, appUser);
+				}
+			}
+			
+		});
 	}
 }

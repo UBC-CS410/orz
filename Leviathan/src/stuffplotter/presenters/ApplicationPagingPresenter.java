@@ -154,7 +154,8 @@ public class ApplicationPagingPresenter implements Presenter
 		Presenter friendsPresenter = new FriendsPagePresenter(
 				this.appServices,
 				this.eventBus,
-				this.mainViewDisplay.getFriendsView());
+				this.mainViewDisplay.getFriendsView(),
+				this.appUser);
 		friendsPresenter.go((HasWidgets) this.mainViewDisplay);
 		
 		Presenter achievementsPresenter = new AchievementsPagePresenter(
