@@ -142,7 +142,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.initializeUI();
 		for (int i = 0; i < toDisplay.size(); i++)
 		{
-			String name, time, desc; 
+			String name, time, location; 
 			name = toDisplay.get(i).getName();
 			if(toDisplay.get(i).getDate() == null)
 			{
@@ -152,9 +152,9 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 			{
 				time = toDisplay.get(i).getDate().toString();
 			}
-			desc = toDisplay.get(i).getDescription();
+			location = toDisplay.get(i).getLocation();
 			
-			EventListView rowPanel = new EventListView(name, time, desc);
+			EventListView rowPanel = new EventListView(name, time, location);
 			this.listPanel.addElement(rowPanel);
 		}
 	}

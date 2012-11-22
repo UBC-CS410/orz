@@ -1,6 +1,7 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import stuffplotter.views.events.MonthPanel.Month;
@@ -69,6 +70,11 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 */
 	private void initializeWindow()
 	{
+		
+		
+		
+		
+		
 		// TO DO: Remove hard coded values and feed values from database
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
 		int[] days = {2};

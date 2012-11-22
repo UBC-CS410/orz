@@ -12,8 +12,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventCreationView;
@@ -26,7 +24,7 @@ public class EventsPagePresenter implements Presenter
 {
 	private List<Event> currentEvents;
 	private List<Event> pastEvents;
-	private boolean listCurrent = true;
+	private boolean current = true;
 	
 	public interface EventsPageViewer
 	{
@@ -68,7 +66,7 @@ public class EventsPagePresenter implements Presenter
 	}
 	
 	/**
-	 * Bind eventsView HasClickHandlers to handlers
+	 * Bind events deck panel view HasClickHandlers to handlers
 	 * @pre true
 	 * @post true
 	 */
@@ -105,24 +103,25 @@ public class EventsPagePresenter implements Presenter
 		
 		for (int i = 0; i < eventsView.getListedLinks().size(); i++)
 		{
-			final int position = i;
+			final int eventsIndex = i;
 			eventsView.getListedLinks().get(i).addClickHandler(new ClickHandler() {
 
 				@Override
 				public void onClick(ClickEvent event)
 				{
-					Event clicked;
-					if(listCurrent)
-						clicked = currentEvents.get(position);
+					Event selectedEvent;
+					if(current)
+						selectedEvent = currentEvents.get(eventsIndex);
 					else
-						clicked = pastEvents.get(position);
+						selectedEvent = pastEvents.get(eventsIndex);
 					
 					eventsView.hideListPanel();
 					
 					Presenter presenter = new EventViewPresenter(
 							appServices,
 							eventBus,
-							new EventView(clicked));
+							new EventView(),
+							selectedEvent);
 					presenter.go((HasWidgets) eventsView);
 				}
 				
@@ -131,7 +130,7 @@ public class EventsPagePresenter implements Presenter
 	}
 	
 	/**
-	 * Present the events view
+	 * Present the events deck panel view
 	 * @pre true;
 	 * @post this.eventsView.isVisible() == true;
 	 */
