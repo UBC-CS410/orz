@@ -33,10 +33,11 @@ public class EventsPagePresenter implements Presenter
 		public HasClickHandlers getCreateButton();
 		public HasClickHandlers getListCurrentButton();
 		public HasClickHandlers getListPastButton();
-		public void initializeView(List<Event> toDisplay);
-		public HasClickHandlers getEventsList();
-		public void hideEventsList();
-		public int getClickedEvent(ClickEvent event);
+		public List<HasClickHandlers> getListedLinks();
+		
+		public void populateListPanel(List<Event> toDisplay);
+		public void hideListPanel();
+
 		public Widget asWidget();
 	}
 	
@@ -67,7 +68,7 @@ public class EventsPagePresenter implements Presenter
 	}
 	
 	/**
-	 * Bind events view components to handlers
+	 * Bind eventsView HasClickHandlers to handlers
 	 * @pre true
 	 * @post true
 	 */
@@ -90,31 +91,43 @@ public class EventsPagePresenter implements Presenter
 	
 			@Override
 			public void onClick(ClickEvent event) {
-				eventsView.initializeView(currentEvents);
+				eventsView.populateListPanel(currentEvents);
 			}
 		});
 		
-		eventsView.getEventsList().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				Event clicked;
-				if(listCurrent)
-					clicked = currentEvents.get(eventsView.getClickedEvent(event));
-				else
-					clicked = pastEvents.get(eventsView.getClickedEvent(event));
-				eventsView.hideEventsList();
-				
-				Presenter presenter = new EventViewPresenter(
-						appServices,
-						eventBus,
-						new EventView(clicked));
-				presenter.go((HasWidgets) eventsView);
-			}
+		eventsView.getListPastButton().addClickHandler(new ClickHandler() {
 			
+			@Override
+			public void onClick(ClickEvent event) {
+				eventsView.populateListPanel(currentEvents);
+			}
 		});
+		
+		for (int i = 0; i < eventsView.getListedLinks().size(); i++)
+		{
+			final int position = i;
+			eventsView.getListedLinks().get(i).addClickHandler(new ClickHandler() {
 
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					Event clicked;
+					if(listCurrent)
+						clicked = currentEvents.get(position);
+					else
+						clicked = pastEvents.get(position);
+					
+					eventsView.hideListPanel();
+					
+					Presenter presenter = new EventViewPresenter(
+							appServices,
+							eventBus,
+							new EventView(clicked));
+					presenter.go((HasWidgets) eventsView);
+				}
+				
+			});
+		}
 	}
 	
 	/**
@@ -130,9 +143,9 @@ public class EventsPagePresenter implements Presenter
 	}
 	
 	/**
-	 * 
-	 * @pre
-	 * @post
+	 * Assigns currentEvents to the list of events associated with the user
+	 * @pre true;
+	 * @post this.currentEvents == eventService.retrieveEvents(appUser.getUserEvents);
 	 */
 	private void fetchCurrentEventsFromUser()
 	{
@@ -149,7 +162,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result;
-				eventsView.initializeView(currentEvents);
+				eventsView.populateListPanel(currentEvents);
 			}
 		});
 	}
