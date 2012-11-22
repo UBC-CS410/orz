@@ -137,7 +137,7 @@ public class EventsPagePresenter implements Presenter
 	private void fetchCurrentEventsFromUser()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getUserEvents(), new AsyncCallback<List<Event>>() {
+		eventService.retrieveEvents(appUser.getCurrentEvents(), new AsyncCallback<List<Event>>() {
 			@Override
 			public void onFailure(Throwable caught)
 			{
