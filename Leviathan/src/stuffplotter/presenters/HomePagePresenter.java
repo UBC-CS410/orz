@@ -1,9 +1,15 @@
 package stuffplotter.presenters;
 
-import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
+import java.util.Date;
 
+import stuffplotter.client.services.ServiceRepository;
+
+import com.bradrydzewski.gwt.calendar.client.Calendar;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -15,7 +21,7 @@ public class HomePagePresenter implements Presenter
 	public interface HomeView
 	{
 		public Widget asWidget();
-		//public CalendarWidget getCalendar(); // create presenter for this
+		public Calendar getCalendar(); // create presenter for this
 		//public NewsFeedPanel getNewsFeed(); // create presenter for this
 	}
 	
@@ -46,8 +52,16 @@ public class HomePagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		// TODO Auto-generated method stub
-		
+		this.homeView.getCalendar().addTimeBlockClickHandler(new TimeBlockClickHandler<Date>()
+		{
+			@Override
+			public void onTimeBlockClick(TimeBlockClickEvent<Date> event)
+			{
+				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
+				String[] calendarValues = dayFormat.format(event.getTarget()).toString().split(",");
+				Window.alert(calendarValues[1]);
+			}
+		});
 	}
 	
 	/**
