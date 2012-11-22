@@ -10,7 +10,7 @@ import org.junit.Test;
 import stuffplotter.shared.Achievement;
 
 /**
- * @author farez
+ *
  *
  */
 public class AchievementTest
