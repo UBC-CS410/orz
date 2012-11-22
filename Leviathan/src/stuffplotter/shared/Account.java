@@ -8,7 +8,7 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import stuffplotter.server.RecordVisitor;
+import stuffplotter.bindingcontracts.AccountModel;
 
 import com.googlecode.objectify.annotation.Entity;
 
@@ -17,9 +17,8 @@ import com.googlecode.objectify.annotation.Entity;
  * The Account Class holds information for individual users.
  * Information includes profile, events, and statistics.
  */
-
 @Entity
-public class Account implements Serializable
+public class Account implements Serializable, AccountModel
 {
 	/* Session information */
 	@Transient private String userLoginUrl;
@@ -39,107 +38,146 @@ public class Account implements Serializable
 	/* Social information */
 	private List<String> userFriends = new ArrayList<String>();
 	private List<String> pendingFriends = new ArrayList<String>();
-	private List<Long> userEvents = new ArrayList<Long>();
+	private List<Long> userCurrentEvents = new ArrayList<Long>();
+	private List<Long> userPastEvents = new ArrayList<Long>();
 	private List<Long> userNotifications = new ArrayList<Long>();
 
 	/* Custom information */
 	private String userTitle;
 
 	/** 
-	 * Account Constructor 
+	 * Account Constructor
+	 * @pre true;
+	 * @post true;
 	 */
-	public Account() {
+	public Account()
+	{
 		// do nothing
 	}
 
 	/**
 	 * Account Constructor that sets google account information
-	 * @param pEmail	google account email
-	 * @param pId 		google account id
+	 * @pre pEmail != null;
+	 * @post true;
+	 * @param pEmail - google account email
 	 */
 	public Account(String pEmail)
 	{
 		this.userEmail = pEmail;
-
 		this.userFriends = new ArrayList<String>();
-		this.userEvents = new ArrayList<Long>();
+		this.userCurrentEvents = new ArrayList<Long>();
+		this.userPastEvents = new ArrayList<Long>();
 		this.userNotifications = new ArrayList<Long>();
 		this.userTitle = "Newbie";
-
 	}
 
 	/**
-	 * Retrieves the URI that redirects user to google accounts
-	 * @return 	the URI string to display in an anchor
+	 * Retrieves the URI that redirects user to google accounts.
+	 * @pre true;
+	 * @post true;
+	 * @return 	the URI string to display in an anchor.
 	 */
-	public String getLoginUrl() {
-		return userLoginUrl;
+	public String getLoginUrl()
+	{
+		return this.userLoginUrl;
 	}
 
 	/**
-	 * Stores the URI that redirects user to google accounts
-	 * @param pUri	the URI string to store, links to google accounts
+	 * Stores the URI that redirects user to google accounts.
+	 * @pre pURi != null;
+	 * @post this.userLoginUrl.equals(pUri);
+	 * @param pUri - the URI string to store, links to google accounts.
 	 */
-	public void setLoginUrl(String pUri) {
-		userLoginUrl = pUri;
+	public void setLoginUrl(String pUri)
+	{
+		this.userLoginUrl = pUri;
 	}
 
 	/**
-	 * Retrieves the URI that logs out user from google accounts
-	 * @return the stored URI to display in an anchor
+	 * Retrieves the URI that logs out user from google accounts.
+	 * @pre true;
+	 * @post true;
+	 * @return the stored URI to display in an anchor.
 	 */
-	public String getLogoutUrl() {
-		return userLogoutUrl;
+	public String getLogoutUrl()
+	{
+		return this.userLogoutUrl;
 	}
 
 	/**
-	 * Stores the URI that logs out user from google accounts
-	 * @param pUri	the URI string to store, links to google accounts
+	 * Stores the URI that logs out user from google accounts.
+	 * @pre pUri != null;
+	 * @post this.userLogoutUrl.equals(pUri);
+	 * @param pUri - the URI string to store, links to google accounts.
 	 */
-	public void setLogoutUrl(String pUri) {
-		userLogoutUrl = pUri;
-	}
-
-
-	/**
-	 * @return the userEmail
-	 */
-	public String getUserEmail() {
-		return userEmail;
+	public void setLogoutUrl(String pUri)
+	{
+		this.userLogoutUrl = pUri;
 	}
 
 	/**
-	 * @param userEmail the userEmail to set
+	 * Retrieve the user's email address.
+	 * @pre true;
+	 * @post true;
+	 * @return the user's email address.
 	 */
-	public void setUserEmail(String userEmail) {
+	public String getUserEmail()
+	{
+		return this.userEmail;
+	}
+
+	/**
+	 * Set the user's email address.
+	 * @pre userEmail != null;
+	 * @post this.userEmail.equals(userEmail);
+	 * @param userEmail  - the email address of the user.
+	 */
+	public void setUserEmail(String userEmail)
+	{
 		this.userEmail = userEmail;
 	}
 
 	/**
-	 * @return the userAge
+	 * Retrieve the age of the user.
+	 * @pre true;
+	 * @post true;
+	 * @return the age of the user.
 	 */
-	public int getUserAge() {
-		return userAge;
+	public int getUserAge() 
+	{
+		return this.userAge;
 	}
 
 	/**
-	 * @param userAge the userAge to set
+	 * Set the age of the user.
+	 * @pre userAge > 0;
+	 * @post this.userAge == userAge;
+	 * @param userAge - the age of the user to set.
 	 */
-	public void setUserAge(int userAge) {
+	public void setUserAge(int userAge)
+	{
 		this.userAge = userAge;
 	}
 
 	/**
-	 * @return the userPhone
+	 * Retrieve the uesr's phone number.
+	 * @pre true;
+	 * @post true;
+	 * @return the phone number of the user.
 	 */
-	public String getUserPhone() {
-		return userPhone;
+	public String getUserPhone()
+	{
+		return this.userPhone;
 	}
 
 	/**
-	 * @param userPhone the userPhone to set
+	 * Set the phone number for the user.
+	 * @pre userPhone != null;
+	 * @post this.userPhone.equals(userPhone);
+	 * @param userPhone - the phone number for the user to set.
 	 */
-	public void setUserPhone(String userPhone) {
+	public void setUserPhone(String userPhone)
+	{
 		this.userPhone = userPhone;
 	}
 	
@@ -147,7 +185,7 @@ public class Account implements Serializable
 	 * Get the user's refresh token for access to their Google calendar.
 	 * @pre true;
 	 * @post true;
-	 * @return userRefreshToken
+	 * @return the user's refresh token.
 	 */
 	public String getUserRefreshToken()
 	{
@@ -156,9 +194,9 @@ public class Account implements Serializable
 	
 	/**
 	 * Set the user's refresh token for access to their Google calendar
-	 * @pre true;
-	 * @post this.userRefreshToken == userRefreshToken;
-	 * @param userRefreshToken
+	 * @pre userRefreshToken != null;
+	 * @post this.userRefreshToken.equals(userRefreshToken);
+	 * @param userRefreshToken - the user's refresh token.
 	 */
 	public void setUserRefreshToken(String userRefreshToken)
 	{
@@ -169,7 +207,7 @@ public class Account implements Serializable
 	 * Get the user's full name.
 	 * @pre true;
 	 * @post true;
-	 * @return userFullName
+	 * @return the full name of the user.
 	 */
 	public String getUserFullName() 
 	{
@@ -177,10 +215,10 @@ public class Account implements Serializable
 	}
 	
 	/**
-	 * Set the user's full name
+	 * Set the user's full name.
 	 * @pre userFullName != null;
-	 * @post this.userFullName == userFullName;
-	 * @param String containing user's full name
+	 * @post this.userFullName.equals(userFullName);
+	 * @param userFullName - the user's full name.
 	 */
 	public void setUserFullName(String userFullName)
 	{
@@ -191,7 +229,7 @@ public class Account implements Serializable
 	 * Get the url to user's profile picture.
 	 * @pre true;
 	 * @post true;
-	 * @return userProfilePicture
+	 * @return the url to the user's profile picture.
 	 */
 	public String getUserProfilePicture() 
 	{
@@ -199,10 +237,10 @@ public class Account implements Serializable
 	}
 	
 	/**
-	 * Set the url to user's profile picture
+	 * Set the url to user's profile picture.
 	 * @pre userProfilePicture != null;
 	 * @post this.userProfilePicture == userProfilePicture;
-	 * @param String containing url to user's profile picture
+	 * @param userProfilePicture - url to user's profile picture.
 	 */
 	public void setUserProfilePicture(String userProfilePicture)
 	{
@@ -210,120 +248,154 @@ public class Account implements Serializable
 	}
 
 	/**
-	 * @return the userFriends
+	 * Retrieve the list of friends (IDs) the user has.
+	 * @pre true;
+	 * @post true;
+	 * @return the list of friends the user has.
 	 */
-	public List<String> getUserFriends() {
-		return userFriends;
+	public List<String> getUserFriends()
+	{
+		return this.userFriends;
 	}
 
 	/**
-	 * Adds a friend to the user's friends list
-	 * @param pId	the id of another user Account
+	 * Adds a friend to the user's friends list.
+	 * @pre pId != null;
+	 * @post this.userFriends.size() == @pre.this.userFriends.size() + 1;
+	 * @param pId - the id of another user Account.
 	 */
-	public void addUserFriend(String pId) {
+	public void addUserFriend(String pId)
+	{
 		this.userFriends.add(pId);
 	}
 
 	/**
-	 * @return the userEvents
+	 * Retrieve the list of current events (IDs) the user has.
+	 * @pre true;
+	 * @post true;
+	 * @return the list of current events the user has. 
 	 */
-	public List<Long> getUserEvents() {
-		return userEvents;
+	public List<Long> getCurrentEvents()
+	{
+		return this.userCurrentEvents;
 	}
 
 	/**
-	 * Adds an event to the user's event list
-	 * @param pId	the id of an Event
+	 * Retrieve the list of past events (IDs) the user has.
+	 * @pre true;
+	 * @post true;
+	 * @return the list of past events the user has. 
 	 */
-	public void addUserEvent(Long pId) {
-		this.userEvents.add(pId);
+	public List<Long> getPastEvents()
+	{
+		return this.userPastEvents;
+	}
+	
+	/**
+	 * Adds an event to the user's event list.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of an Event.
+	 */
+	public void addUserEvent(Long pId)
+	{
+		this.userCurrentEvents.add(pId);
 	}
 
 	/**
-	 * Gets the pending list of friends
-	 * @return returns the pending list of friends
+	 * Gets the pending list of friends.
+	 * @pre true;
+	 * @post true;
+	 * @return returns the pending list of friends.
 	 */
-	public List<String> getPendingFriends(){
+	public List<String> getPendingFriends()
+	{
 		return this.pendingFriends;
 	}
 
 	/**
-	 * This adds the pending user to thier pending list.
-	 * @param pendingUser
-	 * @return
+	 * Add user to the pending friend request list.
+	 * @pre pendingUser != null;
+	 * @post true;
+	 * @param pendingUser - the user to add to the pending friend request list.
+	 * @return true if the user was successfully added; false otherwise.
 	 */
-	public boolean addPendingRequest(String pendingUser){
+	public boolean addPendingRequest(String pendingUser)
+	{
 		return this.pendingFriends.add(pendingUser);
 	}
 
 	/**
-	 * This moves user from the pending list into the friend list
-	 * 
-	 * @param pendingUser The pending user that will be accepted as a friend
-	 * @return returns true if transfer of friends was successful
+	 * This moves user from the pending list into the friend list.
+	 * @pre pendingUser != null;
+	 * @post this.userFriends.size() == @pre.this.userFriends.size() + 1 &&
+	 * 		 this.pendingFriends.size() == @pre.this.userFriends.size() - 1; 
+	 * @param userID - the pending user that will be accepted as a friend.
+	 * @return true if transfer of friends was successful; false otherwise.
 	 */
-	public boolean acceptFriendRequest(String pendingUser){
-		if(this.pendingFriends.remove(pendingUser)){
-			this.userFriends.add(pendingUser);
-			return true;
-		}else{
+	public boolean confirmFriendRequest(String userID)
+	{
+		if(this.pendingFriends.remove(userID))
+		{
+			if(this.userFriends.add(userID))
+			{
+				return true;
+			}
+			else
+			{
+				this.pendingFriends.add(userID);
+				return false;
+			}
+		}
+		else
+		{
 			return false;
-		}	
-
+		}
 	}
 
 	/**
-	 * This denies the friend request
-	 * 
-	 * @param pendingUser The pending user that will be denied as a friend
-	 * @return returns true if successful
+	 * This denies the friend request.
+	 * @pre pendingUser != null;
+	 * @post true;
+	 * @param pendingUser - the pending user that will be denied as a friend.
+	 * @return true if operation successful; otherwise false.
 	 */
-	public boolean denyFriendRequest(String pendingUser){
+	public boolean denyFriendRequest(String pendingUser)
+	{
 		return this.pendingFriends.remove(pendingUser);
 	}
-
-
-	/**
-	 * This confirms a friend requests by removing the user from the pending
-	 * list into the friend list
-	 * 
-	 * 
-	 * @pre The confirmed user must be in the pending list
-	 * @post The confirmed user is now in the friends list
-	 * @param userId
-	 * @return true if successful, false otherwise
-	 */
-	public boolean confirmFriendReq(String userId)
-	{
-		this.pendingFriends.remove(userId);
-		return this.userFriends.add(userId);
-
-	}
-	
 	
 	/**
 	 * Adds the new notification at the start of the list and shifts
 	 * the rest of the elements to the right.
-	 * @pre
-	 * @post
-	 * @param notification
+	 * @pre notification > 0;
+	 * @post true;
+	 * @param notification - the ID of the notification.
 	 */
 	public void addUserNotification(Long notification)
 	{
 		this.userNotifications.add(0, notification);
 	}
 	
-	
-	
-	
-	public List<Long>  getUserNotifications()
+	/**
+	 * Retrieve the list of the user's notifications (IDs).
+	 * @pre true;
+	 * @post true;
+	 * @return the list of the user's notifications.
+	 */
+	public List<Long> getUserNotifications()
 	{
 		return this.userNotifications;
 	}
 	
+	/**
+	 * Retrieve the title (Achievement title) of the user. 
+	 * @pre true;
+	 * @post true;
+	 * @return the title of the user.
+	 */
 	public String getUserTitle()
 	{
 		return this.userTitle;
 	}
-
 }

@@ -184,9 +184,9 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		Long myselfAcceptLong = myselfAccept.getNotificationId();
 		
 		Account temp = dbstore.fetchAccount(acc.getUserEmail());
-		temp.confirmFriendReq(friend);
+		temp.confirmFriendRequest(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
-		newFriend.confirmFriendReq(acc.getUserEmail());
+		newFriend.confirmFriendRequest(acc.getUserEmail());
 		
 		temp.addUserNotification(myselfAcceptLong);
 		newFriend.addUserNotification(myFriendId);

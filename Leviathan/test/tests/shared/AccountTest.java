@@ -40,7 +40,9 @@ public class AccountTest extends TestCase
 	public void testAccountCtor() {
 		String userEmail = "john@example.com";
 		ArrayList<String> userFriends = new ArrayList<String>();
-		ArrayList<Long> userEvents = new ArrayList<Long>();
+		ArrayList<Long> userCurrentEvents = new ArrayList<Long>();
+		ArrayList<Long> userPastEvents = new ArrayList<Long>();
+		userPastEvents.add(1000L);
 		ArrayList<Notification> userNotifications = new ArrayList<Notification>();
 		String userTitle = "Newbie";
 
@@ -49,7 +51,8 @@ public class AccountTest extends TestCase
 		assertNotNull(ac);
 		assertEquals(userEmail, ac.getUserEmail());
 		assertEquals(userFriends, ac.getUserFriends());
-		assertEquals(userEvents, ac.getUserEvents());
+		assertEquals(userCurrentEvents, ac.getCurrentEvents());
+		assertEquals(userPastEvents, ac.getPastEvents());
 		assertEquals(userNotifications, ac.getUserNotifications());
 		assertEquals(userTitle, ac.getUserTitle());
 
