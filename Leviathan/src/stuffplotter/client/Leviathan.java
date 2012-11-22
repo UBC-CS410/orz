@@ -202,13 +202,11 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		*/
-		System.out.println("loading UI");
 		
 		ServiceRepository applicationServices = new ServiceRepository();
 		HandlerManager eventBus = new HandlerManager(null);
 		AppController appViewer = new AppController(applicationServices, eventBus, account);
 		appViewer.go(RootPanel.get());
-		
-		System.out.println("loading finished");
+
 	}
 }
