@@ -1,10 +1,11 @@
 package stuffplotter.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
 import stuffplotter.shared.Event;
-import stuffplotter.views.events.EventsListView;
+import stuffplotter.views.events.EventListView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.dom.client.Style.Cursor;
@@ -42,13 +43,14 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		listPastButton = new Button("View Past Events");
 
 		listPanel = new ScrollDisplayPanel();
-		listPanel.getDisplayer().getElement().getStyle().setCursor(Cursor.DEFAULT);
+		//listPanel.getDisplayer().getElement().getStyle().setCursor(Cursor.DEFAULT);
 	}
 	
 	/**
-	 * Helper method to initialize the UI.
+	 * Helper method to initialize this view
 	 * @pre true;
-	 * @post true;
+	 * @post this.createButton.isVisible() == true && this.currentButton.isVisible() && this.pastButton.isVisible();
+	 * @post this.listPanel.isVisible() == true;
 	 */
 	private void initializeUI()
 	{
@@ -63,7 +65,10 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 
 	/**
-	 * 
+	 * Gets the create events button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers 
 	 */
 	@Override
 	public HasClickHandlers getCreateButton()
@@ -72,7 +77,10 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 
 	/**
-	 * 
+	 * Gets the list current events button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
 	 */
 	@Override
 	public HasClickHandlers getListCurrentButton()
@@ -81,7 +89,10 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 
 	/**
-	 * 
+	 * Gets the list past events button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
 	 */
 	@Override
 	public HasClickHandlers getListPastButton()
@@ -89,29 +100,49 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		return this.listPastButton;
 	}
 	
+	/**
+	 * Gets the event name Anchor from each EventListView in listPanel
+	 * @pre true;
+	 * @post true;
+	 * @return list of HasClickHandlers
+	 */
 	@Override
-	public HasClickHandlers getEventsList()
+	public List<HasClickHandlers> getListedLinks()
 	{
-		return this.listPanel.getDisplayer();
+		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
+		List<Widget> elements = this.listPanel.getElements();
+		for (int i = 0; i < elements.size(); i++)
+		{
+			EventListView panel = (EventListView) elements.get(i);
+			links.add(panel.getLink());
+		}
+		return links;	
 	}
 	
+	/**
+	 * Hides listPanel
+	 * @pre this.listPanel.isVisible() == true;
+	 * @post this.listPanel.isVisible() == false;
+	 */
 	@Override
-	public void hideEventsList()
+	public void hideListPanel()
 	{
 		this.remove(this.listPanel);
 	}
-
+	
 	/**
-	 * 
+	 * Re-populates listPanel with EventListViews created from a list of Events toDisplay
+	 * @pre true;
+	 * @post this.listPanel.getDisplayer().getRowCount == toDisplay.size() && this.listPanel.isVisible() == true;
 	 */
 	@Override
-	public void initializeView(List<Event> toDisplay)
+	public void populateListPanel(List<Event> toDisplay)
 	{
-		this.initializeUI();
 		this.listPanel.clearDisplay();
+		this.initializeUI();
 		for (int i = 0; i < toDisplay.size(); i++)
 		{
-			String name, time, desc; 
+			String name, time, location; 
 			name = toDisplay.get(i).getName();
 			if(toDisplay.get(i).getDate() == null)
 			{
@@ -121,16 +152,32 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 			{
 				time = toDisplay.get(i).getDate().toString();
 			}
-			desc = toDisplay.get(i).getDescription();
+			location = toDisplay.get(i).getLocation();
 			
-			EventsListView rowPanel = new EventsListView(name, time, desc);
+			EventListView rowPanel = new EventListView(name, time, location);
 			this.listPanel.addElement(rowPanel);
 		}
 	}
-
+	
 	/**
-	 * 
+	 * Returns this as a widget so that it can be added to a container
+	 * @pre true
+	 * @post true
+	 * @return this
 	 */
+	@Override
+	public Widget asWidget()
+	{
+		return this;
+	}
+
+	/* 
+	@Override
+	public HasClickHandlers getEventsList()
+	{
+		return this.listPanel.getDisplayer();
+	}
+	
 	@Override
 	public int getClickedEvent(ClickEvent event)
 	{
@@ -144,10 +191,6 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		
 		return rowIndex;
 	}
-	
-	@Override
-	public Widget asWidget()
-	{
-		return this;
-	}
+	*/
+
 }

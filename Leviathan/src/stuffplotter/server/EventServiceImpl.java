@@ -75,6 +75,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 					Date date = calendar.getTime();
 					
 					Availability availability = new Availability(date);
+					availability.setTimeFields(year, mc.getMonth(), day, hour);
 					dbstore.store(availability);
 					scheduler.addAvailability(availability);
 				}

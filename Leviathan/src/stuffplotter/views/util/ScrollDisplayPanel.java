@@ -1,5 +1,8 @@
 package stuffplotter.views.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -68,6 +71,23 @@ public class ScrollDisplayPanel extends ScrollPanel
 			currentRow++;
 		}
 	}
+	
+	/**
+	 * Gets the displayed Widgets
+	 * @pre true;
+	 * @post true;
+	 * @return list of widgets
+	 */
+	public List<Widget> getElements()
+	{
+		List<Widget> elements = new ArrayList<Widget>();
+		for (int i = 0; i < this.displayedComponents.getRowCount(); i++)
+		{
+			elements.add(this.displayedComponents.getWidget(i, 1/*only 1 column for now*/));
+		}
+		return elements;
+	}
+	
 	
 	/**
 	 * Clear the display.

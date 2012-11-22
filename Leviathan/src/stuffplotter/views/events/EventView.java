@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class EventView extends VerticalPanel implements EventViewer
 {
-	private Event event;
 	private final Button voteButton;
 	private final Button commentButton;
 	private final TextBox commentBox;
@@ -25,13 +24,11 @@ public class EventView extends VerticalPanel implements EventViewer
 	 * @pre true;
 	 * @post true;
 	 */
-	public EventView(Event event) 
+	public EventView() 
 	{
-		this.event = event;
 		this.voteButton = new Button("Choose availabilities");
 		this.commentButton = new Button("Submit comment");
 		this.commentBox = new TextBox();
-		initializeView();
 	}
 
 	@Override
@@ -53,7 +50,8 @@ public class EventView extends VerticalPanel implements EventViewer
 		this.add(this.commentBox);
 	}
 
-	private void initializeView()
+	@Override
+	public void initializeView(Event event)
 	{
 		String what = event.getName();
 		List<String> who = event.getAttendees();

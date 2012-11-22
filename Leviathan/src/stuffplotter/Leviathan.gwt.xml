@@ -33,5 +33,6 @@
   <source path='views'/>
   <source path='misc'/>
   <source path='presenters'/>
+  <source path='bindingcontracts'/>
 
 </module>
