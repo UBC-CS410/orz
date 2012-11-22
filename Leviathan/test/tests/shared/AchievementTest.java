@@ -24,7 +24,7 @@ public class AchievementTest
     	String desc = "You've achieved something";
     	String msg = "You're awesome";
     	
-    	Achievement a = new Achievement(achId,name,desc,msg);
+    	//Achievement a = new Achievement(achId,name,desc,msg);
     	
 	}
 
