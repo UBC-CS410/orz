@@ -1,4 +1,4 @@
-package tests;
+package tests.shared;
 
 import tests.ui.UITests;
 
