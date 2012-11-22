@@ -1,8 +1,10 @@
 package stuffplotter.client.services;
 
+import java.util.Date;
 import java.util.List;
 
 import stuffplotter.shared.Availability;
+import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
 
@@ -19,6 +21,9 @@ public interface EventService extends RemoteService
 	
 	void updateScheduler(List<Long> availabilityIds);
 	List<Availability> retrieveAvailabilities(Long pSchedulerId);
+	
+	void addComment(Long eventId, String username, Date time, String comment);
+	List<Comment> getComments(Long eventId);
 	
 	void deleteEvent();
 	void rateEvent();

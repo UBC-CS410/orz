@@ -46,10 +46,45 @@ public class Comment
 	 * Get the key of this comment
 	 * @pre		true;
 	 * @post	true;
+	 * @return 	id
 	 */
 	public Long getId()
 	{
 		return this.id;
 	}
+	
+	/**
+	 * Get the time that this comment was added
+	 * @pre		true;
+	 * @post	true;
+	 * @return 	time
+	 */
+	public Date getTime()
+	{
+		return this.time;
+	}
+	
+	/**
+	 * Get the content of this comment
+	 * @pre		true;
+	 * @post	true;
+	 * @return	
+	 */
+	public String getUsername()
+	{
+		return this.name;
+	}
+	
+	/**
+	 * Get the username of this comment
+	 * @pre		true;
+	 * @post	true;
+	 * @return 	content
+	 */
+	public String getContent()
+	{
+		return this.content;
+	}
+	
 
 }

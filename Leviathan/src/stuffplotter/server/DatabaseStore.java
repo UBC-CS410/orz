@@ -167,6 +167,17 @@ public class DatabaseStore {
 	}
 	
 	/**
+	 * Fetches an Comment from the data store using Objectify
+	 * @param pId 	the id of the Comment
+	 * @return		the Comment that is associated with the specified id
+	 */
+	public Comment fetchComment(Long pId) {
+		Objectify ofy = ObjectifyService.begin();
+		Comment cmt = ofy.get(Comment.class, pId);
+		return cmt;
+	}
+	
+	/**
 	 * Searches for Events by Account
 	 * @param pId	the id of the Account
 	 * @return		the list of Events owned by the specified Account, list could be empty

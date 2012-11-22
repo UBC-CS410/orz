@@ -1,5 +1,6 @@
 package stuffplotter.presenters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -121,6 +122,7 @@ public class EventsPagePresenter implements Presenter
 							appServices,
 							eventBus,
 							new EventView(),
+							appUser,
 							selectedEvent);
 					presenter.go((HasWidgets) eventsView);
 				}
@@ -137,7 +139,6 @@ public class EventsPagePresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
-		bind();
 		container.add(this.eventsView.asWidget());
 	}
 	
@@ -162,6 +163,7 @@ public class EventsPagePresenter implements Presenter
 			{
 				currentEvents = result;
 				eventsView.populateListPanel(currentEvents);
+				bind();
 			}
 		});
 	}

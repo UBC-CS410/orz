@@ -8,6 +8,7 @@ import java.util.List;
 import stuffplotter.client.services.EventService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
+import stuffplotter.shared.Comment;
 import stuffplotter.shared.DayContainer;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.MonthContainer;
@@ -165,6 +166,44 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 			dbstore.store(toUpdate);
 		}
 	}
+	
+	/**
+	 * Adds a comment to an event
+	 * @pre true;
+	 * @post event.getComments.size()++;
+	 * @param eventId - id of the event
+	 * @param comment - string content
+	 */
+	@Override
+	public void addComment(Long eventId, String username, Date time, String comment)
+	{
+		Comment newComment = new Comment(username, time, comment);
+		dbstore.store(newComment);
+		Event event = dbstore.fetchEvent(eventId);
+		event.addComment(newComment.getId());
+		dbstore.store(event);
+	}
+
+	/**
+	 * Retrieves all comments posted for an event
+	 * @pre true;
+	 * @post true;
+	 * @return list of strings
+	 */
+	@Override
+	public List<Comment> getComments(Long eventId)
+	{
+		Event event = dbstore.fetchEvent(eventId);
+		List<Comment> comments = new ArrayList<Comment>();
+		List<Long> commentIds = event.getComments();
+		for (int i = 0; i < commentIds.size(); i++)
+		{
+			Comment comment = dbstore.fetchComment(commentIds.get(i));
+			comments.add(comment);
+		}
+
+		return comments;
+	}
 
 	
 	@Override
@@ -179,4 +218,5 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	{
 		// TODO Auto-generated method stub
 	}
+
 }

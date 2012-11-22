@@ -73,7 +73,7 @@ public class Event implements Serializable
 	private List<String> eventAttendees;
 	
 	private String eventDescription;
-	private List<String> eventComments;
+	private List<Long> eventComments;
 	
 	private Double[] eventRatings;
 	private Double eventScore;
@@ -106,9 +106,9 @@ public class Event implements Serializable
 		
 		this.eventDate = null;
 		
+		this.eventComments = new ArrayList<Long>();
 		this.eventInvitees = new ArrayList<String>();
 		this.eventAttendees = new ArrayList<String>();
-		this.eventComments = new ArrayList<String>();
 	}
 	
 	/**
@@ -403,9 +403,9 @@ public class Event implements Serializable
 	 * @post 	true;
 	 * @return 	the eventComments
 	 */
-	public List<String> getComments()
+	public List<Long> getComments()
 	{
-		return eventComments;
+		return this.eventComments;
 	}
 
 	/**
@@ -414,7 +414,7 @@ public class Event implements Serializable
 	 * @post 	true
 	 * @param 	eventComments - an eventComment to add.
 	 */
-	public void addComment(String eventComment)
+	public void addComment(Long eventComment)
 	{
 		this.eventComments.add(eventComment);
 	}
