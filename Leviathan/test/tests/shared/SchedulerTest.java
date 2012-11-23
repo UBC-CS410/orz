@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import junit.framework.TestCase;
+
 import org.junit.Test;
 
 import stuffplotter.shared.Scheduler;
@@ -15,7 +17,7 @@ import stuffplotter.shared.Scheduler;
  * 
  *
  */
-public class SchedulerTest
+public class SchedulerTest extends TestCase
 {
 
 	@Test
