@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import junit.framework.TestCase;
+
 import org.junit.Test;
 
 import stuffplotter.shared.Availability;
@@ -15,7 +17,7 @@ import stuffplotter.shared.Availability;
  * 
  *
  */
-public class AvailabilityTest
+public class AvailabilityTest extends TestCase
 {
 
 	

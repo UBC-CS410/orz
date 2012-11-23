@@ -4,6 +4,7 @@
 package tests.shared;
 
 import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import org.junit.Test;
  *
  *
  */
-public class AchievementNotificationTest
+public class AchievementNotificationTest extends TestCase
 {
 
 	@Test
