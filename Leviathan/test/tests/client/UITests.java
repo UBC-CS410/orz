@@ -1,4 +1,4 @@
-package tests.ui;
+package tests.client;
 
 import static org.junit.Assert.*;
 
