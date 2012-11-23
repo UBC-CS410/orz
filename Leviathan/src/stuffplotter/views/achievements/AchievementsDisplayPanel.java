@@ -8,16 +8,17 @@ import stuffplotter.bindingcontracts.AchievementModel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 /**
- * Place holder for displaying achievements.
+ * Class to display achievements.
  */
-public class AchievementDisplayPanel extends ScrollDisplayPanel
+public class AchievementsDisplayPanel extends ScrollDisplayPanel
 {
 	/**
 	 * Constructor for the AchievementDisplayPanel.
 	 * @pre numOfColumns > 0;
 	 * @post true;
+	 * @param numOfColumns - the number of columns to display the achievements as.
 	 */
-	public AchievementDisplayPanel(int numOfColumns)
+	public AchievementsDisplayPanel(int numOfColumns)
 	{
 		super(numOfColumns);
 	}
