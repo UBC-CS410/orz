@@ -1,5 +1,6 @@
 package stuffplotter.shared;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Id;
@@ -10,7 +11,7 @@ import com.googlecode.objectify.annotation.Entity;
  * Class to hold information about a comment posted for an event.
  */
 @Entity
-public class Comment
+public class Comment implements Serializable
 {
 	@Id private Long id;
 	private String name;

@@ -80,7 +80,7 @@ public class EventView extends VerticalPanel implements EventViewer
 	public void openCommentTextBox()
 	{
 		this.remove(this.commentButton);
-		this.add(this.commentTextBox);
+		this.commentTextBox.setVisible(true);
 	}
 	
 	/**
@@ -120,6 +120,7 @@ public class EventView extends VerticalPanel implements EventViewer
 		{
 			HorizontalPanel hp = new HorizontalPanel();
 			hp.add(new Label(comments.get(i).getUsername()));
+			hp.add(new Label(" @ "));
 			hp.add(new Label(comments.get(i).getTime().toString()));
 			this.commentPanel.add(hp);
 			this.commentPanel.add(new Label(comments.get(i).getContent()));
@@ -132,7 +133,7 @@ public class EventView extends VerticalPanel implements EventViewer
 	 * @post true;
 	 */
 	@Override
-	public void initializeView(Event event)
+	public void initialize(Event event)
 	{
 		String what = event.getName();
 		List<String> who = event.getAttendees();
@@ -154,9 +155,11 @@ public class EventView extends VerticalPanel implements EventViewer
 		this.add(new Anchor(why));
 		
 		this.add(this.commentButton);
-		//TODO: add comments
+		
+		this.commentTextBox.setVisible(false);
+		this.add(this.commentTextBox);
+		
 		this.add(this.commentPanel);
 	}
-
 	
 }

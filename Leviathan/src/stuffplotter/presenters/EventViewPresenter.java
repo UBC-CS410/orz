@@ -36,7 +36,7 @@ public class EventViewPresenter implements Presenter
 		public void openCommentTextBox();
 		public void clearCommentTextBox();
 		public void showComments(List<Comment> comments);
-		public void initializeView(Event event);
+		public void initialize(Event event);
 		public Widget asWidget();
 	}
 	
@@ -56,7 +56,8 @@ public class EventViewPresenter implements Presenter
 		this.eventView = display;
 		this.eventData = data;
 		
-		populateView();
+		eventView.initialize(this.eventData);
+		this.loadComments();
 	}
 	
 	/**
@@ -126,7 +127,7 @@ public class EventViewPresenter implements Presenter
 						@Override
 						public void onSuccess(Void result)
 						{
-							populateView();
+							loadComments();
 						}
 						
 					});
@@ -150,11 +151,11 @@ public class EventViewPresenter implements Presenter
 	}
 	
 	/**
-	 * Populates event view with event data and event comments
+	 * Loads and displays the comments for this event
 	 * @pre true;
 	 * @post true;
 	 */
-	private void populateView()
+	private void loadComments()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
 		eventService.getComments(eventData.getId(), new AsyncCallback<List<Comment>>() {
@@ -169,7 +170,6 @@ public class EventViewPresenter implements Presenter
 			@Override
 			public void onSuccess(List<Comment> result)
 			{
-				eventView.initializeView(eventData);
 				eventView.clearCommentTextBox();
 				eventView.showComments(result);
 			}

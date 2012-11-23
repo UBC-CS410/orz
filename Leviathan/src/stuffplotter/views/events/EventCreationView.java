@@ -149,6 +149,7 @@ public class EventCreationView extends DialogBox implements CreateEventView
 					public void onSuccess(Event result)
 					{
 						hide();
+						System.out.println(result.getComments().size());
 						new NotificationDialogBox(TASKNAME, "The Event: " + result.getName() +
 												  " was created successfully!");
 					}

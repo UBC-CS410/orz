@@ -55,7 +55,7 @@ public class Event implements Serializable
 	private String eventLocation;
 	private Double[] eventCoordinates;
 	
-	private Date eventDate;
+	private Date eventDate = null;
 	private String eventDuration;
 	private String eventCost;
 	
@@ -69,11 +69,11 @@ public class Event implements Serializable
 	 * associated Scheduler is created. 
 	 */
 	@Transient private List<MonthContainer> timeSheet;
-	private List<String> eventInvitees;
-	private List<String> eventAttendees;
+	private List<String> eventInvitees = new ArrayList<String>();
+	private List<String> eventAttendees = new ArrayList<String>();
 	
 	private String eventDescription;
-	private List<Long> eventComments;
+	private List<Long> eventComments = new ArrayList<Long>();
 	
 	private Double[] eventRatings;
 	private Double eventScore;
@@ -103,12 +103,6 @@ public class Event implements Serializable
 		this.eventDuration = eventRetriever.getDuration();
 		this.eventCost = eventRetriever.getCost();
 		this.eventDescription = eventRetriever.getDescription();
-		
-		this.eventDate = null;
-		
-		this.eventComments = new ArrayList<Long>();
-		this.eventInvitees = new ArrayList<String>();
-		this.eventAttendees = new ArrayList<String>();
 	}
 	
 	/**
