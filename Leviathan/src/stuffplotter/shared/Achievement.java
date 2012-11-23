@@ -57,8 +57,4 @@ public enum Achievement {
 		return msg;
 	}
 
-
-
-    
-
 }
