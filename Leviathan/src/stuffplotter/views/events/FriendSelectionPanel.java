@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import stuffplotter.misc.EventCreationPageVisitor;
-import stuffplotter.misc.EventSubmittable;
 import stuffplotter.shared.Account;
+import stuffplotter.views.friends.FriendsDisplayPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.user.client.ui.CheckBox;
@@ -19,7 +18,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 public class FriendSelectionPanel extends SimplePanel implements EventSubmittable
 {
 	private static final int NUMOFCOLUMNS = 3;
-	private ScrollDisplayPanel friendDisplayer;
+	private FriendsDisplayPanel friendDisplayer;
 	private static final String PANELWIDTH = "500px";
 	private static final String PANELHEIGHT = "300px";
 	
@@ -42,7 +41,7 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	 */
 	private void initializeUI()
 	{	
-		this.friendDisplayer = new ScrollDisplayPanel(NUMOFCOLUMNS);
+		this.friendDisplayer = new FriendsDisplayPanel(NUMOFCOLUMNS);
 		this.friendDisplayer.setSize(PANELWIDTH, PANELHEIGHT);
 		
 		List<String> toDo = new ArrayList<String>();

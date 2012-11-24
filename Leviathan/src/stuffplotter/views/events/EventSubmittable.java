@@ -1,4 +1,4 @@
-package stuffplotter.misc;
+package stuffplotter.views.events;
 
 /**
  * Interface used by all pages of the event creation UI.

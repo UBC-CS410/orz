@@ -1,7 +1,7 @@
 package stuffplotter.presenters;
 
 import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.misc.EventSubmittable;
+import stuffplotter.views.events.EventSubmittable;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
