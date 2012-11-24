@@ -4,6 +4,7 @@
 package tests.shared;
 
 import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import stuffplotter.shared.Achievement;
  *
  *
  */
-public class AchievementTest
+public class AchievementTest extends TestCase
 {
 
 	@Test

@@ -35,7 +35,8 @@ public class EventViewPresenter implements Presenter
 		public String getCommentText();
 		public void openCommentTextBox();
 		public void clearCommentTextBox();
-		public void showComments(List<Comment> comments);
+		public void updateComments(Comment comment);
+		public void displayComments(List<Comment> comments);
 		public void initialize(Event event);
 		public Widget asWidget();
 	}
@@ -171,7 +172,7 @@ public class EventViewPresenter implements Presenter
 			public void onSuccess(List<Comment> result)
 			{
 				eventView.clearCommentTextBox();
-				eventView.showComments(result);
+				eventView.displayComments(result);
 			}
 
 		});

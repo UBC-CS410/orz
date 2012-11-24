@@ -7,15 +7,17 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import junit.framework.TestCase;
+
 import org.junit.Test;
 
 import stuffplotter.shared.Comment;
 
 /**
- * @author farez
+ * 
  *
  */
-public class CommentTest
+public class CommentTest extends TestCase
 {
 
 	@Test
@@ -28,7 +30,9 @@ public class CommentTest
 		Comment cm = new Comment(name, time, content);
 		
 		assertNotNull(cm);
-		
+		assertEquals(name, cm.getUsername());
+		assertEquals(time, cm.getTime());
+		assertEquals(content, cm.getContent());
 	}
 
 }

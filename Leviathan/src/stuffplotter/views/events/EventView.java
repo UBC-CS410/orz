@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -107,23 +108,35 @@ public class EventView extends VerticalPanel implements EventViewer
 	}
 	
 	/**
-	 * Displays all comments posted for event
+	 * Adds a new comment to the comment panel display
 	 * @pre true;
 	 * @post true;
-	 * @return string containing the text
+	 * @param comment - a new Comment
 	 */
 	@Override
-	public void showComments(List<Comment> comments)
+	public void updateComments(Comment comment)
+	{
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.add(new Label(comment.getUsername()));
+		hp.add(new Label(" @ "));
+		hp.add(new Label(comment.getTime().toString()));
+		this.commentPanel.add(hp);
+		this.commentPanel.add(new Label(comment.getContent()));
+	}
+	
+	/**
+	 * Adds a list of comments to the comment panel display
+	 * @pre true;
+	 * @post true;
+	 * @return comments - a list of Comment
+	 */
+	@Override
+	public void displayComments(List<Comment> comments)
 	{
 		this.commentPanel.clear();
 		for (int i = 0; i < comments.size(); i++)
 		{
-			HorizontalPanel hp = new HorizontalPanel();
-			hp.add(new Label(comments.get(i).getUsername()));
-			hp.add(new Label(" @ "));
-			hp.add(new Label(comments.get(i).getTime().toString()));
-			this.commentPanel.add(hp);
-			this.commentPanel.add(new Label(comments.get(i).getContent()));
+			updateComments(comments.get(i));
 		}
 	}
 
@@ -135,31 +148,34 @@ public class EventView extends VerticalPanel implements EventViewer
 	@Override
 	public void initialize(Event event)
 	{
-		String what = event.getName();
-		List<String> who = event.getAttendees();
-		Date when = event.getDate();
-		String where = event.getLocation();
-		String why = event.getDescription();
+		String title = event.getName();
+		List<String> people = event.getAttendees();
+		Date time = event.getDate();
+		String place = event.getLocation();
+		String details = event.getDescription();
 		
-		this.add(new Anchor(what));
-		if (when == null)
+		this.add(new Anchor(title));
+		if (time == null)
 		{
 			this.add(this.voteButton);
 		}
 		else 
 		{
-			String date = when.toLocaleString();
+			String date = time.toString();
 			this.add(new Anchor(date));
 		}
-		this.add(new Anchor(where));
-		this.add(new Anchor(why));
+		this.add(new Anchor(place));
+		this.add(new Anchor(details));
 		
 		this.add(this.commentButton);
 		
 		this.commentTextBox.setVisible(false);
 		this.add(this.commentTextBox);
 		
-		this.add(this.commentPanel);
+		ScrollPanel scrollPanel = new ScrollPanel();
+		scrollPanel.setHeight("480px");
+		scrollPanel.add(this.commentPanel);
+		this.add(scrollPanel);
 	}
 	
 }

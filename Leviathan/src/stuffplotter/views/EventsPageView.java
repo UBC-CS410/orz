@@ -8,14 +8,11 @@ import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventListView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
-import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -27,7 +24,9 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	private final Button createButton;
 	private final Button listCurrentButton;
 	private final Button listPastButton;
-	private ScrollDisplayPanel listPanel;
+	
+	private SimplePanel eventPanel;
+	private ScrollDisplayPanel eventListPanel;
 	
 	/**
 	 * Constructor for the EventsPagePanel.
@@ -38,30 +37,21 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	{
 		super();
 		
-		createButton = new Button("Create Event");
-		listCurrentButton = new Button("View Current Events");
-		listPastButton = new Button("View Past Events");
-
-		listPanel = new ScrollDisplayPanel();
-		//listPanel.getDisplayer().getElement().getStyle().setCursor(Cursor.DEFAULT);
-	}
-	
-	/**
-	 * Helper method to initialize this view
-	 * @pre true;
-	 * @post this.createButton.isVisible() == true && this.currentButton.isVisible() && this.pastButton.isVisible();
-	 * @post this.listPanel.isVisible() == true;
-	 */
-	private void initializeUI()
-	{
-		this.clear();
-		VerticalPanel actionBar = new VerticalPanel();
-		actionBar.add(createButton);
-		actionBar.add(listCurrentButton);
-		actionBar.add(listPastButton);
+		this.createButton = new Button("Create Event");
+		this.listCurrentButton = new Button("View Current Events");
+		this.listPastButton = new Button("View Past Events");
 		
-		this.add(actionBar);
-		this.add(listPanel);
+		VerticalPanel actionPanel = new VerticalPanel();
+		actionPanel.add(this.createButton);
+		actionPanel.add(this.listCurrentButton);
+		actionPanel.add(this.listPastButton);
+		
+		this.eventPanel = new SimplePanel();
+		this.eventListPanel = new ScrollDisplayPanel();
+		
+		this.add(actionPanel);
+		this.add(this.eventPanel);
+		this.add(this.eventListPanel);
 	}
 
 	/**
@@ -101,16 +91,16 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
-	 * Gets the event name Anchor from each EventListView in listPanel
+	 * Get the anchors for each event from event list panel
 	 * @pre true;
 	 * @post true;
 	 * @return list of HasClickHandlers
 	 */
 	@Override
-	public List<HasClickHandlers> getListedLinks()
+	public List<HasClickHandlers> getEventViewers()
 	{
 		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
-		List<Widget> elements = this.listPanel.getElements();
+		List<Widget> elements = this.eventListPanel.getElements();
 		for (int i = 0; i < elements.size(); i++)
 		{
 			EventListView panel = (EventListView) elements.get(i);
@@ -120,15 +110,40 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
+	 * Get the panel for displaying an event
+	 * @pre true;
+	 * @post true;
+	 * @return a simple panel
+	 */
+	@Override
+	public HasWidgets getEventViewerContainer()
+	{
+		return this.eventPanel;
+	}
+	
+	/**
+	 * Shows listPanel
+	 * @pre this.listPanel.isVisible() == false;
+	 * @post this.listPanel.isVisible() == true;
+	 */
+	@Override
+	public void showEventViewers()
+	{
+		this.eventPanel.clear();
+		this.eventListPanel.setVisible(true);
+	}
+	
+	/**
 	 * Hides listPanel
 	 * @pre this.listPanel.isVisible() == true;
 	 * @post this.listPanel.isVisible() == false;
 	 */
 	@Override
-	public void hideListPanel()
+	public void hideEventViewers()
 	{
-		this.remove(this.listPanel);
+		this.eventListPanel.setVisible(false);
 	}
+	
 	
 	/**
 	 * Re-populates listPanel with EventListViews created from a list of Events toDisplay
@@ -136,26 +151,25 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @post this.listPanel.getDisplayer().getRowCount == toDisplay.size() && this.listPanel.isVisible() == true;
 	 */
 	@Override
-	public void populateListPanel(List<Event> toDisplay)
+	public void initialize(List<Event> events)
 	{
-		this.listPanel.clearDisplay();
-		this.initializeUI();
-		for (int i = 0; i < toDisplay.size(); i++)
+		this.eventListPanel.clearDisplay();
+		for (int i = 0; i < events.size(); i++)
 		{
 			String name, time, location; 
-			name = toDisplay.get(i).getName();
-			if(toDisplay.get(i).getDate() == null)
+			name = events.get(i).getName();
+			if(events.get(i).getDate() == null)
 			{
 				time = "TBD";
 			}
 			else
 			{
-				time = toDisplay.get(i).getDate().toString();
+				time = events.get(i).getDate().toString();
 			}
-			location = toDisplay.get(i).getLocation();
+			location = events.get(i).getLocation();
 			
 			EventListView rowPanel = new EventListView(name, time, location);
-			this.listPanel.addElement(rowPanel);
+			this.eventListPanel.addElement(rowPanel);
 		}
 	}
 	
@@ -170,27 +184,4 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	{
 		return this;
 	}
-
-	/* 
-	@Override
-	public HasClickHandlers getEventsList()
-	{
-		return this.listPanel.getDisplayer();
-	}
-	
-	@Override
-	public int getClickedEvent(ClickEvent event)
-	{
-		int rowIndex = -1;
-		HTMLTable.Cell cell = this.listPanel.getDisplayer().getCellForEvent(event);
-		
-		if (cell != null) 
-		{
-			rowIndex = cell.getRowIndex();
-		}
-		
-		return rowIndex;
-	}
-	*/
-
 }

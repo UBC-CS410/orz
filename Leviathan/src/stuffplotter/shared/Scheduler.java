@@ -13,6 +13,7 @@ import com.googlecode.objectify.annotation.Entity;
  * Class to hold information about the proposed dates and finalized dates
  * pertaining to an Event
  */
+@SuppressWarnings("serial")
 @Entity
 public class Scheduler implements Serializable
 {	

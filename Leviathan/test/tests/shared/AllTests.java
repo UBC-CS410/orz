@@ -1,6 +1,6 @@
 package tests.shared;
 
-import tests.ui.UITests;
+import tests.client.UITests;
 
 import junit.framework.JUnit4TestAdapter;
 
