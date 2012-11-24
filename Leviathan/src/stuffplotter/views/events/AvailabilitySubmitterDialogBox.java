@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import stuffplotter.misc.CloseClickHandler;
+import stuffplotter.shared.Availability;
 import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -27,14 +28,17 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	// horizontal panel to display all the DaySelections objects
 	final private HorizontalPanel horPanel = new HorizontalPanel();
 	
+	final private List<Availability> timeSlots;
+	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public AvailabilitySubmitterDialogBox(List<Date> timeSlotsAvailable)
+	public AvailabilitySubmitterDialogBox(List<Availability> timeSlots)
 	{
 		super();
+		this.timeSlots = timeSlots;
 		initializeWindow();
 	}
 	
@@ -70,8 +74,8 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	{
 		// TO DO: Remove hard coded values and feed values from database
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		int[] days = {2};
-		int[] days2 = {6, 8};
+		timeSheet.addDay(new Date());
+		
 		/*
 		timeSheet.addDay(Month.OCTOBER, "2012", days);
 		timeSheet.addDay(Month.OCTOBER, "2012", days2);

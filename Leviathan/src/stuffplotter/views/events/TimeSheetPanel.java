@@ -16,8 +16,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TimeSheetPanel extends SimplePanel
 {
-	final private String timeSheetWidth = "500px";
-	final private String timeSheetHeight = "300px";
+	final private String timeSheetWidth = "640px";
+	final private String timeSheetHeight = "480px";
 	private ScrollPanel timeSheetWindow;
 	private HorizontalPanel horPanel;
 	

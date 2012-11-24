@@ -73,6 +73,8 @@ public class EventViewPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				AvailabilitySubmitterDialogBox submitter = new AvailabilitySubmitterDialogBox(null);
+				/*
 				EventServiceAsync eventService = appServices.getEventService();
 				eventService.retrieveAvailabilities(eventData.getEventScheduler(), new AsyncCallback<List<Availability>>() {
 
@@ -90,7 +92,7 @@ public class EventViewPresenter implements Presenter
 					}
 
 				});
-				
+				*/
 			}
 		});
 		
