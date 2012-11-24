@@ -1,10 +1,10 @@
 package stuffplotter.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,7 +15,6 @@ import stuffplotter.views.events.EventInfoPanel;
 import stuffplotter.views.events.FriendSelectionPanel;
 import stuffplotter.views.events.TimeSheetPanel;
 import stuffplotter.misc.EventCreationPageVisitor;
-import stuffplotter.shared.MonthContainer;
 
 /**
  * Class that is a visitor for any panel that implements the EventSubmittable interface.
@@ -30,7 +29,7 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	private String eventCost;
 	private String eventDuration;
 	private String eventDescription;
-	private List<MonthContainer> selectedTimeSlots;
+	private List<Date> selectedTimeSlots;
 	private List<String> selectedFriends;
 	
 	/**
@@ -138,7 +137,7 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	 * @post true;
 	 * @return the selected time slots for the event.
 	 */
-	public List<MonthContainer> getSelectedTimeSlots()
+	public List<Date> getSelectedTimeSlots()
 	{
 		return this.selectedTimeSlots;
 	}

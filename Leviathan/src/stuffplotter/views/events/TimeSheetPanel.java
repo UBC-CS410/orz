@@ -1,10 +1,10 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import stuffplotter.views.events.MonthPanel.Month;
-import stuffplotter.shared.MonthContainer;
+import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -35,16 +35,20 @@ public class TimeSheetPanel extends SimplePanel
 		timeSheetWindow.add(horPanel);
 		this.add(timeSheetWindow);
 	}
-	
+
 	/**
 	 * Method to add a new day with all time slots to the time sheet, a month panel will be
 	 * generated where appropriate.
-	 * @pre month != null && year != null && days != null;
+	 * @pre date != null;
 	 * @post true; 
-	 * @param month - month of the day(s) to add.
+	 * @param date - the list of Dates to display.
 	 */
-	public void addDay(Month month, String year, int[] days)
+	public void addDay(Date date)
 	{
+		DateSplitter splitter = new DateSplitter(date);
+		String month = splitter.getMonthAsString();
+		String year = splitter.getYearAsString();
+		
 		boolean monthYearFound = false;
 		int numOfMonthPanels = this.horPanel.getWidgetCount();
 		int i = 0;
@@ -58,11 +62,7 @@ public class TimeSheetPanel extends SimplePanel
 				MonthPanel monthPanel = (MonthPanel) childWidget;
 				if(monthPanel.getMonth().equals(month) && monthPanel.getYear().equals(year))
 				{
-					// for loop to add the DaySelections to the month panel
-					for(Integer day : days)
-					{
-						((MonthPanel) childWidget).addDay(String.valueOf(day));
-					}
+					((MonthPanel) childWidget).addDay(date);
 					monthYearFound = true;
 				}
 			}
@@ -71,8 +71,19 @@ public class TimeSheetPanel extends SimplePanel
 		
 		if(!monthYearFound)
 		{
-			this.horPanel.add(new MonthPanel(month, year, days));
+			this.horPanel.add(new MonthPanel(date));
 		}
+	}
+	
+	/**
+	 * Method to add the given list of days contained in the list of Dates.
+	 * @pre dates != null && !dates.isEmpty();
+	 * @post true; 
+	 * @param dates - the list of Dates to display.
+	 */
+	public void addDays(List<Date> dates)
+	{
+		// TO DO
 	}
 	
 	/**
@@ -81,9 +92,9 @@ public class TimeSheetPanel extends SimplePanel
 	 * @post true;
 	 * @return the submission made by the user for the event.
 	 */
-	public List<MonthContainer> retrieveSubmission()
+	public List<Date> retrieveSubmission()
 	{
-		List<MonthContainer> selectedValues = new ArrayList<MonthContainer>();
+		List<Date> selectedValues = new ArrayList<Date>();
 		
 		// for loop to get the submission information from each MonthPanel
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
@@ -91,7 +102,7 @@ public class TimeSheetPanel extends SimplePanel
 			Widget childWidget = this.horPanel.getWidget(i); 
 			if(childWidget instanceof MonthPanel)
 			{
-				selectedValues.add(((MonthPanel) childWidget).retrieveSubmission());
+				selectedValues.addAll(((MonthPanel) childWidget).retrieveSubmission());
 			}
 		}
 		

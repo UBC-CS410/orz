@@ -9,10 +9,9 @@ import stuffplotter.client.services.EventService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
-import stuffplotter.shared.DayContainer;
 import stuffplotter.shared.Event;
-import stuffplotter.shared.MonthContainer;
 import stuffplotter.shared.Scheduler;
+import stuffplotter.views.util.DateSplitter;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -32,7 +31,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @param   timeSlots - the time slots proposed for an event.
 	 */
 	@Override
-	public Event createEvent(Event pEvent, List<MonthContainer> timeSlots)
+	public Event createEvent(Event pEvent, List<Date> timeSlots)
 	{
 		// store event
 		Event event = pEvent;
@@ -54,33 +53,22 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @pre 	pMonthContainers != null
 	 * @post	sets eventScheduler and eventStatus for the persistent event whose key is pEventId
 	 * @param 	pEventId			the id of the event that the scheduler is bound to
-	 * @param	pMonthContainers	the list of month containers containing the proposed times for the event
+	 * @param	pDates				the list of Dates containing the proposed times for the event
 	 */
-	private void addScheduler(Long pEventId, List<MonthContainer> pMonthContainers)
+	private void addScheduler(Long pEventId, List<Date> pDates)
 	{
 		Scheduler scheduler = new Scheduler();
 		
-		for (MonthContainer mc : pMonthContainers)
-		{
-			for (DayContainer dc : mc.getDays())
-			{
-				for (int i = 0; i < dc.getTimeSlots().size(); i++)
-				{
-					int year = Integer.parseInt(mc.getYear());
-					int month = mc.getMonth().getIndex();
-					int day = Integer.parseInt(dc.getDay());
-					int hour = dc.getTimeSlots().get(i);
-					
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(year, month, day, hour, 0);
-					Date date = calendar.getTime();
-					
-					Availability availability = new Availability(date);
-					availability.setTimeFields(year, mc.getMonth(), day, hour);
-					dbstore.store(availability);
-					scheduler.addAvailability(availability);
-				}
-			}
+		for (Date date : pDates)
+		{					
+			DateSplitter splitter = new DateSplitter(date);
+			Availability availability = new Availability(date);
+			availability.setTimeFields(splitter.getYear(),
+									   splitter.getMonth(),
+									   splitter.getDay(),
+									   splitter.getHour());
+			dbstore.store(availability);
+			scheduler.addAvailability(availability);
 		}
 		
 		dbstore.store(scheduler);

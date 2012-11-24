@@ -6,13 +6,12 @@ import java.util.List;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
-import stuffplotter.shared.MonthContainer;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface EventServiceAsync
 {	
-	void createEvent(Event newEvent, List<MonthContainer> timeSlots, AsyncCallback<Event> callback);
+	void createEvent(Event newEvent, List<Date> timeSlots, AsyncCallback<Event> callback);
 	void retrieveEvent(Long eventId, AsyncCallback<Event> callback);
 	void retrieveEvents(List<Long> eventIds, AsyncCallback<List<Event>> callback);
 	void updateEvent(Event modifiedEvent, AsyncCallback<Void> callback);

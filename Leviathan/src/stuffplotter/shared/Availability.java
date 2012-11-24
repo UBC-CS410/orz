@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Id;
 
-import stuffplotter.views.events.MonthPanel.Month;
-
 import com.googlecode.objectify.annotation.Entity;
 
 @Entity
@@ -15,7 +13,7 @@ public class Availability implements Serializable
 	@Id private Long id;
 	private Date time;
 	private int year;
-	private Month month;
+	private int month;
 	private int day;
 	private int hour;
 	private Integer votes;
@@ -70,7 +68,7 @@ public class Availability implements Serializable
 	 * @post true;
 	 * @return month
 	 */
-	public Month getMonth()
+	public int getMonth()
 	{
 		return this.month;
 	}
@@ -102,7 +100,7 @@ public class Availability implements Serializable
 	 * @pre true;
 	 * @post true;
 	 */
-	public void setTimeFields(int year, Month month, int day, int hour)
+	public void setTimeFields(int year, int month, int day, int hour)
 	{
 		this.year = year;
 		this.month = month;
@@ -119,5 +117,10 @@ public class Availability implements Serializable
 	{
 		this.votes++;
 	}	
+	
+	/**
+	 * Serial version for the Availability.
+	 */
+	private static final long serialVersionUID = 7656857795437807838L;
 }	
 

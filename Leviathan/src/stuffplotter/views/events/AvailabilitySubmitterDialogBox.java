@@ -1,12 +1,11 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import stuffplotter.views.events.MonthPanel.Month;
 import stuffplotter.misc.CloseClickHandler;
-import stuffplotter.shared.DayContainer;
-import stuffplotter.shared.MonthContainer;
+import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -33,7 +32,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public AvailabilitySubmitterDialogBox(List<MonthContainer> timeSlotsAvailable)
+	public AvailabilitySubmitterDialogBox(List<Date> timeSlotsAvailable)
 	{
 		super();
 		initializeWindow();
@@ -45,9 +44,9 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 * @post true;
 	 * @return the submissions of the user.
 	 */
-	public List<MonthContainer> retrieveSubmissions()
+	public List<Date> retrieveSubmissions()
 	{
-		List<MonthContainer> selectedValues = new ArrayList<MonthContainer>();
+		List<Date> selectedValues = new ArrayList<Date>();
 		
 		// for loop to get the submission information from the TimeSheetPanel
 		for (int i = 0; i < this.horPanel.getWidgetCount(); i++)
@@ -73,10 +72,11 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
 		int[] days = {2};
 		int[] days2 = {6, 8};
+		/*
 		timeSheet.addDay(Month.OCTOBER, "2012", days);
 		timeSheet.addDay(Month.OCTOBER, "2012", days2);
 		timeSheet.addDay(Month.NOVEMBER, "2012", days2);
-		
+		*/
 		horPanel.add(timeSheet);
 		vertPanel.add(horPanel);
 		this.add(vertPanel);
@@ -103,27 +103,21 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				final List<MonthContainer> selectedValues = retrieveSubmissions();
+				final List<Date> selectedValues = retrieveSubmissions();
 							
 				//temporary for each loop to help display selected intervals
 				String result = "";
-				for(MonthContainer value : selectedValues)
+				for(Date value : selectedValues)
 				{
-					String month = value.getMonth().displayName();
-					String year = value.getYear();
+					DateSplitter splitter = new DateSplitter(value);
+					String month = splitter.getMonthAsString();
+					String year = splitter.getYearAsString();
 					result += "Selected: " + month + " " + year + " ";
-					List<DayContainer> days = value.getDays();
-					for(DayContainer day : days)
-					{
-						String dayValue = day.getDay();
-						result += "Day " + dayValue + "-> ";
-						List<Integer> timeSlots = day.getTimeSlots();
-						for(Integer slot : timeSlots)
-						{
-							result += slot + " ";
-						}
-					}
-					
+
+					String dayValue = splitter.getDayAsString();
+					result += "Day " + dayValue + "-> ";
+					int hour = splitter.getHour();
+					result += hour + " ";			
 				}
 				
 				hide();
