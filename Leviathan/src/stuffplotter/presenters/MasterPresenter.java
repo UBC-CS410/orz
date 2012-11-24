@@ -135,7 +135,8 @@ public class MasterPresenter implements Presenter
 		
 		Presenter topBarPresenter = new TopBarPresenter(this.appServices,
 														this.eventBus,
-														this.masterView.getTopView());
+														this.masterView.getTopView(),
+														this.appUser);
 		topBarPresenter.go((HasWidgets) this.masterView);
 		
 		

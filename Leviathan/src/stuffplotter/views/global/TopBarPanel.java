@@ -1,7 +1,10 @@
 package stuffplotter.views.global;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.shared.Notification;
 
@@ -17,17 +20,14 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TopBarPanel extends HorizontalPanel implements TopBarView
 {
-	private String userName;
 	private Anchor logoutLink;
-	private List<Notification> notifications;
 	private UserNotificationsPopupPanel popup;
+	private Label userNameDisplay;
 	
 	/**
 	 * Constructor for TopRightPanel.
-	 * @pre userAccount != null;
-	 * @post this.isVisible() == true && 
-	 * 		 this.userName.equals(userAccount.getUserName()) &&
-	 * 		 this.logouLink.getHref().equals(userAccount.getLogout());
+	 * @pre true;
+	 * @post this.isVisible() == true;
 	 */
 	public TopBarPanel()
 	{
@@ -41,9 +41,10 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	 * @post true;
 	 */
 	private void initializeUI()
-	{
+	{		
 		final Label notificationsLabel = new Label("Notifications");
-				
+		popup = new UserNotificationsPopupPanel();
+		
 		notificationsLabel.addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -56,9 +57,37 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		
 		this.add(notificationsLabel);
 		this.add(new Label(" | "));
-		this.add(new Label("Welcome " + this.userName + "!"));
+		this.userNameDisplay = new Label("Welcome!");
+		this.add(this.userNameDisplay);
 		this.add(new Label(" | "));
-		//this.add(this.logoutLink); ERROR: LOGOUT LINK IS NOT INITIALIZED
+		this.logoutLink = new Anchor("Logout");
+		this.logoutLink.setEnabled(false);
+		this.add(this.logoutLink);
+	}
+
+	/**
+	 * Set the user data for the TopBarPanel.
+	 * @pre userAccount != null;
+	 * @post true;
+	 * @param userAccount - the user account to data bind with the view. 	 
+	 */
+	@Override
+	public void setUserData(AccountModel userAccount)
+	{
+		this.userNameDisplay.setText(userAccount.getUserFullName());
+		this.logoutLink.setHref(userAccount.getLogoutUrl());
+	}
+	
+	/**
+	 * Refresh the notifications panel.
+	 * @pre notification != null;
+	 * @post true;
+	 * @param notifications - the list of notifications to display.
+	 */
+	@Override
+	public void setNotificationData(List<NotificationModel> notifications)
+	{
+		this.popup.setNotificationData(notifications);
 	}
 	
 	/**

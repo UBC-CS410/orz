@@ -5,12 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Id;
 
-import com.google.gwt.user.client.ui.SimplePanel;
+import stuffplotter.bindingcontracts.NotificationModel;
 
 /**
  * Class to hold the information for a user notification.
  */
-public abstract class Notification implements Serializable
+public abstract class Notification implements Serializable, NotificationModel
 {
 	public enum NotificationType
 	{
@@ -35,6 +35,7 @@ public abstract class Notification implements Serializable
 		setNotificationTime(new Date());
 		this.setNotificationDisplay("");
 	}
+	
 	/**
 	 * Constructor for a Notification.
 	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;
@@ -55,7 +56,8 @@ public abstract class Notification implements Serializable
 	}
 
 	
-	public Long getNotificationId(){
+	public Long getNotificationId()
+	{
 		return this.notificationId;
 	}
 	
@@ -102,4 +104,8 @@ public abstract class Notification implements Serializable
 		this.notificationTime = notificationTime;
 	}
 
+	/**
+	 * Serial version for the Notification.
+	 */
+	private static final long serialVersionUID = 5012234724329134162L;
 }
