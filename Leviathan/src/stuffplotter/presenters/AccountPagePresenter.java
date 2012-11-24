@@ -40,9 +40,9 @@ public class AccountPagePresenter implements Presenter
 	}
 	
 	/**
-	 * Bind account view components to handlers
-	 * @pre true
-	 * @post true
+	 * Bind account view components to handlers.
+	 * @pre true;
+	 * @post true;
 	 */
 	private void bind()
 	{

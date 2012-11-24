@@ -1,9 +1,5 @@
-package stuffplotter.misc;
+package stuffplotter.views.events;
 
-import stuffplotter.views.events.EventDateSelectionPanel;
-import stuffplotter.views.events.EventInfoInputPanel;
-import stuffplotter.views.events.EventInfoPanel;
-import stuffplotter.views.events.FriendSelectionPanel;
 
 /**
  * Interface for all classes that can be accepted by a class that implements the

@@ -1,6 +1,5 @@
 package stuffplotter.views.util;
 
-import stuffplotter.misc.CloseClickHandler;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;

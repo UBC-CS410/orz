@@ -1,21 +1,16 @@
 package stuffplotter.presenters;
 
 import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView;
-import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
-import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
-import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.shared.Account;
 import stuffplotter.views.MasterView;
+import stuffplotter.views.global.PageRefresherSignaller;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Widget;
 
 public class AppController implements Presenter
 {
+	private static final int REFRESH_RATE = 60000; // in ms
 	private final HandlerManager eventBus;
 	private final ServiceRepository rpcServices;	
 	private HasWidgets container;
@@ -55,5 +50,7 @@ public class AppController implements Presenter
 		Presenter presenter = new MasterPresenter(this.rpcServices, this.eventBus, new MasterView(), this.account);
 		presenter.go(this.container);
 		
+		PageRefresherSignaller refreshPageUnit = new PageRefresherSignaller(this.eventBus, REFRESH_RATE);
+		refreshPageUnit.startPeriodicRefreshing();
 	}
 }

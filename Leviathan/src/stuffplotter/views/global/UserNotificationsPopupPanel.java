@@ -2,7 +2,7 @@ package stuffplotter.views.global;
 
 import java.util.List;
 
-import stuffplotter.shared.Notification;
+import stuffplotter.bindingcontracts.NotificationModel;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -20,19 +20,15 @@ public class UserNotificationsPopupPanel extends PopupPanel
 	private FlexTable userList;
 	private FocusPanel scrollHolder;
 	private ScrollPanel notificationHolder;
-	private List<Notification> userNotifications;
 	
 	/**
 	 * Constructor for UserNotificationsPopupPanel.
 	 * @pre true;
 	 * @post this.isVisible() == true;
 	 */
-	public UserNotificationsPopupPanel(List<Notification> notifications)
+	public UserNotificationsPopupPanel()
 	{
 		super(false);
-		this.scrollHolder = new FocusPanel();
-		this.notificationHolder = new ScrollPanel();
-		this.userNotifications = notifications;
 		initializeUI();
 	}
 	
@@ -43,18 +39,10 @@ public class UserNotificationsPopupPanel extends PopupPanel
 	 */
 	private void initializeUI()
 	{
+		this.scrollHolder = new FocusPanel();
+		this.notificationHolder = new ScrollPanel();
 		userList = new FlexTable();
-		if(userNotifications.isEmpty())
-		{
-			userList.setWidget(0, 0, new Label("No new notifications."));
-		}
-		else
-		{
-			for(int i = 0; i < userNotifications.size(); i++)
-			{
-				//userList.setWidget(i, 0, userNotifications.get(i).generateMessage());
-			}
-		}
+		userList.setWidget(0, 0, new Label("No new notifications."));
 
 		this.scrollHolder.addBlurHandler(new BlurHandler()
 		{
@@ -85,6 +73,21 @@ public class UserNotificationsPopupPanel extends PopupPanel
 		{
 			this.show();
 			this.scrollHolder.setFocus(true);
+		}
+	}
+	
+	/**
+	 * Set the notifications to display in the notification window.
+	 * @pre notification != null;
+	 * @post true;
+	 * @param notifications - the list of notifications to display.
+	 */
+	public void setNotificationData(List<NotificationModel> notifications)
+	{
+		// TO DO
+		for(NotificationModel model : notifications)
+		{
+			
 		}
 	}
 }

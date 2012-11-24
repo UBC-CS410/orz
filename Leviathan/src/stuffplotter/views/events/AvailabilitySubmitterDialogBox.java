@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.misc.CloseClickHandler;
+
 import stuffplotter.shared.Availability;
+import stuffplotter.views.util.CloseClickHandler;
+
 import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.event.dom.client.ClickEvent;

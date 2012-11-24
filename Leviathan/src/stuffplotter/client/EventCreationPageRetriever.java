@@ -9,12 +9,12 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
+import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventDateSelectionPanel;
 import stuffplotter.views.events.EventInfoInputPanel;
 import stuffplotter.views.events.EventInfoPanel;
 import stuffplotter.views.events.FriendSelectionPanel;
 import stuffplotter.views.events.TimeSheetPanel;
-import stuffplotter.misc.EventCreationPageVisitor;
 
 /**
  * Class that is a visitor for any panel that implements the EventSubmittable interface.

@@ -31,8 +31,8 @@
   <source path='server'/>
   <source path='shared'/>
   <source path='views'/>
-  <source path='misc'/>
   <source path='presenters'/>
+  <source path='signals'/>
   <source path='bindingcontracts'/>
 
 </module>

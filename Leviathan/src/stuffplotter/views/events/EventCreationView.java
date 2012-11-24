@@ -3,11 +3,9 @@ package stuffplotter.views.events;
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.services.EventService;
 import stuffplotter.client.services.EventServiceAsync;
-import stuffplotter.misc.CloseClickHandler;
-import stuffplotter.misc.EventCreationPageVisitor;
-import stuffplotter.misc.EventSubmittable;
 import stuffplotter.presenters.EventCreationPresenter.CreateEventView;
 import stuffplotter.shared.Event;
+import stuffplotter.views.util.CloseClickHandler;
 import stuffplotter.views.util.NotificationDialogBox;
 
 import com.google.gwt.core.client.GWT;

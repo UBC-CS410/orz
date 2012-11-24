@@ -1,17 +1,14 @@
 package stuffplotter.shared;
 
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
-
 public class FriendNotification extends Notification
 {
-
 	public enum FriendNotificationType
 	{
 		FRIENDREQUEST, FRIENDACCEPTED
 	}
 
 	private FriendNotificationType friendType;
+
 	/**
 	 * Constructor for a FriendNotification.
 	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;
@@ -22,11 +19,11 @@ public class FriendNotification extends Notification
 	 * @param fromUser - the user that created the event.
 	 * @param forUser - the guest invited to the event.
 	 */
-	
 	public FriendNotification()
 	{
 		
 	}
+	
 	public FriendNotification(FriendNotificationType type, String forUser, String fromUser)
 	{
 		super(NotificationType.FRIENDREQUEST, forUser, fromUser);
@@ -53,12 +50,14 @@ public class FriendNotification extends Notification
 			this.notificationDisplay = display;
 		}else if(type.equals(FriendNotificationType.FRIENDACCEPTED))
 		{
-			String display = "You and "+fromUser+" are no officially friends!!";
+			String display = "You and "+fromUser+" are now officially friends!!";
 			this.notificationDisplay = display;
 		}
 		
 	}
 
-
-
+	/**
+	 * Serial version for FriendNotification.
+	 */
+	private static final long serialVersionUID = -4195766643137628383L;
 }

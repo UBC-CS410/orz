@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
+import stuffplotter.views.friends.FriendPanel;
 
 
 /**
@@ -27,7 +28,7 @@ public class FriendsPagePresenter implements Presenter
 		public String getFriendBoxText();
 		public void clearFriendBoxText();
 		public void addPendingUsers(String pendUser, Account appUser);
-		
+		void addFriendPanel(FriendPanel friendPan);
 		//public FriendList getFriendDisplay() create presenter for this
 		/**
 		 * Retrieve the FriendsView as a Widget.
@@ -36,6 +37,7 @@ public class FriendsPagePresenter implements Presenter
 		 * @return the FriendsView as a Widget.
 		 */
 		public Widget asWidget();
+		
 		
 	}
 	
@@ -59,7 +61,6 @@ public class FriendsPagePresenter implements Presenter
 		this.eventBus = eventBus;
 		this.friendsView = display;
 		
-		fetchPendingFriends();
 	}
 
 
@@ -91,9 +92,14 @@ public class FriendsPagePresenter implements Presenter
 			}
 		});
 		
+		fetchPendingFriends();
+		fetchFriends();
 		
 	}
 	
+
+
+
 	/**
 	 * Present the friends view
 	 * @pre true;
@@ -105,6 +111,34 @@ public class FriendsPagePresenter implements Presenter
 		bind();
 		container.add(this.friendsView.asWidget());
 	}
+	
+	private void fetchFriends()
+	{
+		List<String> userFriends = appUser.getUserFriends();
+		AccountServiceAsync accountService = appServices.getAccountService();
+		for(String friend: userFriends)
+		{
+			accountService.getAccount(friend,  new AsyncCallback<Account>(
+					){
+
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(Account result)
+						{
+							Account friend = result;
+							FriendPanel friendPan = new FriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserTitle(), friend.getUserProfilePicture());
+							friendsView.addFriendPanel(friendPan);
+						}});
+		}
+		
+	}
+
 	
 	private void fetchPendingFriends()
 	{
