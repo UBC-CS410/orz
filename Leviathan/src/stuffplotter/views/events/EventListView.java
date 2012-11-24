@@ -22,6 +22,10 @@ public class EventListView extends VerticalPanel
 	public EventListView(String name, String time, String location)
 	{
 		this.link = new Anchor(name);
+		
+		this.setStyleName("eventListing");
+		this.link.setStyleName("eventListingAnchor");
+		
 		this.add(link);
 		this.add(new Label(time));
 		this.add(new Label(location));
