@@ -17,6 +17,7 @@ import com.googlecode.objectify.annotation.Entity;
  * The Account Class holds information for individual users.
  * Information includes profile, events, and statistics.
  */
+@SuppressWarnings("serial")
 @Entity
 public class Account implements Serializable, AccountModel
 {
@@ -36,11 +37,11 @@ public class Account implements Serializable, AccountModel
 	private String userProfilePicture;
 
 	/* Social information */
-	private List<String> userFriends = new ArrayList<String>();
-	private List<String> pendingFriends = new ArrayList<String>();
-	private List<Long> userCurrentEvents = new ArrayList<Long>();
-	private List<Long> userPastEvents = new ArrayList<Long>();
-	private List<Long> userNotifications = new ArrayList<Long>();
+	private List<String> userFriends;
+	private List<String> pendingFriends;
+	private List<Long> userCurrentEvents;
+	private List<Long> userPastEvents;
+	private List<Long> userNotifications;
 
 	/* Custom information */
 	private String userTitle;
@@ -52,7 +53,11 @@ public class Account implements Serializable, AccountModel
 	 */
 	public Account()
 	{
-		// do nothing
+		this.userFriends = new ArrayList<String>();
+		this.pendingFriends = new ArrayList<String>();
+		this.userCurrentEvents = new ArrayList<Long>();
+		this.userPastEvents = new ArrayList<Long>();
+		this.userNotifications = new ArrayList<Long>();
 	}
 
 	/**
@@ -65,6 +70,7 @@ public class Account implements Serializable, AccountModel
 	{
 		this.userEmail = pEmail;
 		this.userFriends = new ArrayList<String>();
+		this.pendingFriends = new ArrayList<String>();
 		this.userCurrentEvents = new ArrayList<Long>();
 		this.userPastEvents = new ArrayList<Long>();
 		this.userNotifications = new ArrayList<Long>();

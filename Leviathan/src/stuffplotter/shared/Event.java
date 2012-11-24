@@ -106,8 +106,14 @@ public class Event implements Serializable
 		this.eventDuration = eventRetriever.getDuration();
 		this.eventCost = eventRetriever.getCost();
 		this.eventDescription = eventRetriever.getDescription();
+		
 		this.eventStatus = Status.PROPOSED;
 		this.eventFrame = Frame.HOURS;
+		
+		this.eventInvitees = new ArrayList<String>();
+		this.eventAttendees = new ArrayList<String>();
+		this.eventComments = new ArrayList<Long>();
+		this.eventRatings = new ArrayList<Double>();
 	}
 	
 	/**

@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -147,31 +148,34 @@ public class EventView extends VerticalPanel implements EventViewer
 	@Override
 	public void initialize(Event event)
 	{
-		String what = event.getName();
-		List<String> who = event.getAttendees();
-		Date when = event.getDate();
-		String where = event.getLocation();
-		String why = event.getDescription();
+		String title = event.getName();
+		List<String> people = event.getAttendees();
+		Date time = event.getDate();
+		String place = event.getLocation();
+		String details = event.getDescription();
 		
-		this.add(new Anchor(what));
-		if (when == null)
+		this.add(new Anchor(title));
+		if (time == null)
 		{
 			this.add(this.voteButton);
 		}
 		else 
 		{
-			String date = when.toLocaleString();
+			String date = time.toString();
 			this.add(new Anchor(date));
 		}
-		this.add(new Anchor(where));
-		this.add(new Anchor(why));
+		this.add(new Anchor(place));
+		this.add(new Anchor(details));
 		
 		this.add(this.commentButton);
 		
 		this.commentTextBox.setVisible(false);
 		this.add(this.commentTextBox);
 		
-		this.add(this.commentPanel);
+		ScrollPanel scrollPanel = new ScrollPanel();
+		scrollPanel.setHeight("480px");
+		scrollPanel.add(this.commentPanel);
+		this.add(scrollPanel);
 	}
 	
 }

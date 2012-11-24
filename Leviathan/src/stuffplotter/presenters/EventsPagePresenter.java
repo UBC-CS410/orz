@@ -1,6 +1,5 @@
 package stuffplotter.presenters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,7 +23,6 @@ import stuffplotter.views.events.EventView;
 public class EventsPagePresenter implements Presenter
 {
 	private List<Event> currentEvents;
-	private boolean current = true;
 	
 	public interface EventsPageViewer
 	{
@@ -167,10 +165,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onSuccess(List<Event> result)
 			{
-				/**
-				 * Keep track of current events for binding
-				 */
-				currentEvents = result;
+				currentEvents = result; //used for bindEventViewers
 				eventsView.initialize(currentEvents);
 				eventsView.showEventViewers();
 				bindEventViewers();
@@ -197,10 +192,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onSuccess(List<Event> result)
 			{
-				/**
-				 * Keep track of current events for binding
-				 */
-				currentEvents = result;
+				currentEvents = result; //used for bindEventViewers
 				eventsView.initialize(currentEvents);
 				eventsView.showEventViewers();
 				bindEventViewers();
