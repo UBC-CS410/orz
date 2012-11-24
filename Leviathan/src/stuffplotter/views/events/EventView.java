@@ -107,23 +107,35 @@ public class EventView extends VerticalPanel implements EventViewer
 	}
 	
 	/**
-	 * Displays all comments posted for event
+	 * Adds a new comment to the comment panel display
 	 * @pre true;
 	 * @post true;
-	 * @return string containing the text
+	 * @param comment - a new Comment
 	 */
 	@Override
-	public void showComments(List<Comment> comments)
+	public void updateComments(Comment comment)
+	{
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.add(new Label(comment.getUsername()));
+		hp.add(new Label(" @ "));
+		hp.add(new Label(comment.getTime().toString()));
+		this.commentPanel.add(hp);
+		this.commentPanel.add(new Label(comment.getContent()));
+	}
+	
+	/**
+	 * Adds a list of comments to the comment panel display
+	 * @pre true;
+	 * @post true;
+	 * @return comments - a list of Comment
+	 */
+	@Override
+	public void displayComments(List<Comment> comments)
 	{
 		this.commentPanel.clear();
 		for (int i = 0; i < comments.size(); i++)
 		{
-			HorizontalPanel hp = new HorizontalPanel();
-			hp.add(new Label(comments.get(i).getUsername()));
-			hp.add(new Label(" @ "));
-			hp.add(new Label(comments.get(i).getTime().toString()));
-			this.commentPanel.add(hp);
-			this.commentPanel.add(new Label(comments.get(i).getContent()));
+			updateComments(comments.get(i));
 		}
 	}
 
