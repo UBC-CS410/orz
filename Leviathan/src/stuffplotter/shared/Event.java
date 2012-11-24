@@ -36,7 +36,7 @@ public class Event implements Serializable
 		FINISHED
 	};
 	
-	public enum Span 
+	public enum Frame 
 	{
 		/**
 		 * For single day event.
@@ -52,39 +52,41 @@ public class Event implements Serializable
 	@Id private Long eventId;
 	private String eventOwner;
 	private String eventName;
+	private Date eventDate;
 	private String eventLocation;
 	private Double[] eventCoordinates;
+	private String eventDescription;
 	
-	private Date eventDate = null;
-	private String eventDuration;
-	private String eventCost;
-	
-	private Long eventScheduler;
-	
-	private Status eventStatus;
-	private Span eventSpan;
-	
+	private List<String> eventInvitees;
+	private List<String> eventAttendees;
+		
 	/**
 	 * Proposed times for an event.  Temporary stored in the event class until an
 	 * associated Scheduler is created. 
 	 */
 	@Transient private List<MonthContainer> timeSheet;
-	private List<String> eventInvitees = new ArrayList<String>();
-	private List<String> eventAttendees = new ArrayList<String>();
 	
-	private String eventDescription;
-	private List<Long> eventComments = new ArrayList<Long>();
+	private Long eventScheduler;
+	private Status eventStatus;
+	private Frame eventFrame;
 	
-	private Double[] eventRatings;
+	private String eventDuration;	
+		
+	private String eventCost;
+	private List<Long> eventComments;
+	
+	private List<Double> eventRatings;
 	private Double eventScore;
 	
-	public int eventRating;
 	/**
 	 * Event constructor.
 	 */
 	public Event()
 	{
-		// do nothing
+		this.eventInvitees = new ArrayList<String>();
+		this.eventAttendees = new ArrayList<String>();
+		this.eventComments = new ArrayList<Long>();
+		this.eventRatings = new ArrayList<Double>();
 	}
 	
 	/**
@@ -98,11 +100,14 @@ public class Event implements Serializable
 	{
 		this.eventOwner = eventRetriever.getOwner();
 		this.eventName = eventRetriever.getName();
+		this.eventDate = null;
 		this.eventLocation = eventRetriever.getLocation();
 		this.eventCoordinates = eventRetriever.getCoordinates();
 		this.eventDuration = eventRetriever.getDuration();
 		this.eventCost = eventRetriever.getCost();
 		this.eventDescription = eventRetriever.getDescription();
+		this.eventStatus = Status.PROPOSED;
+		this.eventFrame = Frame.HOURS;
 	}
 	
 	/**

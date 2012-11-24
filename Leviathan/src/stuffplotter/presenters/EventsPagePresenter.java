@@ -32,11 +32,13 @@ public class EventsPagePresenter implements Presenter
 		public HasClickHandlers getCreateButton();
 		public HasClickHandlers getListCurrentButton();
 		public HasClickHandlers getListPastButton();
-		public List<HasClickHandlers> getListedLinks();
 		
-		public void populateListPanel(List<Event> toDisplay);
-		public void hideListPanel();
-
+		public HasWidgets getEventViewerContainer();
+		public List<HasClickHandlers> getEventViewers();
+		public void showEventViewers();
+		public void hideEventViewers();
+		
+		public void initialize(List<Event> events);
 		public Widget asWidget();
 	}
 	
@@ -90,7 +92,7 @@ public class EventsPagePresenter implements Presenter
 	
 			@Override
 			public void onClick(ClickEvent event) {
-				eventsView.populateListPanel(currentEvents);
+				eventsView.showEventViewers();
 			}
 		});
 		
@@ -98,25 +100,26 @@ public class EventsPagePresenter implements Presenter
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				eventsView.populateListPanel(currentEvents);
+				eventsView.showEventViewers();
 			}
 		});
 		
-		for (int i = 0; i < eventsView.getListedLinks().size(); i++)
+		for (int i = 0; i < eventsView.getEventViewers().size(); i++)
 		{
 			final int eventsIndex = i;
-			eventsView.getListedLinks().get(i).addClickHandler(new ClickHandler() {
+			eventsView.getEventViewers().get(i).addClickHandler(new ClickHandler() {
 
 				@Override
 				public void onClick(ClickEvent event)
 				{
 					Event selectedEvent;
+					System.out.println("clicked?");
 					if(current)
 						selectedEvent = currentEvents.get(eventsIndex);
 					else
 						selectedEvent = pastEvents.get(eventsIndex);
 					
-					eventsView.hideListPanel();
+					eventsView.hideEventViewers();
 					
 					Presenter presenter = new EventViewPresenter(
 							appServices,
@@ -124,7 +127,7 @@ public class EventsPagePresenter implements Presenter
 							new EventView(),
 							appUser,
 							selectedEvent);
-					presenter.go((HasWidgets) eventsView);
+					presenter.go(eventsView.getEventViewerContainer());
 				}
 				
 			});
@@ -161,8 +164,11 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onSuccess(List<Event> result)
 			{
+				/**
+				 * Keep track of current events for binding
+				 */
 				currentEvents = result;
-				eventsView.populateListPanel(currentEvents);
+				eventsView.initialize(currentEvents);
 				bind();
 			}
 		});
