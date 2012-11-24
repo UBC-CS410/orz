@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import stuffplotter.bindingcontracts.AchievementModel;
+import stuffplotter.shared.Achievement;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 /**
@@ -29,9 +30,9 @@ public class AchievementsDisplayPanel extends ScrollDisplayPanel
 	 * @post true;
 	 * @param achievements - the list of AchievementModel to display.
 	 */
-	public void setAchievementData(List<AchievementModel> achievements)
+	public void setAchievementData(List<Achievement> achievements)
 	{
-		for(AchievementModel model : achievements)
+		for(Achievement model : achievements)
 		{
 			this.addElement(new AchievementPanel(model));
 		}
@@ -48,7 +49,7 @@ public class AchievementsDisplayPanel extends ScrollDisplayPanel
 		 * @post truel;
 		 * @param model - the Achievement to data bind with and display.
 		 */
-		public AchievementPanel(AchievementModel model)
+		public AchievementPanel(Achievement model)
 		{
 			// TO DO
 		}
