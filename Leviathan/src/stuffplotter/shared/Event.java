@@ -64,7 +64,7 @@ public class Event implements Serializable
 	 * Proposed times for an event.  Temporary stored in the event class until an
 	 * associated Scheduler is created. 
 	 */
-	@Transient private List<MonthContainer> timeSheet;
+	@Transient private List<Date> timeSheet;
 	
 	private Long eventScheduler;
 	private Status eventStatus;
@@ -430,7 +430,7 @@ public class Event implements Serializable
 	 * @post true;
 	 * @param retrieveSubmission
 	 */
-	public List<MonthContainer> getTimeSheet()
+	public List<Date> getTimeSheet()
 	{
 		return this.timeSheet;
 	}
@@ -441,7 +441,7 @@ public class Event implements Serializable
 	 * @post true;
 	 * @param proposedTimes - proposed times for the event.
 	 */
-	public void setTimeSheet(List<MonthContainer> proposedTimes)
+	public void setTimeSheet(List<Date> proposedTimes)
 	{
 		this.timeSheet = proposedTimes;
 	}

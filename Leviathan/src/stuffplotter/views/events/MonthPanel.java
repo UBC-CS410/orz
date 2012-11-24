@@ -1,10 +1,10 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import stuffplotter.shared.DayContainer;
-import stuffplotter.shared.MonthContainer;
+import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -17,67 +17,74 @@ import com.google.gwt.user.client.ui.Widget;
 public class MonthPanel extends VerticalPanel
 {
 	private HorizontalPanel daysHolder;
-	private Month month;
+	private String month;
 	private String year;
 	
-	public enum Month
+	/**
+	 * Constructor for MonthPanel for when given a day to add.
+	 * @pre dates != null;
+	 * @post this.isVisible() == true;
+	 * @param dates - the day to add to the MonthPanel.
+	 */
+	public MonthPanel(Date date)
 	{
-		JANUARY(0), FEBRUARY(1), MARCH(2), APRIL(3), MAY(4), JUNE(5), JULY(6), AUGUST(7), SEPTEMBER(8),
-		OCTOBER(9), NOVEMBER(10), DECEMBER(11);
-		
-		private int index;
-		
-		/**
-		 * Constructor to bind enum to a 0 based index.
-		 * @pre index >= 0;
-		 * @post this.index == index;
-		 * @param index - the index of the month
-		 */
-		private Month(int index)
-		{
-			this.index = index;
-		}
-		
-		/**
-		 * Method to get the index for the given enum.
-		 * @pre true;
-		 * @post true;
-		 * @return	the index of the Month.
-		 */
-		public int getIndex()
-		{
-			return this.index;
-		}
-		
-		/**
-		 * Method to get the display name for the given enum.
-		 * @return the name of the month with only the first letter capitalized.
-		 */
-		public String displayName()
-		{
-			String allLowerCase = this.toString().toLowerCase();
-			Character firstLetter = Character.toUpperCase(allLowerCase.charAt(0));
-			return firstLetter + allLowerCase.substring(1);
-		}
+		super();
+		this.initializeUI(date);
 	}
 	
 	/**
-	 * Constructor for MonthPanel.
-	 * @pre monthName != null && year != null && days != null;
+	 * Constructor for MonthPanel for when given a list of days to add.
+	 * @pre dates != null && !dates.isEmpty();
 	 * @post this.isVisible() == true;
+	 * @param dates - list of Dates containing the days to add.
 	 */
-	public MonthPanel(Month monthName, String year, int[] days)
+	public MonthPanel(List<Date> dates)
 	{
 		super();
-		this.month = monthName;
-		this.year = year;
-		this.add(new Label(monthName.displayName() + " " + year));
+		this.initializeUI(dates);
+	}
+	
+	/**
+	 * Helper method to initialize the UI when given a Date.
+	 * @pre date != null;
+	 * @post true;
+	 * @param date - the Date containing the day to add.
+	 */
+	private void initializeUI(Date date)
+	{
+		DateSplitter splitter = new DateSplitter(date);
+		this.month = splitter.getMonthAsString();
+		this.year = splitter.getYearAsString();
+		this.add(new Label(this.month + " " + this.year));
+		
+		this.daysHolder = new HorizontalPanel();
+		this.daysHolder.add(new DaySelections(date));
+		
+		this.add(this.daysHolder);		
+	}
+	
+	/**
+	 * Helper method to initialize the UI when given a list of Dates.
+	 * @pre dates != null && !dates.isEmpty();
+	 * @post true;
+	 * @param dates - list of Dates containing the days to add.
+	 */
+	private void initializeUI(List<Date> dates)
+	{
+		if(!dates.isEmpty())
+		{
+			DateSplitter splitter = new DateSplitter(dates.get(0));
+			this.month = splitter.getMonthAsString();
+			this.year = splitter.getYearAsString();
+			this.add(new Label(this.month + " " + this.year));
+		}
+		
 		this.daysHolder = new HorizontalPanel();
 		
 		// for loop to populate the DaySelections for the month panel
-		for(int day : days)
+		for(Date date : dates)
 		{
-			this.daysHolder.add(new DaySelections(String.valueOf(day)));
+			this.daysHolder.add(new DaySelections(date));
 		}
 		
 		this.add(this.daysHolder);
@@ -89,9 +96,9 @@ public class MonthPanel extends VerticalPanel
 	 * @post true;
 	 * @return the submissions of the user.
 	 */
-	public MonthContainer retrieveSubmission()
+	public List<Date> retrieveSubmission()
 	{
-		List<DayContainer> selectedValues = new ArrayList<DayContainer>();
+		List<Date> selectedValues = new ArrayList<Date>();
 		
 		// for loop to retrieve the submissions from each DaySelections
 		for (int i = 0; i < this.daysHolder.getWidgetCount(); i++)
@@ -99,11 +106,11 @@ public class MonthPanel extends VerticalPanel
 			Widget childWidget = this.daysHolder.getWidget(i); 
 			if(childWidget instanceof DaySelections)
 			{
-				selectedValues.add(((DaySelections) childWidget).retrieveSelectedValues());
+				selectedValues.addAll(((DaySelections) childWidget).retrieveSelectedValues());
 			}
 		}
 		
-		return new MonthContainer(this.month, this.year, selectedValues);
+		return selectedValues;
 	}
 	
 	/**
@@ -111,10 +118,13 @@ public class MonthPanel extends VerticalPanel
 	 * if the day is already in the month panel, it will not be added.
 	 * @pre dayOfMonth != null;
 	 * @post true;
-	 * @param dayOfMonth - the day of the month to display.
+	 * @param date - the Date containing the day to add.
 	 */
-	public void addDay(String dayOfMonth)
+	public void addDay(Date date)
 	{
+		DateSplitter splitter = new DateSplitter(date);
+		int dayOfMonth = splitter.getDay();
+		
 		boolean dayFound = false;
 		int numOfDayPanels = this.daysHolder.getWidgetCount();
 		int i = 0;
@@ -136,20 +146,19 @@ public class MonthPanel extends VerticalPanel
 		
 		if(!dayFound)
 		{
-			this.daysHolder.add(new DaySelections(dayOfMonth));
+			this.daysHolder.add(new DaySelections(date));
 		}
 	}
 	
 	/**
 	 * Method to add a new day with specified time slots.
-	 * @pre dayOfMonth != null && timeSlots != null;
+	 * @pre dates != null && !dates.isEmtpy();
 	 * @post true;
-	 * @param dayOfMonth - the day of the month to display.
-	 * @param timeSlots - the time slots to add to the display.
+	 * @param dates - the list of Dates containing the time slots to add.
 	 */
-	public void addDay(String dayOfMonth, int[] timeSlots)
+	public void addDay(List<Date> dates)
 	{
-		this.daysHolder.add(new DaySelections(dayOfMonth, timeSlots));
+		this.daysHolder.add(new DaySelections(dates));
 	}
 	
 	/**
@@ -158,7 +167,7 @@ public class MonthPanel extends VerticalPanel
 	 * @post true;
 	 * @return the month of the panel.
 	 */
-	public Month getMonth()
+	public String getMonth()
 	{
 		return this.month;
 	}

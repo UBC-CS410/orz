@@ -1,9 +1,11 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-import stuffplotter.shared.DayContainer;
+import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Label;
@@ -14,9 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
  * Class to display the selectable times for a given day.
  */
 public class DaySelections extends VerticalPanel
-{
-	private String dayOfMonth;
-	
+{	
 	private final String[] timeIntervals = new String[]
 	{
 		"12AM - 1AM", "1AM - 2AM", "2AM - 3AM",	"3AM - 4AM", "4AM - 5AM",
@@ -26,43 +26,82 @@ public class DaySelections extends VerticalPanel
 		"8PM - 9PM", "9PM - 10PM", "10PM - 11PM", "11PM - 12AM"
 	};
 
+	private String dayOfMonth;
+	
 	/**
 	 * Constructor for DaySelections, populates all time slots.
-	 * @pre dayOfMonth != null;
+	 * @pre date != null;
 	 * @post this.isVisible() == true;
-	 * @param dayOfMonth - the day of the month to display.
+	 * @param date - the date containing the day of the month to display.
 	 */
-	public DaySelections(String dayOfMonth)
+	public DaySelections(Date date)
 	{
 		super();
-		this.dayOfMonth = dayOfMonth;
-		this.add(new Label(dayOfMonth));
-		for (int i = 0; i < timeIntervals.length; i++)
-		{
-			this.add(new TimeSlot(timeIntervals[i], i));
-		}
+		this.initializeUI(date);
 	}
 	
 	/**
 	 * Constructor for DaySelections, populates all time slots based
-	 * on the given indices.
-	 * @pre dayOfMonth != null && intervalIndexValues != null;
+	 * on the given Dates.
+	 * @pre dates != null && !dates.isEmpty();
 	 * @post this.isVisible() == true;
-	 * @param dayOfMonth - the day of the month to display.
-	 * @param intervalIndexValues - the list of intervals to display based on
-	 * 								the their index value from the list
-	 * 								timeIntervals.
+	 * @param dates - the list of time slots to display for the DaySelections panel.
 	 */
-	public DaySelections(String dayOfMonth, int[] intervalIndexValues)
+	public DaySelections(List<Date> dates)
 	{
 		super();
-		this.dayOfMonth = dayOfMonth;
+		this.initializeUI(dates);		
+	}
+	
+	/**
+	 * Helper method to display all the time slots when given a single Date.
+	 * @pre true;
+	 * @post true;
+	 * @param date - the Date containing the day to display all the time slots for.
+	 */
+	private void initializeUI(Date date)
+	{
+		DateSplitter splitter = new DateSplitter(date);
+		this.dayOfMonth = splitter.getDayAsString();
 		this.add(new Label(dayOfMonth));
-		for (int i = 0; i < intervalIndexValues.length; i++)
+		
+		// for loop to add all the time slots
+		for (int i = 0; i < timeIntervals.length; i++)
 		{
-			int intervalGiven = intervalIndexValues[i];
-			this.add(new TimeSlot(timeIntervals[intervalGiven], intervalGiven));
-		}		
+			this.add(new TimeSlot(timeIntervals[i],
+								  splitter.getMonth(),
+								  splitter.getDay(),
+								  splitter.getYear(),
+								  i));
+		}
+	}
+	
+	/**
+	 * Helper method to display all the time slots in the given list of Dates.
+	 * @pre dates != null && !dates.isEmpty();
+	 * @post true;
+	 * @param dates - the list of dates containing the time slots to add.
+	 */
+	private void initializeUI(List<Date> dates)
+	{
+		if(!dates.isEmpty())
+		{
+			DateSplitter splitter = new DateSplitter(dates.get(0));
+			this.dayOfMonth = splitter.getDayAsString();
+			this.add(new Label(dayOfMonth));
+		}
+		
+		// for loop to add all the given time slots
+		for(Date date : dates)
+		{
+			DateSplitter splitter = new DateSplitter(date);
+			int hour = splitter.getHour();
+			this.add(new TimeSlot(timeIntervals[hour],
+								  splitter.getMonth(),
+								  splitter.getDay(),
+								  splitter.getYear(),
+								  hour));
+		}
 	}
 	
 	/**
@@ -72,9 +111,9 @@ public class DaySelections extends VerticalPanel
 	 * @post true;
 	 * @return a Day containing the indices of the selected time intervals.
 	 */
-	public DayContainer retrieveSelectedValues()
+	public List<Date> retrieveSelectedValues()
 	{
-		List<Integer> selectedValues = new ArrayList<Integer>();
+		List<Date> selectedValues = new ArrayList<Date>();
 		
 		// for each loop to find all the selected time intervals
 		for (Widget timeSlot : this.getChildren())
@@ -83,12 +122,23 @@ public class DaySelections extends VerticalPanel
 			{
 				if(((TimeSlot) timeSlot).getValue())
 				{
-					selectedValues.add(((TimeSlot) timeSlot).getIndexValue());
+					selectedValues.add(((TimeSlot) timeSlot).getDate());
 				}
 			}
 		}
 		
-		return new DayContainer(this.dayOfMonth, selectedValues);
+		return selectedValues;
+	}
+	
+	/**
+	 * Retrieve the day represented by the DaySelection.
+	 * @pre true;
+	 * @post true;
+	 * @return the day represented by the DaySelection.
+	 */
+	public String getDay()
+	{
+		return this.dayOfMonth;
 	}
 	
 	/**
@@ -96,42 +146,50 @@ public class DaySelections extends VerticalPanel
 	 */
 	public class TimeSlot extends CheckBox
 	{
-		private int intervalIndexValue;
+		private Date timeSlot;
 		
 		/**
 		 * Constructor for a time interval in the DaySelections component.
-		 * @pre timeInterval != null && indexValue != null &&
-		 * indexValue >= 0 && indexValue < timeIntervals.length;
+		 * @pre timeInterval != null && month >= 0 && month <= 11 && day is valid day for month
+		 * 		&& year >= 1900 && hour >= 0 && hour <= 23;
 		 * @post this.isVisible() == true;
-		 * @param timeInterval - the time interval to display.
+		 * @param timeInterval - the time interval to display for the time slot.
+		 * @param month - the month the timeslot belongs to.
+		 * @param day - the day the timeslot belongs to.
+		 * @param year - the year the timeslot belongs to.
+		 * @param hour - the starting hour the timeslot represents in 24 hour, base 0, time.
 		 */
-		public TimeSlot(String timeInterval, int indexValue)
+		public TimeSlot(String timeInterval, int month, int day, int year, int hour)
 		{
 			super(timeInterval);
-			this.intervalIndexValue = indexValue;
+			this.initializeVariables(month, day, year, hour);
 			this.setWordWrap(false);
 		}
 		
 		/**
-		 * Method to retrieve the index value of the time interval selected.
+		 * Helper method to initialize the variables for the timeslot.
+		 * @pre timeInterval != null && month >= 0 && month <= 11 && day is valid day for month
+		 * 		&& year >= 1900 && hour >= 0 && hour <= 23;
+		 * @post this.isVisible() == true;
+		 * @param timeInterval - the time interval to display for the time slot.
+		 * @param month - the month the timeslot belongs to.
+		 * @param day - the day the timeslot belongs to.
+		 * @param year - the year the timeslot belongs to.
+		 * @param hour - the starting hour the timeslot represents in 24 hour, base 0, time.		 */
+		private void initializeVariables(int month, int day, int year, int hour)
+		{
+			this.timeSlot = new Date(year, month, day, hour, 0);
+		}
+		
+		/**
+		 * Method to retrieve the Date the time interval represents.
 		 * @pre true;
 		 * @post true;
-		 * @return the index value of the time interval selected.
+		 * @return the Date the time interval represents.
 		 */
-		public int getIndexValue()
+		public Date getDate()
 		{
-			return intervalIndexValue;
+			return this.timeSlot;
 		}
-	}
-	
-	/**
-	 * Method to get the day represented by the panel.
-	 * @pre true;
-	 * @post true;
-	 * @return the day of the month the panel represents.
-	 */
-	public String getDay()
-	{
-		return this.dayOfMonth;
 	}
 }

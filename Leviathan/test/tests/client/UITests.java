@@ -13,7 +13,6 @@ import com.google.gwt.junit.client.GWTTestCase;
 import stuffplotter.views.account.AccountPanel;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.MonthContainer;
 
 public class UITests extends GWTTestCase
 {
@@ -28,7 +27,7 @@ public class UITests extends GWTTestCase
 	{
 		//userAccount = new Account("UserName", "Email");
 		accountPanel = new AccountPanel();
-		userAvail = new AvailabilitySubmitterDialogBox(new ArrayList<MonthContainer>());
+		//userAvail = new AvailabilitySubmitterDialogBox(new ArrayList<Date>());
 	}
 	
 	@AfterClass

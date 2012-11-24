@@ -1,14 +1,14 @@
 package stuffplotter.views.events;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import stuffplotter.views.events.MonthPanel.Month;
 import stuffplotter.misc.EventCreationPageVisitor;
 import stuffplotter.misc.EventSubmittable;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -63,13 +63,7 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event)
 			{
-				Date dayClicked = event.getValue();
-				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
-				String[] calendarValues = dayFormat.format(dayClicked).toString().split(",");
-				Month month = Month.valueOf(calendarValues[0].toUpperCase());
-				int[] day = { Integer.valueOf(calendarValues[1]) };
-				String year = calendarValues[2];
-				timeSheet.addDay(month, year, day);
+				timeSheet.addDay(event.getValue());
 			}
 		});
 	}
