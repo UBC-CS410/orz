@@ -24,7 +24,6 @@ import stuffplotter.views.events.EventView;
 public class EventsPagePresenter implements Presenter
 {
 	private List<Event> currentEvents;
-	private List<Event> pastEvents;
 	private boolean current = true;
 	
 	public interface EventsPageViewer
@@ -64,8 +63,8 @@ public class EventsPagePresenter implements Presenter
 		
 		this.eventBus = eventBus;
 		this.eventsView = display;
-				
-		fetchCurrentEventsFromUser();
+
+		fetchCurrentEvents();
 	}
 	
 	/**
@@ -92,7 +91,7 @@ public class EventsPagePresenter implements Presenter
 	
 			@Override
 			public void onClick(ClickEvent event) {
-				eventsView.showEventViewers();
+				fetchCurrentEvents();
 			}
 		});
 		
@@ -100,10 +99,18 @@ public class EventsPagePresenter implements Presenter
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				eventsView.showEventViewers();
+				fetchPastEvents();
 			}
 		});
-		
+	}
+	
+	/**
+	 * Binds each event viewer anchor to a handler to present it
+	 * @pre true;
+	 * @post true;
+	 */
+	private void bindEventViewers()
+	{
 		for (int i = 0; i < eventsView.getEventViewers().size(); i++)
 		{
 			final int eventsIndex = i;
@@ -113,23 +120,18 @@ public class EventsPagePresenter implements Presenter
 				public void onClick(ClickEvent event)
 				{
 					Event selectedEvent;
-					System.out.println("clicked?");
-					if(current)
-						selectedEvent = currentEvents.get(eventsIndex);
-					else
-						selectedEvent = pastEvents.get(eventsIndex);
-					
-					eventsView.hideEventViewers();
-					
+					selectedEvent = currentEvents.get(eventsIndex);
+
 					Presenter presenter = new EventViewPresenter(
 							appServices,
 							eventBus,
 							new EventView(),
 							appUser,
 							selectedEvent);
+					
+					eventsView.hideEventViewers();
 					presenter.go(eventsView.getEventViewerContainer());
-				}
-				
+				}	
 			});
 		}
 	}
@@ -142,15 +144,16 @@ public class EventsPagePresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
+		bind();
 		container.add(this.eventsView.asWidget());
 	}
 	
 	/**
-	 * Assigns currentEvents to the list of events associated with the user
+	 * Retrieves and displays the list of current events associated with the user
 	 * @pre true;
-	 * @post this.currentEvents == eventService.retrieveEvents(appUser.getUserEvents);
+	 * @post this.currentEvents == eventService.retrieveEvents(appUser.getCurrentEvents());
 	 */
-	private void fetchCurrentEventsFromUser()
+	private void fetchCurrentEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
 		eventService.retrieveEvents(appUser.getCurrentEvents(), new AsyncCallback<List<Event>>() {
@@ -169,19 +172,40 @@ public class EventsPagePresenter implements Presenter
 				 */
 				currentEvents = result;
 				eventsView.initialize(currentEvents);
-				bind();
+				eventsView.showEventViewers();
+				bindEventViewers();
 			}
 		});
 	}
 	
 	/**
-	 * 
-	 * @pre
-	 * @post
+	 * Retrieves and displays the list of past events associated with the user
+	 * @pre true;
+	 * @post this.currentEvents == eventService.retrieveEvents(appUser.getPastEvents());
 	 */
-	private void fetchPastEventsFromUser()
+	private void fetchPastEvents()
 	{
-		
+		EventServiceAsync eventService = appServices.getEventService();
+		eventService.retrieveEvents(appUser.getPastEvents(), new AsyncCallback<List<Event>>() {
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(List<Event> result)
+			{
+				/**
+				 * Keep track of current events for binding
+				 */
+				currentEvents = result;
+				eventsView.initialize(currentEvents);
+				eventsView.showEventViewers();
+				bindEventViewers();
+			}
+		});
 	}
 
 }
