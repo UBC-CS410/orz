@@ -53,7 +53,7 @@ public class FriendNotification extends Notification
 			this.notificationDisplay = display;
 		}else if(type.equals(FriendNotificationType.FRIENDACCEPTED))
 		{
-			String display = "You and "+fromUser+" are no officially friends!!";
+			String display = "You and "+fromUser+" are now officially friends!!";
 			this.notificationDisplay = display;
 		}
 		
