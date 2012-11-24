@@ -6,6 +6,7 @@ import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
 import stuffplotter.shared.Account;
 
 
+import stuffplotter.views.friends.FriendPanel;
 import stuffplotter.views.friends.PendingFriendPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class FriendsPageView extends HorizontalPanel implements FriendsView
 {
-	private static final int NUMOFCOLUMNS = 3;
+	private static final int NUMOFCOLUMNS = 1;
 	private Button addFriend;
 	private Button searchFriends;
 	private TextBox addFriendTextBox;
@@ -52,7 +53,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		this.addFriend = new Button("Add Friend");
 		this.addFriendTextBox = new TextBox();
 		this.searchFriends = new Button("Search Friends");
-		this.pendingFriendDisplay = new ScrollDisplayPanel(1);
+		this.pendingFriendDisplay = new ScrollDisplayPanel(NUMOFCOLUMNS);
 		this.pendingFriendDisplay.addElement(new Label("Pending Friend"));
 
 		
@@ -66,11 +67,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		this.add(buttonHolder);
 		this.friendDisplay = new ScrollDisplayPanel(NUMOFCOLUMNS);
 		this.friendDisplay.addElement(new Label("Display of Friends"));
-		this.friendDisplay.addElement(new Label("Display of Friends"));
-		this.friendDisplay.addElement(new Label("Display of Friends"));
-		this.friendDisplay.addElement(new Label("Display of Friends"));
-		this.friendDisplay.addElement(new Label("Display of Friends"));
-		this.friendDisplay.addElement(new Label("Display of Friends"));
+
 		this.add(this.friendDisplay);
 	}
 	
@@ -135,4 +132,14 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		this.pendingFriendDisplay.addElement(pendPan);
 		
 	}
+
+	@Override
+	public void addFriendPanel(FriendPanel friendPan)
+	{
+		this.friendDisplay.addElement(friendPan);
+	}
+
+
+
+
 }
