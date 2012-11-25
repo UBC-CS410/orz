@@ -90,7 +90,6 @@ public class TimeSheetPanel extends SimplePanel
 		
 		for (int i = 0; i < dates.size(); i++)
 		{
-			System.out.println("dates.size() = " + dates.size());
 			DateSplitter splitter = new DateSplitter(dates.get(i));
 			List<Integer> monthYear = new ArrayList<Integer>(2);
 			monthYear.add(splitter.getMonth());

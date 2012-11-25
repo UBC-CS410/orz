@@ -247,5 +247,17 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		return result;
 	}
 
+	@Override
+	public void readNotifications(List<Long> notIds)
+	{
+		for(Long ids: notIds)
+		{
+			Notification notif = dbstore.fetchNotification(ids);
+			notif.setNewNotification(false);
+			dbstore.store(notif);
+		}
+		
+	}
+
 
 }
