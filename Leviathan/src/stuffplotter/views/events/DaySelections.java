@@ -1,7 +1,6 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +25,14 @@ public class DaySelections extends VerticalPanel
 		"8PM - 9PM", "9PM - 10PM", "10PM - 11PM", "11PM - 12AM"
 	};
 
+	/**
+	 * Definition of Date object year is y - 1900 where y is the year.
+	 */
+	private static final int CORRECTION_FACTOR_Y = 1900;
+	/**
+	 * Months need to be zero indexed, so m - 1 where m is the month.
+	 */
+	private static final int CORRECTION_FACTOR_M = 1;
 	private String dayOfMonth;
 	
 	/**
@@ -63,7 +70,7 @@ public class DaySelections extends VerticalPanel
 	{
 		DateSplitter splitter = new DateSplitter(date);
 		this.dayOfMonth = splitter.getDayAsString();
-		this.add(new Label(dayOfMonth));
+		this.add(new Label(this.dayOfMonth));
 		
 		// for loop to add all the time slots
 		for (int i = 0; i < timeIntervals.length; i++)
@@ -175,9 +182,14 @@ public class DaySelections extends VerticalPanel
 		 * @param day - the day the timeslot belongs to.
 		 * @param year - the year the timeslot belongs to.
 		 * @param hour - the starting hour the timeslot represents in 24 hour, base 0, time.		 */
+		@SuppressWarnings("deprecation")
 		private void initializeVariables(int month, int day, int year, int hour)
 		{
-			this.timeSlot = new Date(year, month-1 /*zero indexed*/, day, hour, 0);
+			this.timeSlot = new Date(year - CORRECTION_FACTOR_Y,
+									 month - CORRECTION_FACTOR_M,
+									 day,
+									 hour,
+									 0);
 		}
 		
 		/**
