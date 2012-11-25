@@ -38,12 +38,6 @@ public class MasterView extends VerticalPanel implements MasterViewer
 		this.topBarView = new TopBarPanel();
 		this.menuBarView = new MenuBarPanel();
 		this.mainView = new ApplicationPagingView();
-		
-		/*
-		int deckWidth = this.menuBarView.asWidget().getOffsetWidth();
-		this.mainView.asWidget().setWidth(String.valueOf(deckWidth) + "px");
-		this.mainView.asWidget().setStyleName("mainDeck");
-		*/
 	}
 		
 	@Override

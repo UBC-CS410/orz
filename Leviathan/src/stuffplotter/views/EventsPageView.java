@@ -5,7 +5,7 @@ import java.util.List;
 
 import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
 import stuffplotter.shared.Event;
-import stuffplotter.views.events.EventListView;
+import stuffplotter.views.events.EventListingView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -103,7 +103,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		List<Widget> elements = this.eventListPanel.getElements();
 		for (int i = 0; i < elements.size(); i++)
 		{
-			EventListView panel = (EventListView) elements.get(i);
+			EventListingView panel = (EventListingView) elements.get(i);
 			links.add(panel.getLink());
 		}
 		return links;	
@@ -168,7 +168,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 			}
 			location = events.get(i).getLocation();
 			
-			EventListView rowPanel = new EventListView(name, time, location);
+			EventListingView rowPanel = new EventListingView(name, time, location);
 			this.eventListPanel.addElement(rowPanel);
 		}
 	}
