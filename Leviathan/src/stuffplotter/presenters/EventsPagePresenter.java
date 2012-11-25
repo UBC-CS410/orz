@@ -19,6 +19,8 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Event.Status;
+import stuffplotter.signals.EventCreatedEvent;
+import stuffplotter.signals.EventCreatedEventHandler;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.signals.SubmittedAvailabilitiesEvent;
@@ -43,7 +45,7 @@ public class EventsPagePresenter implements Presenter
 		public HasWidgets getEventViewerContainer();
 		public List<HasClickHandlers> getEventViewers();
 		public void showEventViewers();
-		public void hideEventViewers();
+		public void showEventView();
 		
 		public HasClickHandlers getAcceptButton();
 		public HasClickHandlers getDeclineButton();
@@ -151,6 +153,17 @@ public class EventsPagePresenter implements Presenter
 				
 			}
 		});
+		
+		this.eventBus.addHandler(EventCreatedEvent.TYPE, new EventCreatedEventHandler()
+		{
+
+			@Override
+			public void onEventCreated(EventCreatedEvent event)
+			{
+				fetchCurrentEvents();
+			}
+			
+		});
 	}
 	
 	/**
@@ -177,7 +190,7 @@ public class EventsPagePresenter implements Presenter
 																 appUser,
 																 selectedEvent);
 					
-					eventsView.hideEventViewers();
+					eventsView.showEventView();
 					presenter.go(eventsView.getEventViewerContainer());
 					
 					if(selectedEvent.getStatus() == Status.PROPOSED)

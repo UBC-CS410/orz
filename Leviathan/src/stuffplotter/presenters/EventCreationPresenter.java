@@ -6,6 +6,7 @@ import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Event;
+import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
 import stuffplotter.views.util.NotificationDialogBox;
@@ -180,6 +181,7 @@ public class EventCreationPresenter implements Presenter
 						System.out.println(result.getComments().size());
 						new NotificationDialogBox(TASKNAME, "The Event: " + result.getName() +
 												  " was created successfully!");
+						eventBus.fireEvent(new EventCreatedEvent(result.getId()));
 					}
 					
 					@Override
