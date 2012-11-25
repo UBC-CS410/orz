@@ -17,13 +17,12 @@ import stuffplotter.shared.Availability;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Query;
 
 /**
  * Class to manipulate the database.
  */
-public class DatabaseStore {
-	
+public class DatabaseStore
+{	
 	/* Register all the entity classes Objectify will be working with */
 	static
 	{
@@ -41,6 +40,8 @@ public class DatabaseStore {
 	
 	/**
 	 * Empty constructor for the DatabaseStore class.
+	 * @pre true;
+	 * @post true;
 	 */
 	public DatabaseStore()
 	{
@@ -48,132 +49,174 @@ public class DatabaseStore {
 	}
 	
 	/**
-	 * Stores an Account to the data store using Objectify
-	 * @param pAcct	the Account to be stored
+	 * Stores an Account to the data store using Objectify.
+	 * @pre pAct != null;
+	 * @post true;
+	 * @param pAcct - the Account to be stored.
 	 */	
-	public void store(Account pAct) {
+	public void store(Account pAct)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pAct);
 	}
 	
 	/**
-	 * Stores an AccountStatistic to the data store using Objectify
-	 * @param pAcct	the Account to be stored
+	 * Stores an AccountStatistic to the data store using Objectify.
+	 * @pre pActStats != null;
+	 * @post true;
+	 * @param pAcct - the AccountStatistic to be stored.
 	 */	
-	public void store(AccountStatistic pActStats) {
+	public void store(AccountStatistic pActStats)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pActStats);
 	}
 	
 	/**
-	 * Stores an Event to the data store using Objectify
-	 * @param pEvt	the Event to be stored
+	 * Stores an Event to the data store using Objectify.
+	 * @pre pEvt != null;
+	 * @post true;
+	 * @param pEvt - the Event to be stored.
 	 */	
-	public void store(Event pEvt) {
+	public void store(Event pEvt)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pEvt);
 	}
 	
 	/**
-	 * Stores a Scheduler to the data store using Objectify
-	 * @param pSch	the Scheduler to be stored
+	 * Stores a Scheduler to the data store using Objectify.
+	 * @pre pSch != null;
+	 * @post true;
+	 * @param pSch - the Scheduler to be stored.
 	 */	
-	public void store(Scheduler pSch) {
+	public void store(Scheduler pSch)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pSch);
 	}
 	
 	/**
-	 * Stores an Availability to the data store using Objectify
-	 * @param pSch	the Scheduler to be stored
+	 * Stores an Availability to the data store using Objectify.
+	 * @pre pAvl != null;
+	 * @post true;
+	 * @param pAvl - the Availability to be stored.
 	 */	
-	public void store(Availability pAvl) {
+	public void store(Availability pAvl)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pAvl);
 	}
 	
 	/**
-	 * Stores a Comment to the data store using Objectify
-	 * @param pSch	the Scheduler to be stored
+	 * Stores a Comment to the data store using Objectify.
+	 * @pre pNotif != null;
+	 * @post true;
+	 * @param pNotif - the Notification to be stored.
 	 */	
-	public void store(Notification pNotif) {
+	public void store(Notification pNotif)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pNotif);
 	}
 	
 	/**
-	 * Stores a Comment to the data store using Objectify
-	 * @param pSch	the Scheduler to be stored
+	 * Stores a Comment to the data store using Objectify.
+	 * @pre pCmt != null;
+	 * @post true;
+	 * @param pCmt - the Comment to be stored.
 	 */	
-	public void store(Comment pCmt) {
+	public void store(Comment pCmt)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pCmt);
 	}
 	
 	/**
-	 * Fetches an Account from the data store using Objectify
-	 * @param pId 	the id of the Account
-	 * @return		the Account that is associated with the specified id
+	 * Fetches an AccountStatistic from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the AccountStatistic.
+	 * @return - the AccountStatistic that is associated with the specified id.
 	 */
-	public AccountStatistic fetchAccountStats(String pId) {
+	public AccountStatistic fetchAccountStats(String pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		AccountStatistic acctStats = ofy.get(AccountStatistic.class, pId);
 		return acctStats;
 	}
 	
-	
 	/**
-	 * Fetches an Account from the data store using Objectify
-	 * @param pId 	the id of the Account
-	 * @return		the Account that is associated with the specified id
+	 * Fetches an Account from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Account.
+	 * @return the Account that is associated with the specified id.
 	 */
-	public Account fetchAccount(String pId) {
+	public Account fetchAccount(String pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		Account acct = ofy.get(Account.class, pId);
 		return acct;
 	}
 	
 	/**
-	 * Fetches an Event from the data store using Objectify
-	 * @param pId 	the id of the Event
-	 * @return		the Event that is associated with the specified id
+	 * Fetches an Event from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Event
+	 * @return the Event that is associated with the specified id.
 	 */
-	public Event fetchEvent(Long pId) {
+	public Event fetchEvent(Long pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		Event evnt = ofy.get(Event.class, pId);
 		return evnt;
 	}
 	
 	/**
-	 * Fetches a Scheduler from the data store using Objectify
-	 * @param pId 	the id of the Scheduler
-	 * @return		the Scheduler that is associated with the specified id
+	 * Fetches a Scheduler from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Scheduler.
+	 * @return the Scheduler that is associated with the specified id.
 	 */
-	public Scheduler fetchScheduler(Long pId) {
+	public Scheduler fetchScheduler(Long pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		Scheduler sch = ofy.get(Scheduler.class, pId);
 		return sch;
 	}
 	
 	/**
-	 * Fetches a Notification from the data store using Objectify
-	 * @param pId 	the id of the Notification
-	 * @return		the Notification that is associated with the specified id
+	 * Fetches a Notification from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Notification.
+	 * @return the Notification that is associated with the specified id.
 	 */
-	public Notification fetchNotification(Long pId){
+	public Notification fetchNotification(Long pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		Notification not;
-		try{
-			not = ofy.get(Notification.class, pId);
-		}catch (NotFoundException nfe)
+		try
 		{
-			try{
-				not = ofy.get(AchievementNotification.class, pId);
-			}catch (NotFoundException nfe1)
+			not = ofy.get(Notification.class, pId);
+		}
+		catch (NotFoundException nfe)
+		{
+			try
 			{
-				try{
+				not = ofy.get(AchievementNotification.class, pId);
+			}
+			catch (NotFoundException nfe1)
+			{
+				try
+				{
 					not = ofy.get(FriendNotification.class, pId);
-				}catch (NotFoundException nfe2){
+				}
+				catch (NotFoundException nfe2)
+				{
 					not = ofy.get(EventNotification.class, pId);
 				}
 			}
@@ -183,58 +226,72 @@ public class DatabaseStore {
 	}
 	
 	/**
-	 * Fetches an Availability from the data store using Objectify
-	 * @param pId 	the id of the Availability
-	 * @return		the Availability that is associated with the specified id
+	 * Fetches an Availability from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Availability
+	 * @return the Availability that is associated with the specified id.
 	 */
-	public Availability fetchAvailability(Long pId) {
+	public Availability fetchAvailability(Long pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		Availability avl = ofy.get(Availability.class, pId);
 		return avl;
 	}
 	
 	/**
-	 * Fetches an Comment from the data store using Objectify
-	 * @param pId 	the id of the Comment
-	 * @return		the Comment that is associated with the specified id
+	 * Fetches an Comment from the data store using Objectify.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Comment.
+	 * @return the Comment that is associated with the specified id.
 	 */
-	public Comment fetchComment(Long pId) {
+	public Comment fetchComment(Long pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		Comment cmt = ofy.get(Comment.class, pId);
 		return cmt;
 	}
 	
 	/**
-	 * Searches for Events by Account
-	 * @param pId	the id of the Account
-	 * @return		the list of Events owned by the specified Account, list could be empty
+	 * Searches for Events by Account.
+	 * @pre pId != null;
+	 * @post true;
+	 * @param pId - the id of the Account.
+	 * @return the list of Events owned by the specified Account, list could be empty
 	 */
-	public List<Event> searchEvents(String pId) {
+	public List<Event> searchEvents(String pId)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		List<Event> evntList = ofy.query(Event.class).filter("eventOwner", pId).list();
 		return evntList;
 	}
 	
 	/**
-	 * Searches for Events by Date
-	 * @param pDate	the date of interest
-	 * @return		the list of Events on the specified Date, list could be empty
+	 * Searches for Events by Date.
+	 * @pre pDate != null;
+	 * @post true;
+	 * @param pDate - the date of interest.
+	 * @return the list of Events on the specified Date, list could be empty.
 	 */
-	public List<Event> searchEvents(Date pDate) {
+	public List<Event> searchEvents(Date pDate)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		List<Event> evntList = ofy.query(Event.class).filter("eventDate", pDate).list();
 		return evntList;
 	}
 	
 	/**
-	 * Searches for Events by Cost
-	 * @param pDbl	the cost of interest
-	 * @return		the list of Events of the specified cost, list could be empty
+	 * Searches for Events by Cost.
+	 * @pre true;
+	 * @post true;
+	 * @param pDbl - the cost of interest.
+	 * @return the list of Events of the specified cost, list could be empty.
 	 */
-	public List<Event> searchEvents(double pDbl) {
+	public List<Event> searchEvents(double pDbl)
+	{
 		Objectify ofy = ObjectifyService.begin();
 		List<Event> evntList = ofy.query(Event.class).filter("eventCost", pDbl).list();
 		return evntList;
 	}
-	
 }
