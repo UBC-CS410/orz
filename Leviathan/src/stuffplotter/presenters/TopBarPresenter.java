@@ -108,11 +108,12 @@ public class TopBarPresenter implements Presenter
 		final List<NotificationModel> notifications = new ArrayList<NotificationModel>();
 		for(Long notId : notIds)
 		{
+			System.out.println(notId);
 			accountService.getNotification(notId, new AsyncCallback<NotificationModel>(){
 				@Override
 				public void onFailure(Throwable caught)
 				{
-					
+					Window.alert("Fail to get Notifications");
 				}
 
 				@Override

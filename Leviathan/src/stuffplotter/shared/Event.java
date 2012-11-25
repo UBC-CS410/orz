@@ -59,12 +59,6 @@ public class Event implements Serializable
 	
 	private List<String> eventInvitees;
 	private List<String> eventAttendees;
-		
-	/**
-	 * Proposed times for an event.  Temporary stored in the event class until an
-	 * associated Scheduler is created. 
-	 */
-	@Transient private List<Date> timeSheet;
 	
 	private Long eventScheduler;
 	private Status eventStatus;
@@ -422,27 +416,5 @@ public class Event implements Serializable
 	public void addComment(Long eventComment)
 	{
 		this.eventComments.add(eventComment);
-	}
-
-	/**
-	 * Method to get the proposed times for an event.
-	 * @pre true;
-	 * @post true;
-	 * @param retrieveSubmission
-	 */
-	public List<Date> getTimeSheet()
-	{
-		return this.timeSheet;
-	}
-	
-	/**
-	 * Method to set the proposed times for an event.
-	 * @pre retrieveSubmission != null && retrieveSubmission.size() > 0;
-	 * @post true;
-	 * @param proposedTimes - proposed times for the event.
-	 */
-	public void setTimeSheet(List<Date> proposedTimes)
-	{
-		this.timeSheet = proposedTimes;
 	}
 }
