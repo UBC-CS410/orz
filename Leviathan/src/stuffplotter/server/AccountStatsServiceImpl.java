@@ -6,6 +6,10 @@ import stuffplotter.shared.AccountStatistic;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.NotFoundException;
 
+/**
+ * Class to process AccountStatistic information.
+ */
+@SuppressWarnings("serial")
 public class AccountStatsServiceImpl extends RemoteServiceServlet implements AccountStatsService
 {
 	private DatabaseStore dbstore = new DatabaseStore();
@@ -24,7 +28,7 @@ public class AccountStatsServiceImpl extends RemoteServiceServlet implements Acc
 			astat = new AccountStatistic(userEmail);
 		}
 		
-		astat.increamentLogin();
+		astat.incrementLogin();
 		dbstore.store(astat);
 		return astat;
 	}
@@ -34,5 +38,4 @@ public class AccountStatsServiceImpl extends RemoteServiceServlet implements Acc
 	{
 		dbstore.store(astat);
 	}
-
 }

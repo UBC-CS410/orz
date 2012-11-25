@@ -1,5 +1,8 @@
 package stuffplotter.views.account;
 
+import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.views.util.InfoPanel;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -52,29 +55,13 @@ public class AccountPanel extends SimplePanel
 	}
 	
 	/**
-	 * Inner class for displaying the information for each field of a user.
-	 * Contains the fields name, fields value, and edit/submit button.
+	 * Set the data to display for the AccountPanel.
+	 * @pre model != null;
+	 * @post true;
+	 * @param model - the user account to display.
 	 */
-	public class InfoPanel extends HorizontalPanel
+	public void setUserData(AccountModel model)
 	{
-		/**
-		 * Constructor for the InfoPanel.
-		 * @pre fieldName != null;
-		 * @post this.isVisible() == true;
-		 * @param fieldName - the name of the attribute.
-		 * @param fieldValue - the value of the attribute.
-		 */
-		public InfoPanel(String fieldName, String fieldValue)
-		{
-			this.add(new Label(fieldName + ": "));
-			if(fieldValue != null)
-			{
-				this.add(new Label(fieldValue));
-			}
-			else
-			{
-				this.add(new Label("--"));
-			}
-		}
+		
 	}
 }

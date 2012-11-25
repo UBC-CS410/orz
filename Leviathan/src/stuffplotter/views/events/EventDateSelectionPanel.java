@@ -6,7 +6,9 @@ import java.util.Date;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 /**
@@ -15,6 +17,7 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 public class EventDateSelectionPanel extends SimplePanel implements EventSubmittable
 {
 	private TimeSheetPanel timeSheet;
+	private Label errorMessage;
 	
 	/**
 	 * Constructor for EventDateSelectionPanel.
@@ -38,9 +41,14 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	{
 		this.timeSheet = timeSheetPanel;
 		HorizontalPanel horPanel = new HorizontalPanel();
+		VerticalPanel vertPanel = new VerticalPanel();
 		DatePicker calendar = new DatePicker();
+		this.errorMessage = new Label();
 		this.initCalChangeHandler(calendar);
-		horPanel.add(calendar);
+		vertPanel.add(new Label("Click on the calendar to select dates for the event."));
+		vertPanel.add(calendar);
+		vertPanel.add(errorMessage);
+		horPanel.add(vertPanel);
 		horPanel.add(timeSheetPanel);
 		this.add(horPanel);
 	}
@@ -64,6 +72,26 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 		});
 	}
 
+	/**
+	 * Remove the error message on the EventDateSelectionPanel.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void clearErrorMessage()
+	{
+		this.errorMessage.setText("");
+	}
+	
+	/**
+	 * Display the error message on the EventDateSelectionPanel.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void displayErrorMessage()
+	{
+		this.errorMessage.setText("You must select at least one time slot.");
+	}
+	
 	/**
 	 * Retrieve the TimeSheetPanel for the EventDateSelectionPanel.
 	 * @pre true;

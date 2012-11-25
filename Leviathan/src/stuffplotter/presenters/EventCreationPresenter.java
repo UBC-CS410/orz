@@ -3,6 +3,7 @@ package stuffplotter.presenters;
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.EventCreationPageRetriever;
+import stuffplotter.client.EventCreationPageValidator;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Event;
@@ -158,8 +159,12 @@ public class EventCreationPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				// need to add validator here (new visitor)
-				createEventDialogBox.nextPage();
+				EventCreationPageValidator validator = new EventCreationPageValidator();
+				createEventDialogBox.getCurrentPage().accept(validator);
+				if(validator.isPageValid())
+				{
+					createEventDialogBox.nextPage();
+				}
 			}	
 		});
 		

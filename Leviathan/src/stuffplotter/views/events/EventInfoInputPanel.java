@@ -25,6 +25,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	private RadioButton multiDay;
 	private TextBox duration;
 	private TextArea description;
+	private Label errorMessage;
 	
 	/**
 	 * Constructor for the EventInfoInput class.
@@ -65,7 +66,7 @@ public class EventInfoInputPanel extends VerticalPanel
 		this.cost = new TextBox();
 		this.add(cost);
 		
-		this.add(new Label("Event Span*:"));
+		this.add(new Label("Event Span:"));
 		this.singleDay = new RadioButton("eventframe", "Single-Day");
 		this.singleDay.setValue(true);
 		this.multiDay = new RadioButton("eventframe", "Multi-Day");
@@ -81,6 +82,29 @@ public class EventInfoInputPanel extends VerticalPanel
 		this.add(new Label("Description"));
 		this.description = new TextArea();
 		this.add(this.description);
+		
+		this.errorMessage = new Label();
+		this.add(errorMessage);
+	}
+	
+	/**
+	 * Display the error message on the EventInfoInputPanel.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void displayErrorMessage()
+	{
+		this.errorMessage.setText("The name of the event is required.");
+	}
+	
+	/**
+	 * Remove the error message on the EventInfoInputPanel.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void clearErrorMessage()
+	{
+		this.errorMessage.setText("");
 	}
 	
 	/**
@@ -134,7 +158,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 	
 	/**
-	 * Method to retrieve the address of the event.
+	 * Method to retrieve the address of the event with white space trimmed.
 	 * @pre true;
 	 * @post true;
 	 * @return the address of the event.
@@ -164,7 +188,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 
 	/**
-	 * Method to retrieve the name of the event.
+	 * Method to retrieve the name of the event with white space trimmed.
 	 * @pre true;
 	 * @post true;
 	 * @return the name of the event.
@@ -175,7 +199,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 
 	/**
-	 * Method to retrieve the cost of the event.
+	 * Method to retrieve the cost of the event with white space trimmed.
 	 * @pre true;
 	 * @post true;
 	 * @return the cost of the event.
@@ -204,7 +228,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 	
 	/**
-	 * Method to retrieve the duration of the event.
+	 * Method to retrieve the duration of the event with white space trimmed.
 	 * @pre true;
 	 * @post true;
 	 * @return the duration of the event.
@@ -215,7 +239,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 
 	/**
-	 * Method to retrieve the description of the event.
+	 * Method to retrieve the description of the event with white space trimmed.
 	 * @pre true;
 	 * @post true;
 	 * @return the description of the event.

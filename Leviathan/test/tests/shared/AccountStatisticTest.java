@@ -60,7 +60,7 @@ public class AccountStatisticTest extends TestCase
 		
 		AccountStatistic as = new AccountStatistic();
 		
-		as.increamentLogin();
+		as.incrementLogin();
 		
 		assertEquals(logininc, as.getNumberOfLogins());
 	}
@@ -72,7 +72,7 @@ public class AccountStatisticTest extends TestCase
 		
 		AccountStatistic as = new AccountStatistic();
 		
-		as.increamentHostedEvents();
+		as.incrementHostedEvents();
 		
 		assertEquals(hostedEvents, as.getNumberOfHostedEvents());
 	}
@@ -84,7 +84,7 @@ public class AccountStatisticTest extends TestCase
 		
 		AccountStatistic as = new AccountStatistic();
 		
-		as.increamentParticipatedEvents();
+		as.incrementParticipatedEvents();
 		
 		assertEquals(participatedEvents, as.getNumberOfParticipatedEvents());
 	}
