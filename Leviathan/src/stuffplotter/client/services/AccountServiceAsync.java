@@ -23,4 +23,7 @@ public interface AccountServiceAsync {
 	void addNotification(String user, Notification notification,
 			AsyncCallback<Void> callback);
 	void getNotification(Long id, AsyncCallback<NotificationModel> callback);
+	void getNotifications(List<Long> notIds,
+			AsyncCallback<List<NotificationModel>> callback);
+
 }

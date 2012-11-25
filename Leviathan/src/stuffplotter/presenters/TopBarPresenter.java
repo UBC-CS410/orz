@@ -105,26 +105,25 @@ public class TopBarPresenter implements Presenter
 		
 		AccountServiceAsync accountService = appServices.getAccountService();
 		List<Long> notIds = appUser.getUserNotifications();
-		final List<NotificationModel> notifications = new ArrayList<NotificationModel>();
-		for(Long notId : notIds)
-		{
-			System.out.println(notId);
-			accountService.getNotification(notId, new AsyncCallback<NotificationModel>(){
-				@Override
-				public void onFailure(Throwable caught)
-				{
-					Window.alert("Fail to get Notifications");
-				}
-
-				@Override
-				public void onSuccess(NotificationModel result)
-				{
-					notifications.add(result);
-				}
 		
-			});
-		}
-		this.topBarDisplay.setNotificationData(notifications);
+		
+		accountService.getNotifications(notIds, new AsyncCallback<List<NotificationModel>>(){
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				Window.alert("Fail to get Notifications");
+				
+			}
+
+			@Override
+			public void onSuccess(List<NotificationModel> result)
+			{
+				topBarDisplay.setNotificationData(result);
+				
+			}
+		});
+		
+		
 		
 	}
 	

@@ -27,4 +27,5 @@ public interface AccountService extends RemoteService {
 	void declineFriendReq(Account acc, String friend);
 	void addNotification(String user, Notification notification);
 	NotificationModel getNotification(Long id);
+	List<NotificationModel> getNotifications(List<Long> notIds);
 }
