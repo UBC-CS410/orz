@@ -146,7 +146,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		}
 		catch(NotFoundException nfe) 
 		{
-		      temp = new Account(friend+"@gmail.com");
+		      temp = new Account(friend);
 		      dbstore.store(temp); // register account
 		      email.sendNewUser(friend, acc.getUserEmail());
 		}

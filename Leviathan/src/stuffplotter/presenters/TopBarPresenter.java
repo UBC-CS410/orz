@@ -1,6 +1,5 @@
 package stuffplotter.presenters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
@@ -10,7 +9,6 @@ import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
-import stuffplotter.views.global.TopBarPanel;
 import stuffplotter.views.global.UserNotificationsPopupPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -35,6 +33,7 @@ public class TopBarPresenter implements Presenter
 		 * @return returns the NotificationLabel
 		 */
 		public HasClickHandlers getNotificationsLabel();
+		
 		/**
 		 * Sets the user data for the TopBarView.
 		 * @pre true;
@@ -120,8 +119,7 @@ public class TopBarPresenter implements Presenter
 			{
 				topBarDisplay.getPopUp().toggleVisibility();
 				topBarDisplay.getPopUp().setPopupPosition(((UIObject) topBarDisplay.getNotificationsLabel()).getAbsoluteLeft(), ((UIObject) topBarDisplay.getNotificationsLabel()).getAbsoluteTop() + 20);
-				
-				
+					
 				readNotifications();
 				
 			}
