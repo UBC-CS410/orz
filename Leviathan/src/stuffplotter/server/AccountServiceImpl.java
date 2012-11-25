@@ -28,8 +28,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.NotFoundException;
 
 @SuppressWarnings("serial")
-public class AccountServiceImpl extends RemoteServiceServlet implements AccountService {
-	
+public class AccountServiceImpl extends RemoteServiceServlet implements AccountService
+{	
 	private DatabaseStore dbstore = new DatabaseStore();
 	private EmailService email = new EmailService();
 
@@ -40,20 +40,27 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	 * @return current user Account
 	 */
 	@Override
-	public Account login(String back) {
+	public Account login(String back)
+	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
 	    
 	    Account account = null;
-	    try {
+	    try
+	    {
     	  account = dbstore.fetchAccount(user.getEmail());
-	    } catch (NotFoundException nfe) {
+	    }
+	    catch (NotFoundException nfe)
+	    {
 	      account = new Account(user.getEmail());
 	      this.saveAccount(account); 
-	    } finally {
+	    }
+	    finally
+	    {
     	  account.setLoginUrl(userService.createLoginURL(back));
     	  account.setLogoutUrl(userService.createLogoutURL(account.getLoginUrl()));
-	    } 
+	    }
+	    
 	    return account;
 	}
 	
@@ -63,67 +70,102 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		String request = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token;
 		System.out.println(request);
 		final StringBuffer r = new StringBuffer();
-        try {
+        try
+        {
             final URL u = new URL(request);
             final URLConnection uc = u.openConnection();
             final int end = 1000;
             InputStreamReader isr = null;
             BufferedReader br = null;
-            try {
+            try
+            {
                 isr = new InputStreamReader(uc.getInputStream());
                 br = new BufferedReader(isr);
                 final int chk = 0;
-                while ((request = br.readLine()) != null) {
-                    if ((chk >= 0) && ((chk < end))) {
+                while ((request = br.readLine()) != null)
+                {
+                    if ((chk >= 0) && ((chk < end)))
+                    {
                         r.append(request).append('\n');
                     }
                 }
-            } catch (final java.net.ConnectException cex) {
+            }
+            catch (final java.net.ConnectException cex)
+            {
                 r.append(cex.getMessage());
-            } catch (final Exception ex) {
+            }
+            catch (final Exception ex)
+            {
                 ex.printStackTrace();
-            } finally {
-                try {
+            }
+            finally
+            {
+                try
+                {
                     br.close();
-                } catch (final Exception ex) {
+                }
+                catch (final Exception ex)
+                {
                 	ex.printStackTrace();
                 }
             }
-        } catch (final Exception e) {
+        }
+        catch (final Exception e)
+        {
         	e.printStackTrace();
         }
         
-        try {
+        try
+        {
             final JsonFactory f = new JsonFactory();
             JsonParser jp;
             jp = f.createJsonParser(r.toString());
             jp.nextToken();
-            while (jp.nextToken() != JsonToken.END_OBJECT) {
+            while (jp.nextToken() != JsonToken.END_OBJECT)
+            {
                 final String fieldname = jp.getCurrentName();
                 jp.nextToken();
-                if ("picture".equals(fieldname)) {
+                if ("picture".equals(fieldname))
+                {
                     account.setUserProfilePicture(jp.getText());
-                } else if ("name".equals(fieldname)) {
+                }
+                else if ("name".equals(fieldname))
+                {
                 	account.setUserFullName(jp.getText());
                 }
             }
-        } catch (final JsonParseException e) {
+        }
+        catch (final JsonParseException e)
+        {
         	e.printStackTrace();
-        } catch (final IOException e) {
+        }
+        catch (final IOException e)
+        {
         	e.printStackTrace();
         }
         
-        if(account.getUserFullName() == null) {
+        if(account.getUserFullName() == null)
+        {
         	throw new AuthenticationException();
-        } else {
+        }
+        else
+        {
             account.setUserRefreshToken(token);
             this.saveAccount(account);
         }
 	}
 	
 	@Override
-	public Account getAccount(String userId) {
+	public Account getAccount(String userId)
+	{
 		return dbstore.fetchAccount(userId);
+	}
+	
+	@Override
+	public List<Account> getAccounts(List<String> userIds)
+	{
+		//return dbstore.fe
+		return null;
 	}
 
 	@Override
@@ -132,9 +174,9 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		dbstore.store(acc);
 	}
 	
-
 	@Override
-	public void addFriend(Account acc, String friend) {
+	public void addFriend(Account acc, String friend)
+	{
 		Account temp = null;
 		Notification newFriendNot = new FriendNotification(FriendNotificationType.FRIENDREQUEST, friend, acc.getUserEmail());
 		dbstore.store(newFriendNot);
@@ -159,24 +201,25 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 				dbstore.store(temp);	
 			}
 		}
-
-		
 	}
 
 	@Override
-	public List<String> getFriends(Account acc) {
+	public List<String> getFriends(Account acc)
+	{
 		Account temp = dbstore.fetchAccount(acc.getUserEmail());
 		return temp.getUserFriends();
 	}
 
 	@Override
-	public List<String> getPendingFriends(Account acc) {
+	public List<String> getPendingFriends(Account acc)
+	{
 		Account temp = dbstore.fetchAccount(acc.getUserEmail());
 		return temp.getPendingFriends();
 	}
 
 	@Override
-	public void confirmFriendReq(Account acc, String friend) {
+	public void confirmFriendReq(Account acc, String friend)
+	{
 		Notification myFriendAccept = new FriendNotification(FriendNotificationType.FRIENDACCEPTED, friend, acc.getUserEmail());
 		Notification myselfAccept = new FriendNotification(FriendNotificationType.FRIENDACCEPTED,  acc.getUserEmail(), friend);
 		
@@ -198,25 +241,25 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	}
 
 	@Override
-	public void removeFriend(Account acc, String friend) {
+	public void removeFriend(Account acc, String friend)
+	{
 		Account temp = dbstore.fetchAccount(acc.getUserEmail());
 		temp.getUserFriends().remove(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.getUserFriends().remove(acc.getUserEmail());
 		dbstore.store(temp);
-		dbstore.store(newFriend);
-		
+		dbstore.store(newFriend);	
 	}
 
 	@Override
-	public void declineFriendReq(Account acc, String friend) {
+	public void declineFriendReq(Account acc, String friend)
+	{
 		Account temp = dbstore.fetchAccount(acc.getUserEmail());
 		temp.getPendingFriends().remove(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.getPendingFriends().remove(acc.getUserEmail());
 		dbstore.store(temp);
-		dbstore.store(newFriend);
-		
+		dbstore.store(newFriend);	
 	}
 
 	@Override
@@ -228,7 +271,6 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		Account account = dbstore.fetchAccount(user);
 		account.addUserNotification(notID);
 		dbstore.store(account);
-		
 	}
 
 	@Override
@@ -237,6 +279,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		return dbstore.fetchNotification(id);
 	}
 
+	@Override
 	public List<NotificationModel> getNotifications(List<Long> notIds)
 	{
 		List<NotificationModel> result = new ArrayList<NotificationModel>();
@@ -244,6 +287,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		{
 			result.add(getNotification(id));
 		}
+		
 		return result;
 	}
 
@@ -256,8 +300,5 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 			notif.setNewNotification(false);
 			dbstore.store(notif);
 		}
-		
 	}
-
-
 }

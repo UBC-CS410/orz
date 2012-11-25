@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.shared.Account;
 import stuffplotter.views.friends.FriendsDisplayPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -43,21 +45,7 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	{	
 		this.friendDisplayer = new FriendsDisplayPanel(NUMOFCOLUMNS);
 		this.friendDisplayer.setSize(PANELWIDTH, PANELHEIGHT);
-		
-		List<String> toDo = new ArrayList<String>();
-		toDo.add("Refactor");
-		toDo.add("Event");
-		toDo.add("Creation");
-		toDo.add("UI!!!");
-		
-		Collections.sort(toDo);
-				
-		// for each loop to populate the list of friends to select from
-		for(String friend : toDo)
-		{
-			friendDisplayer.addElement(new CheckBox(friend));
-		}
-						
+		friendDisplayer.addElement(new Label("You have no friends to add yet, go invite some!"));				
 		this.add(friendDisplayer);
 		this.setSize(PANELWIDTH, PANELHEIGHT);
 	}
@@ -71,6 +59,17 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	public FlexTable getFriendList()
 	{
 		return this.friendDisplayer.getDisplayer();
+	}
+	
+	/**
+	 * Set the list of friends to display.
+	 * @pre true;
+	 * @post true;
+	 * @param friends - the list of friends to display.
+	 */
+	public void setFriendData(List<AccountModel> friends)
+	{
+		
 	}
 	
 	/**

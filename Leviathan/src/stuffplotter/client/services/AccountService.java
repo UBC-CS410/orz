@@ -14,7 +14,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("account")
-public interface AccountService extends RemoteService {
+public interface AccountService extends RemoteService
+{
 	Account login(String back);
 	void loadProfile(Account account, String hash) throws AuthenticationException;
 	void addFriend(Account acc, String friend);
@@ -29,4 +30,13 @@ public interface AccountService extends RemoteService {
 	NotificationModel getNotification(Long id);
 	List<NotificationModel> getNotifications(List<Long> notIds);
 	void readNotifications(List<Long> notIds);
+	
+	/**
+	 * Retrieve the list of accounts associated with the given list of e-mail addresses.
+	 * @pre userIds != null;
+	 * @post true;
+	 * @param userIds - the list of accounts to retrieve.
+	 * @param callback - the call back for the method.
+	 */
+	List<Account> getAccounts(List<String> userIds);
 }
