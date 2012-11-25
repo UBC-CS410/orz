@@ -229,5 +229,11 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		
 	}
 
+	@Override
+	public Notification getNotification(Long id)
+	{
+		return dbstore.fetchNotification(id);
+	}
+
 
 }

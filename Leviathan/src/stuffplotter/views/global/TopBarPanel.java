@@ -10,6 +10,7 @@ import stuffplotter.shared.Notification;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -43,7 +44,10 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	 */
 	private void initializeUI()
 	{		
-		final Label notificationsLabel = new Label("Notifications");
+		final Anchor notificationsLabel = new Anchor("Notifications");
+		notificationsLabel.setWidth(String.valueOf(Window.getClientWidth() - 200) + "px");
+		notificationsLabel.setStyleName("topBarNotifications");
+		
 		popup = new UserNotificationsPopupPanel();
 		
 		notificationsLabel.addClickHandler(new ClickHandler()
@@ -57,11 +61,19 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		});
 		
 		this.add(notificationsLabel);
-		this.add(new Label(" | "));
-		this.userNameDisplay = new Label("Welcome!");
+		
+		this.userNameDisplay = new Label();
+		Label separator = new Label("|");
+		this.logoutLink = new Anchor("Log out");
+		
+		this.userNameDisplay.setStyleName("topBarUserName");
+		separator.setStyleName("topBarSeparator");
+		this.logoutLink.setStyleName("topBarLogOut");
+		
 		this.add(this.userNameDisplay);
-		this.add(new Label(" | "));
+		this.add(separator);
 		this.logoutLink = new Anchor("Logout");
+		
 		this.logoutLink.setEnabled(false);
 		this.add(this.logoutLink);
 	}

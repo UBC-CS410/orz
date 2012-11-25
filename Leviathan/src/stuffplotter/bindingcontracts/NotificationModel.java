@@ -41,4 +41,20 @@ public interface NotificationModel
 	 * @return the time at which the notification was generated.
 	 */
 	public Date getNotificationTime();
+	
+	/**
+	 * Retrieve if the notification is new or not
+	 * @pre true;
+	 * @post true;
+	 * @return true if notification is new, false otherwise
+	 */
+	public boolean getNewNotification();
+	
+	/**
+	 * Retrieve the description of the notification.
+	 * @pre true;
+	 * @post true;
+	 * @return the string display of the notification
+	 */
+	public String getNotificationDisplay();
 }

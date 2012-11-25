@@ -156,6 +156,17 @@ public class DatabaseStore {
 	}
 	
 	/**
+	 * Fetches a Notification from the data store using Objectify
+	 * @param pId 	the id of the Notification
+	 * @return		the Notification that is associated with the specified id
+	 */
+	public Notification fetchNotification(Long pId){
+		Objectify ofy = ObjectifyService.begin();
+		Notification not = ofy.get(Notification.class, pId);
+		return not;
+	}
+	
+	/**
 	 * Fetches an Availability from the data store using Objectify
 	 * @param pId 	the id of the Availability
 	 * @return		the Availability that is associated with the specified id

@@ -2,6 +2,7 @@ package stuffplotter.client.services;
 
 import java.util.List;
 
+import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
 import stuffplotter.shared.Notification;
@@ -21,4 +22,5 @@ public interface AccountServiceAsync {
 	void declineFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
 	void addNotification(String user, Notification notification,
 			AsyncCallback<Void> callback);
+	void getNotification(Long id, AsyncCallback<NotificationModel> callback);
 }

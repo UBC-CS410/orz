@@ -1,9 +1,11 @@
 package stuffplotter.presenters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.bindingcontracts.NotificationModel;
+import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.signals.RefreshPageEvent;
@@ -13,6 +15,7 @@ import stuffplotter.views.global.TopBarPanel;
 import com.google.gwt.event.shared.HandlerManager;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -99,6 +102,29 @@ public class TopBarPresenter implements Presenter
 				//topBarDisplay.setNotificationData(notifications)
 			}
 		});
+		
+		AccountServiceAsync accountService = appServices.getAccountService();
+		List<Long> notIds = appUser.getUserNotifications();
+		final List<NotificationModel> notifications = new ArrayList<NotificationModel>();
+		for(Long notId : notIds)
+		{
+			accountService.getNotification(notId, new AsyncCallback<NotificationModel>(){
+				@Override
+				public void onFailure(Throwable caught)
+				{
+					
+				}
+
+				@Override
+				public void onSuccess(NotificationModel result)
+				{
+					notifications.add(result);
+				}
+		
+			});
+		}
+		this.topBarDisplay.setNotificationData(notifications);
+		
 	}
 	
 	@Override
