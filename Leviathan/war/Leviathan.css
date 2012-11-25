@@ -41,11 +41,8 @@
 
 .menuBar .gwt-Button {
 	width: 100%;
-}
-
-.menuBarButton {	
 	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
- 	 box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+ 	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
   	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
 	-moz-border-radius: 8px;
   	-webkit-border-radius: 8px;
@@ -57,20 +54,36 @@
 	width: 80%;
 }
 
+.actionBar .gwt-Button {
+	width: 100%;
+	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+ 	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+  	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+}
+
+.eventActionBar .gwt-Button {
+	color: red;
+}
+
 .eventRoll {
-	
+	width: 80%;
 }
 
 .eventListing {
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid grey;
+	padding: 20px;
 }
 
 .eventListingAnchor {
+	font-size: 1.1em;
+	font-weight: bold;
+	color: blue;
 	background-color: #CCC;
 }
 
 .eventPage {
-	
+	width: 80%;
+	padding: 20px;
 }
 
 

@@ -43,17 +43,6 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 		this.friendsBtn = new Button("Friends");
 		this.achievementsBtn = new Button("Achievements");
 		
-		//this.homeBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
-		this.homeBtn.addStyleName("menuBarButton");
-		//this.accountBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
-		this.accountBtn.addStyleName("menuBarButton");
-		//this.eventsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
-		this.eventsBtn.addStyleName("menuBarButton");
-		//this.friendsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
-		this.friendsBtn.addStyleName("menuBarButton");
-		//this.achievementsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
-		this.achievementsBtn.addStyleName("menuBarButton");
-		
 		this.add(this.homeBtn);
 		this.add(this.accountBtn);
 		this.add(this.eventsBtn);

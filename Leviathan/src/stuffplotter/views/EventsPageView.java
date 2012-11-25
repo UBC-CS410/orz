@@ -59,6 +59,8 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.finalizeTimeButton = new Button("Finalize Time");
 		
 		VerticalPanel actionPanel = new VerticalPanel();
+		actionPanel.setStyleName("actionBar");
+		actionPanel.setSpacing(10);
 		
 		VerticalPanel commonActionPanel = new VerticalPanel();
 		commonActionPanel.add(this.createButton);
@@ -66,16 +68,21 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		commonActionPanel.add(this.listPastButton);
 	
 		this.eventActionPanel = new VerticalPanel();
+		this.eventActionPanel.addStyleName("eventActionBar");
 		
 		actionPanel.add(commonActionPanel);
 		actionPanel.add(eventActionPanel);
 		
 		this.eventPanel = new SimplePanel();
+		this.eventPanel.setStyleName("eventPage");
 		this.eventListPanel = new ScrollDisplayPanel();
+		this.eventListPanel.setStyleName("eventRoll");
 		
 		this.add(actionPanel);
+		this.setCellWidth(actionPanel, "200px");
 		this.add(this.eventPanel);
 		this.add(this.eventListPanel);
+		
 	}
 
 	/**
@@ -243,26 +250,28 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
-	 * Shows listPanel
-	 * @pre this.listPanel.isVisible() == false;
-	 * @post this.listPanel.isVisible() == true;
+	 * Shows eventListPanel 
+	 * @pre this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
+	 * @post this.eventListPanel.isVisible() == true && this.eventPanel.isVisible() == false;
 	 */
 	@Override
 	public void showEventViewers()
 	{
 		this.eventPanel.clear();
-		this.eventListPanel.setVisible(true);
+		this.remove(eventPanel);
+		this.add(eventListPanel);
 	}
 	
 	/**
-	 * Hides listPanel
-	 * @pre this.listPanel.isVisible() == true;
-	 * @post this.listPanel.isVisible() == false;
+	 * Shows eventPanel
+	 * @pre this.eventListPanel.isVisible() == true && this.eventPanel.isVisible() == false;
+	 * @post this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
 	 */
 	@Override
-	public void hideEventViewers()
+	public void showEventView()
 	{
-		this.eventListPanel.setVisible(false);
+		this.remove(eventListPanel);
+		this.add(eventPanel);
 	}
 	
 	
