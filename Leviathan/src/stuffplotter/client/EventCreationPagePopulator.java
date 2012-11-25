@@ -1,9 +1,14 @@
 package stuffplotter.client;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.AccountServiceAsync;
+import stuffplotter.shared.Account;
 import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventDateSelectionPanel;
 import stuffplotter.views.events.EventInfoPanel;
@@ -64,9 +69,32 @@ public class EventCreationPagePopulator implements EventCreationPageVisitor
 	 * @param friendSelection - the EventInfoInputPanel to retrieve values from.
 	 */
 	@Override
-	public void visit(FriendSelectionPanel friendSelection)
+	public void visit(final FriendSelectionPanel friendSelection)
 	{
-		//this.accountServices.
-		//friendSelection.setFriendData(friends);
+		this.accountServices.getAccounts(this.userFriends, new AsyncCallback<Map<String,Account>>()
+		{
+			@Override
+			public void onSuccess(Map<String, Account> result)
+			{
+				if(!result.isEmpty())
+				{
+					List<AccountModel> friends = new ArrayList<AccountModel>();
+					
+					// for loop to create the List of friends
+					for(Account account : result.values())
+					{
+						friends.add(account);
+					}
+					
+					friendSelection.setFriendData(friends);
+				}
+			}
+			
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				friendSelection.setErrorMessage();
+			}
+		});
 	}
 }

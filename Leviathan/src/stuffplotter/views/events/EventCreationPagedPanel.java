@@ -49,13 +49,13 @@ public class EventCreationPagedPanel extends DeckPanel
 	}
 	
 	/**
-	 * Helper method to retrieve the information for a new event.
+	 * Helper method to pass the visitor to all panels in the paged view.
 	 * @pre eventPageVisitor != null;
 	 * @post true;
 	 * @param eventPageVisitor - the EventCreationPageVisitor to visit each of the
 	 * 							 EventCreationDialogBox pages.
 	 */
-	public void retrieveEventInfo(EventCreationPageVisitor eventPageVisitor)
+	public void accept(EventCreationPageVisitor eventPageVisitor)
 	{	
 		// for loop to retrieve the information for the event from each page
 		for(int i = 0; i < this.getWidgetCount(); i++)

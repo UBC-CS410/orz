@@ -4,6 +4,7 @@
 package stuffplotter.client.services;
 
 import java.util.List;
+import java.util.Map;
 
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
@@ -38,5 +39,5 @@ public interface AccountService extends RemoteService
 	 * @param userIds - the list of accounts to retrieve.
 	 * @param callback - the call back for the method.
 	 */
-	List<Account> getAccounts(List<String> userIds);
+	Map<String, Account> getAccounts(List<String> userIds);
 }

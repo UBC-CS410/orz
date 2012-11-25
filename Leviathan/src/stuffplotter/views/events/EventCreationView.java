@@ -57,14 +57,15 @@ public class EventCreationView extends DialogBox implements CreateEventView
 	}
 	
 	/**
-	 * Method to retrieve the event information using an EventCreationPageVisitor.
+	 * Method to send the visitor to the pages of the event creation display.
 	 * @pre eventVisitor != null;
 	 * @post true;
-	 * @param eventVisitor - the EventCreationPageVisitor to retrieve the event information.
+	 * @param eventVisitor - the EventCreationPageVisitor to send to the pages of the event
+	 * 						 creation display.
 	 */
-	public void retrieveEventInfo(EventCreationPageVisitor eventVisitor)
+	public void acceptVisitor(EventCreationPageVisitor eventVisitor)
 	{
-		this.eventPages.retrieveEventInfo(eventVisitor);
+		this.eventPages.accept(eventVisitor);
 	}
 	
 	/**

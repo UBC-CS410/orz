@@ -223,10 +223,13 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 		// while loop to retrieve the selected friends
 		while(iterator.hasNext())
 		{
-			CheckBox friend = (CheckBox) iterator.next();
-			if(friend.getValue())
+			Widget friend = iterator.next();
+			if(friend instanceof CheckBox)
 			{
-				selectedFriends.add(friend.getFormValue());
+				if(((CheckBox) friend).getValue())
+				{
+					selectedFriends.add(((CheckBox) friend).getFormValue());
+				}
 			}
 		}
 	}

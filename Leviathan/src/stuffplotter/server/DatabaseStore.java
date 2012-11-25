@@ -2,6 +2,7 @@ package stuffplotter.server;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
@@ -158,6 +159,20 @@ public class DatabaseStore
 		Objectify ofy = ObjectifyService.begin();
 		Account acct = ofy.get(Account.class, pId);
 		return acct;
+	}
+	
+	/**
+	 * Fetches the list of accounts from the data store using Objectify.
+	 * @pre userIds != null;
+	 * @post true;
+	 * @param userIds - the list of user ids (e-mails) of the user accounts to get.
+	 * @return the user accounts associated with the given list of ids (e-mails).
+	 */
+	public Map<String, Account> fetchAccounts(List<String> userIds)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		Map<String, Account> accounts = ofy.get(Account.class, userIds);
+		return accounts;
 	}
 	
 	/**

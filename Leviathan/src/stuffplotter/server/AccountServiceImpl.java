@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParseException;
@@ -162,10 +163,9 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	}
 	
 	@Override
-	public List<Account> getAccounts(List<String> userIds)
+	public Map<String, Account> getAccounts(List<String> userIds)
 	{
-		//return dbstore.fe
-		return null;
+		return dbstore.fetchAccounts(userIds);
 	}
 
 	@Override

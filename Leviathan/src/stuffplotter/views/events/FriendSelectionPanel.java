@@ -62,6 +62,18 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	}
 	
 	/**
+	 * Sets the error message to be displayed in the FriendSelectionPanel if an error occurs. 
+	 * @pre true;
+	 * @post true;
+	 */
+	public void setErrorMessage()
+	{
+		this.friendDisplayer.getDisplayer().clear();
+		this.friendDisplayer.addElement(new Label("Failed to retrieve list of friends, please " +
+												  "try again."));
+	}
+	
+	/**
 	 * Set the list of friends to display.
 	 * @pre true;
 	 * @post true;
@@ -69,6 +81,7 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	 */
 	public void setFriendData(List<AccountModel> friends)
 	{
+		this.friendDisplayer.getDisplayer().clear();
 		
 	}
 	
