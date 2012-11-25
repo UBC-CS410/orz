@@ -109,6 +109,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the email associated with the AccountStatistic.
 	 */
+	@Override
 	public String getAccountEmail()
 	{
 		return this.accountEmail;
@@ -131,6 +132,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the number of times a user has logged in.
 	 */
+	@Override
 	public int getNumberOfLogins()
 	{
 		return this.numberOfLogins;
@@ -153,6 +155,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the number of events a user has hosted.
 	 */
+	@Override
 	public int getNumberOfHostedEvents()
 	{
 		return this.numberOfHostedEvents;
@@ -175,6 +178,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the number of events a user has participated in.
 	 */
+	@Override
 	public int getNumberOfParticipatedEvents()
 	{
 		return this.numberOfParticipatedEvents;
@@ -197,6 +201,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the level of the user.
 	 */
+	@Override
 	public int getUserLevel()
 	{
 		return this.userLevel;
@@ -219,6 +224,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the amount of experience the user has gained.
 	 */
+	@Override
 	public int getUserExperience()
 	{
 		return this.userExperience;
@@ -241,6 +247,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the list of Achievements that the user has.
 	 */
+	@Override
 	public List<Achievement> getUserAchievements()
 	{
 		return this.userAchievements;
@@ -282,6 +289,7 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * @post true;
 	 * @return the number of friends a user has.
 	 */
+	@Override
 	public int getNumberOfFriends()
 	{
 		return this.numberOfFriends;
