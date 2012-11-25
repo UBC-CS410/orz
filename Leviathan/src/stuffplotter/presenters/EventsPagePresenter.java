@@ -123,7 +123,7 @@ public class EventsPagePresenter implements Presenter
 					Event selectedEvent;
 					selectedEvent = currentEvents.get(eventsIndex);
 
-					Presenter presenter = new EventViewPresenter(appServices,
+					Presenter presenter = new EventPresenter(appServices,
 																 eventBus,
 																 new EventView(),
 																 appUser,

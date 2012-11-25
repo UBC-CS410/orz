@@ -3,7 +3,7 @@ package stuffplotter.views.events;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.presenters.EventViewPresenter.EventViewer;
+import stuffplotter.presenters.EventPresenter.EventViewer;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
 

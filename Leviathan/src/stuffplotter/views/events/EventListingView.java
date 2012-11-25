@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Panel to display the name and time of an event as a row in a ScrollDisplayPanel.
  */
-public class EventListView extends VerticalPanel
+public class EventListingView extends VerticalPanel
 {
 	
 	private final Anchor link;
@@ -19,7 +19,7 @@ public class EventListView extends VerticalPanel
 	 * @post this.isVisible() == true
 	 * 
 	 */
-	public EventListView(String name, String time, String location)
+	public EventListingView(String name, String time, String location)
 	{
 		this.link = new Anchor(name);
 		
