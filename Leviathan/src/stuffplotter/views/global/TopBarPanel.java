@@ -1,15 +1,12 @@
 package stuffplotter.views.global;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
-import stuffplotter.shared.Notification;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -50,16 +47,6 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		notificationsLabel.setStyleName("topBarNotifications");
 		
 		popup = new UserNotificationsPopupPanel();
-		
-		notificationsLabel.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				popup.toggleVisibility();
-				popup.setPopupPosition(notificationsLabel.getAbsoluteLeft(), notificationsLabel.getAbsoluteTop() + 20);
-			}
-		});
 		
 		this.add(notificationsLabel);
 		
@@ -119,6 +106,17 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	public void setNotificationLabelText(String text)
 	{
 		this.notificationsLabel.setText(text);
+	}
+
+	@Override
+	public HasClickHandlers getNotificationsLabel()
+	{
+		return this.notificationsLabel;
+	}
+	
+	@Override
+	public UserNotificationsPopupPanel getPopUp(){
+		return this.popup;
 	}
 
 

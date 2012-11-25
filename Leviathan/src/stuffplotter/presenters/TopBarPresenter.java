@@ -11,18 +11,30 @@ import stuffplotter.shared.Account;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.views.global.TopBarPanel;
+import stuffplotter.views.global.UserNotificationsPopupPanel;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TopBarPresenter implements Presenter
 {
 	public interface TopBarView
 	{
+		/**
+		 * Returns the Notification Label
+		 * @pre true;
+		 * @post true; 
+		 * @return returns the NotificationLabel
+		 */
+		public HasClickHandlers getNotificationsLabel();
 		/**
 		 * Sets the user data for the TopBarView.
 		 * @pre true;
@@ -47,7 +59,15 @@ public class TopBarPresenter implements Presenter
 		 */
 		public Widget asWidget();
 		
+		/**
+		 * Set the notifications to display in the notification window.
+		 * @pre true;
+		 * @post true;
+		 * @param text
+		 */
 		public void setNotificationLabelText(String text);
+		
+		public UserNotificationsPopupPanel getPopUp();
 	}
 	
 	private final ServiceRepository appServices;
@@ -93,6 +113,56 @@ public class TopBarPresenter implements Presenter
 	 */
 	private void bind()
 	{
+		this.topBarDisplay.getNotificationsLabel().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				topBarDisplay.getPopUp().toggleVisibility();
+				topBarDisplay.getPopUp().setPopupPosition(((UIObject) topBarDisplay.getNotificationsLabel()).getAbsoluteLeft(), ((UIObject) topBarDisplay.getNotificationsLabel()).getAbsoluteTop() + 20);
+				
+				
+				readNotifications();
+				
+			}
+
+			/**
+			 * Help method that reads through all the notifications
+			 * @pre
+			 * @post
+			 */
+			private void readNotifications()
+			{
+				List<Long> notIds = appUser.getUserNotifications();
+				AccountServiceAsync accountService = appServices.getAccountService();
+				accountService.readNotifications(notIds, new AsyncCallback<Void>(){
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						fetchNotifications();
+						eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+						{
+							@Override
+							public void onRefreshPage(RefreshPageEvent event)
+							{
+
+							}
+						});
+					}
+					
+				});
+				
+				
+			}
+		});
+		
 		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
 		{
 			@Override
@@ -105,6 +175,19 @@ public class TopBarPresenter implements Presenter
 			}
 		});
 		
+		fetchNotifications();
+		
+		
+		
+	}
+
+	/**
+	 * Helper functions to fetch notifications
+	 * @pre true
+	 * @post true
+	 */
+	private void fetchNotifications()
+	{
 		AccountServiceAsync accountService = appServices.getAccountService();
 		List<Long> notIds = appUser.getUserNotifications();
 		
@@ -132,9 +215,6 @@ public class TopBarPresenter implements Presenter
 					topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 			}
 		});
-		
-		
-		
 	}
 	
 	@Override
