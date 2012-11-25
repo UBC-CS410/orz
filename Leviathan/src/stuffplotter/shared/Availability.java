@@ -12,10 +12,6 @@ public class Availability implements Serializable
 {	
 	@Id private Long id;
 	private Date time;
-	private int year;
-	private int month;
-	private int day;
-	private int hour;
 	private Integer votes;
 	
 	/**
@@ -60,63 +56,6 @@ public class Availability implements Serializable
 	public Date getTime()
 	{
 		return this.time;
-	}
-	
-	/**
-	 * Get the year of this time slot
-	 * @pre true;
-	 * @post true;
-	 * @return year
-	 */
-	public int getYear()
-	{
-		return this.year;
-	}
-	
-	/**
-	 * Get the month of this time slot
-	 * @pre true;
-	 * @post true;
-	 * @return month
-	 */
-	public int getMonth()
-	{
-		return this.month;
-	}
-	
-	/**
-	 * Get the day of this time slot
-	 * @pre true;
-	 * @post true;
-	 * @return day
-	 */
-	public int getDay()
-	{
-		return this.day;
-	}
-	
-	/**
-	 * Get the hour of this time slot
-	 * @pre true;
-	 * @post true;
-	 * @return hour
-	 */
-	public int getHour()
-	{
-		return this.hour;
-	}
-	
-	/**
-	 * Sets the time fields of this time slot
-	 * @pre true;
-	 * @post true;
-	 */
-	public void setTimeFields(int year, int month, int day, int hour)
-	{
-		this.year = year;
-		this.month = month;
-		this.day = day;
-		this.hour = hour;
 	}
 	
 	/**

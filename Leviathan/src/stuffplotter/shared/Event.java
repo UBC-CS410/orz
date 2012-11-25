@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import stuffplotter.client.EventCreationPageRetriever;
 
@@ -50,7 +49,14 @@ public class Event implements Serializable
 	};
 	
 	@Id private Long eventId;
+	/**
+	 * Full name of the event owner.
+	 */
 	private String eventOwner;
+	/**
+	 * E-mail of the event owner (unique ID).
+	 */
+	private String eventOwnerID;
 	private String eventName;
 	private Date eventDate;
 	private String eventLocation;
@@ -70,7 +76,6 @@ public class Event implements Serializable
 	private List<Long> eventComments;
 	
 	private List<Double> eventRatings;
-	private Double eventScore;
 	
 	/**
 	 * Event constructor.
@@ -93,6 +98,7 @@ public class Event implements Serializable
 	public Event(EventCreationPageRetriever eventRetriever)
 	{
 		this.eventOwner = eventRetriever.getOwner();
+		this.eventOwnerID = eventRetriever.getOwnerID();
 		this.eventName = eventRetriever.getName();
 		this.eventDate = null;
 		this.eventLocation = eventRetriever.getLocation();
@@ -102,7 +108,7 @@ public class Event implements Serializable
 		this.eventDescription = eventRetriever.getDescription();
 		
 		this.eventStatus = Status.PROPOSED;
-		this.eventFrame = Frame.HOURS;
+		this.eventFrame = eventRetriever.getFrame();
 		
 		this.eventInvitees = new ArrayList<String>();
 		this.eventAttendees = new ArrayList<String>();
@@ -120,29 +126,51 @@ public class Event implements Serializable
 	{
 		return this.eventId;
 	}
-	
+
 	/**
-	 * Retrieves the owner for the event.
+	 * Retrieves the owner (full name) for the event.
 	 * @pre true;
 	 * @post true; 
-	 * @return the owner of the event.
+	 * @return the owner (full name) of the event.
 	 */
 	public String getOwner()
 	{
 		return this.eventOwner;
+	}
+	
+	/**
+	 * Retrieves the owner ID (email) for the event.
+	 * @pre true;
+	 * @post true; 
+	 * @return the owner ID (email) of the event.
+	 */
+	public String getOwnerID()
+	{
+		return this.eventOwnerID;
 	}
 
 	/**
 	 * Set the owner for the event.
 	 * @pre eventOwner != null;
 	 * @post this.eventOwner.equals(eventOwner);
-	 * @param eventOwner the eventOwner to set
+	 * @param eventOwner - the owner (full name) for the event.
 	 */
 	public void setOwner(String eventOwner)
 	{
 		this.eventOwner = eventOwner;
 	}
 
+	/**
+	 * Set the owner ID for the event.
+	 * @pre eventOwnerID != null;
+	 * @post this.eventOwnerID.equals(eventOwnerID);
+	 * @param eventOwnerID - the owner (email address) for the event.
+	 */
+	public void setOwnerID(String eventOwnerID)
+	{
+		this.eventOwnerID = eventOwnerID;
+	}
+	
 	/**
 	 * Retrieve the name of the event.
 	 * @pre true;
@@ -210,7 +238,7 @@ public class Event implements Serializable
 	}
 	
 	/**
-	 * Retrieves the date of the event.
+	 * Retrieves the starting date of the event.
 	 * @pre true;
 	 * @post true;
 	 * @return the date of the event.
@@ -221,7 +249,7 @@ public class Event implements Serializable
 	}
 
 	/**
-	 * Set the date of the event.
+	 * Set the starting date of the event.
 	 * @pre true;
 	 * @post this.eventDate.equals(eventDate);
 	 * @param eventDate - the date of the event.
@@ -242,6 +270,28 @@ public class Event implements Serializable
 		return this.eventDuration;
 	}
 
+	/**
+	 * Retrieve the time frame for the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the time frame for the event.
+	 */
+	public Frame getTimeFrame()
+	{
+		return this.eventFrame;
+	}
+	
+	/**
+	 * Sets the time frame for the event.
+	 * @pre timeFrame != null;
+	 * @post true;
+	 * @param timeFrame - the time frame for the event.
+	 */
+	public void setTimeFrame(Frame timeFrame)
+	{
+		this.eventFrame = timeFrame;
+	}
+	
 	/**
 	 * Set the duration of the event.
 	 * @pre eventDuration >= 0;
@@ -283,7 +333,7 @@ public class Event implements Serializable
 	 */
 	public Long getEventScheduler()
 	{
-		return eventScheduler;
+		return this.eventScheduler;
 	}
 
 	/**
@@ -305,7 +355,7 @@ public class Event implements Serializable
 	 */
 	public Status getStatus()
 	{
-		return eventStatus;
+		return this.eventStatus;
 	}
 
 	/**
@@ -395,6 +445,17 @@ public class Event implements Serializable
 	{
 		this.eventDescription = eventDescription;
 	}
+
+	/**
+	 * Add a rating to the event.
+	 * @pre rating >= 0;
+	 * @post true;
+	 * @param rating - the rating to add for the event.
+	 */
+	public void addRating(Double rating)
+	{
+		this.eventRatings.add(rating);
+	}
 	
 	/**
 	 * Get the list of comments for the event.
@@ -417,4 +478,10 @@ public class Event implements Serializable
 	{
 		this.eventComments.add(eventComment);
 	}
+	
+	/**
+	 * Serial version for the Event.
+	 */
+	private static final long serialVersionUID = 5333378383196411639L;
+
 }

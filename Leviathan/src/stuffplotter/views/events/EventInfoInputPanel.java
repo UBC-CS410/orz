@@ -1,7 +1,13 @@
 package stuffplotter.views.events;
 
+import stuffplotter.client.MapCoordinate;
+import stuffplotter.shared.Event.Frame;
+
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -10,12 +16,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class EventInfoInputPanel extends VerticalPanel
 {
+	private Label creator;
 	private TextBox location;
-	private LatLng mapCoordinates;
+	private MapCoordinate mapCoordinates;
 	private TextBox name;
 	private TextBox cost;
+	private RadioButton singleDay;
+	private RadioButton multiDay;
 	private TextBox duration;
-	private TextBox description;
+	private TextArea description;
 	
 	/**
 	 * Constructor for the EventInfoInput class.
@@ -25,6 +34,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	public EventInfoInputPanel()
 	{
 		super();
+		this.mapCoordinates = null;
 		this.addFields();
 	}
 	
@@ -38,25 +48,60 @@ public class EventInfoInputPanel extends VerticalPanel
 	{
 		this.add(new Label("Event Information"));
 		
-		this.add(new Label("Event Name:"));
+		this.add(new Label("Created by:"));
+		this.creator = new Label();
+		this.add(this.creator);
+		
+		this.add(new Label("Event Name*:"));
 		this.name = new TextBox();
 		this.add(this.name);
 		
 		this.add(new Label("Location:"));
 		this.location = new TextBox();
+		this.location.setText("use the map to the right to help set the location");
 		this.add(location);
 		
 		this.add(new Label("Cost:"));
 		this.cost = new TextBox();
 		this.add(cost);
 		
+		this.add(new Label("Event Span*:"));
+		this.singleDay = new RadioButton("eventframe", "Single-Day");
+		this.singleDay.setValue(true);
+		this.multiDay = new RadioButton("eventframe", "Multi-Day");
+		HorizontalPanel radioBtnHolder = new HorizontalPanel();
+		radioBtnHolder.add(this.singleDay);
+		radioBtnHolder.add(this.multiDay);
+		this.add(radioBtnHolder);
+		
 		this.add(new Label("Duration:"));
 		this.duration = new TextBox();
 		this.add(this.duration);
 		
 		this.add(new Label("Description"));
-		this.description = new TextBox();
+		this.description = new TextArea();
 		this.add(this.description);
+	}
+	
+	/**
+	 * Set the creator name for the event.
+	 * @pre creatorName != null;
+	 * @post true;
+	 * @param creatorName - the name (full name) of the creator.
+	 */
+	public void setCreator(String creatorName)
+	{
+		this.creator.setText(creatorName);
+	}
+	
+	/**
+	 * Retrieve the creator name for the event.
+	 * @pre true;
+	 * @post true;
+	 */
+	public String getCreator()
+	{
+		return this.creator.getText().trim();
 	}
 	
 	/**
@@ -72,13 +117,20 @@ public class EventInfoInputPanel extends VerticalPanel
 	
 	/**
 	 * Method to store the coordinates for the event.
-	 * @pre coordinates != null;
+	 * @pre true;
 	 * @post true;
 	 * @param coordinates - the LatLng of the event.
 	 */
 	public void setCoordinates(LatLng coordinates)
 	{
-		this.mapCoordinates = coordinates;
+		if(coordinates != null)
+		{
+			this.mapCoordinates = new MapCoordinate(coordinates);
+		}
+		else
+		{
+			this.mapCoordinates = null;
+		}
 	}
 	
 	/**
@@ -93,31 +145,24 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 
 	/**
-	 * Method to retrieve the coordinates of the event.
-	 * @pre true;
-	 * @post true;
-	 * @return the coordinates of the event.
-	 */
-	public LatLng getMapCoordinates()
-	{
-		return this.mapCoordinates;
-	}
-
-	/**
 	 * Method to retrieve the coordinates of the event as a 2 element Double[] where the
 	 * first entry is the latitude and the second entry is the longitude. 
 	 * @pre true;
 	 * @post true;
-	 * @return the coordinates of the event in a 2 element Double[].
+	 * @return the coordinates of the event in a 2 element Double[] or null if none set.
 	 */
 	public Double[] getMapCoordinatesAsArray()
 	{
-		Double[] coordinates = new Double[2];
-		coordinates[0] = this.mapCoordinates.getLatitude();
-		coordinates[1] = this.mapCoordinates.getLongitude();
-		return coordinates;
+		if(this.mapCoordinates != null)
+		{
+			return this.mapCoordinates.getCoordinateAsArray();
+		}
+		else
+		{
+			return null;
+		}
 	}
-	
+
 	/**
 	 * Method to retrieve the name of the event.
 	 * @pre true;
@@ -140,6 +185,24 @@ public class EventInfoInputPanel extends VerticalPanel
 		return this.cost.getText().trim();
 	}
 
+	/**
+	 * Retrieve the time frame for the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the time from for the event.
+	 */
+	public Frame getFrame()
+	{
+		if(this.singleDay.getValue())
+		{
+			return Frame.HOURS;
+		}
+		else
+		{
+			return Frame.DAYS;
+		}
+	}
+	
 	/**
 	 * Method to retrieve the duration of the event.
 	 * @pre true;

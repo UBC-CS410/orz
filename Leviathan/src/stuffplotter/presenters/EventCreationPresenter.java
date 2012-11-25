@@ -150,7 +150,7 @@ public class EventCreationPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				EventCreationPageRetriever eventInfoRetriever = new EventCreationPageRetriever(appUser.getUserFullName());
+				EventCreationPageRetriever eventInfoRetriever = new EventCreationPageRetriever(appUser.getUserEmail());
 				createEventDialogBox.retrieveEventInfo(eventInfoRetriever);
 				Event eventToCreate = new Event(eventInfoRetriever);
 				EventServiceAsync eventService = appServices.getEventService();
