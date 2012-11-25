@@ -26,7 +26,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
-public class EventViewPresenter implements Presenter
+public class EventPresenter implements Presenter
 {
 	public interface EventViewer
 	{
@@ -50,7 +50,7 @@ public class EventViewPresenter implements Presenter
 	
 	private List<Comment> eventComments;
 	
-	public EventViewPresenter(ServiceRepository appServices, HandlerManager eventBus, EventViewer display, Account user, Event data)
+	public EventPresenter(ServiceRepository appServices, HandlerManager eventBus, EventViewer display, Account user, Event data)
 	{
 		this.appUser = user;
 		this.appServices = appServices;

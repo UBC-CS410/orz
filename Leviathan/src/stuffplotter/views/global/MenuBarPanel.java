@@ -59,8 +59,6 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 		this.add(this.eventsBtn);
 		this.add(this.friendsBtn);
 		this.add(this.achievementsBtn);
-		
-		System.out.println("menu bar panel width:" + this.getOffsetWidth());
 	}
 	
 	/**

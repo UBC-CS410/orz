@@ -1,17 +1,13 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import stuffplotter.views.util.DateSplitter;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -22,8 +18,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TimeSheetPanel extends SimplePanel
 {
-	final private String timeSheetWidth = "640px";
-	final private String timeSheetHeight = "480px";
+	private static final String WIDTH = "640px";
+	private static final String HEIGHT = "480px";
 	private ScrollPanel timeSheetWindow;
 	private HorizontalPanel horPanel;
 	
@@ -36,7 +32,7 @@ public class TimeSheetPanel extends SimplePanel
 	{
 		super();
 		timeSheetWindow = new ScrollPanel();
-		timeSheetWindow.setSize(timeSheetWidth, timeSheetHeight);
+		timeSheetWindow.setSize(WIDTH, HEIGHT);
 		horPanel = new HorizontalPanel();
 		timeSheetWindow.add(horPanel);
 		this.add(timeSheetWindow);

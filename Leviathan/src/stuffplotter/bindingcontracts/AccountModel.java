@@ -1,5 +1,7 @@
 package stuffplotter.bindingcontracts;
 
+import java.util.List;
+
 /**
  * Interface used by the Account object to enforce a contract between the model and views to
  * simulate data binding.
@@ -61,4 +63,12 @@ public interface AccountModel
 	 * @return the user's title.
 	 */
 	public String getUserTitle();
+	
+	/**
+	 * Retrieve the list of the user's friends (e-mail addresses).
+	 * @pre true;
+	 * @post true;
+	 * @return the list of the user's friends (e-mail addresses).
+	 */
+	public List<String> getUserFriends();
 }
