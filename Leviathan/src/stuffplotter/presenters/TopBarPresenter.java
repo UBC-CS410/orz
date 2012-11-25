@@ -46,6 +46,8 @@ public class TopBarPresenter implements Presenter
 		 * @return the TopBarView as a widget.
 		 */
 		public Widget asWidget();
+		
+		public void setNotificationLabelText(String text);
 	}
 	
 	private final ServiceRepository appServices;
@@ -106,7 +108,6 @@ public class TopBarPresenter implements Presenter
 		AccountServiceAsync accountService = appServices.getAccountService();
 		List<Long> notIds = appUser.getUserNotifications();
 		
-		
 		accountService.getNotifications(notIds, new AsyncCallback<List<NotificationModel>>(){
 			@Override
 			public void onFailure(Throwable caught)
@@ -119,7 +120,13 @@ public class TopBarPresenter implements Presenter
 			public void onSuccess(List<NotificationModel> result)
 			{
 				topBarDisplay.setNotificationData(result);
-				
+				int NumberOfNewNotifications = 0;
+				for(NotificationModel notif: result)
+				{
+					if(notif.getNewNotification())
+						NumberOfNewNotifications++;
+				}
+				topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 			}
 		});
 		
