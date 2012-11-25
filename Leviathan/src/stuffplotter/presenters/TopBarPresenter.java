@@ -126,7 +126,10 @@ public class TopBarPresenter implements Presenter
 					if(notif.getNewNotification())
 						NumberOfNewNotifications++;
 				}
-				topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
+				if(NumberOfNewNotifications>1)
+					topBarDisplay.setNotificationLabelText("Notifications ("+NumberOfNewNotifications+")");
+				else
+					topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 			}
 		});
 		
