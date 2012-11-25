@@ -16,7 +16,7 @@ public class AchievementRecordUpdater implements RecordVisitor
 		
 		if(incLogin)
 		{
-			account.increamentLogin();
+			account.incrementLogin();
 		}
 			
 		
@@ -29,11 +29,11 @@ public class AchievementRecordUpdater implements RecordVisitor
 	{
 		if(incEventCreated)
 		{
-			account.increamentHostedEvents();
+			account.incrementHostedEvents();
 		}
 		if(incEventParticipated)
 		{
-			account.increamentParticipatedEvents();
+			account.incrementParticipatedEvents();
 		}
 		
 		
