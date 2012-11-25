@@ -4,7 +4,6 @@ import stuffplotter.signals.RefreshPageEvent;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 
 /**
  * Class to fire a PageRefreshEvent at a given set interval.
@@ -45,7 +44,6 @@ public class PageRefresherSignaller
 			public void run()
 			{
 				eventBus.fireEvent(new RefreshPageEvent());
-				Window.alert("asdf");
 			}
 		}; 
 	}
