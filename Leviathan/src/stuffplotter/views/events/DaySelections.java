@@ -126,7 +126,6 @@ public class DaySelections extends VerticalPanel
 				}
 			}
 		}
-		
 		return selectedValues;
 	}
 	
@@ -178,7 +177,7 @@ public class DaySelections extends VerticalPanel
 		 * @param hour - the starting hour the timeslot represents in 24 hour, base 0, time.		 */
 		private void initializeVariables(int month, int day, int year, int hour)
 		{
-			this.timeSlot = new Date(year, month, day, hour, 0);
+			this.timeSlot = new Date(year, month-1 /*zero indexed*/, day, hour, 0);
 		}
 		
 		/**

@@ -78,6 +78,18 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	}
 	
 	/**
+	 * Method to retrieve the list of availability ids to update
+	 * @pre true;
+	 * @post true;
+	 * @return submissions
+	 */
+	public List<Long> retrieveResults() 
+	{
+		return submissions;
+		
+	}
+	
+	/**
 	 * Helper method to initialize the AvailabilitySubmitter.
 	 * @pre true;
 	 * @post true;
@@ -138,7 +150,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 					// Store the ids of the availabilities that need to be updated
 					submissions.add(availabilities.get(value));
 				}
-				
+				System.out.println("uhh");
 				hide();
 				Window.alert(result);
 			}
