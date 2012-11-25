@@ -82,9 +82,11 @@ public abstract class Notification implements Serializable, NotificationModel
 	{
 		return this.notificationFrom;
 	}
+	
+	@Override
 	public String getNotificationDisplay()
 	{
-		return notificationDisplay;
+		return this.notificationDisplay;
 	}
 	public void setNotificationDisplay(String notificationDisplay)
 	{
@@ -102,6 +104,11 @@ public abstract class Notification implements Serializable, NotificationModel
 	public void setNotificationTime(Date notificationTime)
 	{
 		this.notificationTime = notificationTime;
+	}
+	
+	@Override
+	public boolean getNewNotification(){
+		return this.newNotification;
 	}
 
 	/**

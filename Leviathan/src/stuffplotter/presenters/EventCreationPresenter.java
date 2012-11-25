@@ -1,14 +1,24 @@
 package stuffplotter.presenters;
 
+import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.client.EventCreationPageRetriever;
+import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.shared.Event;
+import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
+import stuffplotter.views.util.NotificationDialogBox;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+/**
+ * Presenter for the event creation dialog box.
+ */
 public class EventCreationPresenter implements Presenter
 {
 	public interface CreateEventView
@@ -38,12 +48,27 @@ public class EventCreationPresenter implements Presenter
 		public HasClickHandlers getBackBtn();
 		
 		/**
-		 * Retrieve the Next/Submit "button" (changes depending on if it is the last page).
+		 * Retrieve the Next "button".
 		 * @pre true;
 		 * @post true;
-		 * @return the Next/Submit "button".
+		 * @return the Next "button".
 		 */
 		public HasClickHandlers getNextBtn();
+		
+		/**
+		 * Retrieve the Submit "button".
+		 * @pre true;
+		 * @post true;
+		 * @return the Submit "button".
+		 */
+		public HasClickHandlers getSubmitBtn();
+		
+		/**
+		 * Close the create event window.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void closeDisplay();
 		
 		/**
 		 * Go to the next page of the event creation procedure if it exists.
@@ -53,14 +78,6 @@ public class EventCreationPresenter implements Presenter
 		public void nextPage();
 		
 		/**
-		 * Determines if there is a next page for creating an event.
-		 * @pre true;
-		 * @post true;
-		 * @return true if there is a next page, false otherwise.
-		 */
-		public boolean hasNextPage();
-		
-		/**
 		 * Go to the previous page of the event creation procedure if it exists.
 		 * @pre true;
 		 * @post true;
@@ -68,17 +85,19 @@ public class EventCreationPresenter implements Presenter
 		public void previousPage();
 		
 		/**
-		 * Determines if there is a previous page for creating an event.
+		 * Retrieve the event info from the CreateEventView.
 		 * @pre true;
 		 * @post true;
-		 * @return true if there is a previous page, false otherwise.
+		 * @param eventRetriever - the EventCreationPageVisitor to retrieve the event information.
 		 */
-		public boolean hasPreviousPage();
+		public void retrieveEventInfo(EventCreationPageVisitor eventRetriever);
 	}
 	
+	private static final String TASKNAME = "Creating New Event";
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final CreateEventView createEventDialogBox;
+	private final AccountModel appUser;
 	
 	/**
 	 * Constructor for the EventCreationPresenter.
@@ -87,12 +106,17 @@ public class EventCreationPresenter implements Presenter
 	 * @param appServices - the repository containing all the services available for the application.
 	 * @param eventBus - the event bus for the application.
 	 * @param display - the CreateEventView to associate with the EventCreationPresenter.
+	 * @param userAccount - the user account that is creating the events.
 	 */
-	public EventCreationPresenter(ServiceRepository appServices, HandlerManager eventBus, CreateEventView display)
+	public EventCreationPresenter(ServiceRepository appServices,
+								  HandlerManager eventBus,
+								  CreateEventView display,
+								  AccountModel userAccount)
 	{
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.createEventDialogBox = display;
+		this.appUser = userAccount;
 	}
 	
 	/**
@@ -108,16 +132,48 @@ public class EventCreationPresenter implements Presenter
 			public void onClick(ClickEvent event)
 			{
 				createEventDialogBox.previousPage();
-				if(!createEventDialogBox.hasPreviousPage())
-				{
-					//this.createEventDialogBox.getBackBtn().setEnabled(false);
-				}
-			/*	if(nextBtn.getText().equals(SUBMITBUTTONTEXT))
-				{
-					submitAction.removeHandler();
-					setAsNextButton();
-				}*/
 			}	
+		});
+		
+		this.createEventDialogBox.getNextBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				// need to add validator here (new visitor)
+				createEventDialogBox.nextPage();
+			}	
+		});
+		
+		this.createEventDialogBox.getSubmitBtn().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				EventCreationPageRetriever eventInfoRetriever = new EventCreationPageRetriever(appUser.getUserFullName());
+				createEventDialogBox.retrieveEventInfo(eventInfoRetriever);
+				Event eventToCreate = new Event(eventInfoRetriever);
+				EventServiceAsync eventService = appServices.getEventService();
+				eventService.createEvent(eventToCreate, eventInfoRetriever.getSelectedTimeSlots(), new AsyncCallback<Event>()
+				{	
+					@Override
+					public void onSuccess(Event result)
+					{
+						createEventDialogBox.closeDisplay();
+						System.out.println(result.getComments().size());
+						new NotificationDialogBox(TASKNAME, "The Event: " + result.getName() +
+												  " was created successfully!");
+					}
+					
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						createEventDialogBox.closeDisplay();
+						new NotificationDialogBox(TASKNAME, "Unfortunately your event " +
+								"failed to be created, please try again later.");
+					}
+				});
+			}
 		});
 	}
 	

@@ -79,24 +79,27 @@ public class EventsPagePresenter implements Presenter
 			{
 				Presenter presenter = new EventCreationPresenter(appServices,
 																 eventBus,
-																 new EventCreationView(appUser.getUserEmail()));
+																 new EventCreationView(),
+																 appUser);
 				presenter.go(null);
 			}
 			
 		});
 		
-		eventsView.getListCurrentButton().addClickHandler(new ClickHandler() {
-	
+		eventsView.getListCurrentButton().addClickHandler(new ClickHandler()
+		{
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onClick(ClickEvent event)
+			{
 				fetchCurrentEvents();
 			}
 		});
 		
-		eventsView.getListPastButton().addClickHandler(new ClickHandler() {
-			
+		eventsView.getListPastButton().addClickHandler(new ClickHandler()
+		{	
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onClick(ClickEvent event)
+			{
 				fetchPastEvents();
 			}
 		});
@@ -112,20 +115,19 @@ public class EventsPagePresenter implements Presenter
 		for (int i = 0; i < eventsView.getEventViewers().size(); i++)
 		{
 			final int eventsIndex = i;
-			eventsView.getEventViewers().get(i).addClickHandler(new ClickHandler() {
-
+			eventsView.getEventViewers().get(i).addClickHandler(new ClickHandler()
+			{
 				@Override
 				public void onClick(ClickEvent event)
 				{
 					Event selectedEvent;
 					selectedEvent = currentEvents.get(eventsIndex);
 
-					Presenter presenter = new EventViewPresenter(
-							appServices,
-							eventBus,
-							new EventView(),
-							appUser,
-							selectedEvent);
+					Presenter presenter = new EventViewPresenter(appServices,
+																 eventBus,
+																 new EventView(),
+																 appUser,
+																 selectedEvent);
 					
 					eventsView.hideEventViewers();
 					presenter.go(eventsView.getEventViewerContainer());
@@ -154,7 +156,8 @@ public class EventsPagePresenter implements Presenter
 	private void fetchCurrentEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getCurrentEvents(), new AsyncCallback<List<Event>>() {
+		eventService.retrieveEvents(appUser.getCurrentEvents(), new AsyncCallback<List<Event>>()
+		{
 			@Override
 			public void onFailure(Throwable caught)
 			{
@@ -181,7 +184,8 @@ public class EventsPagePresenter implements Presenter
 	private void fetchPastEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getPastEvents(), new AsyncCallback<List<Event>>() {
+		eventService.retrieveEvents(appUser.getPastEvents(), new AsyncCallback<List<Event>>()
+		{
 			@Override
 			public void onFailure(Throwable caught)
 			{
@@ -199,5 +203,4 @@ public class EventsPagePresenter implements Presenter
 			}
 		});
 	}
-
 }

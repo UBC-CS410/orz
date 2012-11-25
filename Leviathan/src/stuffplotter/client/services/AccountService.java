@@ -5,6 +5,7 @@ package stuffplotter.client.services;
 
 import java.util.List;
 
+import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
 import stuffplotter.shared.Notification;
@@ -25,4 +26,5 @@ public interface AccountService extends RemoteService {
 	void removeFriend(Account acc, String friend);
 	void declineFriendReq(Account acc, String friend);
 	void addNotification(String user, Notification notification);
+	NotificationModel getNotification(Long id);
 }
