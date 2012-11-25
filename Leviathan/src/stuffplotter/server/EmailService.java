@@ -15,25 +15,30 @@ import stuffplotter.shared.Event;
 /**
  * This is the EmailService class. It will handle sending out emails from
  * our admin
- * 
- * @author Matt
- *
  */
-public class EmailService {
+public class EmailService
+{
 	final private String ADMIN_USERNAME = "stuffplotter000@gmail.com";
 	final private String PASSWORD = "HappyMeal";
 	private Properties  props = new Properties();
 	Session session;
 
-	
-	public EmailService(){
+	/**
+	 * Constructor for the EmailService.
+	 * @pre true;
+	 * @post true;
+	 */
+	public EmailService()
+	{
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host" , "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 
-		session = Session.getInstance(props, new javax.mail.Authenticator(){
-			protected PasswordAuthentication getPasswordAuthentication(){
+		session = Session.getInstance(props, new javax.mail.Authenticator()
+		{
+			protected PasswordAuthentication getPasswordAuthentication()
+			{
 				return new PasswordAuthentication(ADMIN_USERNAME, PASSWORD);
 			}
 		});
@@ -41,13 +46,13 @@ public class EmailService {
 	
 	/**
 	 * Sends an email to the new user, welcoming them into stuff plotter.
-	 * 
-	 * @pre sends an email to a user not in the data store
-	 * @post Sends an email to the new user
-	 * @param newUser		- New user to be added into our datastore
-	 * @param formerUser	- Current user logged in emailing
+	 * @pre sends an email to a user not in the data store.
+	 * @post Sends an email to the new user.
+	 * @param newUser		- New user to be added into our datastore.
+	 * @param formerUser	- Current user logged in emailing.
 	 */
-	public void sendNewUser(String newUser, String formerUser){
+	public void sendNewUser(String newUser, String formerUser)
+	{
 		try
 		{
 			Message message = new MimeMessage(session);
@@ -57,8 +62,7 @@ public class EmailService {
 			message.setSubject("StuffPlotter - "+formerUser+" wants to add you as a Friend");
 			message.setContent("Hello "+newUser+",\n"+formerUser+" wants to add you as a friend. Please log into Stuffplotter at stuffplotter.appspot.com\nSee ya there,\nStuff Plotter Team", "text/html; charset=utf-8");
 			
-			Transport.send(message);
-			
+			Transport.send(message);		
 		}
 		catch(MessagingException e)
 		{
@@ -67,15 +71,25 @@ public class EmailService {
 		}
 	}
 	
-	public void sendEvent(Event event){
+	/**
+	 * Send emails to all users invited to an event.
+	 * @pre event != null;
+	 * @post true;
+	 * @param event - the event to send invitations for.
+	 */
+	public void sendEvent(Event event)
+	{
 		InternetAddress[] recipientEmails = new InternetAddress[event.getInvitees().size()+1];
 
 		try
 		{
-			for(int i=0; i<event.getInvitees().size();i++){
+			// for loop to retrieve the list of email addresses to send the invitation to
+			for(int i=0; i<event.getInvitees().size();i++)
+			{
 				recipientEmails[i] = new InternetAddress(event.getInvitees().get(i));
 			}
-			recipientEmails[event.getInvitees().size()] = new InternetAddress(event.getOwner());
+			
+			recipientEmails[event.getInvitees().size()] = new InternetAddress(event.getOwnerID());
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ADMIN_USERNAME));
@@ -84,7 +98,6 @@ public class EmailService {
 			message.setContent("Hello You have been invited to an Event, Woopee!!!", "text/html; charset=utf-8");
 			
 			Transport.send(message);
-			
 		}
 		catch(MessagingException e)
 		{
@@ -92,10 +105,4 @@ public class EmailService {
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	
-	
-	
-	
-
 }
