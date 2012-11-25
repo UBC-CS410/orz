@@ -28,4 +28,5 @@ public interface AccountService extends RemoteService {
 	void addNotification(String user, Notification notification);
 	NotificationModel getNotification(Long id);
 	List<NotificationModel> getNotifications(List<Long> notIds);
+	void readNotifications(List<Long> notIds);
 }

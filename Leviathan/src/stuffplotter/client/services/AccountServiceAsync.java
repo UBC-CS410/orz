@@ -25,5 +25,7 @@ public interface AccountServiceAsync {
 	void getNotification(Long id, AsyncCallback<NotificationModel> callback);
 	void getNotifications(List<Long> notIds,
 			AsyncCallback<List<NotificationModel>> callback);
+	void readNotifications(List<Long> notIds,
+			AsyncCallback<Void> callback);
 
 }
