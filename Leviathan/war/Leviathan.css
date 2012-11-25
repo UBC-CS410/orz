@@ -5,21 +5,39 @@
 }
 
 .topBar {
-	width: 100%;
-}
-
-.topBarLabel {
 	float: right;
+	width: 100%;
 	font-size: 8pt;
 }
 
+.topBarNotifications {
+	float: left;
+}
+
+.topBarUserName {
+	float: right;
+}
+
+.topBarSeparator {
+	margin: 0px 10px;
+}
+
+.topBarLogOut {
+	float: right;
+}
+
+
 .menuBar {
 	margin: auto;
+	border: 1px solid red;
 	background-color: green;
 }
 
-.menuBarButton {
-	width: 200px;
+.menuBar td {
+	padding: 8px 20px;
+}
+
+.menuBarButton {	
 	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
  	 box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
   	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
