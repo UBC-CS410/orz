@@ -25,6 +25,7 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 	public MenuBarPanel()
 	{
 		super();
+		this.setStyleName("menuBar");
 		this.initializeUI();
 	}
 	
@@ -40,6 +41,14 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 		this.eventsBtn = new Button("Events");
 		this.friendsBtn = new Button("Friends");
 		this.achievementsBtn = new Button("Achievements");
+		
+		this.homeBtn.addStyleName("menuBarButton");
+		this.accountBtn.addStyleName("menuBarButton");
+		this.eventsBtn.addStyleName("menuBarButton");
+		this.friendsBtn.addStyleName("menuBarButton");
+		this.achievementsBtn.addStyleName("menuBarButton");
+		
+		this.setSpacing(50);
 		
 		this.add(this.homeBtn);
 		this.add(this.accountBtn);

@@ -32,6 +32,7 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	public TopBarPanel()
 	{
 		super();
+		this.setStyleName("topBar");
 		this.initializeUI();
 	}
 	

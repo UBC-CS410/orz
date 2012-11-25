@@ -33,6 +33,7 @@ public class MasterView extends VerticalPanel implements MasterViewer
 	 */
 	private void initializeUI()
 	{
+		this.setStyleName("masterContainer");
 		// MasterView contains other Views, but Views can only be added via asWidget() in go()
 		this.topBarView = new TopBarPanel();
 		this.menuBarView = new MenuBarPanel();

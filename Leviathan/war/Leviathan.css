@@ -1,19 +1,49 @@
 /** Add css rules here for your application. */
 
-
-/** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+.masterContainer {
+	width: 100%;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
+.topBar {
+	width: 100%;
 }
+
+.topBarLabel {
+	float: right;
+	font-size: 8pt;
+}
+
+.menuBar {
+	margin: auto;
+	background-color: green;
+}
+
+.menuBarButton {
+	width: 200px;
+	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+ 	 box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+  	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+	-moz-border-radius: 8px;
+  	-webkit-border-radius: 8px;
+  	border-radius: 8px;
+}
+
+.eventRoll {
+	
+}
+
+.eventListing {
+	border-bottom: 1px solid black;
+}
+
+.eventListingAnchor {
+	background-color: #CCC;
+}
+
+.eventPage {
+	
+}
+
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {

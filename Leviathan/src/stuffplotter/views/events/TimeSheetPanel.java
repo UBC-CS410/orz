@@ -1,8 +1,14 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import stuffplotter.views.util.DateSplitter;
 
@@ -16,8 +22,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TimeSheetPanel extends SimplePanel
 {
-	final private String timeSheetWidth = "500px";
-	final private String timeSheetHeight = "300px";
+	final private String timeSheetWidth = "640px";
+	final private String timeSheetHeight = "480px";
 	private ScrollPanel timeSheetWindow;
 	private HorizontalPanel horPanel;
 	
@@ -83,7 +89,41 @@ public class TimeSheetPanel extends SimplePanel
 	 */
 	public void addDays(List<Date> dates)
 	{
-		// TO DO
+		HashMap<Integer, List<Date>> hashMap = new HashMap<Integer, List<Date>>();
+		List<List<Integer>> monthYears = new ArrayList<List<Integer>>();
+		
+		for (int i = 0; i < dates.size(); i++)
+		{
+			System.out.println("dates.size() = " + dates.size());
+			DateSplitter splitter = new DateSplitter(dates.get(i));
+			List<Integer> monthYear = new ArrayList<Integer>(2);
+			monthYear.add(splitter.getMonth());
+			monthYear.add(splitter.getYear());
+			int key = monthYear.get(0) + monthYear.get(1);
+			
+			if(!monthYears.contains(monthYear))
+			{
+				List<Date> monthYearDates = new ArrayList<Date>();
+				
+				monthYears.add(monthYear);
+				monthYearDates.add(dates.get(i));
+				
+				hashMap.put(key, monthYearDates);
+			}
+			else
+			{
+				List<Date> monthYearDates = hashMap.get(key);
+				monthYearDates.add(dates.get(i));
+				hashMap.put(key, monthYearDates);
+			}	
+		}
+
+		//System.out.println("monthYears.size() = " + monthYears.size());
+		
+		for (List<Date> monthYearDates : hashMap.values())
+		{
+			this.horPanel.add(new MonthPanel(monthYearDates));
+		}
 	}
 	
 	/**

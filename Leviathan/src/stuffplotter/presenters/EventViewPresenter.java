@@ -1,5 +1,6 @@
 package stuffplotter.presenters;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +74,9 @@ public class EventViewPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				List<Availability> emptyList = new ArrayList<Availability>();
+				AvailabilitySubmitterDialogBox submitter = new AvailabilitySubmitterDialogBox(emptyList);
+				/*
 				EventServiceAsync eventService = appServices.getEventService();
 				eventService.retrieveAvailabilities(eventData.getEventScheduler(), new AsyncCallback<List<Availability>>() {
 
@@ -90,7 +94,7 @@ public class EventViewPresenter implements Presenter
 					}
 
 				});
-				
+				*/
 			}
 		});
 		
