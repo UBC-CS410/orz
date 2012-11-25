@@ -2,6 +2,7 @@ package stuffplotter.views.events;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
@@ -11,8 +12,11 @@ import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the friends to select to invite to an event.
@@ -51,14 +55,31 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	}
 
 	/**
-	 * Helper method to retrieve the friends selected to invite to an event.
+	 * Helper method to retrieve the friends (emails) selected to invite to an event.
 	 * @pre true;
 	 * @post true;
 	 * @return the list of friends (populated in the UI) to invite to the event.
 	 */
-	public FlexTable getFriendList()
+	public List<String> getFriendList()
 	{
-		return this.friendDisplayer.getDisplayer();
+		FlexTable friendDisplay = this.friendDisplayer.getDisplayer();
+		Iterator<Widget> iterator = friendDisplay.iterator();
+		List<String> friendList = new ArrayList<String>();
+		
+		// while loop to retrieve the selected friends
+		while(iterator.hasNext())
+		{
+			Widget friend = iterator.next();
+			if(friend instanceof FriendPanel)
+			{
+				if(((FriendPanel) friend).isSelected())
+				{
+					friendList.add(((FriendPanel) friend).getEmail());
+				}
+			}
+		}
+		
+		return friendList;
 	}
 	
 	/**
@@ -81,8 +102,16 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	 */
 	public void setFriendData(List<AccountModel> friends)
 	{
-		this.friendDisplayer.getDisplayer().clear();
-		
+		if(!friends.isEmpty())
+		{
+			this.friendDisplayer.getDisplayer().clear();
+			for(AccountModel friend : friends)
+			{
+				this.friendDisplayer.addElement(new FriendPanel(friend.getUserFullName(),
+																friend.getUserEmail(),
+																friend.getUserProfilePicture()));
+			}
+		}
 	}
 	
 	/**
@@ -95,5 +124,55 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	public void accept(EventCreationPageVisitor eventVisitor)
 	{
 		eventVisitor.visit(this);
+	}
+	
+	/**
+	 * Inner class for displaying friends in the friend selection window.
+	 */
+	public class FriendPanel extends HorizontalPanel
+	{
+		private static final int HEIGHT = 50;
+		private static final int WIDTH = 50;
+		private String emailAddress;
+		private CheckBox selectedValue;
+		
+		/**
+		 * Constructor for the FriendPanel to display a friend in the FriendSelectionPanel.
+		 * @pre fullName != null && emailAddress != null && profilePic != null;
+		 * @post true;
+		 */
+		public FriendPanel(String fullName, String emailAddress, String profilePic)
+		{
+			this.emailAddress = emailAddress;
+			this.selectedValue = new CheckBox();
+			
+			Image profilePicture = new Image(profilePic, 0, 0, WIDTH, HEIGHT);
+			
+			this.add(this.selectedValue);
+			this.add(profilePicture);
+			this.add(new Label(fullName));
+		}
+		
+		/**
+		 * Retrieves the email of the selected friend.
+		 * @pre true;
+		 * @post true;
+		 * @return the email of the selected friend.
+		 */
+		public String getEmail()
+		{
+			return this.emailAddress;
+		}
+		
+		/**
+		 * Determine if the friend has been selected.
+		 * @pre true;
+		 * @post true;
+		 * @return true if the friend has been selected; false otherwise.
+		 */
+		public boolean isSelected()
+		{
+			return this.selectedValue.getValue();
+		}
 	}
 }

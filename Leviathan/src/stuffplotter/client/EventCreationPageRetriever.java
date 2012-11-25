@@ -215,22 +215,6 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	@Override
 	public void visit(FriendSelectionPanel friendSelection)
 	{
-		selectedFriends = new ArrayList<String>();
-		
-		FlexTable friendList = friendSelection.getFriendList();
-		Iterator<Widget> iterator = friendList.iterator();
-		
-		// while loop to retrieve the selected friends
-		while(iterator.hasNext())
-		{
-			Widget friend = iterator.next();
-			if(friend instanceof CheckBox)
-			{
-				if(((CheckBox) friend).getValue())
-				{
-					selectedFriends.add(((CheckBox) friend).getFormValue());
-				}
-			}
-		}
+		selectedFriends = friendSelection.getFriendList();
 	}
 }

@@ -76,18 +76,15 @@ public class EventCreationPagePopulator implements EventCreationPageVisitor
 			@Override
 			public void onSuccess(Map<String, Account> result)
 			{
-				if(!result.isEmpty())
+				List<AccountModel> friends = new ArrayList<AccountModel>();
+				
+				// for loop to create the List of friends
+				for(Account account : result.values())
 				{
-					List<AccountModel> friends = new ArrayList<AccountModel>();
-					
-					// for loop to create the List of friends
-					for(Account account : result.values())
-					{
-						friends.add(account);
-					}
-					
-					friendSelection.setFriendData(friends);
+					friends.add(account);
 				}
+				
+				friendSelection.setFriendData(friends);
 			}
 			
 			@Override
