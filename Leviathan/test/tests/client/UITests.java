@@ -14,7 +14,7 @@ import stuffplotter.views.account.AccountPanel;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.shared.Account;
 
-public class UITests extends GWTTestCase
+/*public class UITests extends GWTTestCase
 {
 	//tests to ensure that method for UI work properly where applicable
 	private static AccountPanel accountPanel;
@@ -42,7 +42,7 @@ public class UITests extends GWTTestCase
 	 * Test to ensure that the availabilities are retrieved properly from the 
 	 * AvailabilitySubmitterDialogBox. 
 	 */
-	@Test
+/*	@Test
 	public void testRetrieveSubmissionAvailDialogBox()
 	{
 		assertEquals(0, userAvail.retrieveSubmissions());
@@ -55,5 +55,5 @@ public class UITests extends GWTTestCase
 	}
 	
 	
-}
+}*/
 
