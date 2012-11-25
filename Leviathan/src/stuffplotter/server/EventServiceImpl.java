@@ -1,7 +1,6 @@
 package stuffplotter.server;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Scheduler;
-import stuffplotter.views.util.DateSplitter;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -41,7 +39,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		this.addScheduler(event.getId(), timeSlots);
 		
 		
-		Account account = dbstore.fetchAccount(pEvent.getOwner());
+		Account account = dbstore.fetchAccount(pEvent.getOwnerID());
 		account.addUserEvent(event.getId());
 		dbstore.store(account);
 		email.sendEvent(event);
@@ -61,12 +59,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		
 		for (Date date : pDates)
 		{					
-			DateSplitter splitter = new DateSplitter(date);
 			Availability availability = new Availability(date);
-			availability.setTimeFields(splitter.getYear(),
-									   splitter.getMonth(),
-									   splitter.getDay(),
-									   splitter.getHour());
 			dbstore.store(availability);
 			scheduler.addAvailability(availability);
 		}

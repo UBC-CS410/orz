@@ -2,6 +2,7 @@ package stuffplotter.views.events;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import stuffplotter.views.util.DateSplitter;
@@ -70,17 +71,36 @@ public class MonthPanel extends VerticalPanel
 	 * @param dates - list of Dates containing the days to add.
 	 */
 	private void initializeUI(List<Date> dates)
-	{
+	{	
 		if(!dates.isEmpty())
 		{
 			DateSplitter splitter = new DateSplitter(dates.get(0));
-			this.month = splitter.getMonthAsString();
-			this.year = splitter.getYearAsString();
-			this.add(new Label(this.month + " " + this.year));
+			this.add(new Label(splitter.getMonthAsString() + " " + splitter.getYearAsString()));
+		}
+		
+		HashMap<Integer, List<Date>> hashMap = new HashMap<Integer, List<Date>>();
+		for (Date date : dates)
+		{
+			DateSplitter splitter = new DateSplitter(date);
+			if (hashMap.get(splitter.getDay()) == null)
+			{
+				List<Date> startHours = new ArrayList<Date>();
+				startHours.add(date);
+				hashMap.put(splitter.getDay(), startHours);
+			}
+			else
+			{
+				List<Date> startHours = hashMap.get(splitter.getDay());
+				startHours.add(date);
+				hashMap.put(splitter.getDay(), startHours);
+			}
 		}
 		
 		this.daysHolder = new HorizontalPanel();
-		this.daysHolder.add(new DaySelections(dates));
+		for (List<Date> startHours : hashMap.values())
+		{
+			this.daysHolder.add(new DaySelections(startHours));
+		}
 		this.add(this.daysHolder);
 	}
 	

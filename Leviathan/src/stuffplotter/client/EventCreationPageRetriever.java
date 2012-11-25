@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
+import stuffplotter.shared.Event.Frame;
 import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventDateSelectionPanel;
 import stuffplotter.views.events.EventInfoInputPanel;
@@ -22,11 +23,19 @@ import stuffplotter.views.events.TimeSheetPanel;
  */
 public class EventCreationPageRetriever implements EventCreationPageVisitor
 {
+	/**
+	 * Full name of the event owner.
+	 */
 	private String eventOwner;
+	/**
+	 * E-mail of the event owner (unique ID).
+	 */
+	private String eventOwnerID;
 	private String eventName;
 	private String eventLocation;
 	private Double[] eventCoordinates;
 	private String eventCost;
+	private Frame eventFrame;
 	private String eventDuration;
 	private String eventDescription;
 	private List<Date> selectedTimeSlots;
@@ -36,22 +45,33 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	 * Constructor for the EventCreationPageRetriever.
 	 * @pre eventOwner != null;
 	 * @post true;
-	 * @param eventOwner - the name of the user that owns the event.
+	 * @param eventOwnerID - the e-mail address of the user that owns the event.
 	 */
-	public EventCreationPageRetriever(String eventOwner)
+	public EventCreationPageRetriever(String eventOwnerID)
 	{
-		this.eventOwner = eventOwner;
+		this.eventOwnerID = eventOwnerID;
 	}
 
 	/**
-	 * Retrieve the owner of the event.
+	 * Retrieve the owner (full name) of the event.
 	 * @pre true;
 	 * @post true;
-	 * @return the owner of the event.
+	 * @return the owner (full name) of the event.
 	 */
 	public String getOwner()
 	{
 		return this.eventOwner;
+	}
+	
+	/**
+	 * Retrieve the owner ID (e-mail address) of the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the owner ID (e-mail address) of the event.
+	 */
+	public String getOwnerID()
+	{
+		return this.eventOwnerID;
 	}
 
 	/**
@@ -99,6 +119,17 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	}
 
 	/**
+	 * Retrieve the time frame for the event.
+	 * @pre true;
+	 * @post true;
+	 * @return the time frame for the event.
+	 */
+	public Frame getFrame()
+	{
+		return this.eventFrame;
+	}
+	
+	/**
 	 * Retrieve the duration for the event.
 	 * @pre true;
 	 * @post true;
@@ -121,10 +152,10 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	}
 
 	/**
-	 * Retrieve the selected friends for the event.
+	 * Retrieve the selected friends (e-mail addresses) for the event.
 	 * @pre true;
 	 * @post true;
-	 * @return the friends selected for the event.
+	 * @return the friends selected (e-mail addresses) for the event.
 	 */
 	public List<String> getSelectedFriends()
 	{
@@ -152,10 +183,12 @@ public class EventCreationPageRetriever implements EventCreationPageVisitor
 	public void visit(EventInfoPanel infoPanel)
 	{
 		EventInfoInputPanel inputPanel = infoPanel.getEventInfoInputPanel();
+		this.eventOwner = inputPanel.getCreator();
 		this.eventName = inputPanel.getName();
 		this.eventLocation = inputPanel.getLocation();
 		this.eventCoordinates = inputPanel.getMapCoordinatesAsArray();
 		this.eventCost = inputPanel.getCost();
+		this.eventFrame = inputPanel.getFrame();
 		this.eventDuration = inputPanel.getDuration();
 		this.eventDescription = inputPanel.getDescription();
 	}
