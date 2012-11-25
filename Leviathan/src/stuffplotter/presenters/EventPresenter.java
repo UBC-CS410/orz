@@ -30,7 +30,6 @@ public class EventPresenter implements Presenter
 {
 	public interface EventViewer
 	{
-		public HasClickHandlers getVoteButton();
 		public HasClickHandlers getCommentButton();
 		public HasKeyDownHandlers getCommentTextBox();
 		public String getCommentText();
@@ -68,33 +67,7 @@ public class EventPresenter implements Presenter
 	 * @post true
 	 */
 	public void bind()
-	{
-		this.eventView.getVoteButton().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event)
-			{			
-				EventServiceAsync eventService = appServices.getEventService();
-				eventService.retrieveAvailabilities(eventData.getEventScheduler(), new AsyncCallback<List<Availability>>() {
-
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onSuccess(List<Availability> result)
-					{
-						AvailabilitySubmitterDialogBox submitter = new AvailabilitySubmitterDialogBox(result);
-					}
-
-				});
-				
-			}
-		});
-		
+	{	
 		this.eventView.getCommentButton().addClickHandler(new ClickHandler() {
 			
 			@Override

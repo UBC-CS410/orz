@@ -6,14 +6,24 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.Availability;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.Event.Status;
+import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.signals.RefreshPageEventHandler;
+import stuffplotter.signals.SubmittedAvailabilitiesEvent;
+import stuffplotter.signals.SubmittedAvailabilitiesEventHandler;
+import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationView;
 import stuffplotter.views.events.EventView;
 
@@ -34,6 +44,16 @@ public class EventsPagePresenter implements Presenter
 		public List<HasClickHandlers> getEventViewers();
 		public void showEventViewers();
 		public void hideEventViewers();
+		
+		public HasClickHandlers getAcceptButton();
+		public HasClickHandlers getDeclineButton();
+		public HasClickHandlers getSubmitAvailabilitiesButton();
+		public HasClickHandlers getFinalizeTimeButton();
+		
+		public void showInvitationButtons();
+		public void showSubmitAvailabilitiesButton();
+		public void showFinalizeTimeButton();
+		public void clearEventActions();
 		
 		public void initialize(List<Event> events);
 		public Widget asWidget();
@@ -103,6 +123,34 @@ public class EventsPagePresenter implements Presenter
 				fetchPastEvents();
 			}
 		});
+		
+		/*
+		 * Global handlers
+		 */
+		this.eventBus.addHandler(SubmittedAvailabilitiesEvent.TYPE, new SubmittedAvailabilitiesEventHandler()
+		{
+			@Override
+			public void onSubmitAvailabilities(SubmittedAvailabilitiesEvent event)
+			{
+				appServices.getEventService().updateScheduler(event.getAvailabilityIds(), new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Failed to submit timeslots");
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						eventsView.clearEventActions();
+					}
+					
+				});
+				
+			}
+		});
 	}
 	
 	/**
@@ -122,7 +170,7 @@ public class EventsPagePresenter implements Presenter
 				{
 					Event selectedEvent;
 					selectedEvent = currentEvents.get(eventsIndex);
-
+					
 					Presenter presenter = new EventPresenter(appServices,
 																 eventBus,
 																 new EventView(),
@@ -131,9 +179,58 @@ public class EventsPagePresenter implements Presenter
 					
 					eventsView.hideEventViewers();
 					presenter.go(eventsView.getEventViewerContainer());
+					
+					if(selectedEvent.getStatus() == Status.PROPOSED)
+					{
+						if(selectedEvent.getOwnerID() == appUser.getUserEmail())
+						{
+							eventsView.showFinalizeTimeButton();
+							eventsView.showSubmitAvailabilitiesButton(); //remove this later
+						}
+						else
+						{
+							eventsView.showSubmitAvailabilitiesButton();
+						}
+					}
+					
+					bindEventButtons(selectedEvent);
 				}	
 			});
 		}
+	}
+	
+	/**
+	 * Binds event specific buttons to their respective handlers
+	 * @pre true;
+	 * @post true;
+	 */
+	private void bindEventButtons(Event event) 
+	{
+		final Event selectedEvent = event;
+		final EventServiceAsync eventService = appServices.getEventService();
+		
+		this.eventsView.getSubmitAvailabilitiesButton().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				eventService.retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Failed to retrieve timeslots");
+					}
+
+					@Override
+					public void onSuccess(List<Availability> result)
+					{
+						AvailabilitySubmitterDialogBox submitter = new AvailabilitySubmitterDialogBox(result, eventBus);
+					}
+
+				});	
+			}
+		});
 	}
 	
 	/**

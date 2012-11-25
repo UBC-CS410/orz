@@ -8,12 +8,14 @@ import java.util.Map;
 
 
 import stuffplotter.shared.Availability;
+import stuffplotter.signals.SubmittedAvailabilitiesEvent;
 import stuffplotter.views.util.CloseClickHandler;
 
 import stuffplotter.views.util.DateSplitter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -24,6 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to make the window for submitting availabilities for an event.
+ * TODO: This class needs some major refactoring.
  */
 public class AvailabilitySubmitterDialogBox extends DialogBox
 {
@@ -32,8 +35,11 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	// horizontal panel to display all the DaySelections objects
 	final private HorizontalPanel horPanel = new HorizontalPanel();
 	
+	final private HandlerManager eventBus;
+	
 	private Map<Date, Long> availabilities;
 	private List<Long> submissions;
+	
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
@@ -41,14 +47,17 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 * @pre true;
 	 * @post this.availabilities != null && this.isVisible() == true;
 	 */
-	public AvailabilitySubmitterDialogBox(List<Availability> timeSlots)
+	public AvailabilitySubmitterDialogBox(List<Availability> timeSlots, HandlerManager eventBus)
 	{
 		super();
+		
+		this.eventBus = eventBus;
 		
 		this.availabilities = new HashMap<Date, Long>();
 		for (Availability timeSlot : timeSlots)
 		{
 			this.availabilities.put(timeSlot.getTime(), timeSlot.getId());
+			//System.out.println(timeSlot.getTime().hashCode());
 		}
 
 		initializeWindow();
@@ -133,26 +142,14 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 			{
 				final List<Date> selectedValues = retrieveSubmissions();
 							
-				//temporary for each loop to help display selected intervals
-				String result = "";
+				submissions = new ArrayList<Long>();
+
 				for(Date value : selectedValues)
 				{
-					DateSplitter splitter = new DateSplitter(value);
-					String month = splitter.getMonthAsString();
-					String year = splitter.getYearAsString();
-					result += "Selected: " + month + " " + year + " ";
-
-					String dayValue = splitter.getDayAsString();
-					result += "Day " + dayValue + "-> ";
-					int hour = splitter.getHour();
-					result += hour + " ";
-					
-					// Store the ids of the availabilities that need to be updated
 					submissions.add(availabilities.get(value));
 				}
-				System.out.println("uhh");
+				eventBus.fireEvent(new SubmittedAvailabilitiesEvent(submissions));
 				hide();
-				Window.alert(result);
 			}
 		});
 		panel.add(submitBtn);

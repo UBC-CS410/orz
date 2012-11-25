@@ -21,12 +21,24 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 {
+	/*
+	 * Common action buttons
+	 */
 	private final Button createButton;
 	private final Button listCurrentButton;
 	private final Button listPastButton;
 	
+	/*
+	 * User specific action buttons
+	 */
+	private final Button acceptInvitationButton;
+	private final Button declineInvitationButton;
+	private final Button submitAvailabilityButton;
+	private final Button finalizeTimeButton;
+	
 	private SimplePanel eventPanel;
 	private ScrollDisplayPanel eventListPanel;
+	private VerticalPanel eventActionPanel;
 	
 	/**
 	 * Constructor for the EventsPagePanel.
@@ -41,10 +53,22 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.listCurrentButton = new Button("View Current Events");
 		this.listPastButton = new Button("View Past Events");
 		
+		this.acceptInvitationButton = new Button("Accept Invitation");
+		this.declineInvitationButton = new Button("Decline Invitation");
+		this.submitAvailabilityButton = new Button("Submit Availabilities");
+		this.finalizeTimeButton = new Button("Finalize Time");
+		
 		VerticalPanel actionPanel = new VerticalPanel();
-		actionPanel.add(this.createButton);
-		actionPanel.add(this.listCurrentButton);
-		actionPanel.add(this.listPastButton);
+		
+		VerticalPanel commonActionPanel = new VerticalPanel();
+		commonActionPanel.add(this.createButton);
+		commonActionPanel.add(this.listCurrentButton);
+		commonActionPanel.add(this.listPastButton);
+	
+		this.eventActionPanel = new VerticalPanel();
+		
+		actionPanel.add(commonActionPanel);
+		actionPanel.add(eventActionPanel);
 		
 		this.eventPanel = new SimplePanel();
 		this.eventListPanel = new ScrollDisplayPanel();
@@ -88,6 +112,103 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	public HasClickHandlers getListPastButton()
 	{
 		return this.listPastButton;
+	}
+	
+	/**
+	 * Gets the accept invitations button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getAcceptButton()
+	{
+		return this.acceptInvitationButton;
+	}
+
+	/**
+	 * Gets the decline invitations button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getDeclineButton()
+	{
+		return this.declineInvitationButton;
+	}
+
+	/**
+	 * Gets the submit availabilities button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getSubmitAvailabilitiesButton()
+	{
+		return this.submitAvailabilityButton;
+	}
+
+	/**
+	 * Gets the finalize time button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getFinalizeTimeButton()
+	{
+		return this.finalizeTimeButton;
+	}
+	
+	/**
+	 * Shows the invitation buttons
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showInvitationButtons()
+	{
+		this.eventActionPanel.clear();
+		this.eventActionPanel.add(this.acceptInvitationButton);
+		this.eventActionPanel.add(this.declineInvitationButton);
+	}
+	
+	/**
+	 * Shows the submit availability button
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showSubmitAvailabilitiesButton()
+	{
+		this.eventActionPanel.clear();
+		this.eventActionPanel.add(this.submitAvailabilityButton);
+	}
+
+	
+	/**
+	 * Shows the finalize time button
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showFinalizeTimeButton()
+	{
+		this.eventActionPanel.clear();
+		this.eventActionPanel.add(this.finalizeTimeButton);
+	}
+	
+	/**
+	 * Clears the event action panel
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void clearEventActions()
+	{
+		this.eventActionPanel.clear();
 	}
 	
 	/**
@@ -184,4 +305,5 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	{
 		return this;
 	}
+
 }
