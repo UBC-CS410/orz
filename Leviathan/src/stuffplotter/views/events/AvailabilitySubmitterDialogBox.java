@@ -2,7 +2,9 @@ package stuffplotter.views.events;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import stuffplotter.shared.Availability;
@@ -30,17 +32,25 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	// horizontal panel to display all the DaySelections objects
 	final private HorizontalPanel horPanel = new HorizontalPanel();
 	
-	final private List<Availability> timeSlots;
+	private Map<Date, Long> availabilities;
+	private List<Long> submissions;
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
+	 * Maps the times of each time slot to its id.
 	 * @pre true;
-	 * @post this.isVisible() == true;
+	 * @post this.availabilities != null && this.isVisible() == true;
 	 */
 	public AvailabilitySubmitterDialogBox(List<Availability> timeSlots)
 	{
 		super();
-		this.timeSlots = timeSlots;
+		
+		this.availabilities = new HashMap<Date, Long>();
+		for (Availability timeSlot : timeSlots)
+		{
+			this.availabilities.put(timeSlot.getTime(), timeSlot.getId());
+		}
+
 		initializeWindow();
 	}
 	
@@ -74,15 +84,15 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 */
 	private void initializeWindow()
 	{
-		// TO DO: Remove hard coded values and feed values from database
-		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		timeSheet.addDay(new Date());
+		List<Date> times = new ArrayList<Date>();
+		for (Date time : this.availabilities.keySet())
+		{
+			times.add(time);
+		}
 		
-		/*
-		timeSheet.addDay(Month.OCTOBER, "2012", days);
-		timeSheet.addDay(Month.OCTOBER, "2012", days2);
-		timeSheet.addDay(Month.NOVEMBER, "2012", days2);
-		*/
+		TimeSheetPanel timeSheet = new TimeSheetPanel();
+		timeSheet.addDays(times);
+		
 		horPanel.add(timeSheet);
 		vertPanel.add(horPanel);
 		this.add(vertPanel);
@@ -123,7 +133,10 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 					String dayValue = splitter.getDayAsString();
 					result += "Day " + dayValue + "-> ";
 					int hour = splitter.getHour();
-					result += hour + " ";			
+					result += hour + " ";
+					
+					// Store the ids of the availabilities that need to be updated
+					submissions.add(availabilities.get(value));
 				}
 				
 				hide();
