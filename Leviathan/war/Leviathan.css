@@ -31,10 +31,16 @@
 	margin: auto;
 	border: 1px solid red;
 	background-color: green;
+	width: 80%;
 }
 
 .menuBar td {
+	width: 20%;
 	padding: 8px 20px;
+}
+
+.menuBar .gwt-Button {
+	width: 100%;
 }
 
 .menuBarButton {	
@@ -44,6 +50,11 @@
 	-moz-border-radius: 8px;
   	-webkit-border-radius: 8px;
   	border-radius: 8px;
+}
+
+.mainDeck {
+	margin: 8px auto;
+	width: 80%;
 }
 
 .eventRoll {
