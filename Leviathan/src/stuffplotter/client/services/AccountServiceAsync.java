@@ -1,10 +1,10 @@
 package stuffplotter.client.services;
 
 import java.util.List;
+import java.util.Map;
 
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.AuthenticationException;
 import stuffplotter.shared.Notification;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -33,5 +33,5 @@ public interface AccountServiceAsync
 	 * @param userIds - the list of accounts to retrieve.
 	 * @param callback - the call back for the method.
 	 */
-	void getAccounts(List<String> userIds, AsyncCallback<List<Account>> callback);
+	void getAccounts(List<String> userIds, AsyncCallback<Map<String, Account>> callback);
 }

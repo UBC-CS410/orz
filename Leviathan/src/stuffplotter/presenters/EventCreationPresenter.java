@@ -1,6 +1,7 @@
 package stuffplotter.presenters;
 
 import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
@@ -85,12 +86,14 @@ public class EventCreationPresenter implements Presenter
 		public void previousPage();
 		
 		/**
-		 * Retrieve the event info from the CreateEventView.
+		 * Retrieve sends the visitor into the pages of the event creation procedure to carry
+		 * out specific tasks.
 		 * @pre true;
 		 * @post true;
-		 * @param eventRetriever - the EventCreationPageVisitor to retrieve the event information.
+		 * @param eventPageVisitor - the EventCreationPageVisitor to visit each of the event
+		 * 							 creation views.
 		 */
-		public void retrieveEventInfo(EventCreationPageVisitor eventRetriever);
+		public void acceptVisitor(EventCreationPageVisitor eventPageVisitor);
 	}
 	
 	private static final String TASKNAME = "Creating New Event";
@@ -117,6 +120,20 @@ public class EventCreationPresenter implements Presenter
 		this.eventBus = eventBus;
 		this.createEventDialogBox = display;
 		this.appUser = userAccount;
+		this.populateDisplay();
+	}
+	
+	/**
+	 * Helper method to populate the event creation display with the information for the
+	 * user creating the event.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void populateDisplay()
+	{
+		EventCreationPagePopulator visitor = new EventCreationPagePopulator(this.appServices.getAccountService(),
+																			this.appUser);
+		this.createEventDialogBox.acceptVisitor(visitor);
 	}
 	
 	/**
@@ -151,7 +168,7 @@ public class EventCreationPresenter implements Presenter
 			public void onClick(ClickEvent event)
 			{
 				EventCreationPageRetriever eventInfoRetriever = new EventCreationPageRetriever(appUser.getUserEmail());
-				createEventDialogBox.retrieveEventInfo(eventInfoRetriever);
+				createEventDialogBox.acceptVisitor(eventInfoRetriever);
 				Event eventToCreate = new Event(eventInfoRetriever);
 				EventServiceAsync eventService = appServices.getEventService();
 				eventService.createEvent(eventToCreate, eventInfoRetriever.getSelectedTimeSlots(), new AsyncCallback<Event>()
