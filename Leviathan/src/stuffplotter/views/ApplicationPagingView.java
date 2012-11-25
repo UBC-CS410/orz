@@ -26,6 +26,7 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 	{
 		super();
 		this.initializePages();
+		this.setStyleName("mainDeck");
 		this.showWidget(0);
 	}
 	

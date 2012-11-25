@@ -43,15 +43,15 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 		this.friendsBtn = new Button("Friends");
 		this.achievementsBtn = new Button("Achievements");
 		
-		this.homeBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
+		//this.homeBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
 		this.homeBtn.addStyleName("menuBarButton");
-		this.accountBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
+		//this.accountBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
 		this.accountBtn.addStyleName("menuBarButton");
-		this.eventsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
+		//this.eventsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
 		this.eventsBtn.addStyleName("menuBarButton");
-		this.friendsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
+		//this.friendsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
 		this.friendsBtn.addStyleName("menuBarButton");
-		this.achievementsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
+		//this.achievementsBtn.setWidth(String.valueOf(Window.getClientWidth()/7) + "px");
 		this.achievementsBtn.addStyleName("menuBarButton");
 		
 		this.add(this.homeBtn);
@@ -59,6 +59,8 @@ public class MenuBarPanel extends HorizontalPanel implements MenuBarView
 		this.add(this.eventsBtn);
 		this.add(this.friendsBtn);
 		this.add(this.achievementsBtn);
+		
+		System.out.println("menu bar panel width:" + this.getOffsetWidth());
 	}
 	
 	/**
