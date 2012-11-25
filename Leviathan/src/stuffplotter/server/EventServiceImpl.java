@@ -39,7 +39,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		this.addScheduler(event.getId(), timeSlots);
 		
 		
-		Account account = dbstore.fetchAccount(pEvent.getOwner());
+		Account account = dbstore.fetchAccount(pEvent.getOwnerID());
 		account.addUserEvent(event.getId());
 		dbstore.store(account);
 		email.sendEvent(event);
