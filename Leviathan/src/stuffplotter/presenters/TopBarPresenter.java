@@ -73,7 +73,7 @@ public class TopBarPresenter implements Presenter
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final TopBarView topBarDisplay;
-	private final Account appUser;
+	private Account appUser;
 	
 	/**
 	 * Constructor for the TopBarPresenter.
@@ -168,10 +168,25 @@ public class TopBarPresenter implements Presenter
 			@Override
 			public void onRefreshPage(RefreshPageEvent event)
 			{
-				// TO DO: Make backend call and repopulate the notifications panel
-				Window.alert("Attempting to Refresh Notification List" +
-						"Window alert in TopBarPresenter");
-				//topBarDisplay.setNotificationData(notifications)
+				AccountServiceAsync accountService = appServices.getAccountService();
+				accountService.getAccount(appUser.getUserEmail(), new AsyncCallback<Account>(){
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						fetchNotifications();
+					}
+					
+				});
+				
 			}
 		});
 		
