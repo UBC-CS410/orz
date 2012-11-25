@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class EventView extends VerticalPanel implements EventViewer
 {
-	private final Button voteButton;
 	private final Button commentButton;
 	private final TextBox commentTextBox;
 	private final VerticalPanel commentPanel;
@@ -33,21 +32,9 @@ public class EventView extends VerticalPanel implements EventViewer
 	 */
 	public EventView() 
 	{
-		this.voteButton = new Button("Choose availabilities");
 		this.commentButton = new Button("Submit comment");
 		this.commentTextBox = new TextBox();
 		this.commentPanel = new VerticalPanel();
-	}
-
-	/**
-	 * Gets the vote button for submitting availabilities
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public HasClickHandlers getVoteButton()
-	{
-		return this.voteButton;
 	}
 	
 	/**
@@ -151,19 +138,21 @@ public class EventView extends VerticalPanel implements EventViewer
 		String title = event.getName();
 		List<String> people = event.getAttendees();
 		Date time = event.getDate();
+		String timeToString = "";
 		String place = event.getLocation();
 		String details = event.getDescription();
 		
 		this.add(new Anchor(title));
 		if (time == null)
 		{
-			this.add(this.voteButton);
+			//TODO: Make this red
+			timeToString = "Time unavailable. Please submit your availabilities.";
 		}
 		else 
 		{
-			String date = time.toString();
-			this.add(new Anchor(date));
+			timeToString = time.toString();
 		}
+		this.add(new Anchor(timeToString));
 		this.add(new Anchor(place));
 		this.add(new Anchor(details));
 		

@@ -58,17 +58,22 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.submitAvailabilityButton = new Button("Submit Availabilities");
 		this.finalizeTimeButton = new Button("Finalize Time");
 		
+		VerticalPanel actionPanel = new VerticalPanel();
+		
 		VerticalPanel commonActionPanel = new VerticalPanel();
 		commonActionPanel.add(this.createButton);
 		commonActionPanel.add(this.listCurrentButton);
 		commonActionPanel.add(this.listPastButton);
+	
+		this.eventActionPanel = new VerticalPanel();
+		
+		actionPanel.add(commonActionPanel);
+		actionPanel.add(eventActionPanel);
 		
 		this.eventPanel = new SimplePanel();
 		this.eventListPanel = new ScrollDisplayPanel();
-		this.eventActionPanel = new VerticalPanel();
 		
-		this.add(commonActionPanel);
-		this.add(this.eventActionPanel);
+		this.add(actionPanel);
 		this.add(this.eventPanel);
 		this.add(this.eventListPanel);
 	}
@@ -159,6 +164,8 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	
 	/**
 	 * Shows the invitation buttons
+	 * @pre true;
+	 * @post true;
 	 */
 	@Override
 	public void showInvitationButtons()
@@ -170,6 +177,8 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	
 	/**
 	 * Shows the submit availability button
+	 * @pre true;
+	 * @post true;
 	 */
 	@Override
 	public void showSubmitAvailabilitiesButton()
@@ -177,15 +186,29 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.eventActionPanel.clear();
 		this.eventActionPanel.add(this.submitAvailabilityButton);
 	}
+
 	
 	/**
 	 * Shows the finalize time button
+	 * @pre true;
+	 * @post true;
 	 */
 	@Override
 	public void showFinalizeTimeButton()
 	{
 		this.eventActionPanel.clear();
 		this.eventActionPanel.add(this.finalizeTimeButton);
+	}
+	
+	/**
+	 * Clears the event action panel
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void clearEventActions()
+	{
+		this.eventActionPanel.clear();
 	}
 	
 	/**
