@@ -162,7 +162,23 @@ public class DatabaseStore {
 	 */
 	public Notification fetchNotification(Long pId){
 		Objectify ofy = ObjectifyService.begin();
-		Notification not = ofy.get(Notification.class, pId);
+		Notification not;
+		try{
+			not = ofy.get(Notification.class, pId);
+		}catch (NotFoundException nfe)
+		{
+			try{
+				not = ofy.get(AchievementNotification.class, pId);
+			}catch (NotFoundException nfe1)
+			{
+				try{
+					not = ofy.get(FriendNotification.class, pId);
+				}catch (NotFoundException nfe2){
+					not = ofy.get(EventNotification.class, pId);
+				}
+			}
+		}
+
 		return not;
 	}
 	

@@ -46,6 +46,8 @@ public class TopBarPresenter implements Presenter
 		 * @return the TopBarView as a widget.
 		 */
 		public Widget asWidget();
+		
+		public void setNotificationLabelText(String text);
 	}
 	
 	private final ServiceRepository appServices;
@@ -105,25 +107,33 @@ public class TopBarPresenter implements Presenter
 		
 		AccountServiceAsync accountService = appServices.getAccountService();
 		List<Long> notIds = appUser.getUserNotifications();
-		final List<NotificationModel> notifications = new ArrayList<NotificationModel>();
-		for(Long notId : notIds)
-		{
-			accountService.getNotification(notId, new AsyncCallback<NotificationModel>(){
-				@Override
-				public void onFailure(Throwable caught)
-				{
-					
-				}
-
-				@Override
-				public void onSuccess(NotificationModel result)
-				{
-					notifications.add(result);
-				}
 		
-			});
-		}
-		this.topBarDisplay.setNotificationData(notifications);
+		accountService.getNotifications(notIds, new AsyncCallback<List<NotificationModel>>(){
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				Window.alert("Fail to get Notifications");
+				
+			}
+
+			@Override
+			public void onSuccess(List<NotificationModel> result)
+			{
+				topBarDisplay.setNotificationData(result);
+				int NumberOfNewNotifications = 0;
+				for(NotificationModel notif: result)
+				{
+					if(notif.getNewNotification())
+						NumberOfNewNotifications++;
+				}
+				if(NumberOfNewNotifications>1)
+					topBarDisplay.setNotificationLabelText("Notifications ("+NumberOfNewNotifications+")");
+				else
+					topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
+			}
+		});
+		
+		
 		
 	}
 	

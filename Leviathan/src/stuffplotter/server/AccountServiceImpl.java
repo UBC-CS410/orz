@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.JsonFactory;
@@ -12,6 +13,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 
+import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AuthenticationException;
@@ -233,6 +235,16 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	public Notification getNotification(Long id)
 	{
 		return dbstore.fetchNotification(id);
+	}
+
+	public List<NotificationModel> getNotifications(List<Long> notIds)
+	{
+		List<NotificationModel> result = new ArrayList<NotificationModel>();
+		for(Long id : notIds)
+		{
+			result.add(getNotification(id));
+		}
+		return result;
 	}
 
 

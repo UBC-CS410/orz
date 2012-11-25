@@ -24,6 +24,7 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	private Anchor logoutLink;
 	private UserNotificationsPopupPanel popup;
 	private Label userNameDisplay;
+	private Anchor notificationsLabel;
 	
 	/**
 	 * Constructor for TopRightPanel.
@@ -44,7 +45,7 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	 */
 	private void initializeUI()
 	{		
-		final Anchor notificationsLabel = new Anchor("Notifications");
+		notificationsLabel = new Anchor("Notifications (0)");
 		notificationsLabel.setWidth(String.valueOf(Window.getClientWidth() - 200) + "px");
 		notificationsLabel.setStyleName("topBarNotifications");
 		
@@ -113,4 +114,12 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	{
 		return this;
 	}
+
+	@Override
+	public void setNotificationLabelText(String text)
+	{
+		this.notificationsLabel.setText(text);
+	}
+
+
 }
