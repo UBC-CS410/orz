@@ -35,6 +35,15 @@ public class EventsPagePresenter implements Presenter
 		public void showEventViewers();
 		public void hideEventViewers();
 		
+		public HasClickHandlers getAcceptButton();
+		public HasClickHandlers getDeclineButton();
+		public HasClickHandlers getSubmitAvailabilitiesButton();
+		public HasClickHandlers getFinalizeTimeButton();
+		
+		public void showInvitationButtons();
+		public void showSubmitAvailabilitiesButton();
+		public void showFinalizeTimeButton();
+		
 		public void initialize(List<Event> events);
 		public Widget asWidget();
 	}
