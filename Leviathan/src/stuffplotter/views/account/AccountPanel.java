@@ -1,10 +1,10 @@
 package stuffplotter.views.account;
 
 import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.presenters.UserAccountPresenter.UserAccountView;
 import stuffplotter.views.util.InfoPanel;
 
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Class to display the information for a user's account.
  */
-public class AccountPanel extends SimplePanel
+public class AccountPanel extends SimplePanel implements UserAccountView
 {
 	private VerticalPanel informationHolder;
 	private Button editBtn;
@@ -60,6 +60,7 @@ public class AccountPanel extends SimplePanel
 	 * @post true;
 	 * @param model - the user account to display.
 	 */
+	@Override
 	public void setUserData(AccountModel model)
 	{
 		

@@ -17,6 +17,13 @@ public class MenuBarPresenter implements Presenter
 		public HasClickHandlers getEventsBtn();
 		public HasClickHandlers getFriendsBtn();
 		public HasClickHandlers getAchievementsBtn();
+		
+		/**
+		 * Retrieve the MenuBarView as a widget.
+		 * @pre true;
+		 * @post true;
+		 * @return the MenuBarView as a widget.
+		 */
 		public Widget asWidget();
 	}
 	

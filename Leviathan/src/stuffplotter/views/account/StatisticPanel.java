@@ -1,6 +1,7 @@
 package stuffplotter.views.account;
 
 import stuffplotter.bindingcontracts.AccountStatisticModel;
+import stuffplotter.presenters.AccountStatisticPresenter.AccountStatisticView;
 import stuffplotter.views.util.InfoPanel;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -8,7 +9,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Class to display a given AccountStatistic.
  */
-public class StatisticPanel extends VerticalPanel
+public class StatisticPanel extends VerticalPanel implements AccountStatisticView
 {
 	private InfoPanel userLevel;
 	private InfoPanel userExperience;
@@ -54,6 +55,7 @@ public class StatisticPanel extends VerticalPanel
 	 * @post true;
 	 * @param model - the model to display on the StatisticPanel.
 	 */
+	@Override
 	public void setStatisticData(AccountStatisticModel model)
 	{
 		this.userLevel.setValue(String.valueOf(model.getUserLevel()));

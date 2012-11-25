@@ -1,17 +1,13 @@
 package stuffplotter.presenters;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
-import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,7 +16,6 @@ import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.logical.shared.HasAttachHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -38,6 +33,13 @@ public class EventPresenter implements Presenter
 		public void updateComments(Comment comment);
 		public void displayComments(List<Comment> comments);
 		public void initialize(Event event);
+		
+		/**
+		 * Retrieve the EventViewer as a widget.
+		 * @pre true;
+		 * @post true;
+		 * @return the EventViewer as a widget.
+		 */
 		public Widget asWidget();
 	}
 	

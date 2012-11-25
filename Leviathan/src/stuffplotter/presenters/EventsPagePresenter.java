@@ -58,6 +58,13 @@ public class EventsPagePresenter implements Presenter
 		public void clearEventActions();
 		
 		public void initialize(List<Event> events);
+		
+		/**
+		 * Retrieve the EventsPageViewer as a widget.
+		 * @pre true;
+		 * @post true;
+		 * @return the EventsPageViewer as a widget.
+		 */
 		public Widget asWidget();
 	}
 	

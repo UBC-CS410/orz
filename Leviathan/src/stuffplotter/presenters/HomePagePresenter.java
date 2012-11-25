@@ -20,6 +20,12 @@ public class HomePagePresenter implements Presenter
 {
 	public interface HomeView
 	{
+		/**
+		 * Retrieve the HomeView as a widget.
+		 * @pre true;
+		 * @post true;
+		 * @return the HomeView as a widget.
+		 */
 		public Widget asWidget();
 		public Calendar getCalendar(); // create presenter for this
 		//public NewsFeedPanel getNewsFeed(); // create presenter for this

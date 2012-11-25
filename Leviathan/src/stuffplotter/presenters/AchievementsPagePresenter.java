@@ -12,6 +12,12 @@ public class AchievementsPagePresenter implements Presenter
 {
 	public interface AchievementsView
 	{
+		/**
+		 * Retrieve the AchievementsView as a widget.
+		 * @pre true;
+		 * @post true;
+		 * @return the AchievementsView as a widget.
+		 */
 		public Widget asWidget();
 		//public AchievementsPanel getAchievementsPanel(); // create presenter for this 
 	}
