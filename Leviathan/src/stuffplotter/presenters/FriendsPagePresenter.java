@@ -77,7 +77,10 @@ public class FriendsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				appServices.getAccountService().addFriend(appUser, friendsView.getFriendBoxText(), new AsyncCallback<Void>(){
+				String friendEmail = friendsView.getFriendBoxText();
+				if(!friendEmail.contains("@gmail.com"))
+					friendEmail = friendEmail+"@gmail.com";
+				appServices.getAccountService().addFriend(appUser, friendEmail, new AsyncCallback<Void>(){
 					@Override
 					public void onFailure(Throwable caught)
 					{

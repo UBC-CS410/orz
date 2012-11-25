@@ -9,7 +9,8 @@ import stuffplotter.shared.Notification;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface AccountServiceAsync {
+public interface AccountServiceAsync
+{
 	void login(String back, AsyncCallback<Account> callback);
 	void loadProfile(Account account, String hash, AsyncCallback<Void> callback);
 	void addFriend(Account acc, String friend, AsyncCallback<Void> callback);
@@ -20,12 +21,17 @@ public interface AccountServiceAsync {
 	void confirmFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
 	void removeFriend(Account acc, String friend, AsyncCallback<Void> callback);
 	void declineFriendReq(Account acc, String friend, AsyncCallback<Void> callback);
-	void addNotification(String user, Notification notification,
-			AsyncCallback<Void> callback);
+	void addNotification(String user, Notification notification, AsyncCallback<Void> callback);
 	void getNotification(Long id, AsyncCallback<NotificationModel> callback);
-	void getNotifications(List<Long> notIds,
-			AsyncCallback<List<NotificationModel>> callback);
-	void readNotifications(List<Long> notIds,
-			AsyncCallback<Void> callback);
-
+	void getNotifications(List<Long> notIds, AsyncCallback<List<NotificationModel>> callback);
+	void readNotifications(List<Long> notIds, AsyncCallback<Void> callback);
+	
+	/**
+	 * Retrieve the list of accounts associated with the given list of e-mail addresses.
+	 * @pre userIds != null;
+	 * @post true;
+	 * @param userIds - the list of accounts to retrieve.
+	 * @param callback - the call back for the method.
+	 */
+	void getAccounts(List<String> userIds, AsyncCallback<List<Account>> callback);
 }

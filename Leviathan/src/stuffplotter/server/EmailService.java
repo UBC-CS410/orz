@@ -52,7 +52,8 @@ public class EmailService {
 		{
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ADMIN_USERNAME));
-			message.setRecipient(Message.RecipientType.TO, new InternetAddress(newUser+"@gmail.com"));
+
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(newUser));
 			message.setSubject("StuffPlotter - "+formerUser+" wants to add you as a Friend");
 			message.setContent("Hello "+newUser+",\n"+formerUser+" wants to add you as a friend. Please log into Stuffplotter at stuffplotter.appspot.com\nSee ya there,\nStuff Plotter Team", "text/html; charset=utf-8");
 			
@@ -72,9 +73,9 @@ public class EmailService {
 		try
 		{
 			for(int i=0; i<event.getInvitees().size();i++){
-				recipientEmails[i] = new InternetAddress(event.getInvitees().get(i)+"@gmail.com");
+				recipientEmails[i] = new InternetAddress(event.getInvitees().get(i));
 			}
-			recipientEmails[event.getInvitees().size()] = new InternetAddress(event.getOwner()+"@gmail.com");
+			recipientEmails[event.getInvitees().size()] = new InternetAddress(event.getOwner());
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(ADMIN_USERNAME));

@@ -66,6 +66,7 @@ public class EventCreationPagePopulator implements EventCreationPageVisitor
 	@Override
 	public void visit(FriendSelectionPanel friendSelection)
 	{
-		//friendSelection.getFriendList().addEle
+		//this.accountServices.
+		//friendSelection.setFriendData(friends);
 	}
 }
