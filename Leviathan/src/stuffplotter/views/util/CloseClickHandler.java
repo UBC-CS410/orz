@@ -35,5 +35,6 @@ public class CloseClickHandler implements ClickHandler
 	public void onClick(ClickEvent event)
 	{
 		this.panel.hide();
+		this.panel.removeFromParent();
 	}
 }
