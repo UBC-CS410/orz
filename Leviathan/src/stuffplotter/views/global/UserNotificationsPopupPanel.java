@@ -6,6 +6,7 @@ import stuffplotter.bindingcontracts.NotificationModel;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -15,7 +16,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 /**
  * Class to display a user's notifications 
  */
-public class UserNotificationsPopupPanel extends PopupPanel
+public class UserNotificationsPopupPanel extends PopupPanel 
 {
 	private FlexTable userList;
 	private FocusPanel scrollHolder;
@@ -84,10 +85,15 @@ public class UserNotificationsPopupPanel extends PopupPanel
 	 */
 	public void setNotificationData(List<NotificationModel> notifications)
 	{
-		// TO DO
-		for(NotificationModel model : notifications)
+		for(int i = 0; i<notifications.size(); i++)
 		{
-			
+			String display = "";
+			if(notifications.get(i).getNewNotification())
+				display = "**";
+			display = display+notifications.get(i).getNotificationDisplay();
+			userList.setWidget(i, 0, new Label(display));
 		}
+
+		
 	}
 }
