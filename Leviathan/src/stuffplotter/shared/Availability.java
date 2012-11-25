@@ -59,6 +59,17 @@ public class Availability implements Serializable
 	}
 	
 	/**
+	 * Get the votes for this time slot
+	 * @pre true;
+	 * @post true;
+	 * @return votes
+	 */
+	public int getVotes()
+	{
+		return this.votes;
+	}
+	
+	/**
 	 * Increment the vote of this time slot
 	 * @pre		true;
 	 * @post	this.votes++;
