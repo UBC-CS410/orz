@@ -52,6 +52,17 @@ public class Availability implements Serializable
 	}
 	
 	/**
+	 * Get the date of this time slot
+	 * @pre true;
+	 * @post true;
+	 * @return date
+	 */
+	public Date getTime()
+	{
+		return this.time;
+	}
+	
+	/**
 	 * Get the year of this time slot
 	 * @pre true;
 	 * @post true;

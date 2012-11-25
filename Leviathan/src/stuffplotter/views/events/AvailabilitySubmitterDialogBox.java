@@ -30,7 +30,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	// horizontal panel to display all the DaySelections objects
 	final private HorizontalPanel horPanel = new HorizontalPanel();
 	
-	final private List<Availability> timeSlots;
+	private List<Availability> timeSlots;
 	
 	/**
 	 * Constructor for AvailabilitySubmitter class.
@@ -74,15 +74,15 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 */
 	private void initializeWindow()
 	{
-		// TO DO: Remove hard coded values and feed values from database
-		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		timeSheet.addDay(new Date());
+		List<Date> times = new ArrayList<Date>();
+		for (Availability timeSlot : this.timeSlots)
+		{
+			times.add(timeSlot.getTime());
+		}
 		
-		/*
-		timeSheet.addDay(Month.OCTOBER, "2012", days);
-		timeSheet.addDay(Month.OCTOBER, "2012", days2);
-		timeSheet.addDay(Month.NOVEMBER, "2012", days2);
-		*/
+		TimeSheetPanel timeSheet = new TimeSheetPanel();
+		timeSheet.addDays(times);
+		
 		horPanel.add(timeSheet);
 		vertPanel.add(horPanel);
 		this.add(vertPanel);

@@ -80,13 +80,7 @@ public class MonthPanel extends VerticalPanel
 		}
 		
 		this.daysHolder = new HorizontalPanel();
-		
-		// for loop to populate the DaySelections for the month panel
-		for(Date date : dates)
-		{
-			this.daysHolder.add(new DaySelections(date));
-		}
-		
+		this.daysHolder.add(new DaySelections(dates));
 		this.add(this.daysHolder);
 	}
 	
