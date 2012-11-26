@@ -33,6 +33,8 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 */
 	public AccountStatistic()
 	{
+		this.userLevel = 1;
+		this.userExperience = 0;
 		this.numberOfLogins = 0;
 		this.numberOfHostedEvents = 0;
 		this.numberOfParticipatedEvents = 0;
