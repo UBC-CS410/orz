@@ -167,6 +167,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onEventCreated(EventCreatedEvent event)
 			{
+				appUser.addUserEvent(event.getEventID());
 				fetchCurrentEvents();
 			}
 			

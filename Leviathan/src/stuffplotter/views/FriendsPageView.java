@@ -10,6 +10,7 @@ import stuffplotter.views.friends.FriendPanel;
 import stuffplotter.views.friends.PendingFriendPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
+import com.google.gwt.event.dom.client.HasAllFocusHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -52,6 +53,10 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		
 		this.addFriend = new Button("Add Friend");
 		this.addFriendTextBox = new TextBox();
+		this.addFriendTextBox.setWidth("250px");
+		this.addFriendTextBox.setText("Example: stuffplotter001@gmail.com");
+		
+		
 		this.searchFriends = new Button("Search Friends");
 		this.pendingFriendDisplay = new ScrollDisplayPanel(NUMOFCOLUMNS);
 		this.pendingFriendDisplay.addElement(new Label("Pending Friend"));
@@ -126,17 +131,21 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	}
 
 	@Override
-	public void addPendingUsers(String pendUser, Account appUser)
+	public void addPendingUsers(PendingFriendPanel pendPan)
 	{
-		PendingFriendPanel pendPan = new PendingFriendPanel(pendUser, appUser);
 		this.pendingFriendDisplay.addElement(pendPan);
-		
 	}
 
 	@Override
 	public void addFriendPanel(FriendPanel friendPan)
 	{
 		this.friendDisplay.addElement(friendPan);
+	}
+
+	@Override
+	public HasAllFocusHandlers getFriendTextBox()
+	{
+		return this.addFriendTextBox;
 	}
 
 

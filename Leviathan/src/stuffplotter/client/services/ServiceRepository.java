@@ -10,6 +10,7 @@ public class ServiceRepository
 	private AccountServiceAsync accountService;
 	private EventServiceAsync eventService;
 	private RecordServiceAsync recordService;
+	private AccountStatsServiceAsync statsService;
 	
 	/**
 	 * Constructor for the ServiceRepository.
@@ -18,9 +19,10 @@ public class ServiceRepository
 	 */
 	public ServiceRepository()
 	{
-		accountService = GWT.create(AccountService.class);
-		eventService = GWT.create(EventService.class);
-		recordService = GWT.create(RecordService.class);
+		this.accountService = GWT.create(AccountService.class);
+		this.eventService = GWT.create(EventService.class);
+		this.recordService = GWT.create(RecordService.class);
+		this.statsService = GWT.create(AccountStatsService.class);
 	}
 
 	/**
@@ -54,5 +56,16 @@ public class ServiceRepository
 	public RecordServiceAsync getRecordService()
 	{
 		return this.recordService;
+	}
+	
+	/**
+	 * Retrieve the account statistics service.
+	 * @pre true;
+	 * @post true;
+	 * @return the account statistics service.
+	 */
+	public AccountStatsServiceAsync getStatsService()
+	{
+		return this.statsService;
 	}
 }

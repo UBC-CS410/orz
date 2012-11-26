@@ -1,7 +1,5 @@
 package stuffplotter.client;
 
-import stuffplotter.client.services.AccountService;
-import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.AccountStatsService;
 import stuffplotter.client.services.AccountStatsServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
@@ -9,7 +7,10 @@ import stuffplotter.presenters.AppController;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
-import stuffplotter.shared.AuthenticationException;
+import stuffplotter.shared.GoogleAPIException;
+import stuffplotter.signals.AccountAuthorizedEvent;
+import stuffplotter.signals.AccountAuthorizedEventHandler;
+import stuffplotter.views.util.NotificationDialogBox;
 
 
 import com.google.api.gwt.oauth2.client.Auth;
@@ -17,10 +18,16 @@ import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 
 /**
@@ -29,70 +36,102 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class Leviathan implements EntryPoint
 {
 	private final String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
-	private final AccountServiceAsync accountService = GWT.create(AccountService.class);
+	
+	private ServiceRepository applicationServices = new ServiceRepository();
+	private HandlerManager eventBus = new HandlerManager(null);
+	
 	private Account account = null;
-	private AccountStatistic accountStatistic = null;
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad()
-	{		
-		accountService.login(url, new AsyncCallback<Account>()
+	{	
+		this.eventBus.addHandler(AccountAuthorizedEvent.TYPE, new AccountAuthorizedEventHandler() 
+		{
+
+			@Override
+			public void onAuthorizeAccount()
+			{
+        		applicationServices.getAccountService().saveProfile(account, new AsyncCallback<Account>()
+        		{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						if (caught instanceof GoogleAPIException)
+						{
+							Window.alert("Failed to retrieve Google profile...");
+						}
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						account = result;
+						startApplication();
+					}	
+        		});	
+			}
+			
+		});
+		
+		applicationServices.getAccountService().load(url, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
-	        	Window.alert("login failed");
+	        	Window.alert("Failed to load user account...");
 	        }
 
 	        public void onSuccess(Account result)
 	        {	
 	        	account = result;
-	        	if (account.getUserRefreshToken() == null)
+	        	
+	        	final DialogBox introductionDialogBox = new DialogBox();
+	        	
+	        	if (account.getAccessToken() == null)
 	    		{
-	        		loadUP();
+	        		Button startButton = new Button("Continue");
+	        		startButton.addClickHandler(new ClickHandler()
+	        		{
+
+						@Override
+						public void onClick(ClickEvent event)
+						{
+							authorizeAccount();
+			        		introductionDialogBox.hide();
+						}
+	        			
+	        		});
+	        		
+	        		introductionDialogBox.setTitle("stuffplotter");
+	        		introductionDialogBox.setText("Welcome to stuffplotter.");
+	        		
+	        		introductionDialogBox.setPixelSize(320, 240);
+	        		introductionDialogBox.center();
+	        		introductionDialogBox.setGlassEnabled(true);
+	        		introductionDialogBox.setAnimationEnabled(true);
+	        		introductionDialogBox.setModal(true);
+	        		//introductionDialogBox.setStyleName("introductionPopup");
+	        		
+	        		VerticalPanel contentBox = new VerticalPanel();
+	        		contentBox.add(new Label("This is a social event management system dedicated to small social circles..."));
+	        		contentBox.add(startButton);
+	        		
+	        		introductionDialogBox.add(contentBox);
+	        		introductionDialogBox.show();
+	        		
+	        		//RootPanel.get().add(introductionDialogBox);
 	    		}
-	    		   		
-    			final AccountStatsServiceAsync aStatService = GWT.create(AccountStatsService.class);	
-    			aStatService.getStats(result.getUserEmail(), new AsyncCallback<AccountStatistic>(){
-
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						Window.alert("Fail to retrieve User Stats...");
-						
-					}
-
-					@Override
-					public void onSuccess(AccountStatistic result)
-					{
-						accountStatistic = result;
-						accountStatistic.accept(new AchievementChecker());
-						aStatService.save(accountStatistic, new AsyncCallback<Void>() {
-
-							@Override
-							public void onFailure(Throwable arg0)
-							{
-								Window.alert("Fail to save stats");
-								
-							}
-
-							@Override
-							public void onSuccess(Void arg0)
-							{
-								
-								
-							}
-							
-						});
-					}	
-	    		});	
-    			loadUI();
+	        	else
+	        	{      	
+	        		startApplication();
+	        	} 	
 	        }
 		});	
 	}
 	
-	public void loadUP()
+	public void authorizeAccount()
 	{
 		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
 		/**
@@ -115,35 +154,34 @@ public class Leviathan implements EntryPoint
 		
 		AuthRequest oauth2Request = new AuthRequest(AUTH_URL, CLIENT_ID)
 	    .withScopes(GOOGLE_PROFILE_SCOPE, GOOGLE_CALENDAR_SCOPE); // Can specify multiple scopes here
-		
+
 		Auth.get().login(oauth2Request, new Callback<String, Throwable>() {
-			  @Override
-			  public void onSuccess(String token) {
-	    			accountService.loadProfile(account, token, new AsyncCallback<Void>()
-	    			{
+			
+			@Override
+			public void onSuccess(String token) {
+				applicationServices.getAccountService().authorize(token,  new AsyncCallback<Account>() {
 
-	    				@Override
-	    				public void onFailure(Throwable caught)
-	    				{
-	    					if (caught instanceof AuthenticationException)
-	    					{
-	    						Window.alert("authentication error");
-	    					}
-	    				}
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Failed to authorize user account...");
+					}
 
-	    				@Override
-	    				public void onSuccess(Void result)
-	    				{
-	    					//Window.Location.assign(url);
-	    				}
-	    			});
-			  }
-			  @Override
-			  public void onFailure(Throwable caught) {
-				  Window.Location.assign(url);
-			  }
+					@Override
+					public void onSuccess(Account result)
+					{
+						account = result;
+						eventBus.fireEvent(new AccountAuthorizedEvent());	
+					}	
+				});
+			}
+		  
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.Location.assign(url);
+			}
 		});
-		
+			
 		/*
 		String oauth2Request = AUTH_URL + "?";
 		oauth2Request += "scope=" + GOOGLE_PROFILE_SCOPE + "&";
@@ -152,10 +190,9 @@ public class Leviathan implements EntryPoint
 		oauth2Request += "client_id=" + CLIENT_ID + "&";
 		Window.Location.assign(oauth2Request);
 		*/
-		
 	}
 	
-	public void loadUI()
+	public void startApplication()
 	{						
 		/*	
 		// test code to read from user's Google Calendar
@@ -203,8 +240,40 @@ public class Leviathan implements EntryPoint
 		});
 		*/
 		
-		ServiceRepository applicationServices = new ServiceRepository();
-		HandlerManager eventBus = new HandlerManager(null);
+		final AccountStatsServiceAsync accountStatsService = GWT.create(AccountStatsService.class);
+		accountStatsService.getStats(account.getUserEmail(), new AsyncCallback<AccountStatistic>(){
+
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				Window.alert("Failed to retrieve user statistics...");
+				
+			}
+
+			@Override
+			public void onSuccess(AccountStatistic result)
+			{
+				AccountStatistic accountStats = result;
+				accountStats.accept(new AchievementChecker());
+				accountStatsService.save(accountStats, new AsyncCallback<Void>() {
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Failed to save user statistics..");
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						// TODO Auto-generated method stub
+					}
+					
+				});
+			}	
+		});	
+		
 		AppController appViewer = new AppController(applicationServices, eventBus, account);
 		appViewer.go(RootPanel.get());
 

@@ -32,7 +32,7 @@ public class Account implements Serializable, AccountModel
 	private String userPhone;
 	
 	/* Google information */
-	private String userRefreshToken = null;
+	private String userAccessToken;
 	private String userFullName;
 	private String userProfilePicture;
 
@@ -68,6 +68,7 @@ public class Account implements Serializable, AccountModel
 	 */
 	public Account(String pEmail)
 	{
+		this.userAccessToken = null;
 		this.userEmail = pEmail;
 		this.userFriends = new ArrayList<String>();
 		this.pendingFriends = new ArrayList<String>();
@@ -193,9 +194,9 @@ public class Account implements Serializable, AccountModel
 	 * @post true;
 	 * @return the user's refresh token.
 	 */
-	public String getUserRefreshToken()
+	public String getAccessToken()
 	{
-		return this.userRefreshToken;
+		return this.userAccessToken;
 	}
 	
 	/**
@@ -204,9 +205,9 @@ public class Account implements Serializable, AccountModel
 	 * @post this.userRefreshToken.equals(userRefreshToken);
 	 * @param userRefreshToken - the user's refresh token.
 	 */
-	public void setUserRefreshToken(String userRefreshToken)
+	public void setAccessToken(String userRefreshToken)
 	{
-		this.userRefreshToken = userRefreshToken;
+		this.userAccessToken = userRefreshToken;
 	}
 	
 	/**
