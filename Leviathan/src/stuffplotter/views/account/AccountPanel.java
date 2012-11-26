@@ -63,6 +63,12 @@ public class AccountPanel extends SimplePanel implements UserAccountView
 	@Override
 	public void setUserData(AccountModel model)
 	{
-		
+		this.nameField.setValue(model.getUserFullName());
+		this.emailField.setValue(model.getUserEmail());
+		this.phoneField.setValue(model.getUserPhone());
+		if(model.getUserAge() > 0)
+		{
+			this.ageField.setValue(String.valueOf(model.getUserAge()));
+		}
 	}
 }
