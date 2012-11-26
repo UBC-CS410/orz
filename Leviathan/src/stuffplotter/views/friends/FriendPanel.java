@@ -43,7 +43,7 @@ public class FriendPanel extends HorizontalPanel
 		if(profileUrl!=null)
 			this.profile = new Image(profileUrl);
 		else
-			this.profile = new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/archive/b/bf/20101105230325!Mario_emblem.svg/120px-Mario_emblem.svg.png");
+			this.profile = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
 		
 		this.profile.setPixelSize(IMAGESIZE, IMAGESIZE);
 		this.add(profile);

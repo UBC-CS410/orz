@@ -25,7 +25,7 @@ public class PendingFriendPanel extends HorizontalPanel
 		if(profileUrl!=null)
 			this.profilePic = new Image(profileUrl);
 		else
-			this.profilePic = new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/archive/b/bf/20101105230325!Mario_emblem.svg/120px-Mario_emblem.svg.png");
+			this.profilePic = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
 		
 		
 		this.profilePic.setPixelSize(IMAGESIZE, IMAGESIZE);
