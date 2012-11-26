@@ -24,6 +24,7 @@ public class FriendsDisplayPanel extends ScrollDisplayPanel
 	{
 		super(numOfColumns);
 		this.friendViews = new ArrayList<FriendPanelView>();
+		this.pendingFriendViews = new ArrayList<PendingFriendPanel>();
 	}
 	
 	/**

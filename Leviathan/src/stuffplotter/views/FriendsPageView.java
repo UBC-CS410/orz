@@ -63,22 +63,23 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		this.searchFriends = new Button("Search Friends");
 		this.pendingFriendDisplay = new FriendsDisplayPanel(NUMOFCOLUMNS);
 		this.pendingFriendsLabel = new Label("Pending Friends");
-		this.pendingFriendDisplay.addElement(pendingFriendsLabel);
 
 		
 		addFriendPanel.add(this.addFriend);
 		addFriendPanel.add(this.addFriendTextBox);
 		buttonHolder.add(addFriendPanel);
 		buttonHolder.add(this.searchFriends);
+		buttonHolder.add(pendingFriendsLabel);
 		buttonHolder.add(this.pendingFriendDisplay);
 		
 		
 		this.add(buttonHolder);
 		this.friendDisplay = new FriendsDisplayPanel(NUMOFCOLUMNS);
 		this.displayFriendsLabel = new Label("Display of Friends");
-		this.friendDisplay.addElement(displayFriendsLabel);
-
-		this.add(this.friendDisplay);
+		VerticalPanel friendHolder = new VerticalPanel();
+		friendHolder.add(displayFriendsLabel);
+		friendHolder.add(this.friendDisplay);
+		this.add(friendHolder);
 	}
 	
 	/**
