@@ -308,22 +308,7 @@ public class Leviathan implements EntryPoint
 			{
 				AccountStatistic accountStats = result;
 				accountStats.accept(new AchievementChecker());
-				applicationServices.getStatsService().save(accountStats, new AsyncCallback<Void>() {
 
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						Window.alert("Failed to save user statistics..");
-						
-					}
-
-					@Override
-					public void onSuccess(Void result)
-					{
-						// TODO Auto-generated method stub
-					}
-					
-				});
 			}	
 		});	
 		

@@ -3,17 +3,25 @@ package stuffplotter.shared;
 public enum Achievement {
 	
 	//Misc. Achievements
-	FIRST_LOG_IN(0, "Newcomer...", "Login for the first time", "Welcome to stuff plotter!"),
+	FIRST_LOG_IN(0, "Stuff Beginner", "Login for the first time", "Welcome to stuff plotter!"),
+	REACH_LVL_5(1, "Stuff Veteran", "Reach level 5", "Welcome to stuff plotter!"),
+	REACH_LVL10(2, "Stuff Master", "Reach level 10", "Congratulations!! You have reached the max level!"),
     
 	//Event Achievements
 	CREATE_FIRST_EVENT(10, "The Host", "Host your first event", "Yay!! first event!"), 
-    CREATE_50_EVENTS(11, "Scheduler King", "Host 50 events", "Party time!"), 
+    CREATE_5_EVENTS(11, "Scheduler King", "Host 5 events", "Party time!"), 
     FIRST_PERFECT_EVENT(12,"Ace", "Perfect score on 1st event","Pefect score for the Perfect Host!"), 
     FULL_EVENT_ATTENDANCE(13, "Full House", "Everyone invited shows up", "Event too popular to turn down!"),
     COMPLETE_FIRST_EVENT(14, "The First Event", "Completed your first event", "First event down, and many more to go!"),
-    //Friend Achievements
+    COMPLETE_MULTI_DAY_EVENT(15, "More than one", "Completed a Multi Day Event", "We need more than one day!"),
+    RATE_AN_EVENT(16, "Feedback", "Rate an Event", "Feedback is awesome!"),
+    COMMENT_AN_EVENT(17, "Engage", "Write a comment to an Event", "You’re open to communication"),
+    WRITE_50_COMMENTS(18, "The Communicator", "Write a total of 50 comments", "Looks like we got ourselves a Chatty-Kathy"),
+    COMPLETE_3_EVENTS_SAMEDAY(19, "Busy Body", "Attend and complete 3 Events on one day", "Look at you, running all over town!"),
     
-    ADD_FIRST_FRIEND(30, "First Mate", "Make your first Friend", "On your way to popularity!");
+    //Friend Achievements
+    ADD_FIRST_FRIEND(30, "First Mate", "Make your first Friend", "On your way to popularity!"),
+    ADD_10_FRIENDS(31, "Mr. Popular", "Have 10 Friends in your list", "You can never have too many friends!");
     
     //Achievement information
 	private int achId;

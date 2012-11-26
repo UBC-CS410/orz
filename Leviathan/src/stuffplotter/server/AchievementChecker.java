@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Achievement;
@@ -26,7 +28,8 @@ public class AchievementChecker implements RecordVisitor
 	private int numHostedEvents;
 	private int numParticipatedEvents;
 
-	final private int ACHIEVEMENTXP = 100;
+	final private int ACHIEVEMENTXP = 55;
+	private ServiceRepository applicationServices = new ServiceRepository();
 	
 	
 	public AchievementChecker()
@@ -52,6 +55,22 @@ public class AchievementChecker implements RecordVisitor
 			leveler.addExperience(ACHIEVEMENTXP);
 			
 		displayAchievements();
+		if(unlockAchievements.size()>0)
+			applicationServices.getStatsService().save(user, new AsyncCallback<Void>(){
+
+				@Override
+				public void onFailure(Throwable caught)
+				{
+					
+				}
+
+				@Override
+				public void onSuccess(Void result)
+				{
+
+				}
+				
+			});
 	}
 	
 	@Override
@@ -73,6 +92,22 @@ public class AchievementChecker implements RecordVisitor
 			leveler.addExperience(ACHIEVEMENTXP);
 		
 		displayAchievements();
+		if(unlockAchievements.size()>0)
+			applicationServices.getStatsService().save(user, new AsyncCallback<Void>(){
+
+				@Override
+				public void onFailure(Throwable caught)
+				{
+					
+				}
+
+				@Override
+				public void onSuccess(Void result)
+				{
+
+				}
+				
+			});
 	}
 	
 	
@@ -87,8 +122,17 @@ public class AchievementChecker implements RecordVisitor
 		if(!this.userAchievements.contains(Achievement.FIRST_LOG_IN))
 			firstLoggedIn();
 		
+		if(!this.userAchievements.contains(Achievement.REACH_LVL_5))
+			reachedLvl5();
+		
+		if(!this.userAchievements.contains(Achievement.REACH_LVL10))
+			reachedLvl10();
+		
 		if(!this.userAchievements.contains(Achievement.ADD_FIRST_FRIEND))
 			addFirstFriend();
+		
+		if(!this.userAchievements.contains(Achievement.ADD_10_FRIENDS))
+			add10Friends();
 		
 		this.user.addUserAchievements(unlockAchievements);
 		
@@ -111,16 +155,37 @@ public class AchievementChecker implements RecordVisitor
 		if(!this.userAchievements.contains(Achievement.CREATE_FIRST_EVENT))
 			createFirstEvent();
 		
+		if(!this.userAchievements.contains(Achievement.CREATE_5_EVENTS))
+			create5Events();
+		
+		if(!this.userAchievements.contains(Achievement.FIRST_PERFECT_EVENT))
+			perfectEvent();
+		
 		if(!this.userAchievements.contains(Achievement.COMPLETE_FIRST_EVENT))
 			completeFirstEvent();
 		
 		if(!this.userAchievements.contains(Achievement.FULL_EVENT_ATTENDANCE))
 			fullEventAttendance();
 		
+		if(!this.userAchievements.contains(Achievement.COMPLETE_MULTI_DAY_EVENT))
+			completeMultiDay();
+		
+		if(!this.userAchievements.contains(Achievement.RATE_AN_EVENT))
+			rateAnEvent();
+		
+		if(!this.userAchievements.contains(Achievement.COMMENT_AN_EVENT))
+			commentAnEvent();
+		
+		if(!this.userAchievements.contains(Achievement.WRITE_50_COMMENTS))
+			write50Comments();
+		
+		if(!this.userAchievements.contains(Achievement.COMPLETE_3_EVENTS_SAMEDAY))
+			complete3EventsSameday();
 		
 		this.user.addUserAchievements(unlockAchievements);
 	}
 	
+
 	/**
 	 * This will display the achievements that just been unlocked
 	 * @pre
@@ -166,6 +231,17 @@ public class AchievementChecker implements RecordVisitor
 			this.unlockAchievements.add(Achievement.CREATE_FIRST_EVENT);
 	}
 	
+	private void reachedLvl5()
+	{
+		if(this.user.getUserLevel()>=5)
+			this.unlockAchievements.add(Achievement.REACH_LVL_5);
+	}
+	
+	private void reachedLvl10()
+	{
+		if(this.user.getUserLevel()>=10)
+			this.unlockAchievements.add(Achievement.REACH_LVL10);
+	}
 	
 	/**
 	 * This checks if the user has added if first friend
@@ -179,6 +255,17 @@ public class AchievementChecker implements RecordVisitor
 	}
 	
 	/**
+	 * This checks if the user has at least 10 friends
+	 * @pre
+	 * @post
+	 */
+	private void add10Friends()
+	{
+		if(this.numFriends>=10)
+			this.unlockAchievements.add(Achievement.ADD_10_FRIENDS);
+	}
+	
+	/**
 	 * This checks if the user's first even has been completed
 	 * @pre
 	 * @post
@@ -189,6 +276,8 @@ public class AchievementChecker implements RecordVisitor
 			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
 	}
 	
+	
+	
 	/**
 	 * This checks if the user's event had a full attendance
 	 * @pre
@@ -196,8 +285,51 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void fullEventAttendance()
 	{
+		//TODO:
 		if(this.event.getInvitees().size() >=0)
 			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
+	}
+	
+	private void complete3EventsSameday()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void write50Comments()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void commentAnEvent()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void rateAnEvent()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void completeMultiDay()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void perfectEvent()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void create5Events()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 
