@@ -44,8 +44,9 @@ public class TimeSheetPanel extends SimplePanel
 	 * @pre date != null;
 	 * @post true; 
 	 * @param date - the list of Dates to display.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public void addDay(Date date)
+	public void addDay(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
 		String month = splitter.getMonthAsString();
@@ -64,7 +65,7 @@ public class TimeSheetPanel extends SimplePanel
 				MonthPanel monthPanel = (MonthPanel) childWidget;
 				if(monthPanel.getMonth().equals(month) && monthPanel.getYear().equals(year))
 				{
-					((MonthPanel) childWidget).addDay(date);
+					((MonthPanel) childWidget).addDay(date, conflictDates);
 					monthYearFound = true;
 				}
 			}
@@ -73,7 +74,7 @@ public class TimeSheetPanel extends SimplePanel
 		
 		if(!monthYearFound)
 		{
-			this.horPanel.add(new MonthPanel(date));
+			this.horPanel.add(new MonthPanel(date, conflictDates));
 		}
 	}
 	
@@ -82,8 +83,9 @@ public class TimeSheetPanel extends SimplePanel
 	 * @pre dates != null && !dates.isEmpty();
 	 * @post true; 
 	 * @param dates - the list of Dates to display.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public void addDays(List<Date> dates)
+	public void addDays(List<Date> dates, List<Date> conflictDates)
 	{
 		HashMap<Integer, List<Date>> hashMap = new HashMap<Integer, List<Date>>();
 		List<List<Integer>> monthYears = new ArrayList<List<Integer>>();
@@ -117,7 +119,7 @@ public class TimeSheetPanel extends SimplePanel
 		
 		for (List<Date> monthYearDates : hashMap.values())
 		{
-			this.horPanel.add(new MonthPanel(monthYearDates));
+			this.horPanel.add(new MonthPanel(monthYearDates, conflictDates));
 		}
 	}
 	

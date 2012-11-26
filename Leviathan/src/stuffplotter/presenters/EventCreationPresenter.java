@@ -1,5 +1,9 @@
 package stuffplotter.presenters;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.EventCreationPageRetriever;
@@ -12,9 +16,15 @@ import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
 import stuffplotter.views.util.NotificationDialogBox;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -65,6 +75,23 @@ public class EventCreationPresenter implements Presenter
 		 * @return the Submit "button".
 		 */
 		public HasClickHandlers getSubmitBtn();
+		
+		/**
+		 * Retrieve the date picker in the display.
+		 * @pre true;
+		 * @post true;
+		 * @return the date picker in the display.
+		 */
+		public HasValueChangeHandlers<Date> getCalendar();
+		
+		/**
+		 * Populate the times on the time sheet panel.
+		 * @pre shownDate != null && conflictDates != null;
+		 * @post true;
+		 * @param shownDate - the day to display.
+		 * @param conflictDates - the time slots that already have events going on.
+		 */
+		public void populateTimeSheet(Date shownDate, List<Date> conflictDates );
 		
 		/**
 		 * Close the create event window.
@@ -197,6 +224,16 @@ public class EventCreationPresenter implements Presenter
 								"failed to be created, please try again later.");
 					}
 				});
+			}
+		});
+		
+		this.createEventDialogBox.getCalendar().addValueChangeHandler(new ValueChangeHandler<Date>()
+		{
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event)
+			{
+				// add google calendar here to get list of conflicts
+				createEventDialogBox.populateTimeSheet(event.getValue(), new ArrayList<Date>());
 			}
 		});
 	}

@@ -40,11 +40,12 @@ public class DaySelections extends VerticalPanel
 	 * @pre date != null;
 	 * @post this.isVisible() == true;
 	 * @param date - the date containing the day of the month to display.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public DaySelections(Date date)
+	public DaySelections(Date date, List<Date> conflictDates)
 	{
 		super();
-		this.initializeUI(date);
+		this.initializeUI(date, conflictDates);
 	}
 	
 	/**
@@ -53,11 +54,12 @@ public class DaySelections extends VerticalPanel
 	 * @pre dates != null && !dates.isEmpty();
 	 * @post this.isVisible() == true;
 	 * @param dates - the list of time slots to display for the DaySelections panel.
+	 * @param conflictDates - the list of time slots that are already taken. 
 	 */
-	public DaySelections(List<Date> dates)
+	public DaySelections(List<Date> dates, List<Date> conflictDates)
 	{
 		super();
-		this.initializeUI(dates);		
+		this.initializeUI(dates, conflictDates);		
 	}
 	
 	/**
@@ -65,8 +67,10 @@ public class DaySelections extends VerticalPanel
 	 * @pre true;
 	 * @post true;
 	 * @param date - the Date containing the day to display all the time slots for.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	private void initializeUI(Date date)
+	@SuppressWarnings("deprecation")
+	private void initializeUI(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
 		this.dayOfMonth = splitter.getDayAsString();
@@ -75,11 +79,20 @@ public class DaySelections extends VerticalPanel
 		// for loop to add all the time slots
 		for (int i = 0; i < timeIntervals.length; i++)
 		{
-			this.add(new TimeSlot(timeIntervals[i],
-								  splitter.getMonth(),
-								  splitter.getDay(),
-								  splitter.getYear(),
-								  i));
+			Date timeSlotDate = new Date(splitter.getYear() - CORRECTION_FACTOR_Y,
+					 					 splitter.getMonth() - CORRECTION_FACTOR_M,
+					 					 splitter.getDay(),
+					 					 i,
+					 					 0);
+			
+			TimeSlot slotToAdd = new TimeSlot(timeIntervals[i], timeSlotDate);
+			
+			if(conflictDates.contains(timeSlotDate))
+			{
+				slotToAdd.addStyleName("conflicting-time");
+			}
+			
+			this.add(slotToAdd);
 		}
 	}
 	
@@ -88,8 +101,9 @@ public class DaySelections extends VerticalPanel
 	 * @pre dates != null && !dates.isEmpty();
 	 * @post true;
 	 * @param dates - the list of dates containing the time slots to add.
+	 * @param conflictDates - the list of time slots that are already taken. 
 	 */
-	private void initializeUI(List<Date> dates)
+	private void initializeUI(List<Date> dates, List<Date> conflictDates)
 	{
 		if(!dates.isEmpty())
 		{
@@ -103,11 +117,15 @@ public class DaySelections extends VerticalPanel
 		{
 			DateSplitter splitter = new DateSplitter(date);
 			int hour = splitter.getHour();
-			this.add(new TimeSlot(timeIntervals[hour],
-								  splitter.getMonth(),
-								  splitter.getDay(),
-								  splitter.getYear(),
-								  hour));
+			
+			TimeSlot slotToAdd = new TimeSlot(timeIntervals[hour], date);
+			
+			if(conflictDates.contains(date))
+			{
+				slotToAdd.setStyleName("conflicting-time");
+			}
+			
+			this.add(slotToAdd);
 		}
 	}
 	
@@ -160,36 +178,25 @@ public class DaySelections extends VerticalPanel
 		 * 		&& year >= 1900 && hour >= 0 && hour <= 23;
 		 * @post this.isVisible() == true;
 		 * @param timeInterval - the time interval to display for the time slot.
-		 * @param month - the month the timeslot belongs to.
-		 * @param day - the day the timeslot belongs to.
-		 * @param year - the year the timeslot belongs to.
-		 * @param hour - the starting hour the timeslot represents in 24 hour, base 0, time.
+		 * @param timeSlotDate - the date represented by the TimeSlot.
 		 */
-		public TimeSlot(String timeInterval, int month, int day, int year, int hour)
+		public TimeSlot(String timeInterval, Date timeSlotDate)
 		{
 			super(timeInterval);
-			this.initializeVariables(month, day, year, hour);
+			this.initializeVariables(timeSlotDate);
 			this.setWordWrap(false);
 		}
 		
 		/**
 		 * Helper method to initialize the variables for the timeslot.
-		 * @pre timeInterval != null && month >= 0 && month <= 11 && day is valid day for month
-		 * 		&& year >= 1900 && hour >= 0 && hour <= 23;
+		 * @pre timeSlotDate != null;
 		 * @post this.isVisible() == true;
-		 * @param timeInterval - the time interval to display for the time slot.
-		 * @param month - the month the timeslot belongs to.
-		 * @param day - the day the timeslot belongs to.
-		 * @param year - the year the timeslot belongs to.
-		 * @param hour - the starting hour the timeslot represents in 24 hour, base 0, time.		 */
+		 * @param timeSlotDate - the date represented by the TimeSlot.		 
+		 */
 		@SuppressWarnings("deprecation")
-		private void initializeVariables(int month, int day, int year, int hour)
+		private void initializeVariables(Date timeSlotDate)
 		{
-			this.timeSlot = new Date(year - CORRECTION_FACTOR_Y,
-									 month - CORRECTION_FACTOR_M,
-									 day,
-									 hour,
-									 0);
+			this.timeSlot = timeSlotDate;
 		}
 		
 		/**
