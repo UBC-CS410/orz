@@ -248,6 +248,8 @@ public class FriendsPagePresenter implements Presenter
 			{
 				friendsView.setPendingData(pendingFriends);
 				friendsView.setFriendData(friends);
+				bindFriendPanels();
+				bindPendingFriendPanels();
 			}	
 		});
 
@@ -262,6 +264,10 @@ public class FriendsPagePresenter implements Presenter
 				{
 					Window.alert("This field cannot be blank!");
 				}	
+				else if(friendEmail.equals("Example: stuffplotter001@gmail.com"))
+				{
+					Window.alert("Enter your friends email");
+				}
 				else if(friendEmail.contains(" "))
 				{
 					Window.alert("This field cannot contain and spaces!");

@@ -146,7 +146,11 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 			this.emailAddress = emailAddress;
 			this.selectedValue = new CheckBox();
 			
-			Image profilePicture = new Image(profilePic);
+			String profileUrl = "http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif";
+			if(profilePic!=null)
+				profileUrl = profilePic;
+			
+			Image profilePicture = new Image(profileUrl);
 			profilePicture.setPixelSize(WIDTH, HEIGHT);
 			
 			this.add(this.selectedValue);

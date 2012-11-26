@@ -112,6 +112,16 @@ public class TopBarPresenter implements Presenter
 	 */
 	private void bind()
 	{
+		eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				//TODO clean up notification stuff
+				//setNotificationData();
+			}
+		});
+		
 		this.topBarDisplay.getNotificationsLabel().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -120,7 +130,7 @@ public class TopBarPresenter implements Presenter
 				topBarDisplay.getPopUp().toggleVisibility();
 				topBarDisplay.getPopUp().setPopupPosition(((UIObject) topBarDisplay.getNotificationsLabel()).getAbsoluteLeft(), ((UIObject) topBarDisplay.getNotificationsLabel()).getAbsoluteTop() + 20);
 					
-				readNotifications();
+				//readNotifications();
 				
 			}
 
@@ -145,14 +155,6 @@ public class TopBarPresenter implements Presenter
 					public void onSuccess(Void result)
 					{
 						fetchNotifications();
-						eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
-						{
-							@Override
-							public void onRefreshPage(RefreshPageEvent event)
-							{
-
-							}
-						});
 					}
 					
 				});
