@@ -29,14 +29,15 @@
 
 .menuBar {
 	margin: auto;
-	border: 1px solid red;
-	background-color: green;
+	margin-top: 12px;
+	border: 8px solid #333;
+	background-color: #555;
 	width: 80%;
 }
 
 .menuBar td {
 	width: 20%;
-	padding: 8px 20px;
+	padding: 8px 12px;
 }
 
 .menuBar .gwt-Button {
@@ -44,9 +45,11 @@
 	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
  	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
   	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+  	/*
 	-moz-border-radius: 8px;
   	-webkit-border-radius: 8px;
   	border-radius: 8px;
+  	*/
 }
 
 .mainDeck {
@@ -66,23 +69,49 @@
 }
 
 .eventRoll {
-	width: 80%;
+	float: right;
+	width: 100%;
+	text-align: center;
 }
 
 .eventListing {
-	border-bottom: 1px solid grey;
 	padding: 20px;
+	width: 200px;
 }
 
-.eventListingAnchor {
-	font-size: 1.1em;
-	font-weight: bold;
-	color: blue;
+.eventSelected {
 	background-color: #CCC;
 }
 
+.eventListingLabel {
+	font-size: 1.1em;
+	font-weight: bold;
+	color: blue;
+}
+
+.eventScheduledLabel {
+	color: grey;
+}
+
+.eventInvitedLabel {
+	color: green;
+}
+
+.eventUnscheduledLabel {
+	color: red;
+}
+
+.eventFinishedLabel {
+	color: orange;
+}
+
+.eventContainer {
+	width: 100%;
+	border-left: 1px solid grey;
+	border-right: 1px solid grey;
+}
+
 .eventPage {
-	width: 80%;
 	padding: 20px;
 }
 
