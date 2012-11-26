@@ -29,14 +29,15 @@
 
 .menuBar {
 	margin: auto;
-	border: 1px solid red;
-	background-color: green;
+	margin-top: 12px;
+	border: 8px solid #333;
+	background-color: #555;
 	width: 80%;
 }
 
 .menuBar td {
 	width: 20%;
-	padding: 8px 20px;
+	padding: 8px 12px;
 }
 
 .menuBar .gwt-Button {
@@ -44,9 +45,11 @@
 	-webkit-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
  	box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
   	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
+  	/*
 	-moz-border-radius: 8px;
   	-webkit-border-radius: 8px;
   	border-radius: 8px;
+  	*/
 }
 
 .mainDeck {
@@ -77,7 +80,7 @@
 }
 
 .eventSelected {
-	background-color: grey;
+	background-color: #CCC;
 }
 
 .eventListingLabel {

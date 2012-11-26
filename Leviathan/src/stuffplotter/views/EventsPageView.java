@@ -9,6 +9,7 @@ import stuffplotter.views.events.EventListingView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -254,14 +255,14 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
-	 * Shows eventListPanel 
-	 * @pre this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
-	 * @post this.eventListPanel.isVisible() == true && this.eventPanel.isVisible() == false;
+	 * Removes the submit availabilities button
+	 * @pre true;
+	 * @post this.submitAvailabilityButton.isVisible() == false;
 	 */
 	@Override
-	public void showEventViewers()
+	public void removeSubmitAvailabilitiesButton()
 	{
-		//this.add(eventListPanel);
+		this.eventActionPanel.remove(this.submitAvailabilityButton);
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,6 +36,8 @@ import stuffplotter.views.events.EventView;
 public class EventsPagePresenter implements Presenter
 {
 	private List<Event> currentEvents;
+	private HandlerRegistration submitAvailabilities;
+	private HandlerRegistration finalizeTime;
 	
 	public interface EventsPageViewer
 	{
@@ -44,7 +47,7 @@ public class EventsPagePresenter implements Presenter
 		
 		public HasWidgets getEventViewerContainer();
 		public List<HasClickHandlers> getEventViewers();
-		public void showEventViewers();
+		public void removeSubmitAvailabilitiesButton();
 		public void showEventSelected(int row);
 		
 		public HasClickHandlers getAcceptButton();
@@ -146,18 +149,18 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onFailure(Throwable caught)
 					{
-						Window.alert("Failed to submit timeslots");
+						Window.alert("Failed to submit availabilities...");
 						
 					}
 
 					@Override
 					public void onSuccess(Void result)
 					{
-						eventsView.clearEventActions();
+						Window.alert("Submitted availabilities.");
 					}
 					
 				});
-				
+				eventsView.removeSubmitAvailabilitiesButton();
 			}
 		});
 		
@@ -206,7 +209,11 @@ public class EventsPagePresenter implements Presenter
 		final Event selectedEvent = event;
 		final EventServiceAsync eventService = appServices.getEventService();
 		
-		this.eventsView.getSubmitAvailabilitiesButton().addClickHandler(new ClickHandler() {
+		if (submitAvailabilities != null) 
+		{
+			submitAvailabilities.removeHandler();
+		}
+		submitAvailabilities = this.eventsView.getSubmitAvailabilitiesButton().addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event)
@@ -222,7 +229,7 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onSuccess(List<Availability> result)
 					{
-						AvailabilitySubmitterDialogBox submitter = new AvailabilitySubmitterDialogBox(result, eventBus);
+						AvailabilitySubmitterDialogBox ignore = new AvailabilitySubmitterDialogBox(result, eventBus);
 					}
 
 				});	
@@ -264,7 +271,7 @@ public class EventsPagePresenter implements Presenter
 			{
 				currentEvents = result; //used for bindEventViewers
 				eventsView.initialize(currentEvents);
-				eventsView.showEventViewers();
+				eventsView.removeSubmitAvailabilitiesButton();
 				bindEventViewers();
 				if (currentEvents.size() > 0)
 				{
@@ -296,7 +303,7 @@ public class EventsPagePresenter implements Presenter
 			{
 				currentEvents = result; //used for bindEventViewers
 				eventsView.initialize(currentEvents);
-				eventsView.showEventViewers();
+				eventsView.removeSubmitAvailabilitiesButton();
 				bindEventViewers();
 				if (currentEvents.size() > 0)
 				{
