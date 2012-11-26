@@ -5,14 +5,24 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Availability;
+import stuffplotter.shared.Event;
+import stuffplotter.shared.Event.Status;
+import stuffplotter.signals.EventSchedulerEvent;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /*
  * UI class that contains the logic for event owner to finalize the date for their event.
@@ -20,19 +30,29 @@ import com.google.gwt.user.client.ui.RadioButton;
  */
 public class EventDateFinalizerDialogBox extends DialogBox
 {
-	
-	private List<Availability> sortedTimeSlots;
 	private Date selectedTimeSlot;
+	
+	private final List<Availability> sortedTimeSlots;
+	private final Event unscheduledEvent;
+	private final int unscheduledEventIndex;
+	private final ServiceRepository serviceRepository;
+	private final HandlerManager eventBus;
 	
 	/**
 	 * Constructor for EventDateSubmitterDialogBox.
 	 * @pre true;
 	 * @post this.sortedTimeSlots != null;
 	 */
-	public EventDateFinalizerDialogBox(List<Availability> timeSlots)
+	public EventDateFinalizerDialogBox(List<Availability> timeslots, Event event, int index, ServiceRepository services, HandlerManager eventbus)
 	{
 		super();
-		this.sortedTimeSlots = timeSlots;
+		
+		this.sortedTimeSlots = timeslots;
+		this.unscheduledEvent = event;
+		this.unscheduledEventIndex = index;
+		this.serviceRepository = services;
+		this.eventBus = eventbus;
+		
 		Collections.sort(this.sortedTimeSlots, new Comparator<Availability>(){
 
 			@Override
@@ -51,17 +71,14 @@ public class EventDateFinalizerDialogBox extends DialogBox
 	 * @post true;
 	 */
 	private void initializeDialogBox()
-	{
-		this.setTitle("Scheduler");
-		this.setText("Finalize the time for your event");
-		
-		FlowPanel panel = new FlowPanel();
+	{		
+		VerticalPanel panel = new VerticalPanel();
 		for(Availability timeSlot: this.sortedTimeSlots)
 		{
 			final Date time = timeSlot.getTime();
 			
 			String label = timeSlot.getTime().toString();
-			label += " (" + timeSlot.getVotes() + ")";
+			label += " (" + timeSlot.getVotes() + " votes)";
 			final RadioButton rb = new RadioButton("eventTime", label);
 			
 			rb.addClickHandler(new ClickHandler() {
@@ -80,8 +97,15 @@ public class EventDateFinalizerDialogBox extends DialogBox
 			panel.add(rb);
 		}
 		
-		initializeSubmitButton(panel);
+		initializeButtons(panel);
 		this.add(panel);
+		
+		this.setText("Schedule the final time for your event.");
+		this.setGlassEnabled(true);
+		this.setAnimationEnabled(true);
+		this.setModal(true);
+		this.center();	
+		this.show();
 	}
 	
 	/**
@@ -90,10 +114,41 @@ public class EventDateFinalizerDialogBox extends DialogBox
 	 * @pre true;
 	 * @post true;
 	 */
-	private void initializeSubmitButton(Panel panel)
+	private void initializeButtons(Panel panel)
 	{
-		Button button = new Button("Submit");
-		button.addClickHandler(new ClickHandler()
+		HorizontalPanel buttons = new HorizontalPanel();
+		
+		Button submit = new Button("Submit");
+		submit.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				unscheduledEvent.setDate(selectedTimeSlot);
+				unscheduledEvent.setStatus(Status.SCHEDULED);
+				serviceRepository.getEventService().updateEvent(unscheduledEvent, new AsyncCallback<Void>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Failed to update event...");
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						eventBus.fireEvent(new EventSchedulerEvent(unscheduledEvent, unscheduledEventIndex));
+					}
+					
+				});
+				hide();
+			};
+		});
+		
+		Button cancel = new Button("Cancel");
+		cancel.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
@@ -101,7 +156,11 @@ public class EventDateFinalizerDialogBox extends DialogBox
 				hide();
 			};
 		});
-		panel.add(button);
+		
+		buttons.add(submit);
+		buttons.add(cancel);
+		panel.add(buttons);
+		
 	}
 
 }

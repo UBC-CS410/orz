@@ -1,6 +1,5 @@
 package stuffplotter.views.events;
 
-import java.util.Date;
 import java.util.List;
 
 import stuffplotter.presenters.EventPresenter.EventViewer;
@@ -9,10 +8,7 @@ import stuffplotter.shared.Event;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
-import com.google.gwt.event.dom.client.HasKeyPressHandlers;
-import com.google.gwt.event.logical.shared.HasAttachHandlers;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -136,7 +132,7 @@ public class EventView extends VerticalPanel implements EventViewer
 	public void initialize(Event event)
 	{
 		Label nameLabel = new Label(event.getName());
-		nameLabel.setStyleName("eventListingLabel");
+		nameLabel.setStyleName("eventNameLabel");
 		
 		Label scheduleLabel = new Label();
 		if(event.getDate() == null)
@@ -155,9 +151,7 @@ public class EventView extends VerticalPanel implements EventViewer
 		Label locationLabel = new Label("Location: " + event.getLocation());
 		Label descriptionLabel = new Label("Description: " + event.getDescription());
 		
-		this.commentTextBox.setVisible(false);
-		this.add(this.commentTextBox);
-		
+		this.commentTextBox.setVisible(false);	
 		ScrollPanel commentPanel = new ScrollPanel();
 		commentPanel.setHeight("480px");
 		commentPanel.add(this.commentLabels);
@@ -170,6 +164,7 @@ public class EventView extends VerticalPanel implements EventViewer
 		this.add(descriptionLabel);
 		
 		this.add(this.commentButton);
+		this.add(this.commentTextBox);
 	
 		this.add(commentPanel);
 		
