@@ -54,6 +54,17 @@ public class UserAccountPresenter implements Presenter
 		this.eventBus = eventBus;
 		this.userAccountView = display;
 		this.appUser = appUser;
+		this.dataBindAccount();
+	}
+	
+	/**
+	 * Helper method to data bind the account to the view.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void dataBindAccount()
+	{
+		this.userAccountView.setUserData(this.appUser);
 	}
 	
 	@Override
