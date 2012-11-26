@@ -1,5 +1,6 @@
 package stuffplotter.views.events;
 
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -21,27 +22,32 @@ public class EventListingView extends VerticalPanel
 	 * @post this.isVisible() == true
 	 * 
 	 */
-	public EventListingView(Event event)
+	public EventListingView(Account user, Event event)
 	{
 		this.eventLink = new Anchor(event.getName());
 		this.eventLink.setStyleName("eventListingLabel");
 		
-		Label scheduleLabel = new Label();
-		if(event.getDate() == null)
+		Label statusLabel = new Label();
+		if (event.getInvitees().contains(user.getUserEmail()))
 		{
-			scheduleLabel.setText("Unscheduled");
-			scheduleLabel.setStyleName("eventUnscheduledLabel");
+			statusLabel.setText("Invited");
+			statusLabel.setStyleName("eventInvitedLabel");
 		}
+		else if(event.getDate() == null)
+		{
+			statusLabel.setText("Unscheduled");
+			statusLabel.setStyleName("eventUnscheduledLabel");
+		} 
 		else
 		{
-			scheduleLabel.setText(event.getDate().toString());
-			scheduleLabel.setStyleName("eventScheduledLabel");
+			statusLabel.setText(event.getDate().toString());
+			statusLabel.setStyleName("eventScheduledLabel");
 		}
 
 		this.setStyleName("eventListing");
 		
 		this.add(this.eventLink);
-		this.add(scheduleLabel);
+		this.add(statusLabel);
 	}
 	
 	public HasClickHandlers getLink()
