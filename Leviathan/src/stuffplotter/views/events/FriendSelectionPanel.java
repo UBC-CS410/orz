@@ -131,8 +131,8 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 	 */
 	public class FriendPanel extends HorizontalPanel
 	{
-		private static final int HEIGHT = 50;
-		private static final int WIDTH = 50;
+		private static final int HEIGHT = 30;
+		private static final int WIDTH = 30;
 		private String emailAddress;
 		private CheckBox selectedValue;
 		
@@ -146,7 +146,8 @@ public class FriendSelectionPanel extends SimplePanel implements EventSubmittabl
 			this.emailAddress = emailAddress;
 			this.selectedValue = new CheckBox();
 			
-			Image profilePicture = new Image(profilePic, 0, 0, WIDTH, HEIGHT);
+			Image profilePicture = new Image(profilePic);
+			profilePicture.setPixelSize(WIDTH, HEIGHT);
 			
 			this.add(this.selectedValue);
 			this.add(profilePicture);
