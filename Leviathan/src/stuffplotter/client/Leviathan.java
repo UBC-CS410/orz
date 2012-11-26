@@ -1,7 +1,7 @@
 package stuffplotter.client;
 
-import stuffplotter.client.services.AccountStatsService;
-import stuffplotter.client.services.AccountStatsServiceAsync;
+import java.util.List;
+
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.AppController;
 import stuffplotter.server.AchievementChecker;
@@ -11,15 +11,23 @@ import stuffplotter.shared.GoogleAPIException;
 import stuffplotter.signals.AccountAuthorizedEvent;
 import stuffplotter.signals.AccountAuthorizedEventHandler;
 
-
+import com.google.api.gwt.client.GoogleApiRequestTransport;
+import com.google.api.gwt.client.OAuth2Login;
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
+import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.api.gwt.services.calendar.shared.model.CalendarList;
+import com.google.api.gwt.services.calendar.shared.model.Event;
+import com.google.api.gwt.services.calendar.shared.model.Events;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -27,6 +35,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 
 /**
@@ -171,6 +180,7 @@ public class Leviathan implements EntryPoint
 					{
 						account = result;
 						eventBus.fireEvent(new AccountAuthorizedEvent());	
+						System.out.println("authorized");
 					}	
 				});
 			}
@@ -192,12 +202,57 @@ public class Leviathan implements EntryPoint
 	}
 	
 	public void startApplication()
-	{						
-		/*	
-		// test code to read from user's Google Calendar
+	{		
+		//DO NOT REMOVE THIS CODE, USED FOR TESTING GOOGLE CALENDARS
+		/*
+		Button button = new Button("Testing");
+		button.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent ignore)
+			{
+				final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
+				testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk"));
+				
+				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
+						{
+							@Override
+							public void onSuccess(CalendarList response) 
+							{
+								String calendarID = response.getItems().get(0).getId();
+								ListRequest calRequest = testCalendar.events().list(calendarID);
+								calRequest.fire(new Receiver<Events>()
+								{
+									@Override
+									public void onSuccess(Events response)
+									{
+										String result = "Events Found: ";
+										List<Event> events = response.getItems();
+										if(events != null)
+										{
+											for(Event event : events)
+											{
+												result += " " + event.getCreated();
+											}
+										}
+										Window.alert(result);
+									}
+								});
+							}
+						});	
+			}
+			
+		});
+		RootPanel.get().add(button);
+		*/
+		
+		/*
+		Window.alert("ASDF");
+		System.out.println("ASDF");
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
-		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyBfOXf0_XRFIMvIY6Noqbkvodamr-dSw_M"));
-		OAuth2Login.get().authorize("933841708791.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk"));
+		
+		OAuth2Login.get().authorize("1024938108271.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
 		{
 			@Override
 			public void onFailure(Exception reason)
