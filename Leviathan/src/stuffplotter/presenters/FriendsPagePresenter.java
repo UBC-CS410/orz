@@ -107,7 +107,7 @@ public class FriendsPagePresenter implements Presenter
 						@Override
 						public void onSuccess(Void result)
 						{
-							Window.alert("A notification has been sent to "+friendsView.getFriendBoxText()+"! Please await for their confirmation. =D");
+							Window.alert("A notification has been sent to "+friendsView.getFriendBoxText()+"! Please await their confirmation. =D");
 							friendsView.clearFriendBoxText();
 						}
 					});

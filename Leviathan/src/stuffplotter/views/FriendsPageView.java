@@ -138,7 +138,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 
 	@Override
 	public void addFriendPanel(FriendPanel friendPan)
-	{
+	{	
 		this.friendDisplay.addElement(friendPan);
 	}
 

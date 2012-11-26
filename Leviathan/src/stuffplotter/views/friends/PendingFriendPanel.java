@@ -15,6 +15,7 @@ public class PendingFriendPanel extends HorizontalPanel
 	private VerticalPanel infoPanel;
 	private Label userName;
 	private Label userEmail;
+	private HorizontalPanel buttonHolder;
 	private Button confirmButton;
 	private Button denyButton;
 	
@@ -27,19 +28,25 @@ public class PendingFriendPanel extends HorizontalPanel
 		else
 			this.profilePic = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
 		
+		this.buttonHolder = new HorizontalPanel();
+		this.confirmButton = new Button("Confirm");
+		this.denyButton = new Button("Deny");
+		this.buttonHolder.add(confirmButton);
+		this.buttonHolder.add(denyButton);
+		
 		
 		this.profilePic.setPixelSize(IMAGESIZE, IMAGESIZE);
 		this.infoPanel = new VerticalPanel();
 		this.infoPanel.add(userName);
 		this.infoPanel.add(userEmail);
+		this.infoPanel.add(buttonHolder);
 		
-		this.confirmButton = new Button("Confirm");
-		this.denyButton = new Button("Deny");
+		
+		
 		
 		this.add(profilePic);
 		this.add(infoPanel);
-		this.add(confirmButton);
-		this.add(denyButton);
+
 	};
 	
 	public HasClickHandlers getConfirmButton(){
