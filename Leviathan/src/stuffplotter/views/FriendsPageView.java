@@ -147,8 +147,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	@Override
 	public HasAllFocusHandlers getFriendTextBox()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.addFriendTextBox;
 	}
 
 	@Override
@@ -161,5 +160,11 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	public void setPendingData(List<AccountModel> models)
 	{
 		this.pendingFriendDisplay.setPendingFriendsData(models);
+	}
+
+	@Override
+	public List<PendingFriendPanel> getPendingFriendPanels()
+	{
+		return this.friendDisplay.getPendingFriendPanels();
 	}
 }

@@ -10,87 +10,84 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class PendingFriendPanel extends HorizontalPanel implements FriendPanelView
+public class PendingFriendPanel extends HorizontalPanel implements PendingFriendView
 {
 	private static final int IMAGESIZE = 85;
-	private Image profilePic;
-	private VerticalPanel infoPanel;
 	private Label userName;
 	private Label userEmail;
-	private HorizontalPanel buttonHolder;
+	private Image profilePic;
 	private Button confirmButton;
 	private Button denyButton;
 	
-	public PendingFriendPanel(String email, String name, String profileUrl)
+	public PendingFriendPanel(AccountModel model)
 	{
-		this.userName = new Label(name);
-		this.userEmail = new Label(email);
-		if(profileUrl!=null)
-			this.profilePic = new Image(profileUrl);
-		else
-			this.profilePic = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
-		
-		this.buttonHolder = new HorizontalPanel();
+		this.initializeUI();
+		this.dataBind(model);
+	}
+
+
+	private void initializeUI()
+	{
+		this.userName = new Label();
+		this.userEmail = new Label();
+		this.profilePic = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
+		this.profilePic.setPixelSize(IMAGESIZE, IMAGESIZE);
 		this.confirmButton = new Button("Confirm");
 		this.denyButton = new Button("Deny");
-		this.buttonHolder.add(confirmButton);
-		this.buttonHolder.add(denyButton);
 		
+		HorizontalPanel buttonHolder = new HorizontalPanel();
+		buttonHolder.add(confirmButton);
+		buttonHolder.add(denyButton);
 		
-		this.profilePic.setPixelSize(IMAGESIZE, IMAGESIZE);
-		this.infoPanel = new VerticalPanel();
-		this.infoPanel.add(userName);
-		this.infoPanel.add(userEmail);
-		this.infoPanel.add(buttonHolder);
-		
-		
-		
+		VerticalPanel infoPanel = new VerticalPanel();
+		infoPanel.add(userName);
+		infoPanel.add(userEmail);
+		infoPanel.add(buttonHolder);
 		
 		this.add(profilePic);
 		this.add(infoPanel);
-
-	};
+	}
 	
-	public PendingFriendPanel(AccountModel model)
+	private void dataBind(AccountModel model)
 	{
-		// TODO Auto-generated constructor stub
+		this.profilePic.setUrl(model.getUserProfilePicture());
+		this.userEmail.setText(model.getUserEmail());
+		this.userName.setText(model.getUserFullName());
+
 	}
 
-	public HasClickHandlers getConfirmButton(){
+
+	@Override
+	public HasClickHandlers getConfirmBtn()
+	{
 		return this.confirmButton;
 	}
-	
-	public HasClickHandlers getDenyButton(){
+
+
+	@Override
+	public HasClickHandlers getDenyBtn()
+	{
 		return this.denyButton;
 	}
 
-	@Override
-	public HasClickHandlers getRemoveBtn()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HasClickHandlers getViewBtn()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String getEmail()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.userEmail.getText();
 	}
+
 
 	@Override
 	public String getName()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.userName.getText();
 	}
+
+
+
+
+
 	
 //	private Label pendingUser;
 //	private Button confirmButton;

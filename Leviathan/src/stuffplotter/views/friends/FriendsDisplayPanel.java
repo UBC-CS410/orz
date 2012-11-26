@@ -12,6 +12,7 @@ import stuffplotter.views.util.ScrollDisplayPanel;
 public class FriendsDisplayPanel extends ScrollDisplayPanel
 {
 	List<FriendPanelView> friendViews;
+	List<PendingFriendPanel> pendingFriendViews;
 	
 	/**
 	 * Constructor for the FrinedsDisplayPanel/
@@ -66,8 +67,13 @@ public class FriendsDisplayPanel extends ScrollDisplayPanel
 		{
 			PendingFriendPanel friendPanel = new PendingFriendPanel(model);
 			this.addElement(friendPanel);
-			this.friendViews.add(friendPanel);
+			this.pendingFriendViews.add(friendPanel);
 		}
 		
+	}
+
+	public List<PendingFriendPanel> getPendingFriendPanels()
+	{
+		return this.pendingFriendViews;
 	}
 }
