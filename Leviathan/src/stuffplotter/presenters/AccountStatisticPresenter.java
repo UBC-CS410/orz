@@ -3,8 +3,10 @@ package stuffplotter.presenters;
 import stuffplotter.bindingcontracts.AccountStatisticModel;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -27,6 +29,20 @@ public class AccountStatisticPresenter implements Presenter
 		 * @return the AccountStatisticView as a widget.
 		 */
 		public Widget asWidget();
+
+		/**
+		 * Display the failed to retrieve information message.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void displayFailMessage();
+		
+		/**
+		 * Remove the failed to retrieve information message.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void removeFailMessage();
 	}
 	
 	private final ServiceRepository appServices;
@@ -52,6 +68,40 @@ public class AccountStatisticPresenter implements Presenter
 		this.eventBus = eventBus;
 		this.statisticsView = display;
 		this.appUser = appUser;
+		this.dataBindAccount();
+	}
+	
+	/**
+	 * Helper method to data bind the account to the view.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void dataBindAccount()
+	{
+		this.appServices.getStatsService().getStats(this.appUser.getUserEmail(),new AsyncCallback<AccountStatistic>()
+		{
+			@Override
+			public void onSuccess(AccountStatistic result)
+			{
+				statisticsView.setStatisticData(result);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				statisticsView.displayFailMessage();
+			}
+		});
+	}
+	
+	/**
+	 * Bind view components to handlers.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void bind()
+	{
+		
 	}
 	
 	@Override
