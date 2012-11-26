@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,6 +36,8 @@ import stuffplotter.views.events.EventView;
 public class EventsPagePresenter implements Presenter
 {
 	private List<Event> currentEvents;
+	private HandlerRegistration submitAvailabilities;
+	private HandlerRegistration finalizeTime;
 	
 	public interface EventsPageViewer
 	{
@@ -44,8 +47,8 @@ public class EventsPagePresenter implements Presenter
 		
 		public HasWidgets getEventViewerContainer();
 		public List<HasClickHandlers> getEventViewers();
-		public void showEventViewers();
-		public void showEventView();
+		public void removeSubmitAvailabilitiesButton();
+		public void showEventSelected(int row);
 		
 		public HasClickHandlers getAcceptButton();
 		public HasClickHandlers getDeclineButton();
@@ -146,18 +149,18 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onFailure(Throwable caught)
 					{
-						Window.alert("Failed to submit timeslots");
+						Window.alert("Failed to submit availabilities...");
 						
 					}
 
 					@Override
 					public void onSuccess(Void result)
 					{
-						eventsView.clearEventActions();
+						Window.alert("Submitted availabilities.");
 					}
 					
 				});
-				
+				eventsView.removeSubmitAvailabilitiesButton();
 			}
 		});
 		
@@ -189,32 +192,8 @@ public class EventsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
-					Event selectedEvent;
-					selectedEvent = currentEvents.get(eventsIndex);
-					
-					Presenter presenter = new EventPresenter(appServices,
-																 eventBus,
-																 new EventView(),
-																 appUser,
-																 selectedEvent);
-					
-					eventsView.showEventView();
-					presenter.go(eventsView.getEventViewerContainer());
-					
-					if(selectedEvent.getStatus() == Status.PROPOSED)
-					{
-						if(selectedEvent.getOwnerID() == appUser.getUserEmail())
-						{
-							eventsView.showFinalizeTimeButton();
-							eventsView.showSubmitAvailabilitiesButton(); //remove this later
-						}
-						else
-						{
-							eventsView.showSubmitAvailabilitiesButton();
-						}
-					}
-					
-					bindEventButtons(selectedEvent);
+					Event selectedEvent = currentEvents.get(eventsIndex);;
+					displayEvent(selectedEvent, eventsIndex);
 				}	
 			});
 		}
@@ -230,7 +209,11 @@ public class EventsPagePresenter implements Presenter
 		final Event selectedEvent = event;
 		final EventServiceAsync eventService = appServices.getEventService();
 		
-		this.eventsView.getSubmitAvailabilitiesButton().addClickHandler(new ClickHandler() {
+		if (submitAvailabilities != null) 
+		{
+			submitAvailabilities.removeHandler();
+		}
+		submitAvailabilities = this.eventsView.getSubmitAvailabilitiesButton().addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event)
@@ -246,7 +229,7 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onSuccess(List<Availability> result)
 					{
-						AvailabilitySubmitterDialogBox submitter = new AvailabilitySubmitterDialogBox(result, eventBus);
+						AvailabilitySubmitterDialogBox ignore = new AvailabilitySubmitterDialogBox(result, eventBus);
 					}
 
 				});	
@@ -288,8 +271,12 @@ public class EventsPagePresenter implements Presenter
 			{
 				currentEvents = result; //used for bindEventViewers
 				eventsView.initialize(currentEvents);
-				eventsView.showEventViewers();
+				eventsView.removeSubmitAvailabilitiesButton();
 				bindEventViewers();
+				if (currentEvents.size() > 0)
+				{
+					displayEvent(currentEvents.get(0), 0);
+				}
 			}
 		});
 	}
@@ -316,9 +303,49 @@ public class EventsPagePresenter implements Presenter
 			{
 				currentEvents = result; //used for bindEventViewers
 				eventsView.initialize(currentEvents);
-				eventsView.showEventViewers();
+				eventsView.removeSubmitAvailabilitiesButton();
 				bindEventViewers();
+				if (currentEvents.size() > 0)
+				{
+					displayEvent(currentEvents.get(0), 0);
+				}
 			}
 		});
+	}
+	
+	/**
+	 * Displays an event from the event roll
+	 * @pre true;
+	 * @post true;
+	 * @param event - the event to display
+	 * @param index - the row index of the event to display
+	 */
+	private void displayEvent(Event event, int index)
+	{
+		event = currentEvents.get(index);
+		
+		Presenter presenter = new EventPresenter(appServices,
+													 eventBus,
+													 new EventView(),
+													 appUser,
+													 event);
+		presenter.go(eventsView.getEventViewerContainer());
+		
+		eventsView.showEventSelected(index);
+		
+		if(event.getStatus() == Status.PROPOSED)
+		{
+			if(event.getOwnerID() == appUser.getUserEmail())
+			{
+				eventsView.showFinalizeTimeButton();
+				eventsView.showSubmitAvailabilitiesButton(); //remove this later
+			}
+			else
+			{
+				eventsView.showSubmitAvailabilitiesButton();
+			}
+		}
+		
+		bindEventButtons(event);
 	}
 }

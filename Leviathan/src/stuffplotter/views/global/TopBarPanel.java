@@ -43,12 +43,12 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 	private void initializeUI()
 	{		
 		notificationsLabel = new Anchor("Notifications (0)");
-		notificationsLabel.setWidth(String.valueOf(Window.getClientWidth() - 200) + "px");
 		notificationsLabel.setStyleName("topBarNotifications");
 		
 		popup = new UserNotificationsPopupPanel();
 		
 		this.add(notificationsLabel);
+		this.setCellWidth(notificationsLabel, String.valueOf(Window.getClientWidth() - 200) + "px");
 		
 		this.userNameDisplay = new Label();
 		Label separator = new Label("|");

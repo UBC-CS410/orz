@@ -124,6 +124,7 @@ public class EventPresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
+		container.clear();
 		container.add(eventView.asWidget());
 	}
 	
