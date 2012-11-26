@@ -1,9 +1,13 @@
 package stuffplotter.views.events;
 
+import java.util.Date;
+import java.util.List;
+
 import stuffplotter.presenters.EventCreationPresenter.CreateEventView;
 import stuffplotter.views.util.CloseClickHandler;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -177,5 +181,17 @@ public class EventCreationView extends DialogBox implements CreateEventView
 		}
 		
 		this.setAsNextButton();
+	}
+
+	@Override
+	public HasValueChangeHandlers<Date> getCalendar()
+	{
+		return this.eventPages.getCalendar();
+	}
+
+	@Override
+	public void populateTimeSheet(Date shownDate, List<Date> conflictDates)
+	{
+		this.eventPages.populateTimeSheet(shownDate, conflictDates);
 	}
 }

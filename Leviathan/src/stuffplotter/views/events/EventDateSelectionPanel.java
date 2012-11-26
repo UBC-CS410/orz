@@ -1,10 +1,8 @@
 package stuffplotter.views.events;
 
 import java.util.Date;
+import java.util.List;
 
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -18,6 +16,7 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 {
 	private TimeSheetPanel timeSheet;
 	private Label errorMessage;
+	private DatePicker calendar;
 	
 	/**
 	 * Constructor for EventDateSelectionPanel.
@@ -42,9 +41,8 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 		this.timeSheet = timeSheetPanel;
 		HorizontalPanel horPanel = new HorizontalPanel();
 		VerticalPanel vertPanel = new VerticalPanel();
-		DatePicker calendar = new DatePicker();
+		calendar = new DatePicker();
 		this.errorMessage = new Label();
-		this.initCalChangeHandler(calendar);
 		vertPanel.add(new Label("Click on the calendar to select dates for the event."));
 		vertPanel.add(calendar);
 		vertPanel.add(errorMessage);
@@ -53,25 +51,6 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 		this.add(horPanel);
 	}
 	
-	/**
-	 * Helper method to initialize the change handler for the calendar.
-	 * @pre calendar != null;
-	 * @post true;
-	 * @param calendar - the calendar to add the change handler to.
-	 * @param timeSheet - the time sheet to add selected dates to.
-	 */
-	private void initCalChangeHandler(DatePicker calendar)
-	{
-		calendar.addValueChangeHandler(new ValueChangeHandler<Date>()
-		{
-			@Override
-			public void onValueChange(ValueChangeEvent<Date> event)
-			{
-				timeSheet.addDay(event.getValue());
-			}
-		});
-	}
-
 	/**
 	 * Remove the error message on the EventDateSelectionPanel.
 	 * @pre true;
@@ -112,6 +91,29 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	public void accept(EventCreationPageVisitor eventVisitor)
 	{
 		eventVisitor.visit(this);
+	}
+
+	/**
+	 * Retrieve the calendar from this view.
+	 * @pre true;
+	 * @post true;
+	 */
+	public DatePicker getCalendar()
+	{
+		return this.calendar;
+	}
+
+	/**
+	 * Populate the time sheet in this panel with the given date and mark any conflicting
+	 * time slots.
+	 * @pre shownDate != null && conflictDates != null;
+	 * @post true;
+	 * @param shownDate - the day to display on the UI.
+	 * @param conflictDates - the list of Date that already have activities going on.
+	 */
+	public void populateTimeSheet(Date shownDate, List<Date> conflictDates)
+	{
+		this.timeSheet.addDay(shownDate, conflictDates);
 	}
 }
 

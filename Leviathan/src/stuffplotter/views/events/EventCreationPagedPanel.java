@@ -1,8 +1,12 @@
 package stuffplotter.views.events;
 
 
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 /**
  * Class for paging in the EventCreationDialogBox class.
@@ -10,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class EventCreationPagedPanel extends DeckPanel
 {
 	private int currentPage = 0;
+	private EventDateSelectionPanel page2Panel;
 	
 	/**
 	 * Constructor for the EventCreationPager.
@@ -38,7 +43,7 @@ public class EventCreationPagedPanel extends DeckPanel
 		
 		// initialize Page 2
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		EventDateSelectionPanel page2Panel = new EventDateSelectionPanel(timeSheet);
+		page2Panel = new EventDateSelectionPanel(timeSheet);
 
 		// initialize Page 3
 		FriendSelectionPanel page3Panel = new FriendSelectionPanel();
@@ -127,5 +132,28 @@ public class EventCreationPagedPanel extends DeckPanel
 	public boolean hasPreviousPage()
 	{
 		return currentPage > 0;
+	}
+
+	/**
+	 * Retrieve the calendar from the paged display.
+	 * @pre true;
+	 * @post true;
+	 */
+	public DatePicker getCalendar()
+	{
+		return this.page2Panel.getCalendar();
+	}
+	
+	/**
+	 * Populate the time sheet in this panel with the given date and mark any conflicting
+	 * time slots.
+	 * @pre shownDate != null && conflictDates != null;
+	 * @post true;
+	 * @param shownDate - the day to display on the UI.
+	 * @param conflictDates - the list of Date that already have activities going on.
+	 */
+	public void populateTimeSheet(Date shownDate, List<Date> conflictDates)
+	{
+		this.page2Panel.populateTimeSheet(shownDate, conflictDates);
 	}
 }

@@ -23,14 +23,16 @@ public class MonthPanel extends VerticalPanel
 	
 	/**
 	 * Constructor for MonthPanel for when given a day to add.
+	 * @param conflictDates 
 	 * @pre dates != null;
 	 * @post this.isVisible() == true;
 	 * @param dates - the day to add to the MonthPanel.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public MonthPanel(Date date)
+	public MonthPanel(Date date, List<Date> conflictDates)
 	{
 		super();
-		this.initializeUI(date);
+		this.initializeUI(date, conflictDates);
 	}
 	
 	/**
@@ -38,11 +40,12 @@ public class MonthPanel extends VerticalPanel
 	 * @pre dates != null && !dates.isEmpty();
 	 * @post this.isVisible() == true;
 	 * @param dates - list of Dates containing the days to add.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public MonthPanel(List<Date> dates)
+	public MonthPanel(List<Date> dates, List<Date> conflictDates)
 	{
 		super();
-		this.initializeUI(dates);
+		this.initializeUI(dates, conflictDates);
 	}
 	
 	/**
@@ -50,8 +53,9 @@ public class MonthPanel extends VerticalPanel
 	 * @pre date != null;
 	 * @post true;
 	 * @param date - the Date containing the day to add.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	private void initializeUI(Date date)
+	private void initializeUI(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
 		this.month = splitter.getMonthAsString();
@@ -59,7 +63,7 @@ public class MonthPanel extends VerticalPanel
 		this.add(new Label(this.month + " " + this.year));
 		
 		this.daysHolder = new HorizontalPanel();
-		this.daysHolder.add(new DaySelections(date));
+		this.daysHolder.add(new DaySelections(date, conflictDates));
 		
 		this.add(this.daysHolder);		
 	}
@@ -69,8 +73,9 @@ public class MonthPanel extends VerticalPanel
 	 * @pre dates != null && !dates.isEmpty();
 	 * @post true;
 	 * @param dates - list of Dates containing the days to add.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	private void initializeUI(List<Date> dates)
+	private void initializeUI(List<Date> dates, List<Date> conflictDates)
 	{	
 		if(!dates.isEmpty())
 		{
@@ -99,7 +104,7 @@ public class MonthPanel extends VerticalPanel
 		this.daysHolder = new HorizontalPanel();
 		for (List<Date> startHours : hashMap.values())
 		{
-			this.daysHolder.add(new DaySelections(startHours));
+			this.daysHolder.add(new DaySelections(startHours, conflictDates));
 		}
 		this.add(this.daysHolder);
 	}
@@ -133,8 +138,9 @@ public class MonthPanel extends VerticalPanel
 	 * @pre dayOfMonth != null;
 	 * @post true;
 	 * @param date - the Date containing the day to add.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public void addDay(Date date)
+	public void addDay(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
 		int dayOfMonth = splitter.getDay();
@@ -160,7 +166,7 @@ public class MonthPanel extends VerticalPanel
 		
 		if(!dayFound)
 		{
-			this.daysHolder.add(new DaySelections(date));
+			this.daysHolder.add(new DaySelections(date, conflictDates));
 		}
 	}
 	
@@ -169,10 +175,11 @@ public class MonthPanel extends VerticalPanel
 	 * @pre dates != null && !dates.isEmtpy();
 	 * @post true;
 	 * @param dates - the list of Dates containing the time slots to add.
+	 * @param conflictDates - the list of time slots that are already taken.
 	 */
-	public void addDay(List<Date> dates)
+	public void addDay(List<Date> dates, List<Date> conflictDates)
 	{
-		this.daysHolder.add(new DaySelections(dates));
+		this.daysHolder.add(new DaySelections(dates, conflictDates));
 	}
 	
 	/**

@@ -112,7 +112,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 		}
 		
 		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		timeSheet.addDays(times);
+		timeSheet.addDays(times, times /*change this side*/); // TO COMPLETE (FEED GOOGLE CALENDAR VALUES FROM PRESENTER)
 		
 		horPanel.add(timeSheet);
 		vertPanel.add(horPanel);
