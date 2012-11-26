@@ -276,10 +276,6 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		tempStats.setNumberOfFriends(temp.getUserFriends().size());
 		newFriendStats.setNumberOfFriends(temp.getUserFriends().size());
 		
-		tempStats.accept(new LevelUpdater().madeFriend());
-		newFriendStats.accept(new LevelUpdater().madeFriend());
-		tempStats.accept(new AchievementChecker());
-		
 		dbstore.store(tempStats);
 		dbstore.store(newFriendStats);
 	}

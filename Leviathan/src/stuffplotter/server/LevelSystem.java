@@ -1,5 +1,10 @@
 package stuffplotter.server;
 
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import stuffplotter.client.services.AccountStatsService;
+import stuffplotter.client.services.AccountStatsServiceAsync;
 import stuffplotter.shared.AccountStatistic;
 
 /**
@@ -21,6 +26,26 @@ public class LevelSystem {
 		this.user = user;
 		this.currentExp = user.getUserExperience();
 		this.currentLevel = user.getUserLevel();
+	}
+
+	public void saveStats()
+	{
+		AccountStatsServiceAsync statsService = GWT.create(AccountStatsService.class);
+		statsService.save(this.user, new AsyncCallback<Void>(){
+
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Void result)
+			{
+				// TODO Auto-generated method stub
+				
+			}});
 	}
 	
 	/**

@@ -50,7 +50,8 @@ public class PendingFriendPanel extends HorizontalPanel implements PendingFriend
 	
 	private void dataBind(AccountModel model)
 	{
-		this.profilePic.setUrl(model.getUserProfilePicture());
+		if(model.getUserProfilePicture()!=null)
+			this.profilePic.setUrl(model.getUserProfilePicture());
 		this.userEmail.setText(model.getUserEmail());
 		this.userName.setText(model.getUserFullName());
 

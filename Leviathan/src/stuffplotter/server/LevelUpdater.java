@@ -38,6 +38,8 @@ public class LevelUpdater implements RecordVisitor
 		{
 			leveler.addExperience(15);
 		}
+		
+		leveler.saveStats();
 	}
 
 	@Override

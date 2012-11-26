@@ -22,4 +22,5 @@ public interface AccountStatsService extends RemoteService
 	 * @param astat
 	 */
 	void save(AccountStatistic astat);
+
 }

@@ -166,6 +166,6 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	@Override
 	public List<PendingFriendPanel> getPendingFriendPanels()
 	{
-		return this.friendDisplay.getPendingFriendPanels();
+		return this.pendingFriendDisplay.getPendingFriendPanels();
 	}
 }

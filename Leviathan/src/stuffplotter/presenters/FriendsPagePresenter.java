@@ -20,7 +20,10 @@ import com.google.gwt.user.client.ui.Widget;
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.server.AchievementChecker;
+import stuffplotter.server.LevelUpdater;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.views.friends.FriendPanel;
@@ -85,6 +88,7 @@ public class FriendsPagePresenter implements Presenter
 	}
 
 	private Account appUser;
+	private AccountStatistic appStats;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final FriendsView friendsView;
@@ -115,16 +119,36 @@ public class FriendsPagePresenter implements Presenter
 
 	private void dataBindFriends()
 	{
+		this.appServices.getStatsService().getStats(this.appUser.getUserEmail(),new AsyncCallback<AccountStatistic>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(AccountStatistic result)
+					{
+						appStats = result;
+					}
+			
+				});
+		
+		
+		
 		final List<String> userFriends = appUser.getUserFriends();
 		final List<String> pendingUsers = appUser.getPendingFriends();
-
+		
 		AccountServiceAsync accountService = appServices.getAccountService();
 		accountService.getAccounts(userFriends, new AsyncCallback<Map<String, Account>>(){
 
 			@Override
 			public void onFailure(Throwable caught)
 			{
-
+				Window.alert("Failed to get Friend User Accounts");
 
 			}
 
@@ -139,6 +163,7 @@ public class FriendsPagePresenter implements Presenter
 
 				Collections.sort(userAccounts, new Account());
 				friendsView.setFriendData(userAccounts);
+				bindFriendPanels();
 
 			}});
 		accountService.getAccounts(pendingUsers, new AsyncCallback<Map<String, Account>>(){
@@ -146,7 +171,7 @@ public class FriendsPagePresenter implements Presenter
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				// TODO Auto-generated method stub
+				Window.alert("Failed to get Pending User Accounts");
 
 			}
 
@@ -154,13 +179,14 @@ public class FriendsPagePresenter implements Presenter
 			public void onSuccess(Map<String, Account> result)
 			{
 				List<AccountModel> userAccounts = new ArrayList<AccountModel>();
-				for(String friend :userFriends)
+				for(String friend :pendingUsers)
 				{
 					userAccounts.add(result.get(friend));
 				}
 
 				Collections.sort(userAccounts, new Account());
 				friendsView.setPendingData(userAccounts);
+				bindPendingFriendPanels();
 			}
 
 		});
@@ -209,6 +235,7 @@ public class FriendsPagePresenter implements Presenter
 						@Override
 						public void onFailure(Throwable caught)
 						{
+							Window.alert("Something went wrong when adding a friend. Please contact support.");
 						}
 
 						@Override
@@ -232,66 +259,14 @@ public class FriendsPagePresenter implements Presenter
 					friendsView.clearFriendBoxText();
 			}});
 
-		List<PendingFriendPanel> pendingFriendsPanels = friendsView.getPendingFriendPanels();
-		for(PendingFriendPanel panel: pendingFriendsPanels)
-		{
-			final String friendEmail = panel.getEmail();
-			final String friendName = panel.getName();
-			panel.getConfirmBtn().addClickHandler(new ClickHandler(){
-
-				@Override
-				public void onClick(ClickEvent event)
-				{
-					AccountServiceAsync accountService = appServices.getAccountService();
-					accountService.confirmFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
-
-						@Override
-						public void onFailure(Throwable caught)
-						{
-							Window.alert("Friend was not successfully added...");
-						}
-
-						@Override
-						public void onSuccess(Void result)
-						{
-							Window.alert(friendName+" successfully added!!");
+		
 
 
-						}
 
-					});
+	}
 
-					
-				}});
-			panel.getDenyBtn().addClickHandler(new ClickHandler(){
-
-				@Override
-				public void onClick(ClickEvent event)
-				{
-					AccountServiceAsync accountService = appServices.getAccountService();
-					if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
-					{
-						accountService.declineFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
-
-							@Override
-							public void onFailure(Throwable caught)
-							{
-
-
-							}
-
-							@Override
-							public void onSuccess(Void result)
-							{
-
-
-							}
-
-						});
-					}
-					
-				}});
-		}
+	private void bindFriendPanels()
+	{
 		List<FriendPanelView> friendsPanels = friendsView.getFriendPanels();
 		for(FriendPanelView panel: friendsPanels)
 		{
@@ -316,7 +291,7 @@ public class FriendsPagePresenter implements Presenter
 							@Override
 							public void onSuccess(Void result)
 							{
-								Window.alert(friendName+" has successfully been removed.");
+								
 							}
 
 						});
@@ -337,8 +312,92 @@ public class FriendsPagePresenter implements Presenter
 
 			});
 		}
+	}
+
+	private void bindPendingFriendPanels()
+	{
+		List<PendingFriendPanel> pendingFriendsPanels = friendsView.getPendingFriendPanels();
+		for(PendingFriendPanel panel: pendingFriendsPanels)
+		{
+			final String friendEmail = panel.getEmail();
+			final String friendName = panel.getName();
+			panel.getConfirmBtn().addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					AccountServiceAsync accountService = appServices.getAccountService();
+					accountService.confirmFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
+
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							Window.alert("Friend was not successfully added...");
+						}
+
+						@Override
+						public void onSuccess(Void result)
+						{
+							appStats.incrementFriends();
+							Window.alert(friendName+" successfully added to your friends list!!");
+							appStats.accept(new LevelUpdater().madeFriend());
+							appStats.accept(new AchievementChecker());
+							
+							appServices.getStatsService().getStats(friendEmail,new AsyncCallback<AccountStatistic>()
+									{
+
+										@Override
+										public void onFailure(Throwable caught)
+										{
+											// TODO Auto-generated method stub
+											
+										}
+
+										@Override
+										public void onSuccess(AccountStatistic result)
+										{
+											result.accept(new LevelUpdater().madeFriend());
+										}
+								
+									});
+							
 
 
+						}
+
+					});
+
+					
+				}});
+			panel.getDenyBtn().addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					AccountServiceAsync accountService = appServices.getAccountService();
+					if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
+					{
+						accountService.declineFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
+
+							@Override
+							public void onFailure(Throwable caught)
+							{
+								Window.alert("Something went wrong while denying a friend request. Please contact support.");
+
+							}
+
+							@Override
+							public void onSuccess(Void result)
+							{
+
+
+							}
+
+						});
+					}
+					
+				}});
+		}
 	}
 
 

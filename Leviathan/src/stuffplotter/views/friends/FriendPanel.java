@@ -42,7 +42,8 @@ public class FriendPanel extends HorizontalPanel implements FriendPanelView
 	 */
 	private void dataBind(AccountModel model)
 	{
-		this.profile.setUrl(model.getUserProfilePicture());
+		if(model.getUserProfilePicture()!=null)
+			this.profile.setUrl(model.getUserProfilePicture());
 		this.userEmail.setText(model.getUserEmail());
 		this.userName.setText(model.getUserFullName());
 		this.userTitle.setText(model.getUserTitle());
