@@ -38,10 +38,43 @@ public class FriendsPagePresenter implements Presenter
 {
 	public interface FriendsView
 	{
+		/**
+		 * Retrieves the get Add Friend Button
+		 * @pre
+		 * @post
+		 * @return AddFriendButton
+		 */
 		public HasClickHandlers getAddFriendBtn();
+		
+		/**
+		 * Retrieves the get serach friends button
+		 * @pre
+		 * @post
+		 * @return SearchFriendBtn
+		 */
 		public HasClickHandlers getSearchFriendsBtn();
+		
+		/**
+		 * Retrieves the textbox object
+		 * @pre
+		 * @post
+		 * @return the textbox object
+		 */
 		public HasAllFocusHandlers getFriendTextBox();
+		
+		/**
+		 * Gets the string in the friend text box
+		 * @pre
+		 * @post
+		 * @return String written in the textbox field
+		 */
 		public String getFriendBoxText();
+		
+		/**
+		 * Clears the Add Friend Text box
+		 * @pre
+		 * @post
+		 */
 		public void clearFriendBoxText();
 
 
@@ -92,6 +125,8 @@ public class FriendsPagePresenter implements Presenter
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final FriendsView friendsView;
+	private List<AccountModel> pendingFriends;
+	private List<AccountModel> friends;
 
 	/**
 	 * Constructor for the FriendsPagePresenter.
@@ -107,6 +142,8 @@ public class FriendsPagePresenter implements Presenter
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.friendsView = display;
+		this.pendingFriends = new ArrayList<AccountModel>();
+		this.friends = new ArrayList<AccountModel>();
 		this.dataBindFriends();
 
 	}
@@ -125,7 +162,6 @@ public class FriendsPagePresenter implements Presenter
 					@Override
 					public void onFailure(Throwable caught)
 					{
-						// TODO Auto-generated method stub
 						
 					}
 
@@ -162,7 +198,9 @@ public class FriendsPagePresenter implements Presenter
 				}
 
 				Collections.sort(userAccounts, new Account());
-				friendsView.setFriendData(userAccounts);
+				friends = userAccounts;
+				friendsView.setFriendData(friends);
+				
 				bindFriendPanels();
 
 			}});
@@ -185,7 +223,8 @@ public class FriendsPagePresenter implements Presenter
 				}
 
 				Collections.sort(userAccounts, new Account());
-				friendsView.setPendingData(userAccounts);
+				pendingFriends = userAccounts;
+				friendsView.setPendingData(pendingFriends);
 				bindPendingFriendPanels();
 			}
 
@@ -207,8 +246,8 @@ public class FriendsPagePresenter implements Presenter
 			@Override
 			public void onRefreshPage(RefreshPageEvent event)
 			{
-				// TODO Auto-generated method stub
-				// place code here to refresh page each time a fresh event is sent
+				friendsView.setPendingData(pendingFriends);
+				friendsView.setFriendData(friends);
 			}	
 		});
 
@@ -243,6 +282,7 @@ public class FriendsPagePresenter implements Presenter
 						{
 							Window.alert("A notification has been sent to "+friendsView.getFriendBoxText()+"! Please await their confirmation. =D");
 							friendsView.clearFriendBoxText();
+							eventBus.fireEvent(new RefreshPageEvent());
 						}
 					});
 				}
@@ -258,13 +298,13 @@ public class FriendsPagePresenter implements Presenter
 				if(friendsView.getFriendBoxText().contains(" "))
 					friendsView.clearFriendBoxText();
 			}});
-
-		
-
-
-
 	}
 
+	/**
+	 * Binds the friends View and Remove buttons
+	 * @pre
+	 * @post
+	 */
 	private void bindFriendPanels()
 	{
 		List<FriendPanelView> friendsPanels = friendsView.getFriendPanels();
@@ -277,7 +317,7 @@ public class FriendsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
-					if(Window.confirm("Are you sure you want to remove this person from your Friends List (Don't worry, we won't tell them)?"))
+					if(Window.confirm("Are you sure you want to remove "+friendName+" from your Friends List (Don't worry, we won't tell them)?"))
 					{
 						AccountServiceAsync accountService = appServices.getAccountService();
 						accountService.removeFriend(appUser, friendEmail , new AsyncCallback<Void>(){
@@ -291,10 +331,20 @@ public class FriendsPagePresenter implements Presenter
 							@Override
 							public void onSuccess(Void result)
 							{
-								
+								for(AccountModel acc: friends)
+								{
+									if(acc.getUserEmail().equals(friendEmail))
+										{
+											friends.remove(acc);
+											break;
+										}
+										
+								}
+								eventBus.fireEvent(new RefreshPageEvent());
 							}
 
 						});
+
 					}
 
 
@@ -313,7 +363,11 @@ public class FriendsPagePresenter implements Presenter
 			});
 		}
 	}
-
+	/**
+	 * Binds the Buttons for the Pending Friends
+	 * @pre
+	 * @post
+	 */
 	private void bindPendingFriendPanels()
 	{
 		List<PendingFriendPanel> pendingFriendsPanels = friendsView.getPendingFriendPanels();
@@ -340,6 +394,19 @@ public class FriendsPagePresenter implements Presenter
 						{
 							appStats.incrementFriends();
 							Window.alert(friendName+" successfully added to your friends list!!");
+							
+							for(AccountModel acc: pendingFriends)
+							{
+								if(acc.getUserEmail().equals(friendEmail))
+									{
+										pendingFriends.remove(acc);
+										friends.add(acc);
+										Collections.sort(friends, new Account());
+										break;
+									}
+									
+							}
+							eventBus.fireEvent(new RefreshPageEvent());
 							appStats.accept(new LevelUpdater().madeFriend());
 							appStats.accept(new AchievementChecker());
 							
@@ -349,7 +416,6 @@ public class FriendsPagePresenter implements Presenter
 										@Override
 										public void onFailure(Throwable caught)
 										{
-											// TODO Auto-generated method stub
 											
 										}
 
@@ -389,8 +455,16 @@ public class FriendsPagePresenter implements Presenter
 							@Override
 							public void onSuccess(Void result)
 							{
-
-
+								for(AccountModel acc: pendingFriends)
+								{
+									if(acc.getUserEmail().equals(friendEmail))
+										{
+											pendingFriends.remove(acc);
+											break;
+										}
+										
+								}
+								eventBus.fireEvent(new RefreshPageEvent());
 							}
 
 						});

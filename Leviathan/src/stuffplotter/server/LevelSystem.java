@@ -80,7 +80,9 @@ public class LevelSystem {
 				user.setUserExperience(MAXXP);
 			}
 			else
+			{
 				user.setUserLevel(currentLevel);
+			}
 			user.accept(new AchievementChecker());
 
 	}
