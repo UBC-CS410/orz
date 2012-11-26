@@ -21,9 +21,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class EventView extends VerticalPanel implements EventViewer
 {
-	private final Button commentButton;
+	private final Anchor commentButton;
 	private final TextBox commentTextBox;
-	private final VerticalPanel commentPanel;
+	private final VerticalPanel commentLabels;
 	
 	/**
 	 * Constructor for EventView.
@@ -32,9 +32,9 @@ public class EventView extends VerticalPanel implements EventViewer
 	 */
 	public EventView() 
 	{
-		this.commentButton = new Button("Submit comment");
+		this.commentButton = new Anchor("Make a comment");
 		this.commentTextBox = new TextBox();
-		this.commentPanel = new VerticalPanel();
+		this.commentLabels = new VerticalPanel();
 	}
 	
 	/**
@@ -107,8 +107,8 @@ public class EventView extends VerticalPanel implements EventViewer
 		hp.add(new Label(comment.getUsername()));
 		hp.add(new Label(" @ "));
 		hp.add(new Label(comment.getTime().toString()));
-		this.commentPanel.add(hp);
-		this.commentPanel.add(new Label(comment.getContent()));
+		this.commentLabels.add(hp);
+		this.commentLabels.add(new Label(comment.getContent()));
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class EventView extends VerticalPanel implements EventViewer
 	@Override
 	public void displayComments(List<Comment> comments)
 	{
-		this.commentPanel.clear();
+		this.commentLabels.clear();
 		for (int i = 0; i < comments.size(); i++)
 		{
 			updateComments(comments.get(i));
@@ -135,36 +135,45 @@ public class EventView extends VerticalPanel implements EventViewer
 	@Override
 	public void initialize(Event event)
 	{
-		String title = event.getName();
-		List<String> people = event.getAttendees();
-		Date time = event.getDate();
-		String timeToString = "";
-		String place = event.getLocation();
-		String details = event.getDescription();
+		Label nameLabel = new Label(event.getName());
+		nameLabel.setStyleName("eventListingLabel");
 		
-		this.add(new Anchor(title));
-		if (time == null)
+		Label scheduleLabel = new Label();
+		if(event.getDate() == null)
 		{
-			//TODO: Make this red
-			timeToString = "Time unavailable. Please submit your availabilities.";
+			scheduleLabel.setText("Unscheduled");
+			scheduleLabel.setStyleName("eventUnscheduledLabel");
 		}
-		else 
+		else
 		{
-			timeToString = time.toString();
+			scheduleLabel.setText(event.getDate().toString());
+			scheduleLabel.setStyleName("eventScheduledLabel");
 		}
-		this.add(new Anchor(timeToString));
-		this.add(new Anchor(place));
-		this.add(new Anchor(details));
-		
-		this.add(this.commentButton);
+
+		Label ownerLabel = new Label("Host: " + event.getOwner());
+		Label costLabel = new Label("Cost: " + event.getCost());
+		Label locationLabel = new Label("Location: " + event.getLocation());
+		Label descriptionLabel = new Label("Description: " + event.getDescription());
 		
 		this.commentTextBox.setVisible(false);
 		this.add(this.commentTextBox);
 		
-		ScrollPanel scrollPanel = new ScrollPanel();
-		scrollPanel.setHeight("480px");
-		scrollPanel.add(this.commentPanel);
-		this.add(scrollPanel);
+		ScrollPanel commentPanel = new ScrollPanel();
+		commentPanel.setHeight("480px");
+		commentPanel.add(this.commentLabels);
+		
+		this.add(nameLabel);
+		this.add(scheduleLabel);
+		this.add(ownerLabel);
+		this.add(costLabel);
+		this.add(locationLabel);
+		this.add(descriptionLabel);
+		
+		this.add(this.commentButton);
+	
+		this.add(commentPanel);
+		
+		this.setStyleName("eventPage");
 	}
 	
 }

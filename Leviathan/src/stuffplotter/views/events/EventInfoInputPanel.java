@@ -3,9 +3,12 @@ package stuffplotter.views.events;
 import stuffplotter.client.MapCoordinate;
 import stuffplotter.shared.Event.Frame;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -23,7 +26,8 @@ public class EventInfoInputPanel extends VerticalPanel
 	private TextBox cost;
 	private RadioButton singleDay;
 	private RadioButton multiDay;
-	private TextBox duration;
+	private ListBox duration;
+	private Label timeSuffix;
 	private TextArea description;
 	private Label errorMessage;
 	
@@ -71,13 +75,19 @@ public class EventInfoInputPanel extends VerticalPanel
 		this.singleDay.setValue(true);
 		this.multiDay = new RadioButton("eventframe", "Multi-Day");
 		HorizontalPanel radioBtnHolder = new HorizontalPanel();
+		this.setupSwitcher();
 		radioBtnHolder.add(this.singleDay);
 		radioBtnHolder.add(this.multiDay);
 		this.add(radioBtnHolder);
 		
+		HorizontalPanel listBoxHolder = new HorizontalPanel();
 		this.add(new Label("Duration:"));
-		this.duration = new TextBox();
-		this.add(this.duration);
+		this.duration = new ListBox();
+		this.timeSuffix = new Label();
+		this.setHoursDropdown();
+		listBoxHolder.add(duration);
+		listBoxHolder.add(timeSuffix);
+		this.add(listBoxHolder);
 		
 		this.add(new Label("Description"));
 		this.description = new TextArea();
@@ -85,6 +95,70 @@ public class EventInfoInputPanel extends VerticalPanel
 		
 		this.errorMessage = new Label();
 		this.add(errorMessage);
+	}
+	
+	/**
+	 * Helper method to setup switching of the display when the frame is selected.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void setupSwitcher()
+	{
+		this.singleDay.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				setHoursDropdown();
+			}
+		});
+		
+		this.multiDay.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				setDaysDropdown();
+			}
+		});
+	}
+	
+	/**
+	 * Helper method to set the drop down list to the hours values.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void setHoursDropdown()
+	{
+		this.duration.clear();
+		
+		// for loop to generate values from 1 - 24
+		for(int i = 0; i < 24; i++)
+		{
+			int value = i + 1;
+			this.duration.addItem(String.valueOf(value));
+		}
+		
+		this.timeSuffix.setText("Hour(s)");
+	}
+
+	/**
+	 * Helper method to set the drop down list to the days values.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void setDaysDropdown()
+	{
+		this.duration.clear();
+		
+		// for loop to generate values from 1 - 31
+		for(int i = 0; i < 31; i++)
+		{
+			int value = i + 1;
+			this.duration.addItem(String.valueOf(value));
+		}
+		
+		this.timeSuffix.setText("Day(s)");
 	}
 	
 	/**
@@ -235,7 +309,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public String getDuration()
 	{
-		return this.duration.getText().trim();
+		return this.duration.getValue(this.duration.getSelectedIndex());
 	}
 
 	/**
