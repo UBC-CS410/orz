@@ -104,6 +104,26 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	}
 	
 	/**
+	 * Increment the number of Friends a user has.
+	 * @pre true;
+	 * @post this.numberOfParticipatedEvents == @pre.this.numberOfParticipatedEvents.
+	 */
+	public void incrementFriends()
+	{
+		int friends = this.numberOfFriends;
+		friends++;
+		this.numberOfFriends = friends;
+	}
+	
+	public void decrementFriends()
+	{
+		int friends = this.numberOfFriends;
+		friends--;
+		this.numberOfFriends = friends;
+		
+	}
+	
+	/**
 	 * Retrieve the email associated with the AccountStatistic.
 	 * @pre true;
 	 * @post true;
@@ -310,4 +330,6 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	 * Serial version for the AccountStatistic.
 	 */
 	private static final long serialVersionUID = 8871578746223259137L;
+
+
 }

@@ -17,6 +17,7 @@ import org.codehaus.jackson.JsonToken;
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.GoogleAPIException;
 import stuffplotter.shared.FriendNotification;
 import stuffplotter.shared.FriendNotification.FriendNotificationType;
@@ -268,6 +269,15 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		
 		dbstore.store(temp);
 		dbstore.store(newFriend);
+		
+		AccountStatistic tempStats = dbstore.fetchAccountStats(temp.getUserEmail());
+		AccountStatistic newFriendStats = dbstore.fetchAccountStats(newFriend.getUserEmail());
+		
+		tempStats.setNumberOfFriends(temp.getUserFriends().size());
+		newFriendStats.setNumberOfFriends(temp.getUserFriends().size());
+		
+		dbstore.store(tempStats);
+		dbstore.store(newFriendStats);
 	}
 
 	@Override
@@ -279,6 +289,15 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		newFriend.getUserFriends().remove(acc.getUserEmail());
 		dbstore.store(temp);
 		dbstore.store(newFriend);	
+		
+		AccountStatistic tempStats = dbstore.fetchAccountStats(temp.getUserEmail());
+		AccountStatistic newFriendStats = dbstore.fetchAccountStats(newFriend.getUserEmail());
+		
+		tempStats.setNumberOfFriends(temp.getUserFriends().size());
+		newFriendStats.setNumberOfFriends(temp.getUserFriends().size());
+		
+		dbstore.store(tempStats);
+		dbstore.store(newFriendStats);
 	}
 
 	@Override

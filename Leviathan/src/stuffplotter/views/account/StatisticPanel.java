@@ -39,7 +39,7 @@ public class StatisticPanel extends VerticalPanel implements AccountStatisticVie
 	{
 		this.userLevel = new InfoPanel("Level", "");
 		this.userExperience = new InfoPanel("Experience", "");
-		this.numOfLogins = new InfoPanel("Number of logins", "");
+		this.numOfLogins = new InfoPanel("Number of Page Views", "");
 		this.numOfHostedEvents = new InfoPanel("Number of hosted events", "");
 		this.numOfParticpatedEvents = new InfoPanel("Number of participated events", "");
 		this.numOfFriends = new InfoPanel("Number of friends", "");

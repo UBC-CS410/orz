@@ -30,7 +30,7 @@ public interface AccountModel
 	 * @post true;
 	 * @return the user's age.
 	 */
-	public int getUserAge();
+	public String getUserAge();
 	
 	/**
 	 * Retrieve the user's phone number.

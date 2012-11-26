@@ -28,7 +28,7 @@ public class Account implements Serializable, AccountModel
 	/* Basic information */
 	@Id
 	private String userEmail;
-	private int userAge;
+	private String userAge;
 	private String userPhone;
 	
 	/* Google information */
@@ -58,6 +58,7 @@ public class Account implements Serializable, AccountModel
 		this.userCurrentEvents = new ArrayList<Long>();
 		this.userPastEvents = new ArrayList<Long>();
 		this.userNotifications = new ArrayList<Long>();
+		this.userAge = "";
 	}
 
 	/**
@@ -75,6 +76,7 @@ public class Account implements Serializable, AccountModel
 		this.userCurrentEvents = new ArrayList<Long>();
 		this.userPastEvents = new ArrayList<Long>();
 		this.userNotifications = new ArrayList<Long>();
+		this.userAge = "--";
 		this.userTitle = "Newbie";
 	}
 
@@ -150,7 +152,7 @@ public class Account implements Serializable, AccountModel
 	 * @post true;
 	 * @return the age of the user.
 	 */
-	public int getUserAge() 
+	public String getUserAge() 
 	{
 		return this.userAge;
 	}
@@ -161,7 +163,7 @@ public class Account implements Serializable, AccountModel
 	 * @post this.userAge == userAge;
 	 * @param userAge - the age of the user to set.
 	 */
-	public void setUserAge(int userAge)
+	public void setUserAge(String userAge)
 	{
 		this.userAge = userAge;
 	}
@@ -404,5 +406,11 @@ public class Account implements Serializable, AccountModel
 	public String getUserTitle()
 	{
 		return this.userTitle;
+	}
+
+	public void setTitle(String title)
+	{
+		this.userTitle = title;
+		
 	}
 }
