@@ -3,6 +3,7 @@ package stuffplotter.client.services;
 import java.util.Date;
 import java.util.List;
 
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
@@ -12,8 +13,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface EventServiceAsync
 {	
 	void createEvent(Event newEvent, List<Date> timeSlots, AsyncCallback<Event> callback);
-	void retrieveEvent(Long eventId, AsyncCallback<Event> callback);
-	void retrieveEvents(List<Long> eventIds, AsyncCallback<List<Event>> callback);
+	void retrieveEvent(Account account, Long eventId, AsyncCallback<Event> callback);
+	void retrieveEvents(Account account, List<Long> eventIds, AsyncCallback<List<Event>> callback);
 	void updateEvent(Event modifiedEvent, AsyncCallback<Void> callback);
 	void updateScheduler(List<Long> availabilityIds, AsyncCallback<Void> callback);
 	void retrieveAvailabilities(Long pSchedulerId, AsyncCallback<List<Availability>> callback);

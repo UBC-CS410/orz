@@ -297,7 +297,7 @@ public class EventsPagePresenter implements Presenter
 	private void fetchCurrentEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getCurrentEvents(), new AsyncCallback<List<Event>>()
+		eventService.retrieveEvents(appUser, appUser.getCurrentEvents(), new AsyncCallback<List<Event>>()
 		{
 			@Override
 			public void onFailure(Throwable caught)
@@ -333,7 +333,7 @@ public class EventsPagePresenter implements Presenter
 	private void fetchPastEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getPastEvents(), new AsyncCallback<List<Event>>()
+		eventService.retrieveEvents(appUser, appUser.getPastEvents(), new AsyncCallback<List<Event>>()
 		{
 			@Override
 			public void onFailure(Throwable caught)

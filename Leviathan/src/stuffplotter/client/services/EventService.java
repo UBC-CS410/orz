@@ -3,6 +3,7 @@ package stuffplotter.client.services;
 import java.util.Date;
 import java.util.List;
 
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
@@ -14,8 +15,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface EventService extends RemoteService
 {
 	Event createEvent(Event newEvent, List<Date> timeSlots);
-	Event retrieveEvent(Long eventId);
-	List<Event> retrieveEvents(List<Long> eventIds);
+	Event retrieveEvent(Account account, Long eventId);
+	List<Event> retrieveEvents(Account account, List<Long> eventIds);
 	void updateEvent(Event modifiedEvent);
 	
 	void updateScheduler(List<Long> availabilityIds);
