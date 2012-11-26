@@ -17,7 +17,7 @@ import org.codehaus.jackson.JsonToken;
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.AuthenticationException;
+import stuffplotter.shared.GoogleAPIException;
 import stuffplotter.shared.FriendNotification;
 import stuffplotter.shared.FriendNotification.FriendNotificationType;
 import stuffplotter.shared.Notification;
@@ -41,7 +41,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	 * @return current user Account
 	 */
 	@Override
-	public Account login(String back)
+	public Account load(String redirect)
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
@@ -58,16 +58,46 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    }
 	    finally
 	    {
-    	  account.setLoginUrl(userService.createLoginURL(back));
+    	  account.setLoginUrl(userService.createLoginURL(redirect));
     	  account.setLogoutUrl(userService.createLogoutURL(account.getLoginUrl()));
 	    }
 	    
 	    return account;
 	}
 	
+	/**
+	 * Authorizes an existing account by setting its access token
+	 * @pre dbstore.fetchAccount(userService.getCurrentUser().getEmail()) != null
+	 * @post dbstore.fetchAccount(userService.getCurrentUser().getUserAccessToken()) == token
+	 * @param token - access token
+	 * @return an authorized Account
+	 */
 	@Override
-	public void loadProfile(Account account, String token) throws AuthenticationException
+	public Account authorize(String token)
 	{
+		UserService userService = UserServiceFactory.getUserService();
+	    User user = userService.getCurrentUser();
+	    
+		Account account = dbstore.fetchAccount(user.getEmail());
+		account.setAccessToken(token);
+		dbstore.store(account);
+		
+		return account;
+	}
+	
+	/**
+	 * Saves full name and profile picture from Google account to user account
+	 * @pre true;
+	 * @post account.getFullName() != null && account.getProfilePicture != null;
+	 */
+	@Override
+	public Account saveProfile(Account ignore) throws GoogleAPIException
+	{
+		UserService userService = UserServiceFactory.getUserService();
+	    User user = userService.getCurrentUser();
+		Account account = dbstore.fetchAccount(user.getEmail());
+		
+		String token = account.getAccessToken();
 		String request = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token;
 		System.out.println(request);
 		final StringBuffer r = new StringBuffer();
@@ -145,14 +175,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
         	e.printStackTrace();
         }
         
-        if(account.getUserFullName() == null)
+        if(account.getUserFullName() == null && account.getUserProfilePicture() == null)
         {
-        	throw new AuthenticationException();
+        	throw new GoogleAPIException();
         }
         else
         {
-            account.setUserRefreshToken(token);
-            this.saveAccount(account);
+        	dbstore.store(account);
+        	return account;
         }
 	}
 	

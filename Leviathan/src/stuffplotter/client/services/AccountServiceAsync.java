@@ -11,8 +11,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AccountServiceAsync
 {
-	void login(String back, AsyncCallback<Account> callback);
-	void loadProfile(Account account, String hash, AsyncCallback<Void> callback);
+	void load(String redirect, AsyncCallback<Account> callback);
+	void authorize(String token, AsyncCallback<Account> callback);
+	
+	void saveProfile(Account acc, AsyncCallback<Account> callback);
 	void addFriend(Account acc, String friend, AsyncCallback<Void> callback);
 	void saveAccount(Account acc, AsyncCallback<Void> callback);
 	void getFriends(Account acc, AsyncCallback<List<String>> callback);
