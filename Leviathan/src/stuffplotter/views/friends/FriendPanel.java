@@ -7,57 +7,91 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class FriendPanel extends HorizontalPanel 
+import stuffplotter.bindingcontracts.AccountModel;
+
+/**
+ * Class to display Friends using data binding from the FriendModel.
+ */
+public class FriendPanel extends HorizontalPanel implements FriendPanelView
 {
 	private static final int IMAGESIZE = 85;
-	Label userEmail;
-	Label userName;
-	Label userTitle;
-	Image profile;
-	private VerticalPanel infoPanel;
-	private HorizontalPanel buttonHolder;
-	Button removeFriend;
-	Button viewProfile;
+	private Label userEmail;
+	private Label userName;
+	private Label userTitle;
+	private Image profile;
+	private Button viewBtn;
+	private Button removeBtn;
 	
-	
-	
-	public FriendPanel(String email, String name, String title, String profileUrl)
+	/**
+	 * Constructor for the AchievementPanel.
+	 * @pre model != null;
+	 * @post truel;
+	 * @param model - the Achievement to data bind with and display.
+	 */
+	public FriendPanel(AccountModel model)
 	{
-		this.userEmail = new Label(email);
-		this.userName = new Label(name);
-		this.userTitle = new Label(title);
-		
-		this.removeFriend = new Button("Remove Friend");
-		this.viewProfile = new Button("View Profile");
-		this.buttonHolder = new HorizontalPanel();
-		this.buttonHolder.add(viewProfile);
-		this.buttonHolder.add(removeFriend);
-		
-		
-		this.infoPanel = new VerticalPanel();
-		this.infoPanel.add(userName);
-		this.infoPanel.add(userEmail);
-		this.infoPanel.add(userTitle);
-		this.infoPanel.add(buttonHolder);
-		
-		if(profileUrl!=null)
-			this.profile = new Image(profileUrl);
-		else
-			this.profile = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
-		
+		this.initializeUI();
+		this.dataBind(model);
+	}
+	
+	/**
+	 * Bind the given model to the view.
+	 * @pre model != null;
+	 * @post true;
+	 * @param model - the model to bind to the display panel.
+	 */
+	private void dataBind(AccountModel model)
+	{
+		this.profile.setUrl(model.getUserProfilePicture());
+		this.userEmail.setText(model.getUserEmail());
+		this.userName.setText(model.getUserFullName());
+		this.userTitle.setText(model.getUserTitle());
+	}
+	
+	/**
+	 * Helper method to initialize the UI.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void initializeUI()
+	{
+		this.userEmail = new Label();
+		this.userName = new Label();
+		this.userTitle = new Label();
+		this.profile = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
 		this.profile.setPixelSize(IMAGESIZE, IMAGESIZE);
+		this.removeBtn = new Button("Remove");
+		this.viewBtn = new Button("View");
+		
+		HorizontalPanel buttonHolder = new HorizontalPanel();
+		buttonHolder.add(viewBtn);
+		buttonHolder.add(removeBtn);
+		
+		VerticalPanel infoPanel = new VerticalPanel();
+		infoPanel.add(userName);
+		infoPanel.add(userEmail);
+		infoPanel.add(userTitle);
+		infoPanel.add(buttonHolder);
+		
 		this.add(profile);
 		this.add(infoPanel);
 	}
 	
-	public HasClickHandlers getRemoveFriendButton(){
-		return this.removeFriend;
-	}
-	
-	public HasClickHandlers getViewProfileButton(){
-		return this.viewProfile;
+	@Override
+	public Button getViewBtn()
+	{
+		return this.viewBtn;
 	}
 
+	@Override
+	public HasClickHandlers getRemoveBtn()
+	{
+		return this.removeBtn;
+	}
 
-
+	@Override
+	public String getEmail()
+	{
+		return this.userEmail.getText();
+	}
 }

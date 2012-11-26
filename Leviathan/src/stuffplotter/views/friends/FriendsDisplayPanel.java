@@ -1,10 +1,9 @@
 package stuffplotter.views.friends;
 
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.ArrayList;
+import java.util.List;
 
-import stuffplotter.bindingcontracts.FriendModel;
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 /**
@@ -12,6 +11,8 @@ import stuffplotter.views.util.ScrollDisplayPanel;
  */
 public class FriendsDisplayPanel extends ScrollDisplayPanel
 {
+	List<FriendPanelView> friendViews;
+	
 	/**
 	 * Constructor for the FrinedsDisplayPanel/
 	 * @pre numOfColumns > 0;
@@ -21,71 +22,37 @@ public class FriendsDisplayPanel extends ScrollDisplayPanel
 	public FriendsDisplayPanel(int numOfColumns)
 	{
 		super(numOfColumns);
+		this.friendViews = new ArrayList<FriendPanelView>();
 	}
 	
 	/**
-	 * Display the given FriendModel.
-	 * @pre friend != null;
+	 * Display the given AccountModels.
+	 * @pre friends != null;
 	 * @post true;
-	 * @param friend - the friend to display.
-	 * @return the view button for the friend.
+	 * @param friends - the friends to display.
 	 */
-	public HasClickHandlers setFriendsData(FriendModel friend)
+	public void setFriendsData(List<AccountModel> friends)
 	{
-		FriendPanel friendPanel = new FriendPanel(friend);
-		this.addElement(friendPanel);
-		return friendPanel.getViewBtn();
+		this.friendViews.clear();
+		this.clearDisplay();
+		
+		// for loop to populate the view
+		for(AccountModel model : friends)
+		{
+			FriendPanel friendPanel = new FriendPanel(model);
+			this.addElement(friendPanel);
+			this.friendViews.add(friendPanel);
+		}
 	}
 
 	/**
-	 * Inner class to display Friends using data binding from the FriendModel.
+	 * Retrieve the FriendPanelViews in this display.
+	 * @pre true;
+	 * @post true;
+	 * @return the FriendPanelViews in thi display.
 	 */
-	public class FriendPanel extends VerticalPanel
+	public List<FriendPanelView> getFriendPanels()
 	{
-		private Button viewBtn;
-		
-		/**
-		 * Constructor for the AchievementPanel.
-		 * @pre model != null;
-		 * @post truel;
-		 * @param model - the Achievement to data bind with and display.
-		 */
-		public FriendPanel(FriendModel model)
-		{
-			this.dataBind(model);
-			this.initializeUI();
-		}
-		
-		/**
-		 * Bind the given model to the view.
-		 * @pre model != null;
-		 * @post true;
-		 * @param model - the model to bind to the display panel.
-		 */
-		private void dataBind(FriendModel model)
-		{
-			// TO DO
-		}
-		
-		/**
-		 * Helper method to initialize the UI.
-		 * @pre true;
-		 * @post true;
-		 */
-		private void initializeUI()
-		{
-			this.viewBtn = new Button("View");
-		}
-		
-		/**
-		 * Retrieve the view button for the friend.
-		 * @pre true;
-		 * @post true;
-		 * @return the view button for the friend.
-		 */
-		public Button getViewBtn()
-		{
-			return this.viewBtn;
-		}
+		return this.friendViews;
 	}
 }

@@ -1,12 +1,13 @@
 package stuffplotter.views;
 
+import java.util.List;
 
-
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
-import stuffplotter.shared.Account;
-
 
 import stuffplotter.views.friends.FriendPanel;
+import stuffplotter.views.friends.FriendPanelView;
+import stuffplotter.views.friends.FriendsDisplayPanel;
 import stuffplotter.views.friends.PendingFriendPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
@@ -27,7 +28,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	private Button addFriend;
 	private Button searchFriends;
 	private TextBox addFriendTextBox;
-	private ScrollDisplayPanel friendDisplay;
+	private FriendsDisplayPanel friendDisplay;
 	private ScrollDisplayPanel pendingFriendDisplay;
 	
 	/**
@@ -70,7 +71,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		
 		
 		this.add(buttonHolder);
-		this.friendDisplay = new ScrollDisplayPanel(NUMOFCOLUMNS);
+		this.friendDisplay = new FriendsDisplayPanel(NUMOFCOLUMNS);
 		this.friendDisplay.addElement(new Label("Display of Friends"));
 
 		this.add(this.friendDisplay);
@@ -148,7 +149,15 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		return this.addFriendTextBox;
 	}
 
+	@Override
+	public List<FriendPanelView> getFriendPanels()
+	{
+		return this.friendDisplay.getFriendPanels();
+	}
 
-
-
+	@Override
+	public void setFriendData(List<AccountModel> models)
+	{
+		this.friendDisplay.setFriendsData(models);
+	}
 }

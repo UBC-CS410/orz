@@ -14,12 +14,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.views.friends.FriendPanel;
+import stuffplotter.views.friends.FriendPanelView;
 import stuffplotter.views.friends.PendingFriendPanel;
 
 
@@ -35,9 +37,25 @@ public class FriendsPagePresenter implements Presenter
 		public HasAllFocusHandlers getFriendTextBox();
 		public String getFriendBoxText();
 		public void clearFriendBoxText();
-		public void addPendingUsers(PendingFriendPanel pendPan);
-		void addFriendPanel(FriendPanel friendPan);
-
+		public void addPendingUsers(PendingFriendPanel pendPan); // remove this method
+		void addFriendPanel(FriendPanel friendPan); // remove this method
+		
+		/**
+		 * Retrieve the views containing the 
+		 * @pre true;
+		 * @post true;
+		 * @return the list of friend views in the display.
+		 */
+		public List<FriendPanelView> getFriendPanels();
+		
+		/**
+		 * Set the list of friends to display.
+		 * @pre model != null;
+		 * @post true;
+		 * @param models - the list of friends to display. 
+		 */
+		public void setFriendData(List<AccountModel> models);
+		
 		/**
 		 * Retrieve the FriendsView as a Widget.
 		 * @pre true;
@@ -45,7 +63,6 @@ public class FriendsPagePresenter implements Presenter
 		 * @return the FriendsView as a Widget.
 		 */
 		public Widget asWidget();
-
 
 	}
 
@@ -80,7 +97,18 @@ public class FriendsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		friendsView.getAddFriendBtn().addClickHandler(new ClickHandler(){
+		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				// TODO Auto-generated method stub
+				// place code here to refresh page each time a fresh event is sent
+			}	
+		});
+		
+		
+		this.friendsView.getAddFriendBtn().addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event)
@@ -125,8 +153,8 @@ public class FriendsPagePresenter implements Presenter
 					friendsView.clearFriendBoxText();
 			}});
 
-		fetchPendingFriends();
-		fetchFriends();
+		//fetchPendingFriends();
+		//fetchFriends();
 
 	}
 
@@ -163,9 +191,10 @@ public class FriendsPagePresenter implements Presenter
 				@Override
 				public void onSuccess(Account result)
 				{
-					final Account friend = result;
+		/*			final Account friend = result;
 					FriendPanel friendPan = new FriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserTitle(), friend.getUserProfilePicture());
-					friendPan.getViewProfileButton().addClickHandler(new ClickHandler(){
+					friendPan.getViewProfileButton().addClickHandler(new ClickHandler()
+					{
 
 						@Override
 						public void onClick(ClickEvent event)
@@ -204,8 +233,9 @@ public class FriendsPagePresenter implements Presenter
 						}
 						
 					});
-					friendsView.addFriendPanel(friendPan);
-				}});
+					friendsView.addFriendPanel(friendPan);*/
+				}
+			});
 		}
 
 	}
@@ -301,7 +331,7 @@ public class FriendsPagePresenter implements Presenter
 	
 	public void doRefresh()
 	{
-		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+	/*	this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
 		{
 
 			@Override
@@ -327,6 +357,6 @@ public class FriendsPagePresenter implements Presenter
 				Window.alert("I refreshed");
 			}
 			
-		});
+		});*/
 	}
 }
