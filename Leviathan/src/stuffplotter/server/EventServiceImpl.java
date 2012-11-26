@@ -10,6 +10,7 @@ import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Scheduler;
+import stuffplotter.shared.Event.Status;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -78,9 +79,20 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @param 	eventId - the id of the event to retrieve
 	 */
 	@Override
-	public Event retrieveEvent(Long pEventId)
+	public Event retrieveEvent(Account account, Long pEventId)
 	{
-		return dbstore.fetchEvent(pEventId);
+		Event event = dbstore.fetchEvent(pEventId);
+		Date date = new Date();
+		//TODO: add duration to event.getDate()
+		if (event.getDate() != null && date.after(event.getDate()))
+		{
+			event.setStatus(Status.FINISHED);
+			account.getCurrentEvents().remove(pEventId);
+			account.getPastEvents().add(pEventId);
+			dbstore.store(account);
+			dbstore.store(event);
+		}
+		return event;
 	}
 	
 	/**
@@ -90,12 +102,12 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @param 	eventIds - the list of ids of events to retrieve
 	 */
 	@Override
-	public List<Event> retrieveEvents(List<Long> pEventIds)
+	public List<Event> retrieveEvents(Account account, List<Long> pEventIds)
 	{
 		List<Event> events = new ArrayList<Event>();
 		for (int i = 0; i < pEventIds.size(); i++)
 		{
-			events.add(dbstore.fetchEvent(pEventIds.get(i)));
+			events.add(retrieveEvent(account, pEventIds.get(i)));
 		}
 		return events;
 	}

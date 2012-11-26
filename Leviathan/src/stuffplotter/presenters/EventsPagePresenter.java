@@ -61,8 +61,9 @@ public class EventsPagePresenter implements Presenter
 		
 		public void removeSubmitAvailabilitiesButton();
 		public void removeFinalizeTimeButton();
+		public void clearEventView();
 		
-		public void initialize(List<Event> events);
+		public void initialize(Account user, List<Event> events);
 		
 		/**
 		 * Retrieve the EventsPageViewer as a widget.
@@ -140,7 +141,7 @@ public class EventsPagePresenter implements Presenter
 		
 		/*
 		 * Global handlers
-		 */
+		 */	
 		this.eventBus.addHandler(EventSchedulerEvent.TYPE, new EventSchedulerEventHandler()
 		{
 			@Override
@@ -296,7 +297,7 @@ public class EventsPagePresenter implements Presenter
 	private void fetchCurrentEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getCurrentEvents(), new AsyncCallback<List<Event>>()
+		eventService.retrieveEvents(appUser, appUser.getCurrentEvents(), new AsyncCallback<List<Event>>()
 		{
 			@Override
 			public void onFailure(Throwable caught)
@@ -309,12 +310,16 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result; //used for bindEventViewers
-				eventsView.initialize(currentEvents);
+				eventsView.initialize(appUser, currentEvents);
 				eventsView.removeSubmitAvailabilitiesButton();
 				bindEventViewers();
 				if (currentEvents.size() > 0)
 				{
 					displayEvent(currentEvents.get(0), 0);
+				}
+				else
+				{
+					eventsView.clearEventView();
 				}
 			}
 		});
@@ -328,7 +333,7 @@ public class EventsPagePresenter implements Presenter
 	private void fetchPastEvents()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser.getPastEvents(), new AsyncCallback<List<Event>>()
+		eventService.retrieveEvents(appUser, appUser.getPastEvents(), new AsyncCallback<List<Event>>()
 		{
 			@Override
 			public void onFailure(Throwable caught)
@@ -341,12 +346,16 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result; //used for bindEventViewers
-				eventsView.initialize(currentEvents);
+				eventsView.initialize(appUser, currentEvents);
 				eventsView.removeSubmitAvailabilitiesButton();
 				bindEventViewers();
 				if (currentEvents.size() > 0)
 				{
 					displayEvent(currentEvents.get(0), 0);
+				}
+				else
+				{
+					eventsView.clearEventView();
 				}
 			}
 		});
@@ -370,18 +379,24 @@ public class EventsPagePresenter implements Presenter
 		
 		eventsView.showEventSelected(index);
 		
-		if(event.getStatus() == Status.PROPOSED)
+		if(event.getInvitees().contains(appUser.getUserEmail()))
 		{
-			if(event.getOwnerID() == appUser.getUserEmail())
-			{
-				eventsView.showFinalizeTimeButton();
-			}
-			else
-			{
-				eventsView.showSubmitAvailabilitiesButton();
-			}
+			eventsView.showInvitationButtons();
 		}
-		
+		else 
+		{
+			if(event.getStatus() == Status.PROPOSED)
+			{
+				if(event.getOwnerID() == appUser.getUserEmail())
+				{
+					eventsView.showFinalizeTimeButton();
+				}
+				else
+				{
+					eventsView.showSubmitAvailabilitiesButton();
+				}
+			}
+		}	
 		bindEventButtons(index);
 	}
 }

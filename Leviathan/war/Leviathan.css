@@ -92,7 +92,7 @@
 }
 
 .eventSelected {
-	background-color: #CCC;
+	background-color: #DDD;
 }
 
 .eventNameLabel {
@@ -100,14 +100,19 @@
 	font-weight: bold;
 }
 
+.eventDateLabel {
+	font-size: 1.1em;
+	color: #333;
+}
+
 .eventListingLabel {
 	font-size: 1.1em;
 	font-weight: bold;
+	color: blue;
 }
 
 .eventScheduledLabel {
 	color: #333;
-	font-size: 1em;
 }
 
 .eventInvitedLabel {

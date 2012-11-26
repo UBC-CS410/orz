@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventListingView;
 import stuffplotter.views.util.ScrollDisplayPanel;
@@ -273,6 +274,16 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
+	 * Clears the event container
+	 * @pre true;
+	 * @post true;
+	 */
+	public void clearEventView()
+	{
+		this.eventPanel.clear();
+	}
+	
+	/**
 	 * Shows eventPanel
 	 * @pre this.eventListPanel.isVisible() == true && this.eventPanel.isVisible() == false;
 	 * @post this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
@@ -295,12 +306,12 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @post this.listPanel.getDisplayer().getRowCount == toDisplay.size() && this.listPanel.isVisible() == true;
 	 */
 	@Override
-	public void initialize(List<Event> events)
+	public void initialize(Account user, List<Event> events)
 	{
 		this.eventRollPanel.clearDisplay();
 		for (int i = 0; i < events.size(); i++)
 		{	
-			EventListingView rowPanel = new EventListingView(events.get(i));
+			EventListingView rowPanel = new EventListingView(user, events.get(i));
 			this.eventRollPanel.addElement(rowPanel);
 		}
 	}

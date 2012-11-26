@@ -143,7 +143,7 @@ public class EventView extends VerticalPanel implements EventViewer
 		else
 		{
 			scheduleLabel.setText(event.getDate().toString());
-			scheduleLabel.setStyleName("eventScheduledLabel");
+			scheduleLabel.setStyleName("eventDateLabel");
 		}
 
 		Label ownerLabel = new Label("Host: " + event.getOwner());
