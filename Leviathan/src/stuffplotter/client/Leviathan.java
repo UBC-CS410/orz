@@ -10,7 +10,6 @@ import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.GoogleAPIException;
 import stuffplotter.signals.AccountAuthorizedEvent;
 import stuffplotter.signals.AccountAuthorizedEventHandler;
-import stuffplotter.views.util.NotificationDialogBox;
 
 
 import com.google.api.gwt.oauth2.client.Auth;
@@ -114,11 +113,11 @@ public class Leviathan implements EntryPoint
 	        		introductionDialogBox.setModal(true);
 	        		//introductionDialogBox.setStyleName("introductionPopup");
 	        		
-	        		VerticalPanel contentBox = new VerticalPanel();
-	        		contentBox.add(new Label("This is a social event management system dedicated to small social circles..."));
-	        		contentBox.add(startButton);
+	        		VerticalPanel contentPanel = new VerticalPanel();
+	        		contentPanel.add(new Label("This is a social event management system dedicated to small social circles..."));
+	        		contentPanel.add(startButton);
 	        		
-	        		introductionDialogBox.add(contentBox);
+	        		introductionDialogBox.add(contentPanel);
 	        		introductionDialogBox.show();
 	        		
 	        		//RootPanel.get().add(introductionDialogBox);
@@ -239,9 +238,8 @@ public class Leviathan implements EntryPoint
 			}	
 		});
 		*/
-		
-		final AccountStatsServiceAsync accountStatsService = GWT.create(AccountStatsService.class);
-		accountStatsService.getStats(account.getUserEmail(), new AsyncCallback<AccountStatistic>(){
+
+		applicationServices.getStatsService().getStats(account.getUserEmail(), new AsyncCallback<AccountStatistic>(){
 
 			@Override
 			public void onFailure(Throwable caught)
@@ -255,7 +253,7 @@ public class Leviathan implements EntryPoint
 			{
 				AccountStatistic accountStats = result;
 				accountStats.accept(new AchievementChecker());
-				accountStatsService.save(accountStats, new AsyncCallback<Void>() {
+				applicationServices.getStatsService().save(accountStats, new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught)
