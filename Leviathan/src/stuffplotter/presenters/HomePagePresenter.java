@@ -53,8 +53,8 @@ public class HomePagePresenter implements Presenter
 
 	/**
 	 * Bind view components to handlers
-	 * @pre true
-	 * @post true
+	 * @pre true;
+	 * @post true;
 	 */
 	private void bind()
 	{
