@@ -1,6 +1,9 @@
 package stuffplotter.presenters;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -37,8 +40,7 @@ public class FriendsPagePresenter implements Presenter
 		public HasAllFocusHandlers getFriendTextBox();
 		public String getFriendBoxText();
 		public void clearFriendBoxText();
-		public void addPendingUsers(PendingFriendPanel pendPan); // remove this method
-		void addFriendPanel(FriendPanel friendPan); // remove this method
+
 		
 		/**
 		 * Retrieve the views containing the 
@@ -55,6 +57,14 @@ public class FriendsPagePresenter implements Presenter
 		 * @param models - the list of friends to display. 
 		 */
 		public void setFriendData(List<AccountModel> models);
+		
+		/**
+		 * Set the list of friends to display.
+		 * @pre model != null;
+		 * @post true;
+		 * @param models - the list of friends to display. 
+		 */
+		public void setPendingData(List<AccountModel> models);
 		
 		/**
 		 * Retrieve the FriendsView as a Widget.
@@ -85,7 +95,44 @@ public class FriendsPagePresenter implements Presenter
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.friendsView = display;
+		this.dataBindFriends();
 
+	}
+
+	/**
+	 * Helper method to data bind the Friends to the view.
+	 * @pre true;
+	 * @post true;
+	 */
+
+	private void dataBindFriends()
+	{
+		final List<String> userFriends = appUser.getUserFriends();
+		AccountServiceAsync accountService = appServices.getAccountService();
+		accountService.getAccounts(userFriends, new AsyncCallback<Map<String, Account>>(){
+
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				
+				
+			}
+
+			@Override
+			public void onSuccess(Map<String, Account> result)
+			{
+				List<AccountModel> userAccounts = new ArrayList<AccountModel>();
+				for(String friend :userFriends)
+				{
+					userAccounts.add(result.get(friend));
+				}
+				
+				Collections.sort(userAccounts, new Account());
+				friendsView.setFriendData(userAccounts);
+				
+			}});
+		
+		
 	}
 
 
@@ -152,9 +199,55 @@ public class FriendsPagePresenter implements Presenter
 				if(friendsView.getFriendBoxText().contains(" "))
 					friendsView.clearFriendBoxText();
 			}});
+		
+		List<FriendPanelView> friendsPanels = friendsView.getFriendPanels();
+		for(FriendPanelView panel: friendsPanels)
+		{
+			final String friendEmail = panel.getEmail();
+			final String friendName = panel.getName();
+			panel.getRemoveBtn().addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					if(Window.confirm("Are you sure you want to remove this person from your Friends List (Don't worry, we won't tell them)?"))
+					{
+						AccountServiceAsync accountService = appServices.getAccountService();
+						accountService.removeFriend(appUser, friendEmail , new AsyncCallback<Void>(){
+
+							@Override
+							public void onFailure(Throwable caught)
+							{
+								
+							}
+
+							@Override
+							public void onSuccess(Void result)
+							{
+								Window.alert(friendName+" has successfully been removed.");
+							}
+							
+						});
+					}
+
+					
+				}
+				
+			});
+			panel.getViewBtn().addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+		}
+		
 
 		//fetchPendingFriends();
-		//fetchFriends();
 
 	}
 
@@ -173,190 +266,97 @@ public class FriendsPagePresenter implements Presenter
 		container.add(this.friendsView.asWidget());
 	}
 
-	private void fetchFriends()
-	{
-		List<String> userFriends = appUser.getUserFriends();
-		AccountServiceAsync accountService = appServices.getAccountService();
-		for(String friend: userFriends)
-		{
-			accountService.getAccount(friend,  new AsyncCallback<Account>(
-					){
-
-				@Override
-				public void onFailure(Throwable caught)
-				{
-
-				}
-
-				@Override
-				public void onSuccess(Account result)
-				{
-		/*			final Account friend = result;
-					FriendPanel friendPan = new FriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserTitle(), friend.getUserProfilePicture());
-					friendPan.getViewProfileButton().addClickHandler(new ClickHandler()
-					{
-
-						@Override
-						public void onClick(ClickEvent event)
-						{
-							// TODO Auto-generated method stub							
-						}
-						
-					});
-					
-					friendPan.getRemoveFriendButton().addClickHandler(new ClickHandler(){
-
-						@Override
-						public void onClick(ClickEvent event)
-						{
-							if(Window.confirm("Are you sure you want to remove this person from your Friends List (Don't worry, we won't tell them)?"))
-							{
-								AccountServiceAsync accountService = appServices.getAccountService();
-								accountService.removeFriend(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
-
-									@Override
-									public void onFailure(Throwable caught)
-									{
-										
-									}
-
-									@Override
-									public void onSuccess(Void result)
-									{
-										Window.alert(friend.getUserFullName()+" has successfully been removed.");
-									}
-									
-								});
-							}
-
-							
-						}
-						
-					});
-					friendsView.addFriendPanel(friendPan);*/
-				}
-			});
-		}
-
-	}
-
 
 	private void fetchPendingFriends()
 	{
-		List<String> pendingFriends = appUser.getPendingFriends();
-		AccountServiceAsync accountService = appServices.getAccountService();
-		for(String friend: pendingFriends)
-		{
-			accountService.getAccount(friend, new AsyncCallback<Account>(){
-
-				@Override
-				public void onFailure(Throwable caught)
-				{
-
-				}
-
-				@Override
-				public void onSuccess(Account result)
-				{
-					final Account friend = result;
-					PendingFriendPanel pendPanel = new PendingFriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserProfilePicture());
-					pendPanel.getConfirmButton().addClickHandler(new ClickHandler(){
-
-						@Override
-						public void onClick(ClickEvent event)
-						{
-							AccountServiceAsync accountService = appServices.getAccountService();
-							accountService.confirmFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
-
-								@Override
-								public void onFailure(Throwable caught)
-								{
-									Window.alert("Friend was not successfully added...");
-								}
-
-								@Override
-								public void onSuccess(Void result)
-								{
-									Window.alert("Friend successfully added!!");
-									
-				
-								}
-
-							});
-
-						}
-
-					});
-					
-					pendPanel.getDenyButton().addClickHandler(new ClickHandler(){
-
-						@Override
-						public void onClick(ClickEvent event)
-						{
-							AccountServiceAsync accountService = appServices.getAccountService();
-							if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
-							{
-								accountService.declineFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
-
-									@Override
-									public void onFailure(Throwable caught)
-									{
-										
-										
-									}
-
-									@Override
-									public void onSuccess(Void result)
-									{
-										doRefresh();
-										
-									}
-									
-								});
-							}
-			
-							
-						}
-						
-					});
-					friendsView.addPendingUsers(pendPanel);
-					
-
-				}
-
-			});
-		}
+//		List<String> pendingFriends = appUser.getPendingFriends();
+//		AccountServiceAsync accountService = appServices.getAccountService();
+//		for(String friend: pendingFriends)
+//		{
+//			accountService.getAccount(friend, new AsyncCallback<Account>(){
+//
+//				@Override
+//				public void onFailure(Throwable caught)
+//				{
+//
+//				}
+//
+//				@Override
+//				public void onSuccess(Account result)
+//				{
+//					final Account friend = result;
+//					PendingFriendPanel pendPanel = new PendingFriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserProfilePicture());
+//					pendPanel.getConfirmButton().addClickHandler(new ClickHandler(){
+//
+//						@Override
+//						public void onClick(ClickEvent event)
+//						{
+//							AccountServiceAsync accountService = appServices.getAccountService();
+//							accountService.confirmFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
+//
+//								@Override
+//								public void onFailure(Throwable caught)
+//								{
+//									Window.alert("Friend was not successfully added...");
+//								}
+//
+//								@Override
+//								public void onSuccess(Void result)
+//								{
+//									Window.alert("Friend successfully added!!");
+//									
+//				
+//								}
+//
+//							});
+//
+//						}
+//
+//					});
+//					
+//					pendPanel.getDenyButton().addClickHandler(new ClickHandler(){
+//
+//						@Override
+//						public void onClick(ClickEvent event)
+//						{
+//							AccountServiceAsync accountService = appServices.getAccountService();
+//							if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
+//							{
+//								accountService.declineFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
+//
+//									@Override
+//									public void onFailure(Throwable caught)
+//									{
+//										
+//										
+//									}
+//
+//									@Override
+//									public void onSuccess(Void result)
+//									{
+//										doRefresh();
+//										
+//									}
+//									
+//								});
+//							}
+//			
+//							
+//						}
+//						
+//					});
+//					friendsView.addPendingUsers(pendPanel);
+//					
+//
+//				}
+//
+//			});
+//		}
 
 	}
 	
 	public void doRefresh()
 	{
-	/*	this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
-		{
 
-			@Override
-			public void onRefreshPage(RefreshPageEvent event)
-			{
-				AccountServiceAsync accountService = appServices.getAccountService();
-				accountService.getAccount(appUser.getUserEmail(), new AsyncCallback<Account>(){
-
-					@Override
-					public void onFailure(Throwable caught)
-					{
-
-						
-					}
-
-					@Override
-					public void onSuccess(Account result)
-					{
-						appUser = result;
-					}
-					
-				});
-				Window.alert("I refreshed");
-			}
-			
-		});*/
 	}
 }

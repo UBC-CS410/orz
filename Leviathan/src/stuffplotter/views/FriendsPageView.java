@@ -29,7 +29,9 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	private Button searchFriends;
 	private TextBox addFriendTextBox;
 	private FriendsDisplayPanel friendDisplay;
-	private ScrollDisplayPanel pendingFriendDisplay;
+	private FriendsDisplayPanel pendingFriendDisplay;
+	private Label pendingFriendsLabel;
+	private Label displayFriendsLabel;
 	
 	/**
 	 * Constructor for the FriendsPagePanel.
@@ -59,8 +61,9 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		
 		
 		this.searchFriends = new Button("Search Friends");
-		this.pendingFriendDisplay = new ScrollDisplayPanel(NUMOFCOLUMNS);
-		this.pendingFriendDisplay.addElement(new Label("Pending Friend"));
+		this.pendingFriendDisplay = new FriendsDisplayPanel(NUMOFCOLUMNS);
+		this.pendingFriendsLabel = new Label("Pending Friends");
+		this.pendingFriendDisplay.addElement(pendingFriendsLabel);
 
 		
 		addFriendPanel.add(this.addFriend);
@@ -72,7 +75,8 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		
 		this.add(buttonHolder);
 		this.friendDisplay = new FriendsDisplayPanel(NUMOFCOLUMNS);
-		this.friendDisplay.addElement(new Label("Display of Friends"));
+		this.displayFriendsLabel = new Label("Display of Friends");
+		this.friendDisplay.addElement(displayFriendsLabel);
 
 		this.add(this.friendDisplay);
 	}
@@ -131,22 +135,20 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		
 	}
 
-	@Override
-	public void addPendingUsers(PendingFriendPanel pendPan)
-	{
-		this.pendingFriendDisplay.addElement(pendPan);
-	}
+
+
 
 	@Override
-	public void addFriendPanel(FriendPanel friendPan)
-	{	
-		this.friendDisplay.addElement(friendPan);
+	public void setFriendData(List<AccountModel> models)
+	{
+		this.friendDisplay.setFriendsData(models);
 	}
 
 	@Override
 	public HasAllFocusHandlers getFriendTextBox()
 	{
-		return this.addFriendTextBox;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -156,8 +158,8 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	}
 
 	@Override
-	public void setFriendData(List<AccountModel> models)
+	public void setPendingData(List<AccountModel> models)
 	{
-		this.friendDisplay.setFriendsData(models);
+		this.pendingFriendDisplay.setPendingFriendsData(models);
 	}
 }

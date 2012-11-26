@@ -1,6 +1,8 @@
 package stuffplotter.views.friends;
 
 
+import stuffplotter.bindingcontracts.AccountModel;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -8,7 +10,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class PendingFriendPanel extends HorizontalPanel
+public class PendingFriendPanel extends HorizontalPanel implements FriendPanelView
 {
 	private static final int IMAGESIZE = 85;
 	private Image profilePic;
@@ -49,12 +51,45 @@ public class PendingFriendPanel extends HorizontalPanel
 
 	};
 	
+	public PendingFriendPanel(AccountModel model)
+	{
+		// TODO Auto-generated constructor stub
+	}
+
 	public HasClickHandlers getConfirmButton(){
 		return this.confirmButton;
 	}
 	
 	public HasClickHandlers getDenyButton(){
 		return this.denyButton;
+	}
+
+	@Override
+	public HasClickHandlers getRemoveBtn()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HasClickHandlers getViewBtn()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getEmail()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	private Label pendingUser;

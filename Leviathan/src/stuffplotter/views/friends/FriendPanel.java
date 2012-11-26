@@ -94,4 +94,10 @@ public class FriendPanel extends HorizontalPanel implements FriendPanelView
 	{
 		return this.userEmail.getText();
 	}
+
+	@Override
+	public String getName()
+	{
+		return this.userName.getText();
+	}
 }

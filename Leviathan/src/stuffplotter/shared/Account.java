@@ -3,6 +3,7 @@ package stuffplotter.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -413,4 +414,12 @@ public class Account implements Serializable, AccountModel
 		this.userTitle = title;
 		
 	}
+	
+
+	@Override
+	public int compare(AccountModel o1, AccountModel o2)
+	{
+		return o1.getUserFullName().compareToIgnoreCase(o2.getUserFullName());
+	}
+	
 }

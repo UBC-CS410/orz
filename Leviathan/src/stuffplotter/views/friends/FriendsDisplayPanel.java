@@ -55,4 +55,19 @@ public class FriendsDisplayPanel extends ScrollDisplayPanel
 	{
 		return this.friendViews;
 	}
+
+	public void setPendingFriendsData(List<AccountModel> friends)
+	{
+		this.friendViews.clear();
+		this.clearDisplay();
+		
+		// for loop to populate the view
+		for(AccountModel model : friends)
+		{
+			PendingFriendPanel friendPanel = new PendingFriendPanel(model);
+			this.addElement(friendPanel);
+			this.friendViews.add(friendPanel);
+		}
+		
+	}
 }
