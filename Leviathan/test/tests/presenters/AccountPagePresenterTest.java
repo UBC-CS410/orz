@@ -4,7 +4,7 @@
 package tests.presenters;
 
 import static org.junit.Assert.*;
-import static org.easymock.EasyMock.*;
+//import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class AccountPagePresenterTest extends TestCase
 	
 	public void setup() 
 	{
-		appServices = createStrictMock(ServiceRepository.class);
+		//appServices = createStrictMock(ServiceRepository.class);
 		eventBus = new HandlerManager(null);
 		accountView = new AccountPageView();
 		appUser = new Account();

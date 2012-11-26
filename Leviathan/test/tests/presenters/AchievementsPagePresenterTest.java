@@ -3,7 +3,7 @@
  */
 package tests.presenters;
 
-import static org.easymock.EasyMock.createStrictMock;
+//import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
@@ -31,7 +31,7 @@ public class AchievementsPagePresenterTest extends TestCase
 			
 			public void setup() 
 			{
-				appServices = createStrictMock(ServiceRepository.class);
+				//appServices = createStrictMock(ServiceRepository.class);
 				eventBus = new HandlerManager(null);
 				
 				

@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import stuffplotter.signals.SubmittedAvailabilitiesEvent;
+import stuffplotter.signals.EventSchedulerEvent;
 
 /**
  * Junit tests for SubmittedAvailabilitiesEvent.java
@@ -27,7 +27,7 @@ public class SubmittedAvailabilitiesEventTest
 	{
 		List<Long> availabilityIds = new ArrayList<Long>();
 		
-		SubmittedAvailabilitiesEvent sae = new SubmittedAvailabilitiesEvent(availabilityIds);
+		EventSchedulerEvent sae = new EventSchedulerEvent(availabilityIds);
 		
 		assertNotNull(sae);
 		assertEquals(availabilityIds, sae.getAvailabilityIds());
