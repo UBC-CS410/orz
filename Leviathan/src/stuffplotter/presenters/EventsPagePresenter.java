@@ -45,7 +45,7 @@ public class EventsPagePresenter implements Presenter
 		public HasWidgets getEventViewerContainer();
 		public List<HasClickHandlers> getEventViewers();
 		public void showEventViewers();
-		public void showEventView();
+		public void showEventSelected(int row);
 		
 		public HasClickHandlers getAcceptButton();
 		public HasClickHandlers getDeclineButton();
@@ -189,32 +189,8 @@ public class EventsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
-					Event selectedEvent;
-					selectedEvent = currentEvents.get(eventsIndex);
-					
-					Presenter presenter = new EventPresenter(appServices,
-																 eventBus,
-																 new EventView(),
-																 appUser,
-																 selectedEvent);
-					
-					eventsView.showEventView();
-					presenter.go(eventsView.getEventViewerContainer());
-					
-					if(selectedEvent.getStatus() == Status.PROPOSED)
-					{
-						if(selectedEvent.getOwnerID() == appUser.getUserEmail())
-						{
-							eventsView.showFinalizeTimeButton();
-							eventsView.showSubmitAvailabilitiesButton(); //remove this later
-						}
-						else
-						{
-							eventsView.showSubmitAvailabilitiesButton();
-						}
-					}
-					
-					bindEventButtons(selectedEvent);
+					Event selectedEvent = currentEvents.get(eventsIndex);;
+					displayEvent(selectedEvent, eventsIndex);
 				}	
 			});
 		}
@@ -290,6 +266,10 @@ public class EventsPagePresenter implements Presenter
 				eventsView.initialize(currentEvents);
 				eventsView.showEventViewers();
 				bindEventViewers();
+				if (currentEvents.size() > 0)
+				{
+					displayEvent(currentEvents.get(0), 0);
+				}
 			}
 		});
 	}
@@ -318,7 +298,47 @@ public class EventsPagePresenter implements Presenter
 				eventsView.initialize(currentEvents);
 				eventsView.showEventViewers();
 				bindEventViewers();
+				if (currentEvents.size() > 0)
+				{
+					displayEvent(currentEvents.get(0), 0);
+				}
 			}
 		});
+	}
+	
+	/**
+	 * Displays an event from the event roll
+	 * @pre true;
+	 * @post true;
+	 * @param event - the event to display
+	 * @param index - the row index of the event to display
+	 */
+	private void displayEvent(Event event, int index)
+	{
+		event = currentEvents.get(index);
+		
+		Presenter presenter = new EventPresenter(appServices,
+													 eventBus,
+													 new EventView(),
+													 appUser,
+													 event);
+		presenter.go(eventsView.getEventViewerContainer());
+		
+		eventsView.showEventSelected(index);
+		
+		if(event.getStatus() == Status.PROPOSED)
+		{
+			if(event.getOwnerID() == appUser.getUserEmail())
+			{
+				eventsView.showFinalizeTimeButton();
+				eventsView.showSubmitAvailabilitiesButton(); //remove this later
+			}
+			else
+			{
+				eventsView.showSubmitAvailabilitiesButton();
+			}
+		}
+		
+		bindEventButtons(event);
 	}
 }

@@ -10,6 +10,7 @@ import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -37,7 +38,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	private final Button finalizeTimeButton;
 	
 	private SimplePanel eventPanel;
-	private ScrollDisplayPanel eventListPanel;
+	private ScrollDisplayPanel eventRollPanel;
 	private VerticalPanel eventActionPanel;
 	
 	/**
@@ -74,14 +75,17 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		actionPanel.add(eventActionPanel);
 		
 		this.eventPanel = new SimplePanel();
-		this.eventPanel.setStyleName("eventPage");
-		this.eventListPanel = new ScrollDisplayPanel();
-		this.eventListPanel.setStyleName("eventRoll");
+		this.eventPanel.setStyleName("eventContainer");
+		this.eventRollPanel = new ScrollDisplayPanel();
+		this.eventRollPanel.setStyleName("eventRoll");
 		
 		this.add(actionPanel);
-		this.setCellWidth(actionPanel, "200px");
+		this.setCellWidth(actionPanel, "175px");
 		this.add(this.eventPanel);
-		this.add(this.eventListPanel);
+		
+		//SimplePanel testPanel = new SimplePanel();
+		this.add(this.eventRollPanel);
+		this.setCellWidth(this.eventRollPanel, "225px");
 		
 	}
 
@@ -228,7 +232,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	public List<HasClickHandlers> getEventViewers()
 	{
 		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
-		List<Widget> elements = this.eventListPanel.getElements();
+		List<Widget> elements = this.eventRollPanel.getElements();
 		for (int i = 0; i < elements.size(); i++)
 		{
 			EventListingView panel = (EventListingView) elements.get(i);
@@ -257,9 +261,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	@Override
 	public void showEventViewers()
 	{
-		this.eventPanel.clear();
-		this.remove(eventPanel);
-		this.add(eventListPanel);
+		//this.add(eventListPanel);
 	}
 	
 	/**
@@ -268,10 +270,14 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @post this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
 	 */
 	@Override
-	public void showEventView()
+	public void showEventSelected(int row)
 	{
-		this.remove(eventListPanel);
-		this.add(eventPanel);
+		FlexTable eventListings = this.eventRollPanel.getDisplayer();
+		for (int i = 0; i < eventListings.getRowCount(); i++)
+		{
+			eventListings.getWidget(i, 0).removeStyleName("eventSelected");
+		}
+		eventListings.getWidget(row, 0).addStyleName("eventSelected");
 	}
 	
 	
@@ -283,23 +289,11 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	@Override
 	public void initialize(List<Event> events)
 	{
-		this.eventListPanel.clearDisplay();
+		this.eventRollPanel.clearDisplay();
 		for (int i = 0; i < events.size(); i++)
-		{
-			String name, time, location; 
-			name = events.get(i).getName();
-			if(events.get(i).getDate() == null)
-			{
-				time = "TBD";
-			}
-			else
-			{
-				time = events.get(i).getDate().toString();
-			}
-			location = events.get(i).getLocation();
-			
-			EventListingView rowPanel = new EventListingView(name, time, location);
-			this.eventListPanel.addElement(rowPanel);
+		{	
+			EventListingView rowPanel = new EventListingView(events.get(i));
+			this.eventRollPanel.addElement(rowPanel);
 		}
 	}
 	
