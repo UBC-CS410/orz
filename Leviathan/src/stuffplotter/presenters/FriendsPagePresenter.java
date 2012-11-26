@@ -339,8 +339,6 @@ public class FriendsPagePresenter implements Presenter
 		}
 
 
-		//fetchPendingFriends();
-
 	}
 
 
@@ -359,93 +357,7 @@ public class FriendsPagePresenter implements Presenter
 	}
 
 
-	private void fetchPendingFriends()
-	{
-		//		List<String> pendingFriends = appUser.getPendingFriends();
-		//		AccountServiceAsync accountService = appServices.getAccountService();
-		//		for(String friend: pendingFriends)
-		//		{
-		//			accountService.getAccount(friend, new AsyncCallback<Account>(){
-		//
-		//				@Override
-		//				public void onFailure(Throwable caught)
-		//				{
-		//
-		//				}
-		//
-		//				@Override
-		//				public void onSuccess(Account result)
-		//				{
-		//					final Account friend = result;
-		//					PendingFriendPanel pendPanel = new PendingFriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserProfilePicture());
-		//					pendPanel.getConfirmButton().addClickHandler(new ClickHandler(){
-		//
-		//						@Override
-		//						public void onClick(ClickEvent event)
-		//						{
-		//							AccountServiceAsync accountService = appServices.getAccountService();
-		//							accountService.confirmFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
-		//
-		//								@Override
-		//								public void onFailure(Throwable caught)
-		//								{
-		//									Window.alert("Friend was not successfully added...");
-		//								}
-		//
-		//								@Override
-		//								public void onSuccess(Void result)
-		//								{
-		//									Window.alert("Friend successfully added!!");
-		//									
-		//				
-		//								}
-		//
-		//							});
-		//
-		//						}
-		//
-		//					});
-		//					
-		//					pendPanel.getDenyButton().addClickHandler(new ClickHandler(){
-		//
-		//						@Override
-		//						public void onClick(ClickEvent event)
-		//						{
-		//							AccountServiceAsync accountService = appServices.getAccountService();
-		//							if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
-		//							{
-		//								accountService.declineFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
-		//
-		//									@Override
-		//									public void onFailure(Throwable caught)
-		//									{
-		//										
-		//										
-		//									}
-		//
-		//									@Override
-		//									public void onSuccess(Void result)
-		//									{
-		//										doRefresh();
-		//										
-		//									}
-		//									
-		//								});
-		//							}
-		//			
-		//							
-		//						}
-		//						
-		//					});
-		//					friendsView.addPendingUsers(pendPanel);
-		//					
-		//
-		//				}
-		//
-		//			});
-		//		}
 
-	}
 
 	public void doRefresh()
 	{

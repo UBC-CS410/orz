@@ -84,45 +84,4 @@ public class PendingFriendPanel extends HorizontalPanel implements PendingFriend
 		return this.userName.getText();
 	}
 
-
-
-
-
-	
-//	private Label pendingUser;
-//	private Button confirmButton;
-//	public PendingFriendPanel(final String pendUser, final Account appUser)
-//	{
-//		final AccountServiceAsync accountService = GWT.create(AccountService.class);
-//		this.pendingUser = new Label(pendUser);
-//		this.confirmButton = new Button("Confirm");
-//		confirmButton.addClickHandler(new ClickHandler(){
-//
-//			@Override
-//			public void onClick(ClickEvent event)
-//			{
-//				accountService.confirmFriendReq(appUser, pendUser, new AsyncCallback<Void>(){
-//
-//					@Override
-//					public void onFailure(Throwable caught)
-//					{
-//						Window.alert("Friend was not successfully added...");
-//					}
-//
-//					@Override
-//					public void onSuccess(Void result)
-//					{
-//						Window.alert("Friend successfully added!!");
-//						confirmButton.setVisible(false);
-//					}
-//					
-//				});
-//				
-//			}
-//			
-//		});
-//		this.add(pendingUser);
-//		this.add(confirmButton);
-//	}
-
 }
