@@ -4,8 +4,12 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.HasAllFocusHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -13,7 +17,10 @@ import com.google.gwt.user.client.ui.Widget;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
+import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.views.friends.FriendPanel;
+import stuffplotter.views.friends.PendingFriendPanel;
 
 
 /**
@@ -25,11 +32,12 @@ public class FriendsPagePresenter implements Presenter
 	{
 		public HasClickHandlers getAddFriendBtn();
 		public HasClickHandlers getSearchFriendsBtn();
+		public HasAllFocusHandlers getFriendTextBox();
 		public String getFriendBoxText();
 		public void clearFriendBoxText();
-		public void addPendingUsers(String pendUser, Account appUser);
+		public void addPendingUsers(PendingFriendPanel pendPan);
 		void addFriendPanel(FriendPanel friendPan);
-		//public FriendList getFriendDisplay() create presenter for this
+
 		/**
 		 * Retrieve the FriendsView as a Widget.
 		 * @pre true;
@@ -37,15 +45,15 @@ public class FriendsPagePresenter implements Presenter
 		 * @return the FriendsView as a Widget.
 		 */
 		public Widget asWidget();
-		
-		
+
+
 	}
-	
-	private final Account appUser;
+
+	private Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final FriendsView friendsView;
-	
+
 	/**
 	 * Constructor for the FriendsPagePresenter.
 	 * @pre @pre appServices != null && eventBus != null && display != null && user != null;
@@ -60,7 +68,7 @@ public class FriendsPagePresenter implements Presenter
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.friendsView = display;
-		
+
 	}
 
 
@@ -78,28 +86,50 @@ public class FriendsPagePresenter implements Presenter
 			public void onClick(ClickEvent event)
 			{
 				String friendEmail = friendsView.getFriendBoxText();
-				if(!friendEmail.contains("@gmail.com"))
-					friendEmail = friendEmail+"@gmail.com";
-				appServices.getAccountService().addFriend(appUser, friendEmail, new AsyncCallback<Void>(){
-					@Override
-					public void onFailure(Throwable caught)
-					{
-					}
+				if(friendEmail.length()==0)
+				{
+					Window.alert("This field cannot be blank!");
+				}	
+				else if(friendEmail.contains(" "))
+				{
+					Window.alert("This field cannot contain and spaces!");
+				}
 
-					@Override
-					public void onSuccess(Void result)
-					{
-						friendsView.clearFriendBoxText();
-					}
-				});
+				else{
+					if(!friendEmail.contains("@gmail.com"))
+						friendEmail = friendEmail+"@gmail.com";
+					appServices.getAccountService().addFriend(appUser, friendEmail, new AsyncCallback<Void>(){
+						@Override
+						public void onFailure(Throwable caught)
+						{
+						}
+
+						@Override
+						public void onSuccess(Void result)
+						{
+							Window.alert("A notification has been sent to "+friendsView.getFriendBoxText()+"! Please await for their confirmation. =D");
+							friendsView.clearFriendBoxText();
+						}
+					});
+				}
+
 			}
 		});
-		
+
+		friendsView.getFriendTextBox().addFocusHandler(new FocusHandler(){
+
+			@Override
+			public void onFocus(FocusEvent event)
+			{
+				if(friendsView.getFriendBoxText().contains(" "))
+					friendsView.clearFriendBoxText();
+			}});
+
 		fetchPendingFriends();
 		fetchFriends();
-		
+
 	}
-	
+
 
 
 
@@ -114,7 +144,7 @@ public class FriendsPagePresenter implements Presenter
 		bind();
 		container.add(this.friendsView.asWidget());
 	}
-	
+
 	private void fetchFriends()
 	{
 		List<String> userFriends = appUser.getUserFriends();
@@ -124,44 +154,177 @@ public class FriendsPagePresenter implements Presenter
 			accountService.getAccount(friend,  new AsyncCallback<Account>(
 					){
 
+				@Override
+				public void onFailure(Throwable caught)
+				{
+
+				}
+
+				@Override
+				public void onSuccess(Account result)
+				{
+					final Account friend = result;
+					FriendPanel friendPan = new FriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserTitle(), friend.getUserProfilePicture());
+					friendPan.getViewProfileButton().addClickHandler(new ClickHandler(){
+
 						@Override
-						public void onFailure(Throwable caught)
+						public void onClick(ClickEvent event)
 						{
-							// TODO Auto-generated method stub
+							// TODO Auto-generated method stub							
+						}
+						
+					});
+					
+					friendPan.getRemoveFriendButton().addClickHandler(new ClickHandler(){
+
+						@Override
+						public void onClick(ClickEvent event)
+						{
+							if(Window.confirm("Are you sure you want to remove this person from your Friends List (Don't worry, we won't tell them)?"))
+							{
+								AccountServiceAsync accountService = appServices.getAccountService();
+								accountService.removeFriend(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
+
+									@Override
+									public void onFailure(Throwable caught)
+									{
+										
+									}
+
+									@Override
+									public void onSuccess(Void result)
+									{
+										Window.alert(friend.getUserFullName()+" has successfully been removed.");
+									}
+									
+								});
+							}
+
 							
 						}
-
-						@Override
-						public void onSuccess(Account result)
-						{
-							Account friend = result;
-							FriendPanel friendPan = new FriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserTitle(), friend.getUserProfilePicture());
-							friendsView.addFriendPanel(friendPan);
-						}});
+						
+					});
+					friendsView.addFriendPanel(friendPan);
+				}});
 		}
-		
+
 	}
 
-	
+
 	private void fetchPendingFriends()
 	{
+		List<String> pendingFriends = appUser.getPendingFriends();
 		AccountServiceAsync accountService = appServices.getAccountService();
-		accountService.getPendingFriends(appUser, new AsyncCallback<List<String>>(){
+		for(String friend: pendingFriends)
+		{
+			accountService.getAccount(friend, new AsyncCallback<Account>(){
 
-			@Override
-			public void onFailure(Throwable caught)
-			{
-				
-				
-			}
-
-			@Override
-			public void onSuccess(List<String> result)
-			{
-				for(String pendUser: result)
+				@Override
+				public void onFailure(Throwable caught)
 				{
-					friendsView.addPendingUsers(pendUser, appUser);
+
 				}
+
+				@Override
+				public void onSuccess(Account result)
+				{
+					final Account friend = result;
+					PendingFriendPanel pendPanel = new PendingFriendPanel(friend.getUserEmail(), friend.getUserFullName(), friend.getUserProfilePicture());
+					pendPanel.getConfirmButton().addClickHandler(new ClickHandler(){
+
+						@Override
+						public void onClick(ClickEvent event)
+						{
+							AccountServiceAsync accountService = appServices.getAccountService();
+							accountService.confirmFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
+
+								@Override
+								public void onFailure(Throwable caught)
+								{
+									Window.alert("Friend was not successfully added...");
+								}
+
+								@Override
+								public void onSuccess(Void result)
+								{
+									Window.alert("Friend successfully added!!");
+									
+				
+								}
+
+							});
+
+						}
+
+					});
+					
+					pendPanel.getDenyButton().addClickHandler(new ClickHandler(){
+
+						@Override
+						public void onClick(ClickEvent event)
+						{
+							AccountServiceAsync accountService = appServices.getAccountService();
+							if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
+							{
+								accountService.declineFriendReq(appUser, friend.getUserEmail(), new AsyncCallback<Void>(){
+
+									@Override
+									public void onFailure(Throwable caught)
+									{
+										
+										
+									}
+
+									@Override
+									public void onSuccess(Void result)
+									{
+										doRefresh();
+										
+									}
+									
+								});
+							}
+			
+							
+						}
+						
+					});
+					friendsView.addPendingUsers(pendPanel);
+					
+
+				}
+
+			});
+		}
+
+	}
+	
+	public void doRefresh()
+	{
+		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				AccountServiceAsync accountService = appServices.getAccountService();
+				accountService.getAccount(appUser.getUserEmail(), new AsyncCallback<Account>(){
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+					}
+					
+				});
+				Window.alert("I refreshed");
 			}
 			
 		});
