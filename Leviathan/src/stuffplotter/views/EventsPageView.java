@@ -60,17 +60,25 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.submitAvailabilityButton = new Button("Submit Availabilities");
 		this.finalizeTimeButton = new Button("Finalize Time");
 		
-		VerticalPanel actionPanel = new VerticalPanel();
-		actionPanel.setStyleName("actionBar");
-		actionPanel.setSpacing(10);
+		this.acceptInvitationButton.addStyleName("greenActionButton");
+		this.declineInvitationButton.addStyleName("redAcitonButton");
 		
+		this.submitAvailabilityButton.addStyleName("greenActionButton");
+		this.finalizeTimeButton.addStyleName("redActionButton");
+		
+		VerticalPanel actionPanel = new VerticalPanel();
+
 		VerticalPanel commonActionPanel = new VerticalPanel();
 		commonActionPanel.add(this.createButton);
 		commonActionPanel.add(this.listCurrentButton);
 		commonActionPanel.add(this.listPastButton);
 	
 		this.eventActionPanel = new VerticalPanel();
-		this.eventActionPanel.addStyleName("eventActionBar");
+		
+		actionPanel.setSpacing(10);
+		actionPanel.setStyleName("actionBar");
+		commonActionPanel.setStyleName("commonActionBar");
+		this.eventActionPanel.setStyleName("eventActionBar");
 		
 		actionPanel.add(commonActionPanel);
 		actionPanel.add(eventActionPanel);
@@ -87,7 +95,6 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		//SimplePanel testPanel = new SimplePanel();
 		this.add(this.eventRollPanel);
 		this.setCellWidth(this.eventRollPanel, "225px");
-		
 	}
 
 	/**
@@ -213,17 +220,6 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
-	 * Clears the event action panel
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void clearEventActions()
-	{
-		this.eventActionPanel.clear();
-	}
-	
-	/**
 	 * Get the anchors for each event from event list panel
 	 * @pre true;
 	 * @post true;
@@ -263,6 +259,17 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	public void removeSubmitAvailabilitiesButton()
 	{
 		this.eventActionPanel.remove(this.submitAvailabilityButton);
+	}
+	
+	/**
+	 * Removes the finalize time button
+	 * @pre true;
+	 * @post this.submitAvailabilityButton.isVisible() == false;
+	 */
+	@Override
+	public void removeFinalizeTimeButton()
+	{
+		this.eventActionPanel.remove(this.finalizeTimeButton);
 	}
 	
 	/**

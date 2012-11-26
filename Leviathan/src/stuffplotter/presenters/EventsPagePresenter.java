@@ -24,10 +24,11 @@ import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.signals.EventCreatedEventHandler;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
-import stuffplotter.signals.SubmittedAvailabilitiesEvent;
-import stuffplotter.signals.SubmittedAvailabilitiesEventHandler;
+import stuffplotter.signals.EventSchedulerEvent;
+import stuffplotter.signals.EventSchedulerEventHandler;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationView;
+import stuffplotter.views.events.EventDateFinalizerDialogBox;
 import stuffplotter.views.events.EventView;
 
 /**
@@ -47,7 +48,6 @@ public class EventsPagePresenter implements Presenter
 		
 		public HasWidgets getEventViewerContainer();
 		public List<HasClickHandlers> getEventViewers();
-		public void removeSubmitAvailabilitiesButton();
 		public void showEventSelected(int row);
 		
 		public HasClickHandlers getAcceptButton();
@@ -58,7 +58,9 @@ public class EventsPagePresenter implements Presenter
 		public void showInvitationButtons();
 		public void showSubmitAvailabilitiesButton();
 		public void showFinalizeTimeButton();
-		public void clearEventActions();
+		
+		public void removeSubmitAvailabilitiesButton();
+		public void removeFinalizeTimeButton();
 		
 		public void initialize(List<Event> events);
 		
@@ -139,28 +141,38 @@ public class EventsPagePresenter implements Presenter
 		/*
 		 * Global handlers
 		 */
-		this.eventBus.addHandler(SubmittedAvailabilitiesEvent.TYPE, new SubmittedAvailabilitiesEventHandler()
+		this.eventBus.addHandler(EventSchedulerEvent.TYPE, new EventSchedulerEventHandler()
 		{
 			@Override
-			public void onSubmitAvailabilities(SubmittedAvailabilitiesEvent event)
+			public void onSchedulerUpdate(EventSchedulerEvent event)
 			{
-				appServices.getEventService().updateScheduler(event.getAvailabilityIds(), new AsyncCallback<Void>() {
+				if (event.getAvailabilityIds() != null)
+				{
+					appServices.getEventService().updateScheduler(event.getAvailabilityIds(), new AsyncCallback<Void>() {
 
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						Window.alert("Failed to submit availabilities...");
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							Window.alert("Failed to submit availabilities...");
+							
+						}
+
+						@Override
+						public void onSuccess(Void result)
+						{
+							Window.alert("Submitted availabilities.");
+						}
 						
-					}
+					});
+					eventsView.removeSubmitAvailabilitiesButton();
+				}
+				else
+				{
+					displayEvent(event.getUpdatedEvent(), event.getUpdatedEventIndex());
+					Window.alert("Event scheduled.");
+					eventsView.removeFinalizeTimeButton();
+				}
 
-					@Override
-					public void onSuccess(Void result)
-					{
-						Window.alert("Submitted availabilities.");
-					}
-					
-				});
-				eventsView.removeSubmitAvailabilitiesButton();
 			}
 		});
 		
@@ -192,8 +204,7 @@ public class EventsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
-					Event selectedEvent = currentEvents.get(eventsIndex);;
-					displayEvent(selectedEvent, eventsIndex);
+					displayEvent(currentEvents.get(eventsIndex), eventsIndex);
 				}	
 			});
 		}
@@ -204,9 +215,10 @@ public class EventsPagePresenter implements Presenter
 	 * @pre true;
 	 * @post true;
 	 */
-	private void bindEventButtons(Event event) 
+	private void bindEventButtons(int index) 
 	{
-		final Event selectedEvent = event;
+		final int selectedIndex = index;
+		final Event selectedEvent = currentEvents.get(selectedIndex);
 		final EventServiceAsync eventService = appServices.getEventService();
 		
 		if (submitAvailabilities != null) 
@@ -230,6 +242,33 @@ public class EventsPagePresenter implements Presenter
 					public void onSuccess(List<Availability> result)
 					{
 						AvailabilitySubmitterDialogBox ignore = new AvailabilitySubmitterDialogBox(result, eventBus);
+					}
+
+				});	
+			}
+		});
+		
+		if (finalizeTime != null) 
+		{
+			finalizeTime.removeHandler();
+		}
+		finalizeTime = this.eventsView.getFinalizeTimeButton().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				eventService.retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("Failed to retrieve timeslots");
+					}
+
+					@Override
+					public void onSuccess(List<Availability> result)
+					{
+						EventDateFinalizerDialogBox ignore = new EventDateFinalizerDialogBox(result, selectedEvent, selectedIndex, appServices, eventBus);
 					}
 
 				});	
@@ -321,9 +360,7 @@ public class EventsPagePresenter implements Presenter
 	 * @param index - the row index of the event to display
 	 */
 	private void displayEvent(Event event, int index)
-	{
-		event = currentEvents.get(index);
-		
+	{		
 		Presenter presenter = new EventPresenter(appServices,
 													 eventBus,
 													 new EventView(),
@@ -338,7 +375,6 @@ public class EventsPagePresenter implements Presenter
 			if(event.getOwnerID() == appUser.getUserEmail())
 			{
 				eventsView.showFinalizeTimeButton();
-				eventsView.showSubmitAvailabilitiesButton(); //remove this later
 			}
 			else
 			{
@@ -346,6 +382,6 @@ public class EventsPagePresenter implements Presenter
 			}
 		}
 		
-		bindEventButtons(event);
+		bindEventButtons(index);
 	}
 }

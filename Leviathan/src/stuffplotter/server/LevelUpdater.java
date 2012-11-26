@@ -9,7 +9,9 @@ public class LevelUpdater implements RecordVisitor
 	/*Flags to update*/
 	boolean madeFriend = false;
 	boolean createEvent = false;
-	boolean acceptEvent = false;
+	boolean participatedEvent = false;
+	boolean commentEvent = false;
+	boolean rateEvent = false;
 	
 	
 	@Override
@@ -18,15 +20,23 @@ public class LevelUpdater implements RecordVisitor
 		LevelSystem leveler = new LevelSystem(account);
 		if(madeFriend)
 		{
-			leveler.addExperience(20);
+			leveler.addExperience(35);
 		}
 		if(createEvent)
 		{
-			leveler.addExperience(20);
+			leveler.addExperience(40);
 		}
-		if(acceptEvent)
+		if(participatedEvent)
+		{
+			leveler.addExperience(25);
+		}
+		if(commentEvent)
 		{
 			leveler.addExperience(10);
+		}
+		if(rateEvent)
+		{
+			leveler.addExperience(15);
 		}
 	}
 
@@ -51,7 +61,19 @@ public class LevelUpdater implements RecordVisitor
 	
 	public LevelUpdater acceptEvent()
 	{
-		acceptEvent = true;
+		participatedEvent = true;
+		return this;
+	}
+	
+	public LevelUpdater commentEvent()
+	{
+		commentEvent = true;
+		return this;
+	}
+	
+	public LevelUpdater rateEvent()
+	{
+		rateEvent = true;
 		return this;
 	}
 

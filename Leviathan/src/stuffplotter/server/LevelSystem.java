@@ -7,6 +7,8 @@ import stuffplotter.shared.AccountStatistic;
  */
 public class LevelSystem {
 	
+	private static final int MAXLEVEL = 10;
+	private static final int MAXXP = 100;
 	private AccountStatistic user;
 	private int currentExp;
 	private int currentLevel;
@@ -27,10 +29,18 @@ public class LevelSystem {
 	 */
 	public void addExperience(int expAmount)
 	{
-		this.currentExp += expAmount;
-		tryLevelUp(this.currentLevel, this.currentExp);
-		user.setUserExperience(currentExp);
-		user.setUserLevel(currentLevel);
+		if(this.currentLevel<MAXLEVEL)
+		{
+			this.currentExp += expAmount;
+			if(this.currentExp>=100)
+			{
+				incrementLevel();
+				this.currentExp = this.currentExp%100;
+			}
+			user.setUserExperience(currentExp);
+			user.setUserLevel(currentLevel);
+		}
+
 	}
 	
 	/**
@@ -38,27 +48,18 @@ public class LevelSystem {
 	 */
 	private void incrementLevel()
 	{
-		this.currentLevel++;
-		user.setUserLevel(currentLevel);
+			this.currentLevel++;
+			if (this.currentLevel>=MAXLEVEL)
+			{
+				user.setUserLevel(MAXLEVEL);
+				user.setUserExperience(MAXXP);
+			}
+			else
+				user.setUserLevel(currentLevel);
+			user.accept(new AchievementChecker());
+
 	}
 	
-	/**
-	 * Method to determine if a user can level up, should only be called during addExperience()
-	 * @param level - current level of the user.
-	 * @param currentExperience - current experience of the user.
-	 */
-	private void tryLevelUp(int level, int currentExperience)
-	{
-		int experienceForNextLvl = (int) (level * 100 * Math.pow(2, level - 1));
-		if(experienceForNextLvl <= currentExperience)
-		{
-			incrementLevel();
-		}
-		else
-		{
-			// do nothing
-		}
-	}
 	
 	/**
 	 * Method to retrieve the user's current experience.

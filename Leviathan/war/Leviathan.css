@@ -64,8 +64,20 @@
   	-moz-box-shadow: 3px 3px 3px rgba(0,0,0,0.3);
 }
 
-.eventActionBar .gwt-Button {
+.commonActionBar {
+	width: 150px;
+}
+
+.eventActionBar {
+	width: 150px;
+}
+
+.redActionButton {
 	color: red;
+}
+
+.greenActionButton {
+	color: green;
 }
 
 .eventRoll {
@@ -83,14 +95,19 @@
 	background-color: #CCC;
 }
 
+.eventNameLabel {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
 .eventListingLabel {
 	font-size: 1.1em;
 	font-weight: bold;
-	color: blue;
 }
 
 .eventScheduledLabel {
-	color: grey;
+	color: #333;
+	font-size: 1em;
 }
 
 .eventInvitedLabel {

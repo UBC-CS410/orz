@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 import stuffplotter.shared.Availability;
-import stuffplotter.signals.SubmittedAvailabilitiesEvent;
+import stuffplotter.signals.EventSchedulerEvent;
 import stuffplotter.views.util.CloseClickHandler;
 
 import stuffplotter.views.util.DateSplitter;
@@ -148,7 +148,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 				{
 					submissions.add(availabilities.get(value));
 				}
-				eventBus.fireEvent(new SubmittedAvailabilitiesEvent(submissions));
+				eventBus.fireEvent(new EventSchedulerEvent(submissions));
 				hide();
 			}
 		});
