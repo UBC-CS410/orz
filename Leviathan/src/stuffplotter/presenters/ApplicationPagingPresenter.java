@@ -162,7 +162,8 @@ public class ApplicationPagingPresenter implements Presenter
 		Presenter achievementsPresenter = new AchievementsPagePresenter(
 				this.appServices,
 				this.eventBus,
-				this.mainViewDisplay.getAchievementsView());
+				this.mainViewDisplay.getAchievementsView(),
+				this.appUser);
 		achievementsPresenter.go((HasWidgets) this.mainViewDisplay);
 	
 		container.add(this.mainViewDisplay.asWidget());

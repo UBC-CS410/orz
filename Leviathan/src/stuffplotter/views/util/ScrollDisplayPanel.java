@@ -83,7 +83,8 @@ public class ScrollDisplayPanel extends ScrollPanel
 		List<Widget> elements = new ArrayList<Widget>();
 		for (int i = 0; i < this.displayedComponents.getRowCount(); i++)
 		{
-			elements.add(this.displayedComponents.getWidget(i, 0/*only 1 column for now*/));
+			for(int j = 0; j < this.displayedComponents.getRowCount(); j++)
+			elements.add(this.displayedComponents.getWidget(i, j));
 		}
 		return elements;
 	}
