@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.Widget;
 public class MonthPanel extends VerticalPanel
 {
 	private HorizontalPanel daysHolder;
+	private int monthValue;
+	private int yearValue;
 	private String month;
 	private String year;
 	
@@ -60,6 +62,8 @@ public class MonthPanel extends VerticalPanel
 		DateSplitter splitter = new DateSplitter(date);
 		this.month = splitter.getMonthAsString();
 		this.year = splitter.getYearAsString();
+		this.monthValue = splitter.getMonth();
+		this.yearValue = splitter.getYear();
 		this.add(new Label(this.month + " " + this.year));
 		
 		this.daysHolder = new HorizontalPanel();
@@ -202,5 +206,27 @@ public class MonthPanel extends VerticalPanel
 	public String getYear()
 	{
 		return this.year;
+	}
+	
+	/**
+	 * Method to retrieve the month value.
+	 * @pre true;
+	 * @post true;
+	 * @return the value of the month.
+	 */
+	public int getMonthValue()
+	{
+		return this.monthValue;
+	}
+	
+	/**
+	 * Method to retrieve the year value.
+	 * @pre true;
+	 * @post true;
+	 * @return the value of the year.
+	 */
+	public int getYearValue()
+	{
+		return this.yearValue;
 	}
 }

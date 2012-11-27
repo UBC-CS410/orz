@@ -49,8 +49,8 @@ public class TimeSheetPanel extends SimplePanel
 	public void addDay(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
-		String month = splitter.getMonthAsString();
-		String year = splitter.getYearAsString();
+		int month = splitter.getMonth();
+		int year = splitter.getYear();
 		
 		boolean monthYearFound = false;
 		int numOfMonthPanels = this.horPanel.getWidgetCount();
@@ -63,7 +63,7 @@ public class TimeSheetPanel extends SimplePanel
 			if(childWidget instanceof MonthPanel)
 			{
 				MonthPanel monthPanel = (MonthPanel) childWidget;
-				if(monthPanel.getMonth().equals(month) && monthPanel.getYear().equals(year))
+				if(monthPanel.getMonthValue() == month && monthPanel.getYearValue() == year)
 				{
 					((MonthPanel) childWidget).addDay(date, conflictDates);
 					monthYearFound = true;
@@ -74,6 +74,26 @@ public class TimeSheetPanel extends SimplePanel
 		
 		if(!monthYearFound)
 		{
+			boolean locationFound = false;
+			int j = 0;
+			
+			// while loop to find the correct place to add the month panel
+			/*while(!locationFound && j < numOfMonthPanels)
+			{
+				Widget childWidget = this.horPanel.getWidget(i); 
+				if(childWidget instanceof MonthPanel)
+				{
+					MonthPanel monthPanel = (MonthPanel) childWidget;
+					if(monthPanel.getYear())
+					{
+						((MonthPanel) childWidget).addDay(date, conflictDates);
+						locationFound = true;
+					}
+				}
+				
+				j++;
+			}*/
+			
 			this.horPanel.add(new MonthPanel(date, conflictDates));
 		}
 	}
