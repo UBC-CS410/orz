@@ -33,7 +33,7 @@ public class DaySelections extends VerticalPanel
 	 * Months need to be zero indexed, so m - 1 where m is the month.
 	 */
 	private static final int CORRECTION_FACTOR_M = 1;
-	private String dayOfMonth;
+	private int dayOfMonth;
 	
 	/**
 	 * Constructor for DaySelections, populates all time slots.
@@ -73,8 +73,8 @@ public class DaySelections extends VerticalPanel
 	private void initializeUI(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
-		this.dayOfMonth = splitter.getDayAsString();
-		this.add(new Label(this.dayOfMonth));
+		this.dayOfMonth = splitter.getDay();
+		this.add(new Label(splitter.getDayAsString()));
 		
 		// for loop to add all the time slots
 		for (int i = 0; i < timeIntervals.length; i++)
@@ -108,8 +108,8 @@ public class DaySelections extends VerticalPanel
 		if(!dates.isEmpty())
 		{
 			DateSplitter splitter = new DateSplitter(dates.get(0));
-			this.dayOfMonth = splitter.getDayAsString();
-			this.add(new Label(dayOfMonth));
+			this.dayOfMonth = splitter.getDay();
+			this.add(new Label(splitter.getDayAsString()));
 		}
 		
 		// for loop to add all the given time slots
@@ -160,7 +160,7 @@ public class DaySelections extends VerticalPanel
 	 * @post true;
 	 * @return the day represented by the DaySelection.
 	 */
-	public String getDay()
+	public int getDay()
 	{
 		return this.dayOfMonth;
 	}

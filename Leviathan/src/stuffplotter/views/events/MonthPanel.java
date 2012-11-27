@@ -160,17 +160,41 @@ public class MonthPanel extends VerticalPanel
 			if(childWidget instanceof DaySelections)
 			{
 				DaySelections dayPanel = (DaySelections) childWidget;
-				if(dayPanel.getDay().equals(dayOfMonth))
+				if(dayPanel.getDay() == dayOfMonth)
 				{
 					dayFound = true;
 				}
-			}	
+			}
+			
 			i++;
 		}
 		
 		if(!dayFound)
 		{
-			this.daysHolder.add(new DaySelections(date, conflictDates));
+			boolean locationFound = false;
+			int j = 0;
+			
+			// while loop to find the correct place to add the day panel
+			while(!locationFound && j < numOfDayPanels)
+			{
+				Widget childWidget = this.daysHolder.getWidget(j); 
+				if(childWidget instanceof DaySelections)
+				{
+					DaySelections dayPanel = (DaySelections) childWidget;
+					if(dayOfMonth < dayPanel.getDay())
+					{
+						locationFound = true;
+						this.daysHolder.insert(new DaySelections(date, conflictDates), j);
+					}
+				}
+				
+				j++;
+			}
+			
+			if(!locationFound)
+			{
+				this.daysHolder.add(new DaySelections(date, conflictDates));
+			}
 		}
 	}
 	

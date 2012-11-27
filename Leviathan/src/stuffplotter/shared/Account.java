@@ -23,8 +23,8 @@ import com.googlecode.objectify.annotation.Entity;
 public class Account implements Serializable, AccountModel
 {
 	/* Session information */
-	@Transient private String userLoginUrl;
-	@Transient private String userLogoutUrl;
+	private String userLoginUrl;
+	private String userLogoutUrl;
 
 	/* Basic information */
 	@Id
