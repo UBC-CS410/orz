@@ -59,5 +59,12 @@ public interface NotificationModel
 	 */
 	public String getNotificationDisplay();
 	
+	/**
+	 * Sets the new notification flag
+	 * @pre true;
+	 * @post true;
+	 * @param bool the state of the notification clag
+	 */
+	public void setNewNotification(boolean bool);
 
 }

@@ -112,6 +112,17 @@ public class TopBarPresenter implements Presenter
 					public void onSuccess(List<NotificationModel> result)
 					{
 						notifications = result;
+						int NumberOfNewNotifications = 0;
+						for(NotificationModel notif: notifications)
+						{
+							if(notif.getNewNotification())
+								NumberOfNewNotifications++;
+						}
+						if(NumberOfNewNotifications>1)
+							topBarDisplay.setNotificationLabelText("Notifications ("+NumberOfNewNotifications+")");
+							else
+							topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
+						
 						topBarDisplay.setNotificationData(notifications);
 						
 					}
@@ -131,10 +142,6 @@ public class TopBarPresenter implements Presenter
 			@Override
 			public void onRefreshPage(RefreshPageEvent event)
 			{
-				// TO DO: Make backend call and repopulate the notifications panel
-//				Window.alert("Attempting to Refresh Notification List" +
-//						"Window alert in TopBarPresenter");
-				//topBarDisplay.setNotificationData(notifications)
 				AccountServiceAsync accountService = appServices.getAccountService();
 				accountService.getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
 						{
@@ -194,7 +201,6 @@ public class TopBarPresenter implements Presenter
 													topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 												
 												topBarDisplay.setNotificationData(notifications);
-												System.out.println("I have refreshed btw");
 											}
 									
 										});
@@ -215,7 +221,16 @@ public class TopBarPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				topBarDisplay.getPopUp().toggleVisibility();		
+				topBarDisplay.getPopUp().toggleVisibility();	
+				if(!topBarDisplay.getPopUp().isShowing())
+				{
+					for(NotificationModel not: notifications)
+					{
+						not.setNewNotification(false);
+					}
+					topBarDisplay.setNotificationLabelText("Notification (0)");
+					topBarDisplay.setNotificationData(notifications);
+				}
 			}
 			
 		});

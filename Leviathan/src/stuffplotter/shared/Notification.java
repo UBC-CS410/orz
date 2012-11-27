@@ -93,6 +93,7 @@ public abstract class Notification implements Serializable, NotificationModel
 		this.notificationDisplay = notificationDisplay;
 	}
 	
+	@Override
 	public void setNewNotification(boolean bool)
 	{
 		this.newNotification = bool;
