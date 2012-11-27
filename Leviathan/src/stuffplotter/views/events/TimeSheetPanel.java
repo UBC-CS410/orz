@@ -7,7 +7,6 @@ import java.util.List;
 
 import stuffplotter.views.util.DateSplitter;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -74,27 +73,45 @@ public class TimeSheetPanel extends SimplePanel
 		
 		if(!monthYearFound)
 		{
-			boolean locationFound = false;
-			int j = 0;
-			
-			// while loop to find the correct place to add the month panel
-			/*while(!locationFound && j < numOfMonthPanels)
+			if(numOfMonthPanels == 0)
 			{
-				Widget childWidget = this.horPanel.getWidget(i); 
-				if(childWidget instanceof MonthPanel)
+				this.horPanel.add(new MonthPanel(date, conflictDates));
+			}
+			else
+			{
+				boolean locationFound = false;
+				int j = 0;
+				
+				// while loop to find the correct place to add the month panel
+				while(!locationFound && j < numOfMonthPanels)
 				{
-					MonthPanel monthPanel = (MonthPanel) childWidget;
-					if(monthPanel.getYear())
+					Widget childWidget = this.horPanel.getWidget(j); 
+					if(childWidget instanceof MonthPanel)
 					{
-						((MonthPanel) childWidget).addDay(date, conflictDates);
-						locationFound = true;
+						MonthPanel monthPanel = (MonthPanel) childWidget;
+						if(year < monthPanel.getYearValue())
+						{
+							locationFound = true;
+							this.horPanel.insert(new MonthPanel(date, conflictDates), j);
+						}
+						else if(year == monthPanel.getYearValue())
+						{
+							if(month < monthPanel.getMonthValue())
+							{
+								locationFound = true;
+								this.horPanel.insert(new MonthPanel(date, conflictDates), j);
+							}
+						}
 					}
+					
+					j++;
 				}
 				
-				j++;
-			}*/
-			
-			this.horPanel.add(new MonthPanel(date, conflictDates));
+				if(!locationFound)
+				{
+					this.horPanel.add(new MonthPanel(date, conflictDates));
+				}
+			}
 		}
 	}
 	
