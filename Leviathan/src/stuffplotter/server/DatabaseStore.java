@@ -16,6 +16,7 @@ import stuffplotter.shared.Notification;
 import stuffplotter.shared.Scheduler;
 import stuffplotter.shared.Availability;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -51,98 +52,31 @@ public class DatabaseStore
 	}
 	
 	/**
-	 * Stores an Account to the data store using Objectify.
-	 * @pre pAct != null;
-	 * @post true;
-	 * @param pAcct - the Account to be stored.
-	 */	
-	public void store(Account pAct)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pAct);
-	}
-	
-	/**
-	 * Stores an AccountStatistic to the data store using Objectify.
-	 * @pre pActStats != null;
-	 * @post true;
-	 * @param pAcct - the AccountStatistic to be stored.
-	 */	
-	public void store(AccountStatistic pActStats)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pActStats);
-	}
-	
-	/**
-	 * Stores an Event to the data store using Objectify.
-	 * @pre pEvt != null;
-	 * @post true;
-	 * @param pEvt - the Event to be stored.
-	 */	
-	public void store(Event pEvt)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pEvt);
-	}
-	
-	/**
-	 * Stores a Scheduler to the data store using Objectify.
-	 * @pre pSch != null;
-	 * @post true;
-	 * @param pSch - the Scheduler to be stored.
-	 */	
-	public void store(Scheduler pSch)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pSch);
-	}
-	
-	/**
-	 * Stores an Availability to the data store using Objectify.
-	 * @pre pAvl != null;
-	 * @post true;
-	 * @param pAvl - the Availability to be stored.
-	 */	
-	public void store(Availability pAvl)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pAvl);
-	}
-	
-	/**
-	 * Stores a Comment to the data store using Objectify.
-	 * @pre pNotif != null;
-	 * @post true;
-	 * @param pNotif - the Notification to be stored.
-	 */	
-	public void store(Notification pNotif)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pNotif);
-	}
-	
-	
-	
-	/**
-	 * Stores a Comment to the data store using Objectify.
-	 * @pre pCmt != null;
-	 * @post true;
-	 * @param pCmt - the Comment to be stored.
-	 */	
-	public void store(Comment pCmt)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(pCmt);
-	}
-	
-	/**
-	 * Fetches an AccountStatistic from the data store using Objectify.
-	 * @pre pId != null;
-	 * @post true;
-	 * @param pId - the id of the AccountStatistic.
-	 * @return - the AccountStatistic that is associated with the specified id.
+	 * Creates or updates an object in the data store
+	 * @pre object != null;
+	 * @post ofy.get(object.getKey()) == object
+	 * @param object - the object to store
 	 */
+	public void simpleStore(Object object)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		ofy.put(object);
+	}
+	
+	/**
+	 * Fetches an object from the data store
+	 * @pre key != null;
+	 * @post true;
+	 * @param key - an objectify key
+	 */
+	public Object simpleFetch(Key<?> key)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		return ofy.get(key);
+	}
+	
+	
+	//TODO: REFACTOR SERVICE IMPLS TO USE SIMPLE FETCH AND REMOVE THIS FUNCTION
 	public AccountStatistic fetchAccountStats(String pId)
 	{
 		Objectify ofy = ObjectifyService.begin();
@@ -150,18 +84,44 @@ public class DatabaseStore
 		return acctStats;
 	}
 	
-	/**
-	 * Fetches an Account from the data store using Objectify.
-	 * @pre pId != null;
-	 * @post true;
-	 * @param pId - the id of the Account.
-	 * @return the Account that is associated with the specified id.
-	 */
+	//TODO: REFACTOR SERVICE IMPLS TO USE SIMPLE FETCH AND REMOVE THIS FUNCTION
 	public Account fetchAccount(String pId)
 	{
 		Objectify ofy = ObjectifyService.begin();
 		Account acct = ofy.get(Account.class, pId);
 		return acct;
+	}
+	
+	//TODO: REFACTOR SERVICE IMPLS TO USE SIMPLE FETCH AND REMOVE THIS FUNCTION
+	public Event fetchEvent(Long pId)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		Event evnt = ofy.get(Event.class, pId);
+		return evnt;
+	}
+	
+	//TODO: REFACTOR SERVICE IMPLS TO USE SIMPLE FETCH AND REMOVE THIS FUNCTION
+	public Scheduler fetchScheduler(Long pId)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		Scheduler sch = ofy.get(Scheduler.class, pId);
+		return sch;
+	}
+	
+	//TODO: REFACTOR SERVICE IMPLS TO USE SIMPLE FETCH AND REMOVE THIS FUNCTION
+	public Availability fetchAvailability(Long pId)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		Availability avl = ofy.get(Availability.class, pId);
+		return avl;
+	}
+	
+	//TODO: REFACTOR SERVICE IMPLS TO USE SIMPLE FETCH AND REMOVE THIS FUNCTION
+	public Comment fetchComment(Long pId)
+	{
+		Objectify ofy = ObjectifyService.begin();
+		Comment cmt = ofy.get(Comment.class, pId);
+		return cmt;
 	}
 	
 	/**
@@ -176,34 +136,6 @@ public class DatabaseStore
 		Objectify ofy = ObjectifyService.begin();
 		Map<String, Account> accounts = ofy.get(Account.class, userIds);
 		return accounts;
-	}
-	
-	/**
-	 * Fetches an Event from the data store using Objectify.
-	 * @pre pId != null;
-	 * @post true;
-	 * @param pId - the id of the Event
-	 * @return the Event that is associated with the specified id.
-	 */
-	public Event fetchEvent(Long pId)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		Event evnt = ofy.get(Event.class, pId);
-		return evnt;
-	}
-	
-	/**
-	 * Fetches a Scheduler from the data store using Objectify.
-	 * @pre pId != null;
-	 * @post true;
-	 * @param pId - the id of the Scheduler.
-	 * @return the Scheduler that is associated with the specified id.
-	 */
-	public Scheduler fetchScheduler(Long pId)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		Scheduler sch = ofy.get(Scheduler.class, pId);
-		return sch;
 	}
 	
 	/**
@@ -241,34 +173,6 @@ public class DatabaseStore
 		}
 
 		return not;
-	}
-	
-	/**
-	 * Fetches an Availability from the data store using Objectify.
-	 * @pre pId != null;
-	 * @post true;
-	 * @param pId - the id of the Availability
-	 * @return the Availability that is associated with the specified id.
-	 */
-	public Availability fetchAvailability(Long pId)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		Availability avl = ofy.get(Availability.class, pId);
-		return avl;
-	}
-	
-	/**
-	 * Fetches an Comment from the data store using Objectify.
-	 * @pre pId != null;
-	 * @post true;
-	 * @param pId - the id of the Comment.
-	 * @return the Comment that is associated with the specified id.
-	 */
-	public Comment fetchComment(Long pId)
-	{
-		Objectify ofy = ObjectifyService.begin();
-		Comment cmt = ofy.get(Comment.class, pId);
-		return cmt;
 	}
 	
 	/**
@@ -312,6 +216,5 @@ public class DatabaseStore
 		List<Event> evntList = ofy.query(Event.class).filter("eventCost", pDbl).list();
 		return evntList;
 	}
-
 
 }

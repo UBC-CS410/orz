@@ -34,7 +34,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	{
 		// store event
 		Event event = pEvent;
-		dbstore.store(event);
+		dbstore.simpleStore(event);
 		
 		// associate scheduler to event
 		this.addScheduler(event.getId(), timeSlots);
@@ -42,7 +42,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		
 		Account account = dbstore.fetchAccount(pEvent.getOwnerID());
 		account.addUserEvent(event.getId());
-		dbstore.store(account);
+		dbstore.simpleStore(account);
 		email.sendEvent(event);
 		return event;
 	}
@@ -61,15 +61,15 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		for (Date date : pDates)
 		{					
 			Availability availability = new Availability(date);
-			dbstore.store(availability);
+			dbstore.simpleStore(availability);
 			scheduler.addAvailability(availability);
 		}
 		
-		dbstore.store(scheduler);
+		dbstore.simpleStore(scheduler);
 		Event event = dbstore.fetchEvent(pEventId);
 		event.setEventScheduler(scheduler.getId());
 		event.setStatus(Event.Status.PROPOSED);
-		dbstore.store(event);
+		dbstore.simpleStore(event);
 	}
 	
 	/**
@@ -89,8 +89,8 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 			event.setStatus(Status.FINISHED);
 			account.getCurrentEvents().remove(pEventId);
 			account.getPastEvents().add(pEventId);
-			dbstore.store(account);
-			dbstore.store(event);
+			dbstore.simpleStore(account);
+			dbstore.simpleStore(event);
 		}
 		return event;
 	}
@@ -141,7 +141,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	@Override
 	public void updateEvent(Event pEvent)
 	{
-		dbstore.store(pEvent);
+		dbstore.simpleStore(pEvent);
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		{
 			Availability toUpdate = dbstore.fetchAvailability(availabilityIds.get(i));
 			toUpdate.incrementVote();
-			dbstore.store(toUpdate);
+			dbstore.simpleStore(toUpdate);
 		}
 	}
 	
@@ -171,10 +171,10 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	public void addComment(Long eventId, String username, Date time, String comment)
 	{
 		Comment newComment = new Comment(username, time, comment);
-		dbstore.store(newComment);
+		dbstore.simpleStore(newComment);
 		Event event = dbstore.fetchEvent(eventId);
 		event.addComment(newComment.getId());
-		dbstore.store(event);
+		dbstore.simpleStore(event);
 	}
 
 	/**
