@@ -350,4 +350,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 			dbstore.store(notif);
 		}
 	}
+
+	@Override
+	public void saveNotifications(List<NotificationModel> notifs)
+	{
+		for(NotificationModel notif : notifs)
+		{
+			dbstore.store((Notification) notif);
+		}
+		
+	}
 }

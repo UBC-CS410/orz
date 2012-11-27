@@ -26,7 +26,6 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
-import stuffplotter.views.friends.FriendPanel;
 import stuffplotter.views.friends.FriendPanelView;
 import stuffplotter.views.friends.PendingFriendPanel;
 

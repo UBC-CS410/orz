@@ -36,4 +36,5 @@ public interface AccountServiceAsync
 	 * @param callback - the call back for the method.
 	 */
 	void getAccounts(List<String> userIds, AsyncCallback<Map<String, Account>> callback);
+	void saveNotifications(List<NotificationModel> notifs, AsyncCallback<Void> callback);
 }

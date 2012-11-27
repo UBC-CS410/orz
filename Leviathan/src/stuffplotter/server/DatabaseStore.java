@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.AchievementNotification;
@@ -120,6 +121,8 @@ public class DatabaseStore
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(pNotif);
 	}
+	
+	
 	
 	/**
 	 * Stores a Comment to the data store using Objectify.
@@ -309,4 +312,6 @@ public class DatabaseStore
 		List<Event> evntList = ofy.query(Event.class).filter("eventCost", pDbl).list();
 		return evntList;
 	}
+
+
 }

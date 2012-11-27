@@ -10,10 +10,8 @@ import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.Notification;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
-import stuffplotter.views.global.TopBarPanel;
 import stuffplotter.views.global.UserNotificationsPopupPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -21,7 +19,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -184,7 +181,7 @@ public class TopBarPresenter implements Presenter
 															@Override
 															public int compare(NotificationModel o1, NotificationModel o2)
 															{
-																return o1.getNotificationTime().compareTo(o2.getNotificationTime());
+																return o2.getNotificationTime().compareTo(o1.getNotificationTime());
 															}
 													
 														});
@@ -207,11 +204,7 @@ public class TopBarPresenter implements Presenter
 							}
 					
 						});
-				
 
-				
-				
-				
 			}
 		});
 		
@@ -230,6 +223,22 @@ public class TopBarPresenter implements Presenter
 					}
 					topBarDisplay.setNotificationLabelText("Notification (0)");
 					topBarDisplay.setNotificationData(notifications);
+					appServices.getAccountService().saveNotifications(notifications, new AsyncCallback<Void>()
+							{
+
+								@Override
+								public void onFailure(Throwable caught)
+								{
+									
+								}
+
+								@Override
+								public void onSuccess(Void result)
+								{
+									
+								}
+						
+							});
 				}
 			}
 			
