@@ -269,7 +269,8 @@ public class Leviathan implements EntryPoint
 		RootPanel.get().add(testButton2);
 		//DO NOT REMOVE CODE ABOVE, USED FOR TESTING GOOGLE CALENDARS
 		
-		applicationServices.getStatsService().getStats(applicationUser.getUserEmail(), new AsyncCallback<AccountStatistic>(){
+		applicationServices.getStatsService().getStats(applicationUser.getUserEmail(), new AsyncCallback<AccountStatistic>()
+		{
 
 			@Override
 			public void onFailure(Throwable caught)
