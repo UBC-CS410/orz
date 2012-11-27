@@ -1,5 +1,6 @@
 package stuffplotter.bindingcontracts;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import stuffplotter.shared.Notification.NotificationType;
@@ -57,4 +58,6 @@ public interface NotificationModel
 	 * @return the string display of the notification
 	 */
 	public String getNotificationDisplay();
+	
+
 }

@@ -110,6 +110,19 @@ public abstract class Notification implements Serializable, NotificationModel
 	public boolean getNewNotification(){
 		return this.newNotification;
 	}
+	
+	@Override
+	public boolean equals(Object o1)
+	{
+		if(this.getClass()==o1.getClass())
+		{
+			final Notification other = (Notification) o1;
+			return this.getNotificationId()==other.notificationId;
+		}else{
+			return false;
+		}
+	}
+	
 
 	/**
 	 * Serial version for the Notification.

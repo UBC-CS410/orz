@@ -44,14 +44,14 @@ public class UserNotificationsPopupPanel extends PopupPanel
 		this.notificationHolder = new ScrollPanel();
 		userList = new FlexTable();
 		userList.setWidget(0, 0, new Label("No new notifications."));
-		this.scrollHolder.addBlurHandler(new BlurHandler()
-		{
-			@Override
-			public void onBlur(BlurEvent event)
-			{
-				hide();
-			}	
-		});
+//		this.scrollHolder.addBlurHandler(new BlurHandler()
+//		{
+//			@Override
+//			public void onBlur(BlurEvent event)
+//			{
+//				hide();
+//			}	
+//		});
 
 		this.notificationHolder.add(userList);
 		this.scrollHolder.add(notificationHolder);

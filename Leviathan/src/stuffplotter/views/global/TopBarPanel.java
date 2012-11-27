@@ -46,6 +46,7 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		notificationsLabel.setStyleName("topBarNotifications");
 		
 		popup = new UserNotificationsPopupPanel();
+		popup.setPopupPosition(this.notificationsLabel.getAbsoluteLeft(), this.notificationsLabel.getAbsoluteTop()+30);
 		
 		this.add(notificationsLabel);
 		this.setCellWidth(notificationsLabel, String.valueOf(Window.getClientWidth() - 200) + "px");
