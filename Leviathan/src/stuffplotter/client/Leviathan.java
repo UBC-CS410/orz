@@ -246,54 +246,6 @@ public class Leviathan implements EntryPoint
 		});
 		RootPanel.get().add(button);
 		*/
-		
-		/*
-		Window.alert("ASDF");
-		System.out.println("ASDF");
-		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
-		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk"));
-		
-		OAuth2Login.get().authorize("1024938108271.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
-		{
-			@Override
-			public void onFailure(Exception reason)
-			{
-				// TODO Auto-generated method stub
-				Window.alert(reason.getMessage());				
-			}
-
-			@Override
-			public void onSuccess(Void result)
-			{
-				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
-				{
-					@Override
-					public void onSuccess(CalendarList response) 
-					{
-						String calendarID = response.getItems().get(0).getId();
-						ListRequest calRequest = testCalendar.events().list(calendarID);
-						calRequest.fire(new Receiver<Events>()
-						{
-							@Override
-							public void onSuccess(Events response)
-							{
-								String result = "Events Found: ";
-								List<Event> events = response.getItems();
-								if(events != null)
-								{
-									for(Event event : events)
-									{
-										result += " " + event.getCreated();
-									}
-								}
-								Window.alert(result);
-							}
-						});
-					}
-				});
-			}	
-		});
-		*/
 
 		applicationServices.getStatsService().getStats(account.getUserEmail(), new AsyncCallback<AccountStatistic>(){
 

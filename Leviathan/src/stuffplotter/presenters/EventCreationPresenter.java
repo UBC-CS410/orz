@@ -8,6 +8,7 @@ import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.EventCreationPageValidator;
+import stuffplotter.client.GoogleCalendar;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Event;
@@ -16,6 +17,14 @@ import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
 import stuffplotter.views.util.NotificationDialogBox;
 
+import com.google.api.gwt.client.OAuth2Login;
+import com.google.api.gwt.services.calendar.shared.Calendar;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
+import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.api.gwt.services.calendar.shared.model.CalendarList;
+import com.google.api.gwt.services.calendar.shared.model.Events;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,8 +35,10 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.web.bindery.requestfactory.shared.Receiver;
 
 /**
  * Presenter for the event creation dialog box.
@@ -230,10 +241,56 @@ public class EventCreationPresenter implements Presenter
 		this.createEventDialogBox.getCalendar().addValueChangeHandler(new ValueChangeHandler<Date>()
 		{
 			@Override
-			public void onValueChange(ValueChangeEvent<Date> event)
+			public void onValueChange(final ValueChangeEvent<Date> event)
 			{
 				// add google calendar here to get list of conflicts
-				createEventDialogBox.populateTimeSheet(event.getValue(), new ArrayList<Date>());
+				GoogleCalendar  calendar = new GoogleCalendar();
+				final Calendar googleCalendar = calendar.getCalendar();
+				
+				OAuth2Login.get().authorize(GoogleCalendar.CLIENT_ID, CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+				{
+					@Override
+					public void onFailure(Exception reason)
+					{
+						// REMOVE AFTER TESTING DONE
+						Window.alert(reason.getMessage());
+					}
+					
+					@Override
+					public void onSuccess(Void result)
+					{
+						googleCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
+						{
+							@Override
+							public void onSuccess(CalendarList response) 
+							{
+								String calendarID = response.getItems().get(0).getId();
+								ListRequest calRequest = googleCalendar.events().list(calendarID);
+								calRequest.fire(new Receiver<Events>()
+								{
+									@Override
+									public void onSuccess(Events response)
+									{
+										String result = "Events Found: ";
+										List<com.google.api.gwt.services.calendar.shared.model.Event> events = response.getItems();
+										if(events != null)
+										{
+											for(com.google.api.gwt.services.calendar.shared.model.Event event : events)
+											{
+												result += " " + event.getCreated();
+											}
+										}
+										
+										// add google calendar here to get list of conflicts
+										createEventDialogBox.populateTimeSheet(event.getValue(), new ArrayList<Date>());
+									
+										Window.alert(result);
+									}
+								});
+							}
+						});
+					}
+				});
 			}
 		});
 	}
