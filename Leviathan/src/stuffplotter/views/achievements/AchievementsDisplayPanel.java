@@ -2,9 +2,10 @@ package stuffplotter.views.achievements;
 
 import java.util.List;
 
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import stuffplotter.bindingcontracts.AchievementModel;
 import stuffplotter.shared.Achievement;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
@@ -32,6 +33,8 @@ public class AchievementsDisplayPanel extends ScrollDisplayPanel
 	 */
 	public void setAchievementData(List<Achievement> achievements)
 	{
+		this.clearDisplay();
+		
 		for(Achievement model : achievements)
 		{
 			this.addElement(new AchievementPanel(model));
@@ -43,6 +46,10 @@ public class AchievementsDisplayPanel extends ScrollDisplayPanel
 	 */
 	public class AchievementPanel extends VerticalPanel
 	{
+		private Image achievementPicture;
+		private Label name;
+		private Label description;
+		
 		/**
 		 * Constructor for the AchievementPanel.
 		 * @pre model != null;
@@ -51,7 +58,24 @@ public class AchievementsDisplayPanel extends ScrollDisplayPanel
 		 */
 		public AchievementPanel(Achievement model)
 		{
-			// TO DO
+			this.initializeUI(model);
 		}
+		
+		/**
+		 * Helper method to display the Achievement panel information.
+		 * @pre model != null;
+		 * @post true;
+		 * @param model - the achievement to display.
+		 */
+		private void initializeUI(Achievement model)
+		{
+			this.achievementPicture = new Image();
+			this.name = new Label(model.getName());
+			this.description = new Label(model.getDesc());
+			
+			this.add(this.achievementPicture);
+			this.add(this.name);
+			this.add(this.description);
+		}	
 	}
 }
