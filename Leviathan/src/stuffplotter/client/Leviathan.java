@@ -70,6 +70,8 @@ public class Leviathan implements EntryPoint
 						if (caught instanceof GoogleAPIException)
 						{
 							Window.alert("Failed to retrieve Google profile...");
+							Auth.get().clearAllTokens();
+				        	Window.Location.assign(account.getLogoutUrl());
 						}
 					}
 
@@ -97,7 +99,8 @@ public class Leviathan implements EntryPoint
 	        	
 	        	final DialogBox introductionDialogBox = new DialogBox();
 	        	
-	        	if (account.getAccessToken() == null)
+	        	//TODO: Don't just check for nullity, also validate access token
+	        	if (account.getAccessToken() == null || account.getUserFullName() == null)
 	    		{
 	        		Button startButton = new Button("Continue");
 	        		startButton.addClickHandler(new ClickHandler()
@@ -115,7 +118,6 @@ public class Leviathan implements EntryPoint
 	        		introductionDialogBox.setTitle("stuffplotter");
 	        		introductionDialogBox.setText("Welcome to stuffplotter.");
 	        		
-	        		introductionDialogBox.setPixelSize(320, 240);
 	        		introductionDialogBox.center();
 	        		introductionDialogBox.setGlassEnabled(true);
 	        		introductionDialogBox.setAnimationEnabled(true);
@@ -180,7 +182,6 @@ public class Leviathan implements EntryPoint
 					{
 						account = result;
 						eventBus.fireEvent(new AccountAuthorizedEvent());	
-						System.out.println("authorized");
 					}	
 				});
 			}
