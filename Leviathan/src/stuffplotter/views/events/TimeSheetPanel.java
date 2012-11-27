@@ -7,7 +7,6 @@ import java.util.List;
 
 import stuffplotter.views.util.DateSplitter;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -49,8 +48,8 @@ public class TimeSheetPanel extends SimplePanel
 	public void addDay(Date date, List<Date> conflictDates)
 	{
 		DateSplitter splitter = new DateSplitter(date);
-		String month = splitter.getMonthAsString();
-		String year = splitter.getYearAsString();
+		int month = splitter.getMonth();
+		int year = splitter.getYear();
 		
 		boolean monthYearFound = false;
 		int numOfMonthPanels = this.horPanel.getWidgetCount();
@@ -63,7 +62,7 @@ public class TimeSheetPanel extends SimplePanel
 			if(childWidget instanceof MonthPanel)
 			{
 				MonthPanel monthPanel = (MonthPanel) childWidget;
-				if(monthPanel.getMonth().equals(month) && monthPanel.getYear().equals(year))
+				if(monthPanel.getMonthValue() == month && monthPanel.getYearValue() == year)
 				{
 					((MonthPanel) childWidget).addDay(date, conflictDates);
 					monthYearFound = true;
@@ -74,7 +73,45 @@ public class TimeSheetPanel extends SimplePanel
 		
 		if(!monthYearFound)
 		{
-			this.horPanel.add(new MonthPanel(date, conflictDates));
+			if(numOfMonthPanels == 0)
+			{
+				this.horPanel.add(new MonthPanel(date, conflictDates));
+			}
+			else
+			{
+				boolean locationFound = false;
+				int j = 0;
+				
+				// while loop to find the correct place to add the month panel
+				while(!locationFound && j < numOfMonthPanels)
+				{
+					Widget childWidget = this.horPanel.getWidget(j); 
+					if(childWidget instanceof MonthPanel)
+					{
+						MonthPanel monthPanel = (MonthPanel) childWidget;
+						if(year < monthPanel.getYearValue())
+						{
+							locationFound = true;
+							this.horPanel.insert(new MonthPanel(date, conflictDates), j);
+						}
+						else if(year == monthPanel.getYearValue())
+						{
+							if(month < monthPanel.getMonthValue())
+							{
+								locationFound = true;
+								this.horPanel.insert(new MonthPanel(date, conflictDates), j);
+							}
+						}
+					}
+					
+					j++;
+				}
+				
+				if(!locationFound)
+				{
+					this.horPanel.add(new MonthPanel(date, conflictDates));
+				}
+			}
 		}
 	}
 	
