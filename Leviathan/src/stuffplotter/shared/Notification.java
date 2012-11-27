@@ -115,13 +115,23 @@ public abstract class Notification implements Serializable, NotificationModel
 	@Override
 	public boolean equals(Object o1)
 	{
-		if(this.getClass()==o1.getClass())
+		if(o1 instanceof Notification)
 		{
 			final Notification other = (Notification) o1;
+			if(o1 == this)
+				return true;
 			return this.getNotificationId()==other.notificationId;
-		}else{
-			return false;
 		}
+		return false;
+		
+	}
+	
+	@Override
+	public int hashCode()
+	{
+	    int result = 0;
+	    result = (int)(this.getNotificationId()*7)*13 * 43;
+	    return result;
 	}
 	
 
