@@ -7,7 +7,7 @@ import stuffplotter.presenters.AppController;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
-import stuffplotter.shared.GoogleAPIException;
+import stuffplotter.shared.InvalidAccessTokenException;
 import stuffplotter.signals.AccountAuthorizedEvent;
 import stuffplotter.signals.AccountAuthorizedEventHandler;
 
@@ -31,10 +31,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
 
@@ -43,12 +40,51 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
  */
 public class Leviathan implements EntryPoint
 {
-	private final String url = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	/**
+	 * API Access
+	 * To prevent abuse, Google places limits on API requests. Using a valid OAuth token or API key allows you to exceed anonymous limits by connecting requests back to your project.
+	 * 
+	 * Product name:	stuffplotter
+	 * Google account:	allenylzhou@gmail.com
+	 * 
+	 * Client ID:			1024938108271.apps.googleusercontent.com
+	 * Email address:		1024938108271@developer.gserviceaccount.com
+	 * Client secret:		xNa3bfxI67U9rGJypDVcMZ34
+	 * Redirect URIs:		http://127.0.0.1:8888/Leviathan.html?gwt.codesvr=127.0.0.1:9997
+	 *						http://127.0.0.1:8888/oauth2callback
+	 *						http://127.0.0.1:8888/leviathan/oauthWindow.html
+	 *						http://stuffplotter.appspot.com/
+	 *						http://stuffplotter.appspot.com/oauth2callback
+	 *						http://stuffplotter.appspot.com/leviathan/oauthWindow.html
+	 *						http://stuffplotter3.appspot.com/
+	 *						http://stuffplotter3.appspot.com/oauth2callback
+	 *						http://stuffplotter3.appspot.com/leviathan/oauthWindow.html
+	 *						http://rmar3a05.appspot.com/
+	 *						http://rmar3a05.appspot.com/oauth2callback
+	 *						http://rmar3a05.appspot.com/leviathan/oauthWindow.html
+	 * JavaScript origins:	http://127.0.0.1:8888/
+	 * 						http://stuffplotter.appspot.com/
+	 * 						http://stuffplotter3.appspot.com/
+	 * 						http://rmar3a05.appspot.com/
+	 */
 	
+	/**
+	 * Key for browser apps (with referers)
+	 * API key:	AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk
+	 * Referers:	Any referer allowed
+	 * Activated on:	Nov 25, 2012 5:33 PM
+	 * Activated by:	 allenylzhou@gmail.com – you
+	 */
+	private final String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
+	private final String REDIRECT_URI = (GWT.isProdMode()) ? GWT.getHostPageBaseURL() : GWT.getHostPageBaseURL() + "Leviathan.html?gwt.codesvr=127.0.0.1:9997";
+	private final String RESPONSE_TYPE = "token";
+	private final String CLIENT_ID = "1024938108271.apps.googleusercontent.com"; // available from the APIs console
+	private final String GOOGLE_PROFILE_SCOPE = "https://www.googleapis.com/auth/userinfo.profile";
+	private final String GOOGLE_CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
+	
+	private Account applicationUser = null;
 	private ServiceRepository applicationServices = new ServiceRepository();
 	private HandlerManager eventBus = new HandlerManager(null);
-	
-	private Account account = null;
 	
 	/**
 	 * This is the entry point method.
@@ -57,111 +93,92 @@ public class Leviathan implements EntryPoint
 	{	
 		this.eventBus.addHandler(AccountAuthorizedEvent.TYPE, new AccountAuthorizedEventHandler() 
 		{
-
 			@Override
 			public void onAuthorizeAccount()
 			{
-        		applicationServices.getAccountService().saveProfile(account, new AsyncCallback<Account>()
+        		applicationServices.getAccountService().storeUserinfo(new AsyncCallback<Void>()
         		{
-
+        			
 					@Override
 					public void onFailure(Throwable caught)
 					{
-						if (caught instanceof GoogleAPIException)
+						if (caught instanceof InvalidAccessTokenException)
 						{
-							Window.alert("Failed to retrieve Google profile...");
-							Auth.get().clearAllTokens();
-				        	Window.Location.assign(account.getLogoutUrl());
+							Window.alert("Invalid access token.");
+				        	requestAccessToken();
+						}
+						else
+						{
+							Window.alert(caught.toString());
 						}
 					}
 
 					@Override
-					public void onSuccess(Account result)
+					public void onSuccess(Void result)
 					{
-						account = result;
-						startApplication();
+						//TODO: Revoke token when we are done with it.
+						//https://accounts.google.com/o/oauth2/revoke?token={token}
+						Window.Location.assign(REDIRECT_URI);
 					}	
+					
         		});	
 			}
 			
 		});
 		
-		applicationServices.getAccountService().load(url, new AsyncCallback<Account>()
+		applicationServices.getAccountService().registerAccount(REDIRECT_URI, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
-	        	Window.alert("Failed to load user account...");
+	        	Window.alert(error.toString());
 	        }
 
 	        public void onSuccess(Account result)
 	        {	
-	        	account = result;
+	        	applicationUser = result;
 	        	
-	        	final DialogBox introductionDialogBox = new DialogBox();
-	        	
-	        	//TODO: Don't just check for nullity, also validate access token
-	        	if (account.getAccessToken() == null || account.getUserFullName() == null)
-	    		{
-	        		Button startButton = new Button("Continue");
-	        		startButton.addClickHandler(new ClickHandler()
-	        		{
+	        	if(Window.Location.getHref().length() > REDIRECT_URI.length())
+	        	{
+	        		String fragment = Window.Location.getHash();
+	        		String token = fragment.substring(fragment.indexOf('=') + 1, fragment.indexOf('&'));
+	        		applicationServices.getAccountService().authorizeAccount(token,  new AsyncCallback<Account>() {
 
 						@Override
-						public void onClick(ClickEvent event)
+						public void onFailure(Throwable caught)
 						{
-							authorizeAccount();
-			        		introductionDialogBox.hide();
+							Window.alert(caught.toString());
 						}
-	        			
-	        		});
-	        		
-	        		introductionDialogBox.setTitle("stuffplotter");
-	        		introductionDialogBox.setText("Welcome to stuffplotter.");
-	        		
-	        		introductionDialogBox.center();
-	        		introductionDialogBox.setGlassEnabled(true);
-	        		introductionDialogBox.setAnimationEnabled(true);
-	        		introductionDialogBox.setModal(true);
-	        		//introductionDialogBox.setStyleName("introductionPopup");
-	        		
-	        		VerticalPanel contentPanel = new VerticalPanel();
-	        		contentPanel.add(new Label("This is a social event management system dedicated to small social circles..."));
-	        		contentPanel.add(startButton);
-	        		
-	        		introductionDialogBox.add(contentPanel);
-	        		introductionDialogBox.show();
-	        		
-	        		//RootPanel.get().add(introductionDialogBox);
-	    		}
+
+						@Override
+						public void onSuccess(Account result)
+						{
+							applicationUser = result;
+							eventBus.fireEvent(new AccountAuthorizedEvent());	
+						}	
+					});
+	        	}
+	        	else if (applicationUser.getAccessToken() == null)
+	        	{
+	        		requestAccessToken();
+	        	}
 	        	else
-	        	{      	
+	        	{
 	        		startApplication();
-	        	} 	
+	        	}
 	        }
 		});	
 	}
 	
-	public void authorizeAccount()
+	public void requestAccessToken()
 	{
-		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-		/**
-		 * API Access
-		 * To prevent abuse, Google places limits on API requests. Using a valid OAuth token or API key allows you to exceed anonymous limits by connecting requests back to your project.
-		 * 
-		 * Product name:	stuffplotter
-		 * Google account:	allenylzhou@gmail.com
-		 * 
-		 * Client ID:	1024938108271.apps.googleusercontent.com
-		 * Email address:	1024938108271@developer.gserviceaccount.com
-		 * Client secret:	xNa3bfxI67U9rGJypDVcMZ34
-		 * Redirect URIs:	http://127.0.0.1:8888/Leviathan.html?gwt.codesvr=127.0.0.1:9997
-		 * 					stuffplotter.appspot.com
-		 * JavaScript origins:	none
-		 */
-		String CLIENT_ID = "1024938108271.apps.googleusercontent.com"; // available from the APIs console
-		String GOOGLE_PROFILE_SCOPE = "https://www.googleapis.com/auth/userinfo.profile";
-		String GOOGLE_CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
+		String oauth2Request = AUTH_URL + "?";
+		oauth2Request += "scope=" + GOOGLE_PROFILE_SCOPE + '+' + GOOGLE_CALENDAR_SCOPE + "&";
+		oauth2Request += "redirect_uri=" + REDIRECT_URI + "&";
+		oauth2Request += "response_type=" + RESPONSE_TYPE + "&";
+		oauth2Request += "client_id=" + CLIENT_ID + "&";
+		Window.Location.assign(oauth2Request);
 		
+		/*
 		AuthRequest oauth2Request = new AuthRequest(AUTH_URL, CLIENT_ID)
 	    .withScopes(GOOGLE_PROFILE_SCOPE, GOOGLE_CALENDAR_SCOPE); // Can specify multiple scopes here
 
@@ -169,102 +186,56 @@ public class Leviathan implements EntryPoint
 			
 			@Override
 			public void onSuccess(String token) {
-				applicationServices.getAccountService().authorize(token,  new AsyncCallback<Account>() {
 
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						Window.alert("Failed to authorize user account...");
-					}
-
-					@Override
-					public void onSuccess(Account result)
-					{
-						account = result;
-						eventBus.fireEvent(new AccountAuthorizedEvent());	
-					}	
-				});
 			}
 		  
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.Location.assign(url);
+
 			}
 		});
-			
-		/*
-		String oauth2Request = AUTH_URL + "?";
-		oauth2Request += "scope=" + GOOGLE_PROFILE_SCOPE + "&";
-		oauth2Request += "redirect_uri=" + REDIRECT_URL + "&";
-		oauth2Request += "response_type=token&";
-		oauth2Request += "client_id=" + CLIENT_ID + "&";
-		Window.Location.assign(oauth2Request);
-		*/
+		*/		
 	}
 	
 	public void startApplication()
 	{		
-		//DO NOT REMOVE THIS CODE, USED FOR TESTING GOOGLE CALENDARS
-		/*
-		Button button = new Button("Testing");
-		button.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent ignore)
-			{
-				final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
-				testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk"));
-				
-				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
-						{
-							@Override
-							public void onSuccess(CalendarList response) 
-							{
-								String calendarID = response.getItems().get(0).getId();
-								ListRequest calRequest = testCalendar.events().list(calendarID);
-								calRequest.fire(new Receiver<Events>()
-								{
-									@Override
-									public void onSuccess(Events response)
-									{
-										String result = "Events Found: ";
-										List<Event> events = response.getItems();
-										if(events != null)
-										{
-											for(Event event : events)
-											{
-												result += " " + event.getCreated();
-											}
-										}
-										Window.alert(result);
-									}
-								});
-							}
-						});	
-			}
-			
-		});
-		RootPanel.get().add(button);
-		*/
-		
-		/*
-		Window.alert("ASDF");
-		System.out.println("ASDF");
+		//DO NOT REMOVE CODE BELOW, USED FOR TESTING GOOGLE CALENDARS		
 		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
 		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk"));
 		
-		OAuth2Login.get().authorize("1024938108271.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+		Button testButton1 = new Button("Authorize Calendar");
+		testButton1.addClickHandler(new ClickHandler() 
 		{
-			@Override
-			public void onFailure(Exception reason)
-			{
-				// TODO Auto-generated method stub
-				Window.alert(reason.getMessage());				
-			}
 
 			@Override
-			public void onSuccess(Void result)
+			public void onClick(ClickEvent event)
 			{
+				OAuth2Login.get().authorize("1024938108271.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+						{
+							@Override
+							public void onFailure(Exception reason)
+							{
+								// TODO Auto-generated method stub
+								Window.alert(reason.getMessage());				
+							}
+
+							@Override
+							public void onSuccess(Void result)
+							{
+
+							}	
+						});	
+			}		
+		});
+		
+		Button testButton2 = new Button("Test Calendar");
+		testButton2.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				Window.alert("Retrieving Google Calendar events...");
 				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
 				{
 					@Override
@@ -290,12 +261,15 @@ public class Leviathan implements EntryPoint
 							}
 						});
 					}
-				});
-			}	
+				});	
+			}
+			
 		});
-		*/
-
-		applicationServices.getStatsService().getStats(account.getUserEmail(), new AsyncCallback<AccountStatistic>(){
+		RootPanel.get().add(testButton1);
+		RootPanel.get().add(testButton2);
+		//DO NOT REMOVE CODE ABOVE, USED FOR TESTING GOOGLE CALENDARS
+		
+		applicationServices.getStatsService().getStats(applicationUser.getUserEmail(), new AsyncCallback<AccountStatistic>(){
 
 			@Override
 			public void onFailure(Throwable caught)
@@ -313,7 +287,7 @@ public class Leviathan implements EntryPoint
 			}	
 		});	
 		
-		AppController appViewer = new AppController(applicationServices, eventBus, account);
+		AppController appViewer = new AppController(applicationServices, eventBus, applicationUser);
 		appViewer.go(RootPanel.get());
 
 	}

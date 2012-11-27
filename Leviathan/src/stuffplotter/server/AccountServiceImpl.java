@@ -18,7 +18,7 @@ import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.client.services.AccountService;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
-import stuffplotter.shared.GoogleAPIException;
+import stuffplotter.shared.InvalidAccessTokenException;
 import stuffplotter.shared.FriendNotification;
 import stuffplotter.shared.FriendNotification.FriendNotificationType;
 import stuffplotter.shared.Notification;
@@ -42,7 +42,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	 * @return current user Account
 	 */
 	@Override
-	public Account load(String redirect)
+	public Account registerAccount(String redirect)
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
@@ -74,7 +74,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	 * @return an authorized Account
 	 */
 	@Override
-	public Account authorize(String token)
+	public Account authorizeAccount(String token)
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
@@ -89,10 +89,10 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	/**
 	 * Saves full name and profile picture from Google account to user account
 	 * @pre true;
-	 * @post account.getFullName() != null && account.getProfilePicture != null;
+	 * @post
 	 */
 	@Override
-	public Account saveProfile(Account ignore) throws GoogleAPIException
+	public void storeUserinfo() throws InvalidAccessTokenException
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
@@ -157,13 +157,21 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
             {
                 final String fieldname = jp.getCurrentName();
                 jp.nextToken();
-                if ("picture".equals(fieldname))
+                if ("error".equals(fieldname))
+                {
+                	account.setAccessToken(null);
+                } 
+                else if ("picture".equals(fieldname))
                 {
                     account.setUserProfilePicture(jp.getText());
                 }
                 else if ("name".equals(fieldname))
                 {
                 	account.setUserFullName(jp.getText());
+                } 
+                else if ("birthdate".equals(fieldname))
+                {
+                	//account.setBirthDate(jp.getText());
                 }
             }
         }
@@ -175,15 +183,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
         {
         	e.printStackTrace();
         }
-        
-        if(account.getUserFullName() == null && account.getUserProfilePicture() == null)
-        {
-        	throw new GoogleAPIException();
-        }
-        else
+        finally
         {
         	dbstore.store(account);
-        	return account;
+        }
+        
+        if(account.getAccessToken() == null)
+        {
+        	throw new InvalidAccessTokenException();
         }
 	}
 	

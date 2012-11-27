@@ -8,7 +8,7 @@ import java.util.Map;
 
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
-import stuffplotter.shared.GoogleAPIException;
+import stuffplotter.shared.InvalidAccessTokenException;
 import stuffplotter.shared.Notification;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -17,9 +17,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("account")
 public interface AccountService extends RemoteService
 {
-	Account load(String redirect);
-	Account authorize(String token);
-	Account saveProfile(Account acc) throws GoogleAPIException;
+	Account registerAccount(String host);
+	Account authorizeAccount(String token);
+	void storeUserinfo() throws InvalidAccessTokenException;
 	void addFriend(Account acc, String friend);
 	void saveAccount(Account acc);
 	List<String> getFriends(Account acc);
