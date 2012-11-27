@@ -162,17 +162,21 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
                 {
                 	account.setAccessToken(null);
                 } 
-                else if ("picture".equals(fieldname))
-                {
-                    account.setUserProfilePicture(jp.getText());
-                }
                 else if ("name".equals(fieldname))
                 {
                 	account.setUserFullName(jp.getText());
-                } 
-                else if ("birthdate".equals(fieldname))
+                }
+                else if ("gender".equals(fieldname))
                 {
-                	//account.setBirthDate(jp.getText());
+                	account.setGender(jp.getText());
+                }
+                else if ("birthday".equals(fieldname))
+                {
+                	account.setBirthDate(jp.getText());
+                }
+                else if ("picture".equals(fieldname))
+                {
+                    account.setUserProfilePicture(jp.getText());
                 }
             }
         }

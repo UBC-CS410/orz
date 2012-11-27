@@ -88,7 +88,6 @@ public class AccountTest extends TestCase
 		Account ac = new Account();
 		assertNotNull(ac);
 		
-		assertEquals(userLoginUrl,ac.getLoginUrl());
 		assertEquals(userLogoutUrl,ac.getLogoutUrl());
 		
 		assertEquals(userAge,ac.getUserAge());
@@ -106,8 +105,7 @@ public class AccountTest extends TestCase
 
 		
 		Account ac = new Account();
-		
-		ac.setLoginUrl("login");
+
 		ac.setLogoutUrl("logout");
 		
 		ac.setUserEmail("newemail");
@@ -120,7 +118,6 @@ public class AccountTest extends TestCase
 		
 		ac.setTitle("NewGuy");
 		
-		assertEquals("login",ac.getLoginUrl());
 		assertEquals("logout",ac.getLogoutUrl());
 		
 		assertEquals("newemail",ac.getUserEmail());
