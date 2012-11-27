@@ -55,12 +55,12 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    catch (NotFoundException nfe)
 	    {
 	      account = new Account(user.getEmail());
-	      this.saveAccount(account); 
 	    }
 	    finally
 	    {
     	  account.setLoginUrl(userService.createLoginURL(redirect));
     	  account.setLogoutUrl(userService.createLogoutURL(account.getLoginUrl()));
+    	  this.saveAccount(account); 
 	    }
 	    
 	    return account;
