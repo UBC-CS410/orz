@@ -1,14 +1,11 @@
 package stuffplotter.views.events;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
-import stuffplotter.shared.Account;
 import stuffplotter.views.friends.FriendsDisplayPanel;
-import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
