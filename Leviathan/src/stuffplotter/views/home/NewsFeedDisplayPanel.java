@@ -67,7 +67,7 @@ public class NewsFeedDisplayPanel extends ScrollDisplayPanel
 			if(account.getUserProfilePicture()!=null)
 				this.friendImage = new Image(account.getUserProfilePicture());
 			else
-				this.friendImage = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
+				this.friendImage = new Image("images/profile.jpg");
 			this.friendImage.setPixelSize(50, 50);
 			this.friendBadge = new Image("images/blank.jpg");
 			this.friendBadge.setPixelSize(50,50);

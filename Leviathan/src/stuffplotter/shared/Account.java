@@ -32,6 +32,7 @@ public class Account implements Serializable, AccountModel
 	private String gender;
 	private String birthDate;
 	private String userProfilePicture;
+	private String userBadge;
 
 	/* Application information */
 	private List<String> userFriends;
@@ -58,6 +59,7 @@ public class Account implements Serializable, AccountModel
 		this.userPastEvents = new ArrayList<Long>();
 		this.userNotifications = new ArrayList<Long>();
 		this.userAge = "";
+		this.userBadge = "images/blank.jpg";
 	}
 
 	/**
@@ -77,6 +79,7 @@ public class Account implements Serializable, AccountModel
 		this.userNotifications = new ArrayList<Long>();
 		this.userAge = "--";
 		this.userTitle = "Newbie";
+		this.userBadge = "images/blank.jpg";
 	}
 
 	/**
@@ -446,6 +449,17 @@ public class Account implements Serializable, AccountModel
 	public void removeUserEvent(Long eventId)
 	{
 		this.userCurrentEvents.remove(eventId);
+	}
+
+	@Override
+	public String getBadgePic()
+	{
+		return this.userBadge;
+	}
+	
+	public void setBadge(String badge)
+	{
+		this.userBadge = badge;
 	}
 	
 }

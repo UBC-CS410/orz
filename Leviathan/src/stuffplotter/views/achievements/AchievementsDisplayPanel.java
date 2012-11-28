@@ -175,5 +175,16 @@ public class AchievementsDisplayPanel extends ScrollDisplayPanel
 			this.achMsg.setValue(model.getMsg());
 			
 		}
+		
+		/**
+		 * Return the push button
+		 * @pre true;
+		 * @post true;
+		 * @return the pushbutton
+		 */
+		public PushButton getAchIcon()
+		{
+			return this.achIcon;
+		}
 	}
 }

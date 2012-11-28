@@ -1,9 +1,13 @@
 package stuffplotter.presenters;
 
 import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.bindingcontracts.AccountStatisticModel;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
+import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.signals.RefreshPageEventHandler;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,6 +30,14 @@ public class UserAccountPresenter implements Presenter
 		 * @post true;
 		 */
 		public void setUserData(AccountModel model);
+		
+		
+		/**
+		 * Set the user account statistic data to display in the UserAccountView.
+		 * @pre model != null;
+		 * @post true;
+		 */
+		public void setUserData(AccountStatisticModel model);
 
 		/**
 		 * Retrieve the UserAccountView as a widget.
@@ -101,7 +113,7 @@ public class UserAccountPresenter implements Presenter
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final UserAccountView userAccountView;
-	private final Account appUser;
+	private Account appUser;
 	
 	/**
 	 * Constructor for the UserAccountPresenter.
@@ -132,10 +144,55 @@ public class UserAccountPresenter implements Presenter
 	private void dataBindAccount()
 	{
 		this.userAccountView.setUserData(this.appUser);
+		this.appServices.getStatsService().getStats(appUser.getUserEmail(), new AsyncCallback<AccountStatistic>()
+		{
+
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				
+			}
+
+			@Override
+			public void onSuccess(AccountStatistic result)
+			{
+				userAccountView.setUserData(result);
+				
+			}
+		});
 	}
 	
 	private void bind()
 	{
+		eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				appServices.getAccountService().getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						userAccountView.setUserData(result);
+						
+					}
+				});
+				
+			}
+			
+		});
+		
 		userAccountView.getEditButton().addClickHandler(new ClickHandler(){
 
 			@Override
