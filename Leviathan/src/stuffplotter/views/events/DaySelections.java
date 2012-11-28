@@ -106,6 +106,7 @@ public class DaySelections extends VerticalPanel
 			if(conflictDates.contains(timeSlotDate))
 			{
 				slotToAdd.addStyleName("conflicting-time");
+				slotToAdd.setTitle("You've already got stuff going on at this time.");
 			}
 			
 			this.add(slotToAdd);

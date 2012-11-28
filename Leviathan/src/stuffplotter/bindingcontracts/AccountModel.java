@@ -3,6 +3,8 @@ package stuffplotter.bindingcontracts;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.gwt.safehtml.shared.SafeUri;
+
 /**
  * Interface used by the Account object to enforce a contract between the model and views to
  * simulate data binding.
@@ -96,5 +98,13 @@ public interface AccountModel extends Comparator<AccountModel>
 	 * @return the list of the user's notifications.
 	 */
 	public List<Long> getUserNotifications();
+
+	/**
+	 * Retrieve the user's badgePic.
+	 * @pre true;
+	 * @post true;
+	 * @return the user's badgePic.
+	 */
+	public String getBadgePic();
 	
 }

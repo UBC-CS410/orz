@@ -55,7 +55,13 @@ public class EventToDateConverter
 		{
 			int endHour;
 			
-			if(this.eventEndTime.before(fullEndTime))
+			Date endRoundedTime = new Date(endTime.getYear() - YEAR_CORRECTION,
+										   endTime.getMonth() - MONTH_CORRECTION,
+										   endTime.getDay(),
+										   endTime.getHour(),
+										   0);
+			
+			if(endRoundedTime.before(fullEndTime))
 			{
 				endHour = endTime.getHour();
 			}
@@ -66,7 +72,11 @@ public class EventToDateConverter
 			
 			if(startTime.getHour() == endHour)
 			{
-				this.timeSlotValues.add(this.eventStartTime);
+				this.timeSlotValues.add(new Date(startTime.getYear() - YEAR_CORRECTION,
+						 						 startTime.getMonth() - MONTH_CORRECTION,
+						 						 startTime.getDay(),
+						 						 startTime.getHour(),
+						 						 0));
 			}
 			else
 			{

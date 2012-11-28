@@ -113,7 +113,7 @@ public class FriendPopupPanel extends PopupPanel
 		if(account.getUserProfilePicture()!=null)
 			this.profilePic.setUrl(account.getUserProfilePicture());
 		else
-			this.profilePic.setUrl("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
+			this.profilePic.setUrl("images/profile.jpg");
 		this.badgePic.setUrl("/images/blank.jpg");
 		
 		this.nameField.setValue(account.getUserFullName()); 

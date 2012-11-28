@@ -59,7 +59,7 @@ public class FriendPanel extends HorizontalPanel implements FriendPanelView
 		this.userEmail = new Label();
 		this.userName = new Label();
 		this.userTitle = new Label();
-		this.profile = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
+		this.profile = new Image("images/profile.jpg");
 		this.profile.setPixelSize(IMAGESIZE, IMAGESIZE);
 		this.removeBtn = new Button("Remove");
 		this.viewBtn = new Button("View");

@@ -6,7 +6,11 @@ import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Achievement;
+import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.views.achievements.AchievementsDisplayPanel.AchievementPanel;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -26,6 +30,14 @@ public class AchievementsPagePresenter implements Presenter
 		 * @param achievements
 		 */
 		public void setAchievementData(List<Achievement> achievements);
+		
+		/**
+		 * Retrieves the achievement buttons;
+		 * @pre true;
+		 * @post true;
+		 * @return achievementButtons
+		 */
+		public List<Widget> getAchievementButtons();
 		/**
 		 * Retrieve the AchievementsView as a widget.
 		 * @pre true;
@@ -33,7 +45,7 @@ public class AchievementsPagePresenter implements Presenter
 		 * @return the AchievementsView as a widget.
 		 */
 		public Widget asWidget();
-		//public AchievementsPanel getAchievementsPanel(); // create presenter for this 
+	
 	}
 	private Account appUser;
 	private final ServiceRepository appServices;
@@ -86,8 +98,43 @@ public class AchievementsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		// TODO Auto-generated method stub
+		setAchievementButtons();
 		
+	}
+
+	private void setAchievementButtons()
+	{
+		List<Widget> panels = this.achievementsView.getAchievementButtons();
+		for(Widget widget : panels)
+		{
+			final AchievementPanel achievemeantPanel = (AchievementPanel) widget;
+			achievemeantPanel.getAchIcon().addClickHandler(new ClickHandler()
+			{
+				
+				@Override
+				public void onClick(ClickEvent event)
+				{
+					appUser.setBadge(achievemeantPanel.getAch().getImg());
+					appServices.getAccountService().saveAccount(appUser, new AsyncCallback<Void>()
+					{
+
+						@Override
+						public void onFailure(Throwable caught)
+						{
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(Void result)
+						{
+							eventBus.fireEvent(new RefreshPageEvent());
+						}
+					});
+					
+				}
+			});
+		}
 	}
 	
 	/**
