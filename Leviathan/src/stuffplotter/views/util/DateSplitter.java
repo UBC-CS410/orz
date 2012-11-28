@@ -1,6 +1,5 @@
 package stuffplotter.views.util;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -8,7 +7,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 /**
  * Helper class to split a given Date into its Year, Month, Day, and Hour.
  */
-public class DateSplitter implements Serializable
+public class DateSplitter
 {	
 	private Date date;
 	private String yearAsString;
@@ -133,9 +132,4 @@ public class DateSplitter implements Serializable
 	{
 		return this.hour;
 	}
-
-	/**
-	 * Serial version for the DateSplitter.
-	 */
-	private static final long serialVersionUID = 1151176561169648728L;
 }

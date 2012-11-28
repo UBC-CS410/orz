@@ -7,6 +7,8 @@ import java.util.List;
 import stuffplotter.client.GoogleCalendar;
 import stuffplotter.signals.CalendarAuthorizedEvent;
 import stuffplotter.signals.CalendarAuthorizedEventHandler;
+import stuffplotter.views.util.DateSplitter;
+import stuffplotter.views.util.EventToDateConverter;
 
 import com.google.api.gwt.services.calendar.shared.Calendar;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
@@ -17,6 +19,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -120,19 +123,19 @@ public class EventDateSelectionPresenter implements Presenter
 									@Override
 									public void onSuccess(Events response)
 									{
-										String result = "Events Found: ";
+										ArrayList<Date> conflictList = new ArrayList<Date>();
 										List<com.google.api.gwt.services.calendar.shared.model.Event> events = response.getItems();
 										if(events != null)
 										{
+											// for loop to retrieve all the events and convert them to time slots
 											for(com.google.api.gwt.services.calendar.shared.model.Event event : events)
 											{
-												result += " Start: " + event.getStart() + "End: " + event.getEnd();
+												EventToDateConverter timeSlots = new EventToDateConverter(event);
+												conflictList.addAll(timeSlots.getTimeSlots());
 											}
 										}
 										
-										display.populateTimeSheet(event.getValue(), new ArrayList<Date>());
-									
-										Window.alert(result);
+										display.populateTimeSheet(event.getValue(), conflictList);
 									}
 								});
 							}

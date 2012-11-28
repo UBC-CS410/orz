@@ -1,5 +1,18 @@
 /** Add css rules here for your application. */
 
+#loading {
+	text-align:center;
+	background-color: #FCFCFC;
+}
+
+.grey-text {
+	color: #CCCCCC;
+}
+
+.conflicting-time {
+	color: #FF002B;
+}
+
 .masterContainer {
 	width: 100%;
 }
