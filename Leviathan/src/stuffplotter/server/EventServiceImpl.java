@@ -97,9 +97,10 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @param 	eventId - the id of the event to retrieve
 	 */
 	@Override
-	public Event retrieveEvent(Account account, Long pEventId)
+	public Event retrieveEvent(String userId, Long eventId)
 	{
-		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, pEventId));
+		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, eventId));
+		Account account = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, userId));
 		
 		//TODO: take duration into account
 		if(event.getStatus() != Status.FINISHED)
@@ -108,8 +109,8 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 			if (event.getDate() != null && date.after(event.getDate()))
 			{
 				event.setStatus(Status.FINISHED);
-				account.getCurrentEvents().remove(pEventId);
-				account.getPastEvents().add(pEventId);
+				account.getCurrentEvents().remove(eventId);
+				account.getPastEvents().add(eventId);
 				dbstore.simpleStore(account);
 				dbstore.simpleStore(event);
 			}
@@ -125,12 +126,12 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @param 	eventIds - the list of ids of events to retrieve
 	 */
 	@Override
-	public List<Event> retrieveListOfEvents(Account account, List<Long> pEventIds)
+	public List<Event> retrieveListOfEvents(String userId, List<Long> eventIds)
 	{
 		List<Event> events = new ArrayList<Event>();
-		for (int i = 0; i < pEventIds.size(); i++)
+		for (int i = 0; i < eventIds.size(); i++)
 		{
-			events.add(retrieveEvent(account, pEventIds.get(i)));
+			events.add(retrieveEvent(userId, eventIds.get(i)));
 		}
 		return events;
 	}

@@ -16,8 +16,8 @@ public interface EventServiceAsync
 	void createEvent(Event newEvent, List<Date> timeSlots, AsyncCallback<Event> callback);
 	void addComment(Long eventId, String username, Date time, String comment, AsyncCallback<Void> callback);
 	
-	void retrieveEvent(Account account, Long eventId, AsyncCallback<Event> callback);
-	void retrieveListOfEvents(Account account, List<Long> eventIds, AsyncCallback<List<Event>> callback);
+	void retrieveEvent(String userId, Long eventId, AsyncCallback<Event> callback);
+	void retrieveListOfEvents(String userId, List<Long> eventIds, AsyncCallback<List<Event>> callback);
 	
 	void retrieveScheduler(Long schedulerId, AsyncCallback<Scheduler> callback);
 	void retrieveAvailabilities(Long pSchedulerId, AsyncCallback<List<Availability>> callback);

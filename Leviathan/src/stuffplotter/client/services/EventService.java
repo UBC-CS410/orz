@@ -18,8 +18,8 @@ public interface EventService extends RemoteService
 	Event createEvent(Event newEvent, List<Date> timeSlots);
 	void addComment(Long eventId, String username, Date time, String comment);
 	
-	Event retrieveEvent(Account account, Long eventId);
-	List<Event> retrieveListOfEvents(Account account, List<Long> eventIds);
+	Event retrieveEvent(String userId, Long eventId);
+	List<Event> retrieveListOfEvents(String userId, List<Long> eventIds);
 	
 	Scheduler retrieveScheduler(Long schedulerId);
 	List<Availability> retrieveAvailabilities(Long pSchedulerId);
