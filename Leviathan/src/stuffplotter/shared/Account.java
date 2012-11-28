@@ -3,11 +3,9 @@ package stuffplotter.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import stuffplotter.bindingcontracts.AccountModel;
 
@@ -22,7 +20,6 @@ import com.googlecode.objectify.annotation.Entity;
 @Entity
 public class Account implements Serializable, AccountModel
 {
-	//TODO: Refactor variable names by removing the "user" prefix, useless information
 
 	/* Basic information */
 	@Id
@@ -358,6 +355,7 @@ public class Account implements Serializable, AccountModel
 	 * @post true;
 	 * @return the list of the user's notifications.
 	 */
+	@Override
 	public List<Long> getUserNotifications()
 	{
 		return this.userNotifications;

@@ -72,4 +72,12 @@ public interface AccountModel extends Comparator<AccountModel>
 	 * @return the list of the user's friends (e-mail addresses).
 	 */
 	public List<String> getUserFriends();
+	
+	/**
+	 * Retrieve the list of the user's notifications.
+	 * @pre true;
+	 * @post true;
+	 * @return the list of the user's notifications.
+	 */
+	public List<Long> getUserNotifications();
 }

@@ -23,7 +23,7 @@ public class AchievementNotification extends Notification
 	
 	
 	public void setNotificationDisplay(Achievement ach){
-		String display = "You have unlocked the achievement, "+ach.getName();
+		String display = "You unlocked the achievement, "+ach.getName();
 		this.notificationDisplay = display;
 	}
 
