@@ -1,5 +1,9 @@
 /** Add css rules here for your application. */
 
+.error-text {
+	color: #FF0000;
+}
+
 .grey-text {
 	color: #CCCCCC;
 }

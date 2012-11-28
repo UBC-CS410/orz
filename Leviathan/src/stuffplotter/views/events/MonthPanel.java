@@ -7,6 +7,9 @@ import java.util.List;
 
 import stuffplotter.views.util.DateSplitter;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -64,7 +67,19 @@ public class MonthPanel extends VerticalPanel
 		this.year = splitter.getYearAsString();
 		this.monthValue = splitter.getMonth();
 		this.yearValue = splitter.getYear();
-		this.add(new Label(this.month + " " + this.year));
+		HorizontalPanel topHolder = new HorizontalPanel();
+		topHolder.add(new Label(splitter.getDayAsString()));
+		Anchor close = new Anchor("X");
+		close.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				removeFromParent();
+			}
+		});
+		topHolder.add(close);
+		this.add(topHolder);
 		
 		this.daysHolder = new HorizontalPanel();
 		this.daysHolder.add(new DaySelections(date, conflictDates));

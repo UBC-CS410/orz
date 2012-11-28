@@ -54,7 +54,7 @@ public class EventToDateConverter
 		else
 		{
 			int endHour;
-			System.out.println(event.getEnd().getDateTime() + endTime.getHour());
+			System.out.println(event.getStart().getDateTime() + startTime.getHour());
 			if(this.eventEndTime.before(fullEndTime))
 			{
 				endHour = endTime.getHour();

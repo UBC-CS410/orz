@@ -106,6 +106,8 @@ public class EventDateSelectionPresenter implements Presenter
 			{
 				if(CalendarUtil.getDaysBetween(event.getValue(), new Date()) < 0)
 				{
+					display.displayErrorMessage("");
+					
 					// add google calendar here to get list of conflicts
 					GoogleCalendar  calendar = new GoogleCalendar();
 					final Calendar googleCalendar = calendar.getCalendar();

@@ -191,6 +191,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public void displayErrorMessage()
 	{
+		this.errorMessage.setStyleName("error-text");
 		this.errorMessage.setText("The name of the event is required.");
 	}
 	

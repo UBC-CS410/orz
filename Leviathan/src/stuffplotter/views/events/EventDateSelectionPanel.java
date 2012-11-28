@@ -71,6 +71,7 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	 */
 	public void displayErrorMessage(String message)
 	{
+		this.errorMessage.setStyleName("error-text");
 		this.errorMessage.setText(message);
 	}
 	
