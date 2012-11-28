@@ -27,6 +27,7 @@ import stuffplotter.shared.AccountStatistic;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.signals.UpdateStatsEvent;
+import stuffplotter.views.friends.FriendAchievementPopupPanel;
 import stuffplotter.views.friends.FriendPanelView;
 import stuffplotter.views.friends.FriendPopupPanel;
 import stuffplotter.views.friends.PendingFriendPanel;
@@ -118,7 +119,31 @@ public class FriendsPagePresenter implements Presenter
 		 * @return FriendPopupPanel - the popup panel
 		 */
 		public FriendPopupPanel getFriendPopupPanel();
+		
+		/**
+		 * Set the list of friends and their stats to display
+		 * @pre
+		 * @post
+		 * @param friendAccount
+		 * @param friendStats
+		 */
+		public void setAccountAndStatsData(Account friendAccount, AccountStatistic friendStats);
+		/**
+		 * Gets the FriendAchievementPopupPanel
+		 * @pre true;
+		 * @post true;
+		 * @return FriendAchievementPopupPanel - the FriendAchievementPopupPanel
+		 */
+		public FriendAchievementPopupPanel getFriendAchievementPopupPanel();
 
+		/**
+		 * Set the stats of their friend to display
+		 * @pre
+		 * @post
+		 * @param friendAccount
+		 * @param friendStats
+		 */
+		public void setStatsData(AccountStatistic stats);
 		/**
 		 * Retrieve the FriendsView as a Widget.
 		 * @pre true;
@@ -438,7 +463,7 @@ public class FriendsPagePresenter implements Presenter
 										@Override
 										public void onClick(ClickEvent event)
 										{
-											friendsView.getFriendPopupPanel().setAccountAndStatsData(friendAccount, friendStats);
+											friendsView.setAccountAndStatsData(friendAccount, friendStats);
 											friendsView.getFriendPopupPanel().getCloseBtn().addClickHandler(new ClickHandler()
 											{
 												
@@ -455,7 +480,30 @@ public class FriendsPagePresenter implements Presenter
 												@Override
 												public void onClick(ClickEvent event)
 												{
-													// TODO Auto-generated method stub
+													friendsView.setStatsData(friendStats);
+													friendsView.getFriendAchievementPopupPanel().getBackButton().addClickHandler(new ClickHandler()
+													{
+														
+														@Override
+														public void onClick(ClickEvent event)
+														{
+															friendsView.getFriendAchievementPopupPanel().hide();
+															friendsView.getFriendPopupPanel().show();
+															
+														}
+													});
+													friendsView.getFriendAchievementPopupPanel().getCloseButton().addClickHandler(new ClickHandler()
+													{
+														
+														@Override
+														public void onClick(ClickEvent event)
+														{
+															friendsView.getFriendAchievementPopupPanel().hide();
+															
+														}
+													});
+													friendsView.getFriendPopupPanel().hide();
+													friendsView.getFriendAchievementPopupPanel().show();
 													
 												}
 											});

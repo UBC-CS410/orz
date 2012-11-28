@@ -106,6 +106,7 @@ public class FriendPopupPanel extends PopupPanel
 		this.add(mainPanel);
 	}
 	
+	
 	public void setAccountAndStatsData(Account account, AccountStatistic stats)
 	{
 		this.friendInfo.setText(account.getUserFullName()+"'s Information and Stats");
