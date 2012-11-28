@@ -46,7 +46,7 @@ public class FriendNotification extends Notification
 	{
 		if(type.equals(FriendNotificationType.FRIENDREQUEST))
 		{
-			String display = fromUser + " would like to add you as a friend!";
+			String display = "Someone from "+fromUser + " would like to add you as a friend on Stuff Plotter!";
 			this.notificationDisplay = display;
 		}else if(type.equals(FriendNotificationType.FRIENDACCEPTED))
 		{
