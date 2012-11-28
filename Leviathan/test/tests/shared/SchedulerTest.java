@@ -46,6 +46,7 @@ public class SchedulerTest extends TestCase
 		Availability pAvailability2 = new Availability(day2);
 		
 		sch.addAvailability(pAvailability);
+		sch.addAvailability(pAvailability2);
 		assertEquals(2, sch.getAvailabilities().size());
 	}
 }
