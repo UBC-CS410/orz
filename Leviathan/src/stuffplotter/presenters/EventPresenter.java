@@ -92,25 +92,27 @@ public class EventPresenter implements Presenter
 					String username = userData.getUserFullName();
 					Date timenow = new Date();
 					String content = eventView.getCommentText();
-					
-					EventServiceAsync eventService = appServices.getEventService();
-					eventService.addComment(eventData.getId(), username, timenow, content, new AsyncCallback<Void>()
+
+					if(content.length() > 0)
 					{
+						appServices.getEventService().addComment(eventData.getId(), username, timenow, content, new AsyncCallback<Void>()
+								{
 
-						@Override
-						public void onFailure(Throwable caught)
-						{
-							// TODO Auto-generated method stub
-							
-						}
+									@Override
+									public void onFailure(Throwable caught)
+									{
+										// TODO Auto-generated method stub
+										
+									}
 
-						@Override
-						public void onSuccess(Void result)
-						{
-							loadComments();
-						}
-						
-					});
+									@Override
+									public void onSuccess(Void result)
+									{
+										loadComments();
+									}
+									
+								});
+					}
 				}
 				
 			}
