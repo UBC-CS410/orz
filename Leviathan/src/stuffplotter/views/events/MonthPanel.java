@@ -68,7 +68,7 @@ public class MonthPanel extends VerticalPanel
 		this.monthValue = splitter.getMonth();
 		this.yearValue = splitter.getYear();
 		HorizontalPanel topHolder = new HorizontalPanel();
-		topHolder.add(new Label(splitter.getDayAsString()));
+		topHolder.add(new Label(this.month + " " + this.year));
 		Anchor close = new Anchor("X");
 		close.addClickHandler(new ClickHandler()
 		{
