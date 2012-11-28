@@ -2,6 +2,9 @@ package stuffplotter.client;
 
 import com.google.api.gwt.client.GoogleApiRequestTransport;
 import com.google.api.gwt.services.calendar.shared.Calendar;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarsContext;
+import com.google.api.gwt.services.calendar.shared.model.CalendarListEntry;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.SimpleEventBus;
 
@@ -49,4 +52,19 @@ public class GoogleCalendar
 	{
 		return this.googleCalendar;
 	}
+	
+	/**
+	 * Adds a stuffplotter calendar to the user's Google calendar.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void addCalendar()
+	{
+		CalendarListContext calendarList = this.googleCalendar.calendarList();
+		CalendarListEntry calendar = calendarList.create(CalendarListEntry.class);
+		calendar.setId("stuffplotter");
+	}
+	
+	
+	
 }

@@ -16,9 +16,13 @@ import com.google.api.gwt.client.OAuth2Login;
 import com.google.api.gwt.oauth2.client.Auth;
 import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarsContext;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
+import com.google.api.gwt.services.calendar.shared.model.Calendar;
 import com.google.api.gwt.services.calendar.shared.model.CalendarList;
+import com.google.api.gwt.services.calendar.shared.model.CalendarListEntry;
 import com.google.api.gwt.services.calendar.shared.model.Event;
 import com.google.api.gwt.services.calendar.shared.model.Events;
 import com.google.gwt.core.client.Callback;
@@ -230,7 +234,19 @@ public class Leviathan implements EntryPoint
 							@Override
 							public void onSuccess(Void result)
 							{
-
+							    testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER)
+						        .fire(new Receiver<CalendarList>() {
+						          @Override
+						          public void onSuccess(CalendarList list) {
+						            String calendarId = list.getItems().get(0).getId();
+						            for (int i = 0; i < list.getItems().size(); i++)
+						            {
+						            	 Window.alert(list.getItems().get(i).getId());
+						            }
+						           
+						          }
+						        });
+								Window.alert("Success!");
 							}	
 						});	
 			}		
