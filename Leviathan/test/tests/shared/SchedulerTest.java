@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -26,12 +27,14 @@ public class SchedulerTest extends TestCase
 	public void testSchedulerCtor()
 	{
 		ArrayList<Long> availabilities = new ArrayList<Long>();
+		List<String> submitters = new ArrayList<String>();
 		
 		Scheduler sch = new Scheduler();
 		Long id = null;
 		assertNotNull(sch);
 		assertEquals(availabilities, sch.getAvailabilities());
 		assertEquals(id,sch.getId());
+		assertEquals(submitters,sch.getSubmitters());
 	}
 
 	@Test
@@ -48,5 +51,19 @@ public class SchedulerTest extends TestCase
 		sch.addAvailability(pAvailability);
 		sch.addAvailability(pAvailability2);
 		assertEquals(2, sch.getAvailabilities().size());
+	}
+	
+	@Test
+	public void testAddSubmitter()
+	{
+		String userId1 = "1000";
+		String userId2 = "2000";
+		Scheduler sch = new Scheduler();
+		
+		sch.addSubmitter(userId1);
+		sch.addSubmitter(userId2);
+		
+		assertTrue(sch.getSubmitters().contains(userId1));
+		assertEquals(2,sch.getSubmitters().size());
 	}
 }

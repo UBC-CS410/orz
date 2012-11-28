@@ -81,7 +81,7 @@ public class AccountTest extends TestCase
 		String userAccessToken = null;
 		String userFullName = null;
 		String userProfilePicture = null;
-		
+			
 		Account ac = new Account();
 		assertNotNull(ac);
 		
@@ -99,7 +99,8 @@ public class AccountTest extends TestCase
 	@Test
 	public void testSetters()
 	{	
-
+		String gender = "male";
+		String birthDay = "Jan1";
 		
 		Account ac = new Account();
 
@@ -115,6 +116,9 @@ public class AccountTest extends TestCase
 		
 		ac.setTitle("NewGuy");
 		
+		ac.setGender(gender);
+		ac.setBirthDate(birthDay);
+		
 		assertEquals("logout",ac.getLogoutUrl());
 		
 		assertEquals("newemail",ac.getUserEmail());
@@ -124,13 +128,77 @@ public class AccountTest extends TestCase
 		assertEquals("newAccessToken",ac.getAccessToken());
 		assertEquals("FullName",ac.getUserFullName());
 		assertEquals("ProfilePic",ac.getUserProfilePicture());
+		
+		assertEquals("male", ac.getGender());
+		assertEquals("Jan1",ac.getBirthDate());
+		
 	}
 	
 	
 	@Test
-	public void testSimple() //simple test.
+	public void testAdders()
 	{
-		assertTrue(true);
+		String id1 = "1";
+		String id2 = "2";
+		String id3 = "3";
+		
+		Long l1 = 100L;
+		Long l2 = 200L;
+		Long l3 = 300L;
+		
+		String pu1 = "John";
+		String pu2 = "Dan";
+		
+		Account ac = new Account();
+		
+		ac.addUserFriend(id1);
+		ac.addUserFriend(id2);
+		ac.addUserFriend(id3);
+		
+		ac.addUserEvent(l1);
+		ac.addUserEvent(l2);
+		ac.addUserEvent(l3);
+		
+		ac.addPendingRequest(pu1);
+		ac.addPendingRequest(pu2);
+		
+		ac.addUserNotification(l1);
+		ac.addUserNotification(l2);
+		
+		assertEquals(3,ac.getUserFriends().size());
+		assertEquals(3,ac.getCurrentEvents().size());
+		assertEquals(2,ac.getPendingFriends().size());
+		assertEquals(2,ac.getUserNotifications().size());
+		
+		ac.removeUserEvent(l2);
+		assertEquals(2,ac.getCurrentEvents().size());
 	}
 
+	@Test
+	public void testDenyandConfirm()
+	{
+		String id1 = "1";
+		String id2 = "2";
+		String id3 = "3";
+		
+		String pu1 = "John";
+		String pu2 = "Dan";
+		
+		Account ac = new Account();
+		ac.confirmFriendRequest(id1);
+		ac.confirmFriendRequest(id2);
+		ac.confirmFriendRequest(id3);
+		
+		assertEquals(3,	ac.getUserFriends().size());
+		
+		ac.addPendingRequest(pu1);
+		ac.addPendingRequest(pu2);
+		
+		assertEquals(2,ac.getPendingFriends().size());
+		
+		ac.denyFriendRequest(pu1);
+		
+		assertEquals(1,ac.getPendingFriends().size());
+	}
+	
 }
