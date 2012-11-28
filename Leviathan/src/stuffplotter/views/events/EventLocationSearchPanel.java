@@ -1,7 +1,5 @@
 package stuffplotter.views.events;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -13,14 +11,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class EventLocationSearchPanel extends VerticalPanel
 {
+	private static final String NO_RESULTS = "No results found.";
+	private static final String ONE_RESULT = " result was found.";
+	private static final String MANY_RESULTS = " results were found.";
 	private TextBox searchBox;
 	private Button searchButton;
 	private Button clearButton;
 	private Button previousLocation;
 	private Button nextLocation;
 	private Label numOfResults;
-	private int currentLocationIndex;
-	private int totalNumLocations;
 	
 	/**
 	 * Constructor for EventLocationSearchPanel.
@@ -73,26 +72,6 @@ public class EventLocationSearchPanel extends VerticalPanel
 	 */
 	private void initializePagingButtons()
 	{
-		this.previousLocation.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				previousLocation();
-				nextLocation.setEnabled(true);
-			}			
-		});
-		
-		this.nextLocation.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				nextLocation();
-				previousLocation.setEnabled(true);
-			}
-		});
-
 		this.disablePagingButtons();
 	}
 	
@@ -106,65 +85,8 @@ public class EventLocationSearchPanel extends VerticalPanel
 	public void defaultPageResults()
 	{
 		this.numOfResults.setText("Type in the location of the event.");
-		currentLocationIndex = 0;
-		totalNumLocations = 0;
+		this.searchBox.setText("");
 		this.disablePagingButtons();
-	}
-	
-	/**
-	 * Helper method to display the previous location result if it exists.
-	 * @pre true;
-	 * @post true;
-	 */
-	private void previousLocation()
-	{
-		if(hasPreviousLocation())
-		{
-			this.currentLocationIndex--;
-			if(!hasPreviousLocation())
-			{
-				this.previousLocation.setEnabled(false);
-			}
-		}
-	}
-	
-	/**
-	 * Helper method to determine if a previous location exists.
-	 * @pre true;
-	 * @post true;
-	 * @return true if a previous location exists, false otherwise.
-	 */
-	private boolean hasPreviousLocation()
-	{
-		return this.currentLocationIndex > 0;
-	}
-	
-	/**
-	 * Helper method to display the next location result if it exists.
-	 * @pre true;
-	 * @post true;
-	 */
-	private void nextLocation()
-	{
-		if(hasNextLocation())
-		{
-			this.currentLocationIndex++;
-			if(!hasNextLocation())
-			{
-				this.nextLocation.setEnabled(false);
-			}
-		}
-	}
-	
-	/**
-	 * Helper method to determine if a next location exists.
-	 * @pre true;
-	 * @post true;
-	 * @return true if a next location exists, false otherwise.
-	 */
-	private boolean hasNextLocation()
-	{
-		return this.currentLocationIndex < this.totalNumLocations - 1;
 	}
 	
 	/**
@@ -218,7 +140,7 @@ public class EventLocationSearchPanel extends VerticalPanel
 	 * @post true;
 	 * @return the previous location button.
 	 */
-	public Button getPreviousLocation()
+	public Button getPreviousBtn()
 	{
 		return this.previousLocation;
 	}
@@ -229,30 +151,76 @@ public class EventLocationSearchPanel extends VerticalPanel
 	 * @post true;
 	 * @return the next location button.
 	 */
-	public Button getNextLocation()
+	public Button getNextBtn()
 	{
 		return this.nextLocation;
 	}
 
+	/**
+	 * Enable the back button.
+	 * @pre true;
+	 * @post this.previousLocation.isEnabled();
+	 */
+	public void enableBackBtn()
+	{
+		this.previousLocation.setEnabled(true);
+	}
+	
+	/**
+	 * Disable the back button.
+	 * @pre true;
+	 * @post !this.previousLocation.isEnabled();
+	 */
+	public void disableBackBtn()
+	{
+		this.previousLocation.setEnabled(false);
+	}
+	
+	/**
+	 * Enable the next button.
+	 * @pre true;
+	 * @post this.nextLocation.isEnabled();
+	 */
+	public void enableNextBtn()
+	{
+		this.nextLocation.setEnabled(true);
+	}
+	
+	/**
+	 * Disable the next button.
+	 * @pre true;
+	 * @post !this.nextLocation.isEnabled();
+	 */
+	public void disableNextBtn()
+	{
+		this.nextLocation.setEnabled(false);
+	}
+	
 	/**
 	 * Set the number of results found for the display.
 	 * @pre numOfResults != null;
 	 * @post true;
 	 * @param numOfResults - the string to display with the number of results found.
 	 */
-	public void setNumOfResults(String numOfResults)
+	public void setNumOfResults(int numOfResults)
 	{
-		this.numOfResults.setText(numOfResults);
+		if(numOfResults == 1)
+		{
+			this.numOfResults.setText(String.valueOf(numOfResults) + ONE_RESULT);
+		}
+		else
+		{
+			this.numOfResults.setText(String.valueOf(numOfResults + MANY_RESULTS));
+		}
 	}
-
+	
 	/**
-	 * Set the total number of locations found and iterate through.
-	 * @pre totaNumLocations >= 0;
+	 * Set the fail message to appear.
+	 * @pre true;
 	 * @post true;
-	 * @param totalNumLocations - the total number of locations found.
 	 */
-	public void setTotalNumLocations(int totalNumLocations)
+	public void setFailResult()
 	{
-		this.totalNumLocations = totalNumLocations;
+		this.numOfResults.setText(NO_RESULTS);
 	}
 }
