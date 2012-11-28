@@ -40,6 +40,6 @@ public class AchievementNotificationTest extends TestCase
 		
 		AchievementNotification an = new AchievementNotification(ach,user);
 		an.setNotificationDisplay(ach);
-		assertEquals("You have unlocked the achievement, "+ach.getName(),an.getNotificationDisplay());
+		assertEquals("You unlocked the achievement, "+ach.getName(),an.getNotificationDisplay());
 	}
 }
