@@ -4,6 +4,7 @@ import stuffplotter.presenters.EventDateSelectionPresenter.EventDateSelectionVie
 import stuffplotter.presenters.EventFriendSelectionPresenter.EventFriendSelectionView;
 import stuffplotter.presenters.EventInfoPresenter.EventInfoView;
 
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -52,15 +53,18 @@ public class EventCreationPagedPresenter implements Presenter
 	}
 	
 	private final EventCreationPagedView display;
+	private final HandlerManager eventBus;
 	
 	/**
 	 * Constructor for the EventCreationPagedPresenter.
 	 * @pre display != null;
 	 * @post true;
+	 * @param eventBus - the event bus for the application. 
 	 * @param display - the display associate with the EventCreationPagedPresenter.
 	 */
-	public EventCreationPagedPresenter(EventCreationPagedView display)
+	public EventCreationPagedPresenter(HandlerManager eventBus, EventCreationPagedView display)
 	{
+		this.eventBus = eventBus;
 		this.display = display;
 	}
 	
@@ -71,7 +75,7 @@ public class EventCreationPagedPresenter implements Presenter
 		Presenter infoPresenter = new EventInfoPresenter(this.display.getEventInfoView());
 		infoPresenter.go((HasWidgets) this.display);
 		
-		Presenter datePresenter = new EventDateSelectionPresenter(this.display.getDateSelectionView());
+		Presenter datePresenter = new EventDateSelectionPresenter(this.eventBus, this.display.getDateSelectionView());
 		datePresenter.go((HasWidgets) this.display);
 		
 		Presenter friendPresenter = new EventFriendSelectionPresenter(this.display.getFriendSelectionView());

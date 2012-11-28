@@ -1,5 +1,9 @@
 /** Add css rules here for your application. */
 
+.loading {
+	background-image: url(./images/orz.gif);
+}
+
 .masterContainer {
 	width: 100%;
 }
