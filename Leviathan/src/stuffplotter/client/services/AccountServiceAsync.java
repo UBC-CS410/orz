@@ -11,8 +11,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AccountServiceAsync
 {
-	void registerAccount(String host, AsyncCallback<Account> callback);
-	void authorizeAccount(String token, AsyncCallback<Account> callback);
+	void startSession(String host, AsyncCallback<Account> callback);
+	void storeAccessToken(String token, AsyncCallback<Account> callback);
 	
 	void storeUserinfo(AsyncCallback<Void> callback);
 	void addFriend(Account acc, String friend, AsyncCallback<Void> callback);

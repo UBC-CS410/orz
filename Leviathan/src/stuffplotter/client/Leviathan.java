@@ -126,7 +126,7 @@ public class Leviathan implements EntryPoint
 			
 		});
 		
-		applicationServices.getAccountService().registerAccount(REDIRECT_URI, new AsyncCallback<Account>()
+		applicationServices.getAccountService().startSession(REDIRECT_URI, new AsyncCallback<Account>()
 		{
 	        public void onFailure(Throwable error)
 	        {
@@ -141,7 +141,7 @@ public class Leviathan implements EntryPoint
 	        	{
 	        		String fragment = Window.Location.getHash();
 	        		String token = fragment.substring(fragment.indexOf('=') + 1, fragment.indexOf('&'));
-	        		applicationServices.getAccountService().authorizeAccount(token,  new AsyncCallback<Account>() {
+	        		applicationServices.getAccountService().storeAccessToken(token,  new AsyncCallback<Account>() {
 
 						@Override
 						public void onFailure(Throwable caught)
