@@ -338,6 +338,7 @@ public class Account implements Serializable, AccountModel
 		}
 		else
 		{
+			this.userFriends.add(userID);
 			return false;
 		}
 	}
