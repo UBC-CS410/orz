@@ -1,5 +1,10 @@
 package stuffplotter.client;
 
+import java.util.Date;
+
+import stuffplotter.views.util.DateSplitter;
+import stuffplotter.views.util.EventToDateConverter;
+
 import com.google.api.gwt.client.GoogleApiRequestTransport;
 import com.google.api.gwt.services.calendar.shared.Calendar;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext;
@@ -10,6 +15,7 @@ import com.google.api.gwt.services.calendar.shared.model.Event;
 import com.google.api.gwt.services.calendar.shared.model.EventDateTime;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
@@ -90,12 +96,28 @@ public class GoogleCalendar
 	 * @param eventName - name of the event
 	 * @param calendarId - id of the calendar
 	 */
-	public void addEvent(String eventName, String calendarId)
+	public void addEvent(stuffplotter.shared.Event eventInstance)
 	{
+		DateTimeFormat rfcFormat = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		String startDate = rfcFormat.format(eventInstance.getDate());
+		
+		DateSplitter splitter = new DateSplitter(eventInstance.getDate());
+		Date newDate = new Date(
+				splitter.getYear()-1900, 
+				splitter.getMonth() - 1, 
+				splitter.getDay(), 
+				splitter.getHour() + Integer.valueOf(eventInstance.getDuration()), 
+				0);
+		
+		String endDate = rfcFormat.format(newDate);
+		
+		
 		//DATES MUST BE IN THIS FORMAT
-		String summary = "New Event";
-		String startDate = "2012-011-28T14:30:00.000-07:00";
-		String endDate = "2012-011-28T15:00:00.000-07:00";
+		String summary = eventInstance.getName();
+		//String startDate = "2012-11-28T14:30:00.000-07:00";
+		//String endDate = "2012-11-28T15:00:00.000-07:00";
+		//String startDate = "2012-11-28T14:30:00.000-07:00";
+		//String endDate = "2012-11-28T15:00:00.000-07:00";
 		
 		EventsContext eventsCtx = this.googleCalendar.events();
 	    Event event = eventsCtx.create(Event.class)
@@ -103,11 +125,10 @@ public class GoogleCalendar
 	        .setStart(eventsCtx.create(EventDateTime.class).setDateTime(startDate))
 	        .setEnd(eventsCtx.create(EventDateTime.class).setDateTime(endDate));
 
-	    System.out.println(eventName);
-	    System.out.println(calendarId);
+
 	    // Note that the EventsContext used to insert the Event has to be the same one used to create
 	    // it.
-	    eventsCtx.insert(calendarId, event).fire(new Receiver<Event>()
+	    eventsCtx.insert(eventInstance.getOwnerID(), event).fire(new Receiver<Event>()
 	    {
 
 			@Override

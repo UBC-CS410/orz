@@ -210,6 +210,8 @@ public class EventsPagePresenter implements Presenter
 				}
 				else
 				{
+					GoogleCalendar calendar = new GoogleCalendar();
+					calendar.addEvent(event.getUpdatedEvent());
 					Window.alert("Event scheduled.");
 				}
 				
@@ -224,8 +226,6 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onEventCreated(EventCreatedEvent event)
 			{
-				//GoogleCalendar calendar = new GoogleCalendar();
-				//calendar.addEvent(event.getEventName(), event.getOwnerID());
 				applicationServices.getStatsService().getStats(userAccount.getUserEmail(), new AsyncCallback<AccountStatistic>()
 				{
 

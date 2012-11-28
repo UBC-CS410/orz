@@ -63,16 +63,16 @@ public class HomePagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		this.homeView.getCalendar().addTimeBlockClickHandler(new TimeBlockClickHandler<Date>()
-		{
-			@Override
-			public void onTimeBlockClick(TimeBlockClickEvent<Date> event)
-			{
-				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
-				String[] calendarValues = dayFormat.format(event.getTarget()).toString().split(",");
-				Window.alert(calendarValues[1]);
-			}
-		});
+//		this.homeView.getCalendar().addTimeBlockClickHandler(new TimeBlockClickHandler<Date>()
+//		{
+//			@Override
+//			public void onTimeBlockClick(TimeBlockClickEvent<Date> event)
+//			{
+//				DateTimeFormat dayFormat = DateTimeFormat.getFormat("MMMM,d,yyyy");
+//				String[] calendarValues = dayFormat.format(event.getTarget()).toString().split(",");
+//				Window.alert(calendarValues[1]);
+//			}
+//		});
 	}
 	
 	/**

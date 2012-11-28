@@ -233,7 +233,7 @@ public class EventCreationPresenter implements Presenter
 						System.out.println(result.getComments().size());
 						new NotificationDialogBox(TASKNAME, "The Event: " + result.getName() +
 												  " was created successfully!");
-						eventBus.fireEvent(new EventCreatedEvent(result.getId(), result.getName(), result.getOwnerID()));
+						eventBus.fireEvent(new EventCreatedEvent(result.getId(), result.getName(), result.getOwnerID(), result));
 					}
 					
 					@Override
