@@ -9,7 +9,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.shared.Account;
-import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventDateSelectionPanel;
 import stuffplotter.views.events.EventInfoPanel;
 import stuffplotter.views.events.FriendSelectionPanel;

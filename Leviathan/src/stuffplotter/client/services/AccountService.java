@@ -17,8 +17,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("account")
 public interface AccountService extends RemoteService
 {
-	Account registerAccount(String host);
-	Account authorizeAccount(String token);
+	Account startSession(String host);
+	Account storeAccessToken(String token);
 	void storeUserinfo() throws InvalidAccessTokenException;
 	void addFriend(Account acc, String friend);
 	void saveAccount(Account acc);

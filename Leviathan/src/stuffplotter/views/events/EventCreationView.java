@@ -1,18 +1,18 @@
 package stuffplotter.views.events;
 
-import java.util.Date;
-import java.util.List;
-
+import stuffplotter.client.EventCreationPageVisitor;
+import stuffplotter.presenters.EventCreationPagedPresenter.EventCreationPagedView;
 import stuffplotter.presenters.EventCreationPresenter.CreateEventView;
 import stuffplotter.views.util.CloseClickHandler;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the window for creating events.
@@ -25,6 +25,7 @@ public class EventCreationView extends DialogBox implements CreateEventView
 	 * Depending on the view, the "Next" or "Submit" button will be placed into here.
 	 */
 	private SimplePanel secondBtnHolder;
+	private SimplePanel pageHolder;
 	private EventCreationPagedPanel eventPages;
 	private Button backBtn;
 	private Button nextBtn;
@@ -50,8 +51,9 @@ public class EventCreationView extends DialogBox implements CreateEventView
 	private void initializeUI()
 	{
 		VerticalPanel vertPanel = new VerticalPanel();
-		this.eventPages = new EventCreationPagedPanel();		
-		vertPanel.add(this.eventPages);
+		this.eventPages = new EventCreationPagedPanel();
+		this.pageHolder = new SimplePanel();
+		vertPanel.add(this.pageHolder);
 		this.initializeButtons(vertPanel);
 		this.add(vertPanel);
 		
@@ -184,14 +186,20 @@ public class EventCreationView extends DialogBox implements CreateEventView
 	}
 
 	@Override
-	public HasValueChangeHandlers<Date> getCalendar()
+	public EventCreationPagedView getPagedView()
 	{
-		return this.eventPages.getCalendar();
+		return this.eventPages;
 	}
 
 	@Override
-	public void populateTimeSheet(Date shownDate, List<Date> conflictDates)
+	public HasWidgets getPagedViewHolder()
 	{
-		this.eventPages.populateTimeSheet(shownDate, conflictDates);
+		return this.pageHolder;
+	}
+	
+	@Override
+	public Widget asWidget()
+	{
+		return this;
 	}
 }

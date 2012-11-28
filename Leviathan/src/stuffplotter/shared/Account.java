@@ -22,29 +22,30 @@ import com.googlecode.objectify.annotation.Entity;
 @Entity
 public class Account implements Serializable, AccountModel
 {
-	/* Session information */
-	private String userLoginUrl;
-	private String userLogoutUrl;
+	//TODO: Refactor variable names by removing the "user" prefix, useless information
 
 	/* Basic information */
 	@Id
 	private String userEmail;
-	private String userAge;
-	private String userPhone;
+	private String userLogoutUrl;
 	
-	/* Google information */
+	/* Google userinfo */
 	private String userAccessToken;
 	private String userFullName;
+	private String gender;
+	private String birthDate;
 	private String userProfilePicture;
 
-	/* Social information */
+	/* Application information */
 	private List<String> userFriends;
 	private List<String> pendingFriends;
 	private List<Long> userCurrentEvents;
 	private List<Long> userPastEvents;
 	private List<Long> userNotifications;
-
+	
 	/* Custom information */
+	private String userAge;
+	private String userPhone;
 	private String userTitle;
 
 	/** 
@@ -82,50 +83,6 @@ public class Account implements Serializable, AccountModel
 	}
 
 	/**
-	 * Retrieves the URI that redirects user to google accounts.
-	 * @pre true;
-	 * @post true;
-	 * @return 	the URI string to display in an anchor.
-	 */
-	public String getLoginUrl()
-	{
-		return this.userLoginUrl;
-	}
-
-	/**
-	 * Stores the URI that redirects user to google accounts.
-	 * @pre pURi != null;
-	 * @post this.userLoginUrl.equals(pUri);
-	 * @param pUri - the URI string to store, links to google accounts.
-	 */
-	public void setLoginUrl(String pUri)
-	{
-		this.userLoginUrl = pUri;
-	}
-
-	/**
-	 * Retrieves the URI that logs out user from google accounts.
-	 * @pre true;
-	 * @post true;
-	 * @return the stored URI to display in an anchor.
-	 */
-	public String getLogoutUrl()
-	{
-		return this.userLogoutUrl;
-	}
-
-	/**
-	 * Stores the URI that logs out user from google accounts.
-	 * @pre pUri != null;
-	 * @post this.userLogoutUrl.equals(pUri);
-	 * @param pUri - the URI string to store, links to google accounts.
-	 */
-	public void setLogoutUrl(String pUri)
-	{
-		this.userLogoutUrl = pUri;
-	}
-
-	/**
 	 * Retrieve the user's email address.
 	 * @pre true;
 	 * @post true;
@@ -146,49 +103,27 @@ public class Account implements Serializable, AccountModel
 	{
 		this.userEmail = userEmail;
 	}
-
+	
 	/**
-	 * Retrieve the age of the user.
+	 * Gets the URI that logs out user from google accounts.
 	 * @pre true;
 	 * @post true;
-	 * @return the age of the user.
+	 * @return the stored URI to display in an anchor.
 	 */
-	public String getUserAge() 
+	public String getLogoutUrl()
 	{
-		return this.userAge;
+		return this.userLogoutUrl;
 	}
 
 	/**
-	 * Set the age of the user.
-	 * @pre userAge > 0;
-	 * @post this.userAge == userAge;
-	 * @param userAge - the age of the user to set.
+	 * Stores the URI that logs out user from google accounts.
+	 * @pre pUri != null;
+	 * @post this.userLogoutUrl.equals(pUri);
+	 * @param pUri - the URI string to store, links to google accounts.
 	 */
-	public void setUserAge(String userAge)
+	public void setLogoutUrl(String pUri)
 	{
-		this.userAge = userAge;
-	}
-
-	/**
-	 * Retrieve the uesr's phone number.
-	 * @pre true;
-	 * @post true;
-	 * @return the phone number of the user.
-	 */
-	public String getUserPhone()
-	{
-		return this.userPhone;
-	}
-
-	/**
-	 * Set the phone number for the user.
-	 * @pre userPhone != null;
-	 * @post this.userPhone.equals(userPhone);
-	 * @param userPhone - the phone number for the user to set.
-	 */
-	public void setUserPhone(String userPhone)
-	{
-		this.userPhone = userPhone;
+		this.userLogoutUrl = pUri;
 	}
 	
 	/**
@@ -235,6 +170,50 @@ public class Account implements Serializable, AccountModel
 		this.userFullName = userFullName;
 	}
 	
+	/**
+	 * Gets the user's gender.
+	 * @pre true;
+	 * @post true;
+	 * @return the gender of the user.
+	 */
+	public String getGender()
+	{
+		return gender;
+	}
+
+	/**
+	 * Sets the user's gender.
+	 * @pre true;
+	 * @post true;
+	 * @param gender - the gender to set
+	 */
+	public void setGender(String gender)
+	{
+		this.gender = gender;
+	}
+
+	/**
+	 * Gets the user's birth date.
+	 * @pre true;
+	 * @post true;
+	 * @return the birth date of the user.
+	 */
+	public String getBirthDate()
+	{
+		return birthDate;
+	}
+
+	/**
+	 * Sets the user's birth date.
+	 * @pre true;
+	 * @post true;
+	 * @param birthDate - the birth date to set
+	 */
+	public void setBirthDate(String birthDate)
+	{
+		this.birthDate = birthDate;
+	}
+
 	/**
 	 * Get the url to user's profile picture.
 	 * @pre true;
@@ -345,22 +324,8 @@ public class Account implements Serializable, AccountModel
 	 */
 	public boolean confirmFriendRequest(String userID)
 	{
-		if(this.pendingFriends.remove(userID))
-		{
-			if(this.userFriends.add(userID))
-			{
-				return true;
-			}
-			else
-			{
-				this.pendingFriends.add(userID);
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		this.pendingFriends.remove(userID);
+		return this.userFriends.add(userID);
 	}
 
 	/**
@@ -399,6 +364,50 @@ public class Account implements Serializable, AccountModel
 	}
 	
 	/**
+	 * Retrieve the age of the user.
+	 * @pre true;
+	 * @post true;
+	 * @return the age of the user.
+	 */
+	public String getUserAge() 
+	{
+		return this.userAge;
+	}
+
+	/**
+	 * Set the age of the user.
+	 * @pre userAge > 0;
+	 * @post this.userAge == userAge;
+	 * @param userAge - the age of the user to set.
+	 */
+	public void setUserAge(String userAge)
+	{
+		this.userAge = userAge;
+	}
+
+	/**
+	 * Retrieve the uesr's phone number.
+	 * @pre true;
+	 * @post true;
+	 * @return the phone number of the user.
+	 */
+	public String getUserPhone()
+	{
+		return this.userPhone;
+	}
+
+	/**
+	 * Set the phone number for the user.
+	 * @pre userPhone != null;
+	 * @post this.userPhone.equals(userPhone);
+	 * @param userPhone - the phone number for the user to set.
+	 */
+	public void setUserPhone(String userPhone)
+	{
+		this.userPhone = userPhone;
+	}
+	
+	/**
 	 * Retrieve the title (Achievement title) of the user. 
 	 * @pre true;
 	 * @post true;
@@ -409,13 +418,21 @@ public class Account implements Serializable, AccountModel
 		return this.userTitle;
 	}
 
+	/**
+	 * 
+	 * @pre
+	 * @post
+	 * @param title
+	 */
 	public void setTitle(String title)
 	{
 		this.userTitle = title;
 		
 	}
 	
-
+	/**
+	 * 
+	 */
 	@Override
 	public int compare(AccountModel o1, AccountModel o2)
 	{

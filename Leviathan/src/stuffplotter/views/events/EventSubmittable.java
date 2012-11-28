@@ -1,5 +1,7 @@
 package stuffplotter.views.events;
 
+import stuffplotter.client.EventCreationPageVisitor;
+
 /**
  * Interface used by all pages of the event creation UI.
  */

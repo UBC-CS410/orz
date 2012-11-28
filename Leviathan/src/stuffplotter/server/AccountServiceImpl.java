@@ -27,6 +27,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 
 @SuppressWarnings("serial")
@@ -42,7 +43,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	 * @return current user Account
 	 */
 	@Override
-	public Account registerAccount(String redirect)
+	public Account startSession(String host)
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
@@ -50,7 +51,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    Account account = null;
 	    try
 	    {
-    	  account = dbstore.fetchAccount(user.getEmail());
+    	  account = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, user.getEmail()));
 	    }
 	    catch (NotFoundException nfe)
 	    {
@@ -58,9 +59,9 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    }
 	    finally
 	    {
-    	  account.setLoginUrl(userService.createLoginURL(redirect));
-    	  account.setLogoutUrl(userService.createLogoutURL(account.getLoginUrl()));
-    	  this.saveAccount(account); 
+    	  //If users choose to log out, redirect them back to login page
+    	  account.setLogoutUrl(userService.createLogoutURL(userService.createLoginURL(host)));
+    	  dbstore.simpleStore(account); 
 	    }
 	    
 	    return account;
@@ -74,14 +75,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	 * @return an authorized Account
 	 */
 	@Override
-	public Account authorizeAccount(String token)
+	public Account storeAccessToken(String token)
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
 	    
-		Account account = dbstore.fetchAccount(user.getEmail());
+		Account account = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, user.getEmail()));
 		account.setAccessToken(token);
-		dbstore.store(account);
+		dbstore.simpleStore(account);
 		
 		return account;
 	}
@@ -96,7 +97,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	{
 		UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
-		Account account = dbstore.fetchAccount(user.getEmail());
+		Account account = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, user.getEmail()));
 		
 		String token = account.getAccessToken();
 		String request = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token;
@@ -161,17 +162,21 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
                 {
                 	account.setAccessToken(null);
                 } 
-                else if ("picture".equals(fieldname))
-                {
-                    account.setUserProfilePicture(jp.getText());
-                }
                 else if ("name".equals(fieldname))
                 {
                 	account.setUserFullName(jp.getText());
-                } 
-                else if ("birthdate".equals(fieldname))
+                }
+                else if ("gender".equals(fieldname))
                 {
-                	//account.setBirthDate(jp.getText());
+                	account.setGender(jp.getText());
+                }
+                else if ("birthday".equals(fieldname))
+                {
+                	account.setBirthDate(jp.getText());
+                }
+                else if ("picture".equals(fieldname))
+                {
+                    account.setUserProfilePicture(jp.getText());
                 }
             }
         }
@@ -185,7 +190,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
         }
         finally
         {
-        	dbstore.store(account);
+        	dbstore.simpleStore(account);
         }
         
         if(account.getAccessToken() == null)
@@ -209,7 +214,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	@Override
 	public void saveAccount(Account acc)
 	{
-		dbstore.store(acc);
+		dbstore.simpleStore(acc);
 	}
 	
 	@Override
@@ -217,7 +222,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	{
 		Account temp = null;
 		Notification newFriendNot = new FriendNotification(FriendNotificationType.FRIENDREQUEST, friend, acc.getUserEmail());
-		dbstore.store(newFriendNot);
+		dbstore.simpleStore(newFriendNot);
 		Long notId = newFriendNot.getNotificationId();
 		
 		try
@@ -227,7 +232,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		catch(NotFoundException nfe) 
 		{
 		      temp = new Account(friend);
-		      dbstore.store(temp); // register account
+		      dbstore.simpleStore(temp); // register account
 		      email.sendNewUser(friend, acc.getUserEmail());
 		}
 		finally
@@ -236,7 +241,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 			{
 				temp.addPendingRequest(acc.getUserEmail());
 				temp.addUserNotification(notId);
-				dbstore.store(temp);	
+				dbstore.simpleStore(temp);	
 			}
 		}
 	}
@@ -261,8 +266,9 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		Notification myFriendAccept = new FriendNotification(FriendNotificationType.FRIENDACCEPTED, friend, acc.getUserEmail());
 		Notification myselfAccept = new FriendNotification(FriendNotificationType.FRIENDACCEPTED,  acc.getUserEmail(), friend);
 		
-		dbstore.store(myFriendAccept);
-		dbstore.store(myselfAccept);
+		dbstore.simpleStore(myFriendAccept);
+		dbstore.simpleStore(myselfAccept);
+		
 		Long myFriendId = myFriendAccept.getNotificationId();
 		Long myselfAcceptLong = myselfAccept.getNotificationId();
 		
@@ -274,8 +280,8 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		temp.addUserNotification(myselfAcceptLong);
 		newFriend.addUserNotification(myFriendId);
 		
-		dbstore.store(temp);
-		dbstore.store(newFriend);
+		dbstore.simpleStore(temp);
+		dbstore.simpleStore(newFriend);
 		
 		AccountStatistic tempStats = dbstore.fetchAccountStats(temp.getUserEmail());
 		AccountStatistic newFriendStats = dbstore.fetchAccountStats(newFriend.getUserEmail());
@@ -283,8 +289,8 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		tempStats.setNumberOfFriends(temp.getUserFriends().size());
 		newFriendStats.setNumberOfFriends(temp.getUserFriends().size());
 		
-		dbstore.store(tempStats);
-		dbstore.store(newFriendStats);
+		dbstore.simpleStore(tempStats);
+		dbstore.simpleStore(newFriendStats);
 	}
 
 	@Override
@@ -294,8 +300,8 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		temp.getUserFriends().remove(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.getUserFriends().remove(acc.getUserEmail());
-		dbstore.store(temp);
-		dbstore.store(newFriend);	
+		dbstore.simpleStore(temp);
+		dbstore.simpleStore(newFriend);	
 		
 		AccountStatistic tempStats = dbstore.fetchAccountStats(temp.getUserEmail());
 		AccountStatistic newFriendStats = dbstore.fetchAccountStats(newFriend.getUserEmail());
@@ -303,8 +309,8 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		tempStats.setNumberOfFriends(temp.getUserFriends().size());
 		newFriendStats.setNumberOfFriends(temp.getUserFriends().size());
 		
-		dbstore.store(tempStats);
-		dbstore.store(newFriendStats);
+		dbstore.simpleStore(tempStats);
+		dbstore.simpleStore(newFriendStats);
 	}
 
 	@Override
@@ -314,19 +320,19 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		temp.getPendingFriends().remove(friend);
 		Account newFriend = dbstore.fetchAccount(friend);
 		newFriend.getPendingFriends().remove(acc.getUserEmail());
-		dbstore.store(temp);
-		dbstore.store(newFriend);	
+		dbstore.simpleStore(temp);
+		dbstore.simpleStore(newFriend);	
 	}
 
 	@Override
 	public void addNotification(String user, Notification notification)
 	{
-		dbstore.store(notification);
+		dbstore.simpleStore(notification);
 		Long notID = notification.getNotificationId();
 		
 		Account account = dbstore.fetchAccount(user);
 		account.addUserNotification(notID);
-		dbstore.store(account);
+		dbstore.simpleStore(account);
 	}
 
 	@Override
@@ -354,7 +360,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		{
 			Notification notif = dbstore.fetchNotification(ids);
 			notif.setNewNotification(false);
-			dbstore.store(notif);
+			dbstore.simpleStore(notif);
 		}
 	}
 
@@ -363,7 +369,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	{
 		for(NotificationModel notif : notifs)
 		{
-			dbstore.store((Notification) notif);
+			dbstore.simpleStore((Notification) notif);
 		}
 		
 	}

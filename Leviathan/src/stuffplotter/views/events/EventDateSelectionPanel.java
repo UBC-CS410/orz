@@ -3,16 +3,20 @@ package stuffplotter.views.events;
 import java.util.Date;
 import java.util.List;
 
+import stuffplotter.client.EventCreationPageVisitor;
+import stuffplotter.presenters.EventDateSelectionPresenter.EventDateSelectionView;
+
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 /**
  * Class to display a DatePicker with TimeSheetPanel to select dates for an event.
  */
-public class EventDateSelectionPanel extends SimplePanel implements EventSubmittable
+public class EventDateSelectionPanel extends SimplePanel implements EventSubmittable, EventDateSelectionView
 {
 	private TimeSheetPanel timeSheet;
 	private Label errorMessage;
@@ -22,23 +26,21 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	 * Constructor for EventDateSelectionPanel.
 	 * @pre timeSheetPanel != null;
 	 * @post this.isVisible() == true;
-	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
-	public EventDateSelectionPanel(TimeSheetPanel timeSheetPanel)
+	public EventDateSelectionPanel()
 	{
 		super();
-		this.initializeUI(timeSheetPanel);
+		this.initializeUI();
 	}
 	
 	/**
 	 * Helper method to add the panels to the EventDateSelectionPanel.
 	 * @pre timeSheetPanel != null;
 	 * @post true;
-	 * @param timeSheetPanel - the TimeSheetPanel to add selected dates to.
 	 */
-	private void initializeUI(TimeSheetPanel timeSheetPanel)
+	private void initializeUI()
 	{
-		this.timeSheet = timeSheetPanel;
+		this.timeSheet = new TimeSheetPanel();
 		HorizontalPanel horPanel = new HorizontalPanel();
 		VerticalPanel vertPanel = new VerticalPanel();
 		calendar = new DatePicker();
@@ -47,7 +49,7 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 		vertPanel.add(calendar);
 		vertPanel.add(errorMessage);
 		horPanel.add(vertPanel);
-		horPanel.add(timeSheetPanel);
+		horPanel.add(this.timeSheet);
 		this.add(horPanel);
 	}
 	
@@ -115,5 +117,12 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	{
 		this.timeSheet.addDay(shownDate, conflictDates);
 	}
+	
+	@Override
+	public Widget asWidget()
+	{
+		return this;
+	}
+	
 }
 

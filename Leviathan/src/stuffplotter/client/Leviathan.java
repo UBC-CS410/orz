@@ -109,7 +109,8 @@ public class Leviathan implements EntryPoint
 						}
 						else
 						{
-							Window.alert(caught.toString());
+							Window.alert("An unexpected error has occured.");
+							caught.printStackTrace();
 						}
 					}
 
@@ -126,11 +127,12 @@ public class Leviathan implements EntryPoint
 			
 		});
 		
-		applicationServices.getAccountService().registerAccount(REDIRECT_URI, new AsyncCallback<Account>()
+		applicationServices.getAccountService().startSession(REDIRECT_URI, new AsyncCallback<Account>()
 		{
-	        public void onFailure(Throwable error)
+	        public void onFailure(Throwable caught)
 	        {
-	        	Window.alert(error.toString());
+				Window.alert("An unexpected error has occured.");
+				caught.printStackTrace();
 	        }
 
 	        public void onSuccess(Account result)
@@ -141,12 +143,13 @@ public class Leviathan implements EntryPoint
 	        	{
 	        		String fragment = Window.Location.getHash();
 	        		String token = fragment.substring(fragment.indexOf('=') + 1, fragment.indexOf('&'));
-	        		applicationServices.getAccountService().authorizeAccount(token,  new AsyncCallback<Account>() {
+	        		applicationServices.getAccountService().storeAccessToken(token,  new AsyncCallback<Account>() {
 
 						@Override
 						public void onFailure(Throwable caught)
 						{
-							Window.alert(caught.toString());
+							Window.alert("An unexpected error has occured.");
+							caught.printStackTrace();
 						}
 
 						@Override
@@ -216,7 +219,8 @@ public class Leviathan implements EntryPoint
 							public void onFailure(Exception reason)
 							{
 								// TODO Auto-generated method stub
-								Window.alert(reason.getMessage());				
+								Window.alert("An unexpected error has occured.");
+								reason.printStackTrace();			
 							}
 
 							@Override
