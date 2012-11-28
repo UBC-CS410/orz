@@ -59,11 +59,10 @@ public class EventsPagePresenter implements Presenter
 		public void showSubmitAvailabilitiesButton();
 		public void showFinalizeTimeButton();
 		
-		public void removeSubmitAvailabilitiesButton();
-		public void removeFinalizeTimeButton();
 		public void clearEventView();
+		public void clearEventButtons();
 		
-		public void initialize(Account user, List<Event> events);
+		public int initialize(Account user, List<Event> events);
 		
 		/**
 		 * Retrieve the EventsPageViewer as a widget.
@@ -164,15 +163,14 @@ public class EventsPagePresenter implements Presenter
 							Window.alert("Submitted availabilities.");
 						}
 						
-					});
-					eventsView.removeSubmitAvailabilitiesButton();
+					});			
 				}
 				else
 				{
-					displayEvent(event.getUpdatedEvent(), event.getUpdatedEventIndex());
 					Window.alert("Event scheduled.");
-					eventsView.removeFinalizeTimeButton();
 				}
+				
+				fetchCurrentEvents();
 
 			}
 		});
@@ -310,17 +308,18 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onSuccess(List<Event> result)
 			{
-				currentEvents = result; //used for bindEventViewers
-				eventsView.initialize(appUser, currentEvents);
-				eventsView.removeSubmitAvailabilitiesButton();
-				bindEventViewers();
+				currentEvents = result;
+				eventsView.clearEventView();
+				eventsView.clearEventButtons();
+				
+				if(eventsView.initialize(appUser, currentEvents) > 0)
+				{
+					bindEventViewers();
+				}
+
 				if (currentEvents.size() > 0)
 				{
 					displayEvent(currentEvents.get(0), 0);
-				}
-				else
-				{
-					eventsView.clearEventView();
 				}
 			}
 		});
@@ -346,17 +345,18 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onSuccess(List<Event> result)
 			{
-				currentEvents = result; //used for bindEventViewers
-				eventsView.initialize(appUser, currentEvents);
-				eventsView.removeSubmitAvailabilitiesButton();
-				bindEventViewers();
+				currentEvents = result;
+				eventsView.clearEventView();
+				eventsView.clearEventButtons();
+				
+				if(eventsView.initialize(appUser, currentEvents) > 0)
+				{
+					bindEventViewers();
+				}
+
 				if (currentEvents.size() > 0)
 				{
 					displayEvent(currentEvents.get(0), 0);
-				}
-				else
-				{
-					eventsView.clearEventView();
 				}
 			}
 		});
