@@ -324,22 +324,8 @@ public class Account implements Serializable, AccountModel
 	 */
 	public boolean confirmFriendRequest(String userID)
 	{
-		if(this.pendingFriends.remove(userID))
-		{
-			if(this.userFriends.add(userID))
-			{
-				return true;
-			}
-			else
-			{
-				this.pendingFriends.add(userID);
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		this.pendingFriends.remove(userID);
+		return this.userFriends.add(userID);
 	}
 
 	/**
