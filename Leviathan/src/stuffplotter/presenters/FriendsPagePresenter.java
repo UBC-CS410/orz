@@ -276,6 +276,7 @@ public class FriendsPagePresenter implements Presenter
 			public void onClick(ClickEvent event)
 			{
 				String friendEmail = friendsView.getFriendBoxText();
+				int stringLen = friendEmail.length();
 				if(friendEmail.length()==0)
 				{
 					Window.alert("This field cannot be blank!");
@@ -288,10 +289,19 @@ public class FriendsPagePresenter implements Presenter
 				{
 					Window.alert("This field cannot contain and spaces!");
 				}
-
+				else if(stringLen<=10||!friendEmail.substring(stringLen-10,stringLen).equals("@gmail.com"))
+				{
+					Window.alert("Did forget to add '@gmail.com' at the end of your friend's email account?");
+				}
+				else if(containFriend(friends, friendEmail))
+				{
+					Window.alert("Hey, you already have "+friendEmail+" in your Friends List!");
+				}
+				else if(containFriend(pendingFriends, friendEmail))
+				{
+					Window.alert("Hey, don't you see "+friendEmail+"'s request below? Hit 'Confirm' if you want to add them as a friend.");
+				}
 				else{
-					if(!friendEmail.contains("@gmail.com"))
-						friendEmail = friendEmail+"@gmail.com";
 					appServices.getAccountService().addFriend(appUser, friendEmail, new AsyncCallback<Void>(){
 						@Override
 						public void onFailure(Throwable caught)
@@ -309,6 +319,16 @@ public class FriendsPagePresenter implements Presenter
 					});
 				}
 
+			}
+
+			private boolean containFriend(List<AccountModel> friends, String friendEmail)
+			{
+				for(AccountModel account : friends)
+				{
+					if(account.getUserEmail().equals(friendEmail))
+						return true;
+				}
+				return false;
 			}
 		});
 

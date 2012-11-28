@@ -172,7 +172,8 @@ public class TopBarPresenter implements Presenter
 											{								
 												for(NotificationModel not : result)
 												{
-													if(!notifications.contains(not))
+													if(//!notifications.contains(not))
+															!doesContain(notifications, not))
 														notifications.add(not);
 												}
 												Collections.sort(notifications, new Comparator<NotificationModel>()
@@ -198,6 +199,15 @@ public class TopBarPresenter implements Presenter
 													topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 												
 												topBarDisplay.setNotificationData(notifications);
+											}
+
+											private boolean doesContain(List<NotificationModel> notifications, NotificationModel not)
+											{
+												for(NotificationModel notif: notifications)
+													if(notif.getNotificationId().equals(not.getNotificationId()))
+														return true;
+													
+												return false;
 											}
 									
 										});

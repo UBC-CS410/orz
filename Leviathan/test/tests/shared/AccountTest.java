@@ -12,13 +12,10 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Notification;
-
-import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * JUnit test class for Account.java

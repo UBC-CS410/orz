@@ -39,8 +39,6 @@ public class AchievementsPageView extends HorizontalPanel implements Achievement
 	private void initializeUI()
 	{
 		achievementDisplayPanel = new AchievementsDisplayPanel(NUMBEROFCOLUMNS);
-		
-		this.add(new Label("Achievements"));
 		this.add(achievementDisplayPanel);
 	}
 	
