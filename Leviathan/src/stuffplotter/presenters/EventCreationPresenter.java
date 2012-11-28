@@ -9,6 +9,7 @@ import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.EventCreationPagedPresenter.EventCreationPagedView;
 import stuffplotter.shared.Event;
+import stuffplotter.signals.CalendarAuthorizedEvent;
 import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.client.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
@@ -165,7 +166,7 @@ public class EventCreationPresenter implements Presenter
 			@Override
 			public void onSuccess(Void result)
 			{
-				
+				eventBus.fireEvent(new CalendarAuthorizedEvent());
 			}	
 		});	
 	}
@@ -258,7 +259,7 @@ public class EventCreationPresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		this.bind();
-		Presenter presenter = new EventCreationPagedPresenter(this.createEventDialogBox.getPagedView());
+		Presenter presenter = new EventCreationPagedPresenter(this.eventBus, this.createEventDialogBox.getPagedView());
 		presenter.go(this.createEventDialogBox.getPagedViewHolder());
 		this.populateDisplay();
 	}
