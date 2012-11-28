@@ -4,12 +4,12 @@ import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.EventCreationPageValidator;
-import stuffplotter.client.EventCreationPageVisitor;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.EventCreationPagedPresenter.EventCreationPagedView;
 import stuffplotter.shared.Event;
 import stuffplotter.signals.EventCreatedEvent;
+import stuffplotter.client.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
 import stuffplotter.views.util.NotificationDialogBox;
 
