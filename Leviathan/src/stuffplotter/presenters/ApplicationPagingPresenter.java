@@ -135,7 +135,8 @@ public class ApplicationPagingPresenter implements Presenter
 		Presenter homePresenter = new HomePagePresenter(
 				this.appServices,
 				this.eventBus,
-				this.mainViewDisplay.getHomeView());
+				this.mainViewDisplay.getHomeView(),
+				this.appUser);
 		homePresenter.go((HasWidgets) this.mainViewDisplay);
 		
 		Presenter accountPresenter = new AccountPagePresenter(

@@ -5,6 +5,8 @@ import stuffplotter.shared.Event.Frame;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -63,7 +65,6 @@ public class EventInfoInputPanel extends VerticalPanel
 		
 		this.add(new Label("Location:"));
 		this.location = new TextBox();
-		this.location.setText("use the map to the right to help set the location");
 		this.add(location);
 		
 		this.add(new Label("Cost:"));
@@ -179,6 +180,7 @@ public class EventInfoInputPanel extends VerticalPanel
 	 */
 	public void displayErrorMessage()
 	{
+		this.errorMessage.setStyleName("error-text");
 		this.errorMessage.setText("The name of the event is required.");
 	}
 	

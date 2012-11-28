@@ -4,19 +4,25 @@ import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.client.EventCreationPageValidator;
+import stuffplotter.client.GoogleCalendar;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.EventCreationPagedPresenter.EventCreationPagedView;
 import stuffplotter.shared.Event;
+import stuffplotter.signals.CalendarAuthorizedEvent;
 import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.client.EventCreationPageVisitor;
 import stuffplotter.views.events.EventSubmittable;
 import stuffplotter.views.util.NotificationDialogBox;
 
+import com.google.api.gwt.client.OAuth2Login;
+import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -139,6 +145,30 @@ public class EventCreationPresenter implements Presenter
 		this.eventBus = eventBus;
 		this.createEventDialogBox = display;
 		this.appUser = userAccount;
+		this.authorizeCalendarAccess();
+	}
+	
+	/**
+	 * Helper method to authorize use of Google Calendar API.
+	 * @pre true;
+	 * @post true;
+	 */
+	private void authorizeCalendarAccess()
+	{	
+		OAuth2Login.get().authorize("1024938108271.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
+		{
+			@Override
+			public void onFailure(Exception reason)
+			{
+		
+			}
+
+			@Override
+			public void onSuccess(Void result)
+			{
+				eventBus.fireEvent(new CalendarAuthorizedEvent());
+			}	
+		});	
 	}
 	
 	/**
@@ -229,7 +259,7 @@ public class EventCreationPresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		this.bind();
-		Presenter presenter = new EventCreationPagedPresenter(this.createEventDialogBox.getPagedView());
+		Presenter presenter = new EventCreationPagedPresenter(this.eventBus, this.createEventDialogBox.getPagedView());
 		presenter.go(this.createEventDialogBox.getPagedViewHolder());
 		this.populateDisplay();
 	}

@@ -65,12 +65,14 @@ public class EventDateSelectionPanel extends SimplePanel implements EventSubmitt
 	
 	/**
 	 * Display the error message on the EventDateSelectionPanel.
-	 * @pre true;
+	 * @pre message != null;
 	 * @post true;
+	 * @param message - the error message to display.
 	 */
-	public void displayErrorMessage()
+	public void displayErrorMessage(String message)
 	{
-		this.errorMessage.setText("You must select at least one time slot.");
+		this.errorMessage.setStyleName("error-text");
+		this.errorMessage.setText(message);
 	}
 	
 	/**

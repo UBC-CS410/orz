@@ -113,8 +113,8 @@ public class Event implements Serializable
 		
 		this.eventStatus = Status.PROPOSED;
 		this.eventFrame = eventRetriever.getFrame();
-		
-		this.eventInvitees = new ArrayList<String>();
+
+		this.eventInvitees = eventRetriever.getSelectedFriends();
 		this.eventAttendees = new ArrayList<String>();
 		this.eventRaters = new ArrayList<String>();
 		this.eventComments = new ArrayList<Long>();

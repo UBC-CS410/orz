@@ -3,6 +3,9 @@ package stuffplotter.presenters;
 import java.util.Date;
 
 import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.presenters.NewsFeedPresenter.NewsFeedView;
+import stuffplotter.shared.Account;
+import stuffplotter.views.home.NewsFeedPanel;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
@@ -27,10 +30,11 @@ public class HomePagePresenter implements Presenter
 		 * @return the HomeView as a widget.
 		 */
 		public Widget asWidget();
-		public Calendar getCalendar(); // create presenter for this
-		//public NewsFeedPanel getNewsFeed(); // create presenter for this
+		public Calendar getCalendar(); 
+		public NewsFeedView getNewsFeed(); 
 	}
 	
+	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final HomeView homeView;
@@ -44,11 +48,12 @@ public class HomePagePresenter implements Presenter
 	 * @param display - the view to present
 	 * @param user - the current user
 	 */
-	public HomePagePresenter(ServiceRepository appServices, HandlerManager eventBus, HomeView display)
+	public HomePagePresenter(ServiceRepository appServices, HandlerManager eventBus, HomeView display, Account appUser)
 	{
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.homeView = display;
+		this.appUser = appUser;
 	}
 
 	/**
@@ -79,6 +84,11 @@ public class HomePagePresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
+		Presenter newsFeedPresenter = new NewsFeedPresenter(this.appServices,
+															  this.eventBus,
+															  this.homeView.getNewsFeed(),
+															  this.appUser);
+		newsFeedPresenter.go((HasWidgets) this.homeView);
 		container.add(this.homeView.asWidget());
 	}
 

@@ -6,7 +6,11 @@ import java.util.List;
 
 import stuffplotter.views.util.DateSplitter;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -74,7 +78,19 @@ public class DaySelections extends VerticalPanel
 	{
 		DateSplitter splitter = new DateSplitter(date);
 		this.dayOfMonth = splitter.getDay();
-		this.add(new Label(splitter.getDayAsString()));
+		HorizontalPanel topHolder = new HorizontalPanel();
+		topHolder.add(new Label(splitter.getDayAsString()));
+		Anchor close = new Anchor("X");
+		close.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				removeFromParent();
+			}
+		});
+		topHolder.add(close);
+		this.add(topHolder);
 		
 		// for loop to add all the time slots
 		for (int i = 0; i < timeIntervals.length; i++)

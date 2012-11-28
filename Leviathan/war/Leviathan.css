@@ -1,5 +1,19 @@
 /** Add css rules here for your application. */
 
+.error-text {
+	color: #FF0000;
+}
+
+.conflicting-time {
+	color: #FF002B;
+}
+
+
+
+.loading {
+	background-image: url(./images/orz.gif);
+}
+
 .masterContainer {
 	width: 100%;
 }
