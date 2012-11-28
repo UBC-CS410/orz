@@ -27,7 +27,6 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 		super();
 		this.initializePages();
 		this.setStyleName("mainDeck");
-		this.showWidget(0);
 	}
 	
 	/**
@@ -62,12 +61,6 @@ public class ApplicationPagingView extends DeckPanel implements MainView
 		
 		// initialize User Achievements page
 		achievementsPanel = new AchievementsPageView();
-		
-		this.add(homePage);
-		this.add(accountPage);
-		this.add(eventsPage);
-		this.add(friendsPage);
-		//this.add(achievementsPanel);
 	}
 
 	/**

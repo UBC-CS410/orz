@@ -3,7 +3,6 @@ package stuffplotter.client;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventDateSelectionPanel;
 import stuffplotter.views.events.EventInfoInputPanel;
 import stuffplotter.views.events.EventInfoPanel;

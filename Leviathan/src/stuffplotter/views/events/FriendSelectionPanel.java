@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.client.EventCreationPageVisitor;
+import stuffplotter.presenters.EventFriendSelectionPresenter.EventFriendSelectionView;
 import stuffplotter.views.friends.FriendsDisplayPanel;
 
 import com.google.gwt.user.client.ui.CheckBox;
@@ -18,7 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Class to display the friends to select to invite to an event.
  */
-public class FriendSelectionPanel extends SimplePanel implements EventSubmittable
+public class FriendSelectionPanel extends SimplePanel implements EventSubmittable, EventFriendSelectionView
 {
 	private static final int NUMOFCOLUMNS = 3;
 	private FriendsDisplayPanel friendDisplayer;

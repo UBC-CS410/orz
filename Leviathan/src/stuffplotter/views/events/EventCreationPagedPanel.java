@@ -1,20 +1,23 @@
 package stuffplotter.views.events;
 
-
-import java.util.Date;
-import java.util.List;
+import stuffplotter.client.EventCreationPageVisitor;
+import stuffplotter.presenters.EventCreationPagedPresenter.EventCreationPagedView;
+import stuffplotter.presenters.EventDateSelectionPresenter.EventDateSelectionView;
+import stuffplotter.presenters.EventFriendSelectionPresenter.EventFriendSelectionView;
+import stuffplotter.presenters.EventInfoPresenter.EventInfoView;
 
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DatePicker;
 
 /**
  * Class for paging in the EventCreationDialogBox class.
  */
-public class EventCreationPagedPanel extends DeckPanel
+public class EventCreationPagedPanel extends DeckPanel implements EventCreationPagedView
 {
 	private int currentPage = 0;
-	private EventDateSelectionPanel page2Panel;
+	private EventInfoView page1Panel;
+	private EventDateSelectionView page2Panel;
+	private EventFriendSelectionView page3Panel;
 	
 	/**
 	 * Constructor for the EventCreationPager.
@@ -25,7 +28,6 @@ public class EventCreationPagedPanel extends DeckPanel
 	{
 		super();
 		this.initializePages();
-		this.showWidget(0);
 	}
 	
 	/**
@@ -39,18 +41,13 @@ public class EventCreationPagedPanel extends DeckPanel
 		//IMPORTANT: Only panels that implement EventSubmittable can be added to this panel.
 		
 		// initialize Page 1
-		EventInfoPanel page1Panel = new EventInfoPanel();
+		page1Panel = new EventInfoPanel();
 		
 		// initialize Page 2
-		TimeSheetPanel timeSheet = new TimeSheetPanel();
-		page2Panel = new EventDateSelectionPanel(timeSheet);
+		page2Panel = new EventDateSelectionPanel();
 
 		// initialize Page 3
-		FriendSelectionPanel page3Panel = new FriendSelectionPanel();
-		
-		this.add(page1Panel);
-		this.add(page2Panel);
-		this.add(page3Panel);
+		page3Panel = new FriendSelectionPanel();
 	}
 	
 	/**
@@ -134,26 +131,27 @@ public class EventCreationPagedPanel extends DeckPanel
 		return currentPage > 0;
 	}
 
-	/**
-	 * Retrieve the calendar from the paged display.
-	 * @pre true;
-	 * @post true;
-	 */
-	public DatePicker getCalendar()
+	@Override
+	public EventInfoView getEventInfoView()
 	{
-		return this.page2Panel.getCalendar();
+		return this.page1Panel;
+	}
+
+	@Override
+	public EventDateSelectionView getDateSelectionView()
+	{
+		return this.page2Panel;
+	}
+
+	@Override
+	public EventFriendSelectionView getFriendSelectionView()
+	{
+		return this.page3Panel;
 	}
 	
-	/**
-	 * Populate the time sheet in this panel with the given date and mark any conflicting
-	 * time slots.
-	 * @pre shownDate != null && conflictDates != null;
-	 * @post true;
-	 * @param shownDate - the day to display on the UI.
-	 * @param conflictDates - the list of Date that already have activities going on.
-	 */
-	public void populateTimeSheet(Date shownDate, List<Date> conflictDates)
+	@Override
+	public Widget asWidget()
 	{
-		this.page2Panel.populateTimeSheet(shownDate, conflictDates);
+		return this;
 	}
 }

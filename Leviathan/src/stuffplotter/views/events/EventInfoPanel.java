@@ -1,13 +1,16 @@
 package stuffplotter.views.events;
 
 
+import stuffplotter.client.EventCreationPageVisitor;
+import stuffplotter.presenters.EventInfoPresenter.EventInfoView;
+
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Class to display the general information for an event during its creation.
  */
-public class EventInfoPanel extends SimplePanel implements EventSubmittable
+public class EventInfoPanel extends SimplePanel implements EventSubmittable, EventInfoView
 {
 	private EventInfoInputPanel eventInputPanel;
 	

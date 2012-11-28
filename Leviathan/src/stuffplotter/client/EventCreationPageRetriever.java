@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 
 import stuffplotter.shared.Event.Frame;
-import stuffplotter.views.events.EventCreationPageVisitor;
 import stuffplotter.views.events.EventDateSelectionPanel;
 import stuffplotter.views.events.EventInfoInputPanel;
 import stuffplotter.views.events.EventInfoPanel;

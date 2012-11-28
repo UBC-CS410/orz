@@ -1,4 +1,8 @@
-package stuffplotter.views.events;
+package stuffplotter.client;
+
+import stuffplotter.views.events.EventDateSelectionPanel;
+import stuffplotter.views.events.EventInfoPanel;
+import stuffplotter.views.events.FriendSelectionPanel;
 
 
 /**
