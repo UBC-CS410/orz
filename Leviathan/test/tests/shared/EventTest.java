@@ -123,7 +123,7 @@ public class EventTest extends TestCase
 		eve.setTimeFrame(eventFrame);
 		
 		eve.setInvitees(eventInvitees);
-		eve.setEventScheduler(eventScheduler);
+		eve.setSchedulerId(eventScheduler);
 				
 		assertEquals(eventOwner, eve.getOwner());				
 		assertEquals(eventOwnerID, eve.getOwnerID());
@@ -141,7 +141,7 @@ public class EventTest extends TestCase
 		assertEquals(eventInvitees, eve.getInvitees());
 		assertEquals(eventAttendees, eve.getAttendees());
 		assertEquals(eventComments, eve.getComments());
-		assertEquals(eventScheduler,eve.getEventScheduler());
+		assertEquals(eventScheduler,eve.getSchedulerId());
 		
 	}
 	

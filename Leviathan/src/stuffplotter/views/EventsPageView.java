@@ -38,6 +38,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	private final Button declineInvitationButton;
 	private final Button submitAvailabilityButton;
 	private final Button finalizeTimeButton;
+	private final Button rateEventButton;
 	
 	private SimplePanel eventPanel;
 	private ScrollDisplayPanel eventRollPanel;
@@ -60,12 +61,15 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.declineInvitationButton = new Button("Decline Invitation");
 		this.submitAvailabilityButton = new Button("Submit Availabilities");
 		this.finalizeTimeButton = new Button("Finalize Time");
+		this.rateEventButton = new Button("Like");
 		
 		this.acceptInvitationButton.addStyleName("greenActionButton");
-		this.declineInvitationButton.addStyleName("redAcitonButton");
+		this.declineInvitationButton.addStyleName("redActionButton");
 		
 		this.submitAvailabilityButton.addStyleName("greenActionButton");
 		this.finalizeTimeButton.addStyleName("redActionButton");
+		
+		this.rateEventButton.addStyleName("blueActionButton");
 		
 		VerticalPanel actionPanel = new VerticalPanel();
 
@@ -75,6 +79,11 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		commonActionPanel.add(this.listPastButton);
 	
 		this.eventActionPanel = new VerticalPanel();
+		this.eventActionPanel.add(this.acceptInvitationButton);
+		this.eventActionPanel.add(this.declineInvitationButton);
+		this.eventActionPanel.add(this.submitAvailabilityButton);
+		this.eventActionPanel.add(this.finalizeTimeButton);
+		this.eventActionPanel.add(this.rateEventButton);
 		
 		actionPanel.setSpacing(10);
 		actionPanel.setStyleName("actionBar");
@@ -97,198 +106,18 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.add(this.eventRollPanel);
 		this.setCellWidth(this.eventRollPanel, "225px");
 	}
-
-	/**
-	 * Gets the create events button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers 
-	 */
-	@Override
-	public HasClickHandlers getCreateButton()
-	{
-		return this.createButton;
-	}
-
-	/**
-	 * Gets the list current events button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers
-	 */
-	@Override
-	public HasClickHandlers getListCurrentButton()
-	{
-		return this.listCurrentButton;
-	}
-
-	/**
-	 * Gets the list past events button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers
-	 */
-	@Override
-	public HasClickHandlers getListPastButton()
-	{
-		return this.listPastButton;
-	}
 	
 	/**
-	 * Gets the accept invitations button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers
+	 * Returns this as a widget so that it can be added to a container
+	 * @pre true
+	 * @post true
+	 * @return this
 	 */
 	@Override
-	public HasClickHandlers getAcceptButton()
+	public Widget asWidget()
 	{
-		return this.acceptInvitationButton;
+		return this;
 	}
-
-	/**
-	 * Gets the decline invitations button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers
-	 */
-	@Override
-	public HasClickHandlers getDeclineButton()
-	{
-		return this.declineInvitationButton;
-	}
-
-	/**
-	 * Gets the submit availabilities button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers
-	 */
-	@Override
-	public HasClickHandlers getSubmitAvailabilitiesButton()
-	{
-		return this.submitAvailabilityButton;
-	}
-
-	/**
-	 * Gets the finalize time button
-	 * @pre true;
-	 * @post true;
-	 * @return a HasClickHandlers
-	 */
-	@Override
-	public HasClickHandlers getFinalizeTimeButton()
-	{
-		return this.finalizeTimeButton;
-	}
-	
-	/**
-	 * Shows the invitation buttons
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showInvitationButtons()
-	{
-		this.eventActionPanel.clear();
-		this.eventActionPanel.add(this.acceptInvitationButton);
-		this.eventActionPanel.add(this.declineInvitationButton);
-	}
-	
-	/**
-	 * Shows the submit availability button
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showSubmitAvailabilitiesButton()
-	{
-		this.eventActionPanel.clear();
-		this.eventActionPanel.add(this.submitAvailabilityButton);
-	}
-
-	
-	/**
-	 * Shows the finalize time button
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showFinalizeTimeButton()
-	{
-		this.eventActionPanel.clear();
-		this.eventActionPanel.add(this.finalizeTimeButton);
-	}
-	
-	/**
-	 * Get the anchors for each event from event list panel
-	 * @pre true;
-	 * @post true;
-	 * @return list of HasClickHandlers
-	 */
-	@Override
-	public List<HasClickHandlers> getEventViewers()
-	{
-		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
-		List<Widget> elements = this.eventRollPanel.getElements();
-		for (int i = 0; i < elements.size(); i++)
-		{
-			EventListingView panel = (EventListingView) elements.get(i);
-			links.add(panel.getLink());
-		}
-		return links;	
-	}
-	
-	/**
-	 * Get the panel for displaying an event
-	 * @pre true;
-	 * @post true;
-	 * @return a simple panel
-	 */
-	@Override
-	public HasWidgets getEventViewerContainer()
-	{
-		return this.eventPanel;
-	}
-		
-	/**
-	 * Clears the event container
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void clearEventView()
-	{
-		this.eventPanel.clear();
-	}
-	
-	/**
-	 * Clears the event buttons
-	 * @pre true;
-	 * @post this.eventActionPanel.isVisible() == false;
-	 */
-	@Override
-	public void clearEventButtons()
-	{
-		this.eventActionPanel.clear();
-	}
-	
-	/**
-	 * Shows eventPanel
-	 * @pre this.eventListPanel.isVisible() == true && this.eventPanel.isVisible() == false;
-	 * @post this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
-	 */
-	@Override
-	public void showEventSelected(int row)
-	{
-		FlexTable eventListings = this.eventRollPanel.getDisplayer();
-		for (int i = 0; i < eventListings.getRowCount(); i++)
-		{
-			eventListings.getWidget(i, 0).removeStyleName("eventSelected");
-		}
-		eventListings.getWidget(row, 0).addStyleName("eventSelected");
-	}
-	
 	
 	/**
 	 * Re-populates listPanel with EventListViews created from a list of Events toDisplay
@@ -309,15 +138,224 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
-	 * Returns this as a widget so that it can be added to a container
-	 * @pre true
-	 * @post true
-	 * @return this
+	 * TODO: Move this to EventRollPresenter
+	 * Highlights the selected event listing
+	 * @pre true;
+	 * @post true;
+	 * @param row - the row index of the flex table
 	 */
 	@Override
-	public Widget asWidget()
+	public void setFocus(int row)
 	{
-		return this;
+		FlexTable eventListings = this.eventRollPanel.getDisplayer();
+		for (int i = 0; i < eventListings.getRowCount(); i++)
+		{
+			eventListings.getWidget(i, 0).removeStyleName("eventSelected");
+		}
+		eventListings.getWidget(row, 0).addStyleName("eventSelected");
+	}
+	
+	
+	/**
+	 * Gets the create events button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers 
+	 */
+	@Override
+	public HasClickHandlers getCreateEventButton()
+	{
+		return this.createButton;
 	}
 
+	/**
+	 * Gets the list current events button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getCurrentEventsButton()
+	{
+		return this.listCurrentButton;
+	}
+
+	/**
+	 * Gets the list past events button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getFinishedEventsButton()
+	{
+		return this.listPastButton;
+	}
+	
+	/**
+	 * Gets the accept invitations button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getAcceptInviteButton()
+	{
+		return this.acceptInvitationButton;
+	}
+
+	/**
+	 * Gets the decline invitations button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getDeclineInviteButton()
+	{
+		return this.declineInvitationButton;
+	}
+	
+	/**
+	 * Gets the submit availabilities button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getSubmitTimesButton()
+	{
+		return this.submitAvailabilityButton;
+	}
+
+	/**
+	 * Gets the finalize time button
+	 * @pre true;
+	 * @post true;
+	 * @return a HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getSelectTimeButton()
+	{
+		return this.finalizeTimeButton;
+	}
+	
+	/**
+	 * Gets the rate event button.
+	 * @pre true;
+	 * @post true;
+	 * @return HasClickHandlers
+	 */
+	@Override
+	public HasClickHandlers getRateEventButton()
+	{
+		return this.rateEventButton;
+	}
+	
+	/**
+	 * Clears the event buttons
+	 * @pre true;
+	 * @post this.eventActionPanel.isVisible() == false;
+	 */
+	@Override
+	public void hideEventActionButtons()
+	{
+		this.acceptInvitationButton.setVisible(false);
+		this.declineInvitationButton.setVisible(false);
+		this.submitAvailabilityButton.setVisible(false);
+		this.finalizeTimeButton.setVisible(false);
+		this.rateEventButton.setVisible(false);
+	}
+	
+	
+	/**
+	 * Shows the invitation buttons
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showInvitationButtons()
+	{
+		this.hideEventActionButtons();
+		this.acceptInvitationButton.setVisible(true);
+		this.declineInvitationButton.setVisible(true);
+	}
+	
+	/**
+	 * Shows the submit availability button
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showSubmitTimesButton()
+	{
+		this.hideEventActionButtons();
+		this.submitAvailabilityButton.setVisible(true);
+	}
+	
+	/**
+	 * Shows the finalize time button
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showSelectTimeButton()
+	{
+		this.hideEventActionButtons();
+		this.finalizeTimeButton.setVisible(true);
+	}
+
+	/**
+	 * Shows the rate event button.
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showRateEventButton()
+	{
+		this.hideEventActionButtons();
+		this.rateEventButton.setVisible(true);
+	}
+	
+	/**
+	 * Get the panel for displaying an event
+	 * @pre true;
+	 * @post true;
+	 * @return a simple panel
+	 */
+	@Override
+	public HasWidgets getEventViewContainer()
+	{
+		return this.eventPanel;
+	}
+	
+	/**
+	 * Clears the event container
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void clearEventViewContainer()
+	{
+		this.eventPanel.clear();
+	}
+	
+	/**
+	 * Get the anchors for each event from event list panel
+	 * @pre true;
+	 * @post true;
+	 * @return list of HasClickHandlers
+	 */
+	@Override
+	public List<HasClickHandlers> getEventListingLinks()
+	{
+		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
+		List<Widget> elements = this.eventRollPanel.getElements();
+		for (int i = 0; i < elements.size(); i++)
+		{
+			EventListingView panel = (EventListingView) elements.get(i);
+			links.add(panel.getLink());
+		}
+		return links;	
+	}
 }

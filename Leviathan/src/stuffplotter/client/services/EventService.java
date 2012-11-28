@@ -7,6 +7,7 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.Scheduler;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -19,12 +20,17 @@ public interface EventService extends RemoteService
 	List<Event> retrieveEvents(Account account, List<Long> eventIds);
 	void updateEvent(Event modifiedEvent);
 	
-	void updateScheduler(List<Long> availabilityIds);
+	Scheduler retrieveScheduler(Long schedulerId);
+	void updateScheduler(String userId, Long schedulerId, List<Long> availabilityIds);
 	List<Availability> retrieveAvailabilities(Long pSchedulerId);
 	
 	void addComment(Long eventId, String username, Date time, String comment);
 	List<Comment> getComments(Long eventId);
 	
 	void deleteEvent();
-	void rateEvent();
+	void rateEvent(Long eventId, String userId);
+	
+	void inviteGuest(Long eventId, String userId);
+	void confirmGuest(Long eventId, String userId);
+	void removeGuest(Long eventId, String userId);
 }

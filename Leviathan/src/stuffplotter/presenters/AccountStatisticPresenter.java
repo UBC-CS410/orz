@@ -4,6 +4,10 @@ import stuffplotter.bindingcontracts.AccountStatisticModel;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
+import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.signals.RefreshPageEventHandler;
+import stuffplotter.signals.UpdateStatsEvent;
+import stuffplotter.signals.UpdateStatsEventHandler;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -48,7 +52,7 @@ public class AccountStatisticPresenter implements Presenter
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final AccountStatisticView statisticsView;
-	private final Account appUser;
+	private Account appUser;
 	
 	/**
 	 * Constructor for the AccountStatisticPresenter.
@@ -101,12 +105,66 @@ public class AccountStatisticPresenter implements Presenter
 	 */
 	private void bind()
 	{
-		
+		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				appServices.getAccountService().getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						dataBindAccount();
+					}
+				});
+				
+			}
+			
+		});
+		this.eventBus.addHandler(UpdateStatsEvent.TYPE, new UpdateStatsEventHandler()
+		{
+
+			@Override
+			public void onUpdateStats(UpdateStatsEvent event)
+			{
+				appServices.getAccountService().getAccount(event.getAccountID(), new AsyncCallback<Account>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						dataBindAccount();
+					}
+				});
+				
+			}
+			
+		});
 	}
 	
 	@Override
 	public void go(HasWidgets container)
 	{
+		this.bind();
 		container.add(this.statisticsView.asWidget());
 	}
 }

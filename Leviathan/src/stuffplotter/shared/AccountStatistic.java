@@ -70,6 +70,17 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	}
 	
 	/**
+	 * Method to accept a RecordVisitor and event.
+	 * @pre visitor != null;
+	 * @post true;
+	 * @param visitor - the RecordVisitor to accept.
+	 */
+	public void accept (RecordVisitor visitor, Event event)
+	{
+		visitor.visit(this, event);
+	}
+	
+	/**
 	 * Increment the number of times the user has logged in.
 	 * @pre true;
 	 * @post this.numberOfLogins == @pre.this.numberOfLogins + 1;

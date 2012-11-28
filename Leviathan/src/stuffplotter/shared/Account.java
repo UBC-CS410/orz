@@ -438,5 +438,16 @@ public class Account implements Serializable, AccountModel
 	{
 		return o1.getUserFullName().compareToIgnoreCase(o2.getUserFullName());
 	}
+
+	/**
+	 * 
+	 * @pre
+	 * @post
+	 * @param eventId
+	 */
+	public void removeUserEvent(Long eventId)
+	{
+		this.userCurrentEvents.remove(eventId);
+	}
 	
 }

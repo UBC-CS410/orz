@@ -136,7 +136,7 @@ public class EventView extends VerticalPanel implements EventViewer
 		Label nameLabel = new Label(event.getName());
 		nameLabel.setStyleName("eventNameLabel");
 	
-		Label ownerLabel = new Label("Invited by: " + event.getOwner());
+		Label ownerLabel = new Label("Invited by: " + event.getOwnerID());
 		
 		Label dateLabel = new Label("");
 		switch(event.getStatus())

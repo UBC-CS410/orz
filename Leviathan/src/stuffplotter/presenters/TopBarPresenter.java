@@ -12,6 +12,7 @@ import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
+import stuffplotter.signals.UpdateStatsEvent;
 import stuffplotter.views.global.UserNotificationsPopupPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -199,6 +200,7 @@ public class TopBarPresenter implements Presenter
 													topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 												
 												topBarDisplay.setNotificationData(notifications);
+												eventBus.fireEvent(new UpdateStatsEvent(appUser.getUserEmail()));
 											}
 
 											private boolean doesContain(List<NotificationModel> notifications, NotificationModel not)
@@ -214,6 +216,7 @@ public class TopBarPresenter implements Presenter
 							}
 					
 						});
+				
 
 			}
 		});

@@ -25,9 +25,10 @@ public class SubmittedAvailabilitiesEventTest
 	@Test
 	public void testSAECtor()
 	{
+		Long schedulerId = null;
 		List<Long> availabilityIds = new ArrayList<Long>();
 		
-		EventSchedulerEvent sae = new EventSchedulerEvent(availabilityIds);
+		EventSchedulerEvent sae = new EventSchedulerEvent(schedulerId, availabilityIds);
 		
 		assertNotNull(sae);
 		assertEquals(availabilityIds, sae.getAvailabilityIds());
