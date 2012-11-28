@@ -98,6 +98,17 @@ public class EventInfoInputPanel extends VerticalPanel
 	}
 	
 	/**
+	 * Clear the location information from the event info panel.
+	 * @pre true;
+	 * @post true;
+	 */
+	public void clearResults()
+	{
+		this.setLocationText("");
+		this.setCoordinates(null);
+	}
+	
+	/**
 	 * Helper method to setup switching of the display when the frame is selected.
 	 * @pre true;
 	 * @post true;
