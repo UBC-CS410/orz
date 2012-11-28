@@ -148,6 +148,15 @@ public class EventCreationPagedPanel extends DeckPanel implements EventCreationP
 	{
 		return this.page3Panel;
 	}
+
+	@Override
+	public void displayFirstView()
+	{
+		if(this.getWidgetCount() > 0)
+		{
+			this.showWidget(0);
+		}
+	}
 	
 	@Override
 	public Widget asWidget()

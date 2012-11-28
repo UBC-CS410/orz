@@ -36,6 +36,13 @@ public class EventCreationPagedPresenter implements Presenter
 		public EventFriendSelectionView getFriendSelectionView();
 		
 		/**
+		 * Displays the first view in the EventCreationPageView.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void displayFirstView();
+		
+		/**
 		 * Retrieve the EventCreationPagedView as a widget.
 		 * @pre true;
 		 * @post true;
@@ -69,6 +76,8 @@ public class EventCreationPagedPresenter implements Presenter
 		
 		Presenter friendPresenter = new EventFriendSelectionPresenter(this.display.getFriendSelectionView());
 		friendPresenter.go((HasWidgets) this.display);
+		
+		this.display.displayFirstView();
 		
 		container.add(this.display.asWidget());
 	}
