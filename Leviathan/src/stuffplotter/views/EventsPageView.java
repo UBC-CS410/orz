@@ -64,10 +64,12 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.rateEventButton = new Button("Like");
 		
 		this.acceptInvitationButton.addStyleName("greenActionButton");
-		this.declineInvitationButton.addStyleName("redAcitonButton");
+		this.declineInvitationButton.addStyleName("redActionButton");
 		
 		this.submitAvailabilityButton.addStyleName("greenActionButton");
 		this.finalizeTimeButton.addStyleName("redActionButton");
+		
+		this.rateEventButton.addStyleName("blueActionButton");
 		
 		VerticalPanel actionPanel = new VerticalPanel();
 

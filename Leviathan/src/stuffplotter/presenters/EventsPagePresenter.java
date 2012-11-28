@@ -23,6 +23,7 @@ import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Event.Status;
+import stuffplotter.shared.Scheduler;
 import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.signals.EventCreatedEventHandler;
 import stuffplotter.signals.EventSchedulerEvent;
@@ -170,7 +171,8 @@ public class EventsPagePresenter implements Presenter
 			{
 				if (event.getAvailabilityIds() != null)
 				{
-					applicationServices.getEventService().updateScheduler(event.getAvailabilityIds(), new AsyncCallback<Void>() {
+					applicationServices.getEventService().updateScheduler(userAccount.getUserEmail(), event.getSchedulerId(), event.getAvailabilityIds(), new AsyncCallback<Void>() 
+					{
 
 						@Override
 						public void onFailure(Throwable caught)
@@ -270,6 +272,7 @@ public class EventsPagePresenter implements Presenter
 					}
 					
 				});
+				eventsPageView.hideEventActionButtons();
 				
 			}
 			
@@ -299,6 +302,7 @@ public class EventsPagePresenter implements Presenter
 					}
 					
 				});
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
@@ -309,7 +313,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				applicationServices.getEventService().retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+				applicationServices.getEventService().retrieveAvailabilities(selectedEvent.getSchedulerId(), new AsyncCallback<List<Availability>>() {
 
 					@Override
 					public void onFailure(Throwable caught)
@@ -321,10 +325,11 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onSuccess(List<Availability> result)
 					{
-						new AvailabilitySubmitterDialogBox(result, eventBus);
+						new AvailabilitySubmitterDialogBox(selectedEvent.getSchedulerId(), result, eventBus);
 					}
 
-				});	
+				});
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
@@ -335,7 +340,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				applicationServices.getEventService().retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+				applicationServices.getEventService().retrieveAvailabilities(selectedEvent.getSchedulerId(), new AsyncCallback<List<Availability>>() {
 
 					@Override
 					public void onFailure(Throwable caught)
@@ -350,7 +355,8 @@ public class EventsPagePresenter implements Presenter
 						new EventDateFinalizerDialogBox(result, selectedEvent, applicationServices, eventBus);
 					}
 
-				});	
+				});
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
@@ -362,6 +368,26 @@ public class EventsPagePresenter implements Presenter
 			public void onClick(ClickEvent event)
 			{
 				Window.alert("You liked this event.");
+				
+				applicationServices.getEventService().rateEvent(selectedEvent.getId(), userAccount.getUserEmail(), new AsyncCallback<Void>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+				
 				applicationServices.getStatsService().getStats(selectedEvent.getOwnerID(), new AsyncCallback<AccountStatistic>() 
 				{
 
@@ -381,7 +407,8 @@ public class EventsPagePresenter implements Presenter
 					
 				});
 				userStatistic.accept(new LevelUpdater().rateEvent());
-				userStatistic.accept(new AchievementChecker());
+				userStatistic.accept(new AchievementChecker(), selectedEvent);
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
@@ -407,32 +434,49 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void fetchCurrentEvents()
 	{
-		applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
+		applicationServices.getAccountService().getAccount(userAccount.getUserEmail(), new AsyncCallback<Account>() 
 		{
+
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				System.out.println("An unexpected error has occured");
-				caught.printStackTrace();
+				Window.alert("An unexpected error has occured");
+				caught.printStackTrace();	
 			}
 
 			@Override
-			public void onSuccess(List<Event> result)
+			public void onSuccess(Account result)
 			{
-				currentEvents = result;
-				eventsPageView.clearEventViewContainer();
-				eventsPageView.hideEventActionButtons();
-				
-				if(eventsPageView.initialize(userAccount, currentEvents) > 0)
+				userAccount = result;
+				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
 				{
-					bindEventViewers();
-				}
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						System.out.println("An unexpected error has occured");
+						caught.printStackTrace();
+					}
 
-				if (currentEvents.size() > 0)
-				{
-					displayEvent(currentEvents.get(0), 0);
-				}
+					@Override
+					public void onSuccess(List<Event> result)
+					{
+						currentEvents = result;
+						eventsPageView.clearEventViewContainer();
+						eventsPageView.hideEventActionButtons();
+						
+						if(eventsPageView.initialize(userAccount, currentEvents) > 0)
+						{
+							bindEventViewers();
+						}
+
+						if (currentEvents.size() > 0)
+						{
+							displayEvent(currentEvents.get(0), 0);
+						}
+					}
+				});
 			}
+			
 		});
 	}
 	
@@ -443,32 +487,49 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void fetchPastEvents()
 	{
-		applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
+		applicationServices.getAccountService().getAccount(userAccount.getUserEmail(), new AsyncCallback<Account>() 
 		{
+
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				// TODO Auto-generated method stub
-				
+				Window.alert("An unexpected error has occured");
+				caught.printStackTrace();
 			}
 
 			@Override
-			public void onSuccess(List<Event> result)
+			public void onSuccess(Account result)
 			{
-				currentEvents = result;
-				eventsPageView.clearEventViewContainer();
-				eventsPageView.hideEventActionButtons();
-				
-				if(eventsPageView.initialize(userAccount, currentEvents) > 0)
+				userAccount = result;
+				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
 				{
-					bindEventViewers();
-				}
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						System.out.println("An unexpected error has occured");
+						caught.printStackTrace();
+					}
 
-				if (currentEvents.size() > 0)
-				{
-					displayEvent(currentEvents.get(0), 0);
-				}
+					@Override
+					public void onSuccess(List<Event> result)
+					{
+						currentEvents = result;
+						eventsPageView.clearEventViewContainer();
+						eventsPageView.hideEventActionButtons();
+						
+						if(eventsPageView.initialize(userAccount, currentEvents) > 0)
+						{
+							bindEventViewers();
+						}
+
+						if (currentEvents.size() > 0)
+						{
+							displayEvent(currentEvents.get(0), 0);
+						}
+					}
+				});
 			}
+			
 		});
 	}
 	
@@ -510,13 +571,36 @@ public class EventsPagePresenter implements Presenter
 					}
 					else
 					{
-						eventsPageView.showSubmitTimesButton();
+						applicationServices.getEventService().retrieveScheduler(selectedEvent.getSchedulerId(), new AsyncCallback<Scheduler>() 
+						{
+
+							@Override
+							public void onFailure(Throwable caught)
+							{
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(Scheduler result)
+							{
+								if (!result.getSubmitters().contains(userAccount.getUserEmail()))
+								{
+									eventsPageView.showSubmitTimesButton();
+								}
+								
+							}
+							
+						});
 					}
 					break;
 				case SCHEDULED:
 					break;
 				case FINISHED:
-					eventsPageView.showRateEventButton();
+					if(!selectedEvent.getEventRaters().contains(userAccount.getUserEmail()))
+					{
+						eventsPageView.showRateEventButton();
+					}
 					break;
 			}
 		}
