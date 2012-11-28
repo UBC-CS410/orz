@@ -68,7 +68,7 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		
 		dbstore.simpleStore(scheduler);
 		Event event = dbstore.fetchEvent(pEventId);
-		event.setEventScheduler(scheduler.getId());
+		event.setSchedulerId(scheduler.getId());
 		event.setStatus(Event.Status.PROPOSED);
 		dbstore.simpleStore(event);
 	}
@@ -156,14 +156,19 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @post for each Availability avl, avl.getVote += 1;
 	 */
 	@Override
-	public void updateScheduler(List<Long> availabilityIds)
+	public void updateScheduler(String userId, Long schedulerId, List<Long> availabilityIds)
 	{
+		Scheduler scheduler = (Scheduler) dbstore.simpleFetch(new Key<Scheduler>(Scheduler.class, schedulerId));
+		
 		for (int i = 0; i < availabilityIds.size(); i++)
 		{
-			Availability toUpdate = dbstore.fetchAvailability(availabilityIds.get(i));
-			toUpdate.incrementVote();
-			dbstore.simpleStore(toUpdate);
+			Availability timeSlot = (Availability) dbstore.simpleFetch(new Key<Availability>(Availability.class, availabilityIds.get(i)));
+			timeSlot.incrementVote();
+			dbstore.simpleStore(timeSlot);
 		}
+		
+		scheduler.addSubmitter(userId);
+		dbstore.simpleStore(scheduler);
 	}
 	
 	/**
@@ -213,9 +218,11 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 
 	@Override
-	public void rateEvent()
+	public void rateEvent(Long eventId, String userId)
 	{
-		// TODO Auto-generated method stub
+		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, eventId));
+		event.addEventRater(userId);
+		dbstore.simpleStore(event);
 	}
 
 	@Override
@@ -229,15 +236,31 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	public void confirmGuest(Long eventId, String userId)
 	{
 		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, eventId));
-		Account user = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, userId));
 		
 		event.addAttendee(userId);
 		event.removeInvitee(userId);
 		
-		user.addUserEvent(eventId);
+		dbstore.simpleStore(event);
+	}
+
+	@Override
+	public void removeGuest(Long eventId, String userId)
+	{
+		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, eventId));
+		Account user = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, userId));
+		
+		event.removeInvitee(userId);
+		user.removeUserEvent(eventId);
 		
 		dbstore.simpleStore(event);
 		dbstore.simpleStore(user);
+		
+	}
+
+	@Override
+	public Scheduler retrieveScheduler(Long schedulerId)
+	{
+		return (Scheduler) dbstore.simpleFetch(new Key<Scheduler>(Scheduler.class, schedulerId));
 	}
 
 }

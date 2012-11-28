@@ -200,6 +200,7 @@ public class TopBarPresenter implements Presenter
 													topBarDisplay.setNotificationLabelText("Notification ("+NumberOfNewNotifications+")");
 												
 												topBarDisplay.setNotificationData(notifications);
+												eventBus.fireEvent(new UpdateStatsEvent(appUser.getUserEmail()));
 											}
 
 											private boolean doesContain(List<NotificationModel> notifications, NotificationModel not)
@@ -215,7 +216,7 @@ public class TopBarPresenter implements Presenter
 							}
 					
 						});
-				eventBus.fireEvent(new UpdateStatsEvent(appUser.getUserEmail()));
+				
 
 			}
 		});

@@ -14,17 +14,18 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.server.AchievementChecker;
+import stuffplotter.server.LevelUpdater;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Event.Status;
+import stuffplotter.shared.Scheduler;
 import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.signals.EventCreatedEventHandler;
-import stuffplotter.signals.RefreshPageEvent;
-import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.signals.EventSchedulerEvent;
 import stuffplotter.signals.EventSchedulerEventHandler;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
@@ -57,29 +58,28 @@ public class EventsPagePresenter implements Presenter
 		
 		public HasClickHandlers getAcceptInviteButton();
 		public HasClickHandlers getDeclineInviteButton();
-		
 		public HasClickHandlers getSubmitTimesButton();
 		public HasClickHandlers getSelectTimeButton();
-		
 		public HasClickHandlers getRateEventButton();
 			
+		public void hideEventActionButtons();
 		public void showInvitationButtons();
 		public void showSubmitTimesButton();
 		public void showSelectTimeButton();
 		public void showRateEventButton();
-		public void hideEventActionButtons();
-		
+				
 		public HasWidgets getEventViewContainer();
 		public void clearEventViewContainer();
 		
 		public List<HasClickHandlers> getEventListingLinks();
 	}
 	
-	private final Account appUser;
-	private final ServiceRepository appServices;
+	private final ServiceRepository applicationServices;
 	private final HandlerManager eventBus;
-	private final EventsPageViewer eventsView;
+	private final EventsPageViewer eventsPageView;
 	
+	private Account userAccount;
+	private AccountStatistic userStatistic;
 	private List<Event> currentEvents;
 	private List<HandlerRegistration> eventActionListeners = new ArrayList<HandlerRegistration>();	
 	
@@ -95,11 +95,29 @@ public class EventsPagePresenter implements Presenter
 	 */
 	public EventsPagePresenter(ServiceRepository appServices, HandlerManager eventBus, EventsPageViewer display, Account user)
 	{
-		this.appServices = appServices;
-		this.appUser = user;
-		
+		this.applicationServices = appServices;
 		this.eventBus = eventBus;
-		this.eventsView = display;
+		this.eventsPageView = display;
+		
+		this.userAccount = user;
+		appServices.getStatsService().getStats(userAccount.getUserEmail(), new AsyncCallback<AccountStatistic>()
+		{
+
+			@Override
+			public void onFailure(Throwable caught)
+			{
+				Window.alert("An unexpected error has occured");
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(AccountStatistic result)
+			{
+				userStatistic = result;
+				
+			}
+			
+		});
 
 		fetchCurrentEvents();
 	}
@@ -111,21 +129,21 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		eventsView.getCreateEventButton().addClickHandler(new ClickHandler() {
+		eventsPageView.getCreateEventButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				Presenter presenter = new EventCreationPresenter(appServices,
+				Presenter presenter = new EventCreationPresenter(applicationServices,
 																 eventBus,
 																 new EventCreationView(),
-																 appUser);
+																 userAccount);
 				presenter.go(null);
 			}
 			
 		});
 		
-		eventsView.getCurrentEventsButton().addClickHandler(new ClickHandler()
+		eventsPageView.getCurrentEventsButton().addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
@@ -134,7 +152,7 @@ public class EventsPagePresenter implements Presenter
 			}
 		});
 		
-		eventsView.getFinishedEventsButton().addClickHandler(new ClickHandler()
+		eventsPageView.getFinishedEventsButton().addClickHandler(new ClickHandler()
 		{	
 			@Override
 			public void onClick(ClickEvent event)
@@ -153,7 +171,8 @@ public class EventsPagePresenter implements Presenter
 			{
 				if (event.getAvailabilityIds() != null)
 				{
-					appServices.getEventService().updateScheduler(event.getAvailabilityIds(), new AsyncCallback<Void>() {
+					applicationServices.getEventService().updateScheduler(userAccount.getUserEmail(), event.getSchedulerId(), event.getAvailabilityIds(), new AsyncCallback<Void>() 
+					{
 
 						@Override
 						public void onFailure(Throwable caught)
@@ -186,7 +205,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onEventCreated(EventCreatedEvent event)
 			{
-				appUser.addUserEvent(event.getEventID());
+				userAccount.addUserEvent(event.getEventID());
 				fetchCurrentEvents();
 			}
 			
@@ -200,10 +219,10 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bindEventViewers()
 	{
-		for (int i = 0; i < eventsView.getEventListingLinks().size(); i++)
+		for (int i = 0; i < eventsPageView.getEventListingLinks().size(); i++)
 		{
 			final int eventsIndex = i;
-			eventsView.getEventListingLinks().get(i).addClickHandler(new ClickHandler()
+			eventsPageView.getEventListingLinks().get(i).addClickHandler(new ClickHandler()
 			{
 				@Override
 				public void onClick(ClickEvent event)
@@ -221,9 +240,7 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bindEventButtons(int index) 
 	{
-		final int selectedIndex = index; //TODO: remove this later
-		final Event selectedEvent = currentEvents.get(selectedIndex);
-		final EventServiceAsync eventService = appServices.getEventService();
+		final Event selectedEvent = currentEvents.get(index);
 		
 		for (HandlerRegistration listener : eventActionListeners)
 		{
@@ -231,37 +248,72 @@ public class EventsPagePresenter implements Presenter
 		}
 		eventActionListeners = new ArrayList<HandlerRegistration>();
 		
-		eventActionListeners.add(this.eventsView.getAcceptInviteButton().addClickHandler(new ClickHandler()
+		eventActionListeners.add(this.eventsPageView.getAcceptInviteButton().addClickHandler(new ClickHandler()
 		{
 
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				// TODO Auto-generated method stub
+				applicationServices.getEventService().confirmGuest(selectedEvent.getId(), userAccount.getUserEmail(), new AsyncCallback<Void>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("An unexpected error has occured.");
+						caught.printStackTrace();
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						fetchCurrentEvents();
+					}
+					
+				});
+				eventsPageView.hideEventActionButtons();
 				
 			}
 			
 		}));
 		
-		eventActionListeners.add(this.eventsView.getDeclineInviteButton().addClickHandler(new ClickHandler()
+		eventActionListeners.add(this.eventsPageView.getDeclineInviteButton().addClickHandler(new ClickHandler()
 		{
 
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				// TODO Auto-generated method stub
-				
+				applicationServices.getEventService().removeGuest(selectedEvent.getId(), userAccount.getUserEmail(), new AsyncCallback<Void>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("An unexpected error has occured.");
+						caught.printStackTrace();
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						fetchCurrentEvents();
+					}
+					
+				});
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
 		
-		eventActionListeners.add(this.eventsView.getSubmitTimesButton().addClickHandler(new ClickHandler() 
+		eventActionListeners.add(this.eventsPageView.getSubmitTimesButton().addClickHandler(new ClickHandler() 
 		{
 
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				eventService.retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+				applicationServices.getEventService().retrieveAvailabilities(selectedEvent.getSchedulerId(), new AsyncCallback<List<Availability>>() {
 
 					@Override
 					public void onFailure(Throwable caught)
@@ -273,21 +325,22 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onSuccess(List<Availability> result)
 					{
-						new AvailabilitySubmitterDialogBox(result, eventBus);
+						new AvailabilitySubmitterDialogBox(selectedEvent.getSchedulerId(), result, eventBus);
 					}
 
-				});	
+				});
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
 		
-		eventActionListeners.add(this.eventsView.getSelectTimeButton().addClickHandler(new ClickHandler() 
+		eventActionListeners.add(this.eventsPageView.getSelectTimeButton().addClickHandler(new ClickHandler() 
 		{
 
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				eventService.retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+				applicationServices.getEventService().retrieveAvailabilities(selectedEvent.getSchedulerId(), new AsyncCallback<List<Availability>>() {
 
 					@Override
 					public void onFailure(Throwable caught)
@@ -299,22 +352,63 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onSuccess(List<Availability> result)
 					{
-						new EventDateFinalizerDialogBox(result, selectedEvent, appServices, eventBus);
+						new EventDateFinalizerDialogBox(result, selectedEvent, applicationServices, eventBus);
 					}
 
-				});	
+				});
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
 		
-		eventActionListeners.add(this.eventsView.getRateEventButton().addClickHandler(new ClickHandler()
+		eventActionListeners.add(this.eventsPageView.getRateEventButton().addClickHandler(new ClickHandler()
 		{
 
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				// TODO Auto-generated method stub
+				Window.alert("You liked this event.");
 				
+				applicationServices.getEventService().rateEvent(selectedEvent.getId(), userAccount.getUserEmail(), new AsyncCallback<Void>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Void result)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+				
+				applicationServices.getStatsService().getStats(selectedEvent.getOwnerID(), new AsyncCallback<AccountStatistic>() 
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("An unexpected error has occured.");
+						caught.printStackTrace();
+					}
+
+					@Override
+					public void onSuccess(AccountStatistic result)
+					{
+						result.accept(new LevelUpdater().rateEvent());
+						result.accept(new AchievementChecker());
+					}
+					
+				});
+				userStatistic.accept(new LevelUpdater().rateEvent());
+				userStatistic.accept(new AchievementChecker(), selectedEvent);
+				eventsPageView.hideEventActionButtons();
 			}
 			
 		}));
@@ -330,7 +424,7 @@ public class EventsPagePresenter implements Presenter
 	public void go(HasWidgets container)
 	{
 		bind();
-		container.add(this.eventsView.asWidget());
+		container.add(this.eventsPageView.asWidget());
 	}
 	
 	/**
@@ -340,33 +434,49 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void fetchCurrentEvents()
 	{
-		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser, appUser.getCurrentEvents(), new AsyncCallback<List<Event>>()
+		applicationServices.getAccountService().getAccount(userAccount.getUserEmail(), new AsyncCallback<Account>() 
 		{
+
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				System.out.println("failed.");
-				
+				Window.alert("An unexpected error has occured");
+				caught.printStackTrace();	
 			}
 
 			@Override
-			public void onSuccess(List<Event> result)
+			public void onSuccess(Account result)
 			{
-				currentEvents = result;
-				eventsView.clearEventViewContainer();
-				eventsView.hideEventActionButtons();
-				
-				if(eventsView.initialize(appUser, currentEvents) > 0)
+				userAccount = result;
+				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
 				{
-					bindEventViewers();
-				}
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						System.out.println("An unexpected error has occured");
+						caught.printStackTrace();
+					}
 
-				if (currentEvents.size() > 0)
-				{
-					displayEvent(currentEvents.get(0), 0);
-				}
+					@Override
+					public void onSuccess(List<Event> result)
+					{
+						currentEvents = result;
+						eventsPageView.clearEventViewContainer();
+						eventsPageView.hideEventActionButtons();
+						
+						if(eventsPageView.initialize(userAccount, currentEvents) > 0)
+						{
+							bindEventViewers();
+						}
+
+						if (currentEvents.size() > 0)
+						{
+							displayEvent(currentEvents.get(0), 0);
+						}
+					}
+				});
 			}
+			
 		});
 	}
 	
@@ -377,33 +487,49 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void fetchPastEvents()
 	{
-		EventServiceAsync eventService = appServices.getEventService();
-		eventService.retrieveEvents(appUser, appUser.getPastEvents(), new AsyncCallback<List<Event>>()
+		applicationServices.getAccountService().getAccount(userAccount.getUserEmail(), new AsyncCallback<Account>() 
 		{
+
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				// TODO Auto-generated method stub
-				
+				Window.alert("An unexpected error has occured");
+				caught.printStackTrace();
 			}
 
 			@Override
-			public void onSuccess(List<Event> result)
+			public void onSuccess(Account result)
 			{
-				currentEvents = result;
-				eventsView.clearEventViewContainer();
-				eventsView.hideEventActionButtons();
-				
-				if(eventsView.initialize(appUser, currentEvents) > 0)
+				userAccount = result;
+				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
 				{
-					bindEventViewers();
-				}
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						System.out.println("An unexpected error has occured");
+						caught.printStackTrace();
+					}
 
-				if (currentEvents.size() > 0)
-				{
-					displayEvent(currentEvents.get(0), 0);
-				}
+					@Override
+					public void onSuccess(List<Event> result)
+					{
+						currentEvents = result;
+						eventsPageView.clearEventViewContainer();
+						eventsPageView.hideEventActionButtons();
+						
+						if(eventsPageView.initialize(userAccount, currentEvents) > 0)
+						{
+							bindEventViewers();
+						}
+
+						if (currentEvents.size() > 0)
+						{
+							displayEvent(currentEvents.get(0), 0);
+						}
+					}
+				});
 			}
+			
 		});
 	}
 	
@@ -416,42 +542,65 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void displayEvent(Event event, int index)
 	{		
-		this.eventsView.setFocus(index);
+		this.eventsPageView.setFocus(index);
 		
 		//Present the event
 		Event selectedEvent = currentEvents.get(index);
-		Presenter presenter = new EventPresenter(appServices,
+		Presenter presenter = new EventPresenter(applicationServices,
 													 eventBus,
 													 new EventView(),
-													 appUser,
+													 userAccount,
 													 selectedEvent);
-		presenter.go(eventsView.getEventViewContainer());
+		presenter.go(eventsPageView.getEventViewContainer());
 	
 		//Present the event specific action buttons
-		this.eventsView.hideEventActionButtons();
+		this.eventsPageView.hideEventActionButtons();
 		this.bindEventButtons(index);
-		if(selectedEvent.getInvitees().contains(appUser.getUserEmail()))
+		if(selectedEvent.getInvitees().contains(userAccount.getUserEmail()))
 		{
-			eventsView.showInvitationButtons();
+			eventsPageView.showInvitationButtons();
 		}
 		else 
 		{
 			switch(selectedEvent.getStatus())
 			{
 				case PROPOSED:
-					if(selectedEvent.getOwnerID() == appUser.getUserEmail())
+					if(selectedEvent.getOwnerID() == userAccount.getUserEmail())
 					{
-						eventsView.showSelectTimeButton();
+						eventsPageView.showSelectTimeButton();
 					}
 					else
 					{
-						eventsView.showSubmitTimesButton();
+						applicationServices.getEventService().retrieveScheduler(selectedEvent.getSchedulerId(), new AsyncCallback<Scheduler>() 
+						{
+
+							@Override
+							public void onFailure(Throwable caught)
+							{
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(Scheduler result)
+							{
+								if (!result.getSubmitters().contains(userAccount.getUserEmail()))
+								{
+									eventsPageView.showSubmitTimesButton();
+								}
+								
+							}
+							
+						});
 					}
 					break;
 				case SCHEDULED:
 					break;
 				case FINISHED:
-					eventsView.showRateEventButton();
+					if(!selectedEvent.getEventRaters().contains(userAccount.getUserEmail()))
+					{
+						eventsPageView.showRateEventButton();
+					}
 					break;
 			}
 		}

@@ -19,7 +19,7 @@ public class Scheduler implements Serializable
 {	
 	@Id private Long id;
 	private List<Long> availabilities;
-	private Date result;
+	private List<String> submitters;
 	
 	/**
 	 * No arg Constructor for Scheduler
@@ -31,6 +31,7 @@ public class Scheduler implements Serializable
 	public Scheduler()
 	{
 		this.availabilities = new ArrayList<Long>();
+		this.submitters = new ArrayList<String>();
 	}
 	
 	/**
@@ -65,6 +66,28 @@ public class Scheduler implements Serializable
 	public void addAvailability(Availability pAvailability)
 	{
 		this.availabilities.add(pAvailability.getId());
+	}
+	
+	/**
+	 * Method to get the list of ids of users who submitted their availabilities
+	 * @pre true;
+	 * @post true;
+	 * @return submitters
+	 */
+	public List<String> getSubmitters()
+	{
+		return this.submitters;
+	}
+	
+	/**
+	 * Method to add a user id to the list of submitters
+	 * @pre userId != null;
+	 * @post submitters.contains(userId) == true;
+	 * @param userId - the id of the user who submitted availabilities
+	 */
+	public void addSubmitter(String userId)
+	{
+		this.submitters.add(userId);
 	}
 	
 }

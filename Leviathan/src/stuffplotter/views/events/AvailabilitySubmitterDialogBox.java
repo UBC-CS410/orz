@@ -37,6 +37,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	
 	final private HandlerManager eventBus;
 	
+	private Long scheduler;
 	private Map<Date, Long> availabilities;
 	private List<Long> submissions;
 	
@@ -47,12 +48,13 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 	 * @pre true;
 	 * @post this.availabilities != null && this.isVisible() == true;
 	 */
-	public AvailabilitySubmitterDialogBox(List<Availability> timeSlots, HandlerManager eventBus)
+	public AvailabilitySubmitterDialogBox(Long scheduler, List<Availability> timeSlots, HandlerManager eventBus)
 	{
 		super();
 		
 		this.eventBus = eventBus;
 		
+		this.scheduler = scheduler;
 		this.availabilities = new HashMap<Date, Long>();
 		for (Availability timeSlot : timeSlots)
 		{
@@ -148,7 +150,7 @@ public class AvailabilitySubmitterDialogBox extends DialogBox
 				{
 					submissions.add(availabilities.get(value));
 				}
-				eventBus.fireEvent(new EventSchedulerEvent(submissions));
+				eventBus.fireEvent(new EventSchedulerEvent(scheduler, submissions));
 				hide();
 			}
 		});
