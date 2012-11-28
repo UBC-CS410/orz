@@ -74,15 +74,33 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 	
 	/**
+	 * Adds a comment to an event
+	 * @pre true;
+	 * @post event.getComments.size()++;
+	 * @param eventId - id of the event
+	 * @param comment - string content
+	 */
+	@Override
+	public void addComment(Long eventId, String username, Date time, String comment)
+	{
+		Comment newComment = new Comment(username, time, comment);
+		dbstore.simpleStore(newComment);
+		Event event = dbstore.fetchEvent(eventId);
+		event.addComment(newComment.getId());
+		dbstore.simpleStore(event);
+	}
+	
+	/**
 	 * Retrieves an Event from the data store by id
 	 * @pre 	eventId comes from an account's event list
 	 * @post	true
 	 * @param 	eventId - the id of the event to retrieve
 	 */
 	@Override
-	public Event retrieveEvent(Account account, Long pEventId)
+	public Event retrieveEvent(String userId, Long eventId)
 	{
-		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, pEventId));
+		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, eventId));
+		Account account = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, userId));
 		
 		//TODO: take duration into account
 		if(event.getStatus() != Status.FINISHED)
@@ -91,8 +109,8 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 			if (event.getDate() != null && date.after(event.getDate()))
 			{
 				event.setStatus(Status.FINISHED);
-				account.getCurrentEvents().remove(pEventId);
-				account.getPastEvents().add(pEventId);
+				account.getCurrentEvents().remove(eventId);
+				account.getPastEvents().add(eventId);
 				dbstore.simpleStore(account);
 				dbstore.simpleStore(event);
 			}
@@ -108,14 +126,23 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * @param 	eventIds - the list of ids of events to retrieve
 	 */
 	@Override
-	public List<Event> retrieveEvents(Account account, List<Long> pEventIds)
+	public List<Event> retrieveListOfEvents(String userId, List<Long> eventIds)
 	{
 		List<Event> events = new ArrayList<Event>();
-		for (int i = 0; i < pEventIds.size(); i++)
+		for (int i = 0; i < eventIds.size(); i++)
 		{
-			events.add(retrieveEvent(account, pEventIds.get(i)));
+			events.add(retrieveEvent(userId, eventIds.get(i)));
 		}
 		return events;
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public Scheduler retrieveScheduler(Long schedulerId)
+	{
+		return (Scheduler) dbstore.simpleFetch(new Key<Scheduler>(Scheduler.class, schedulerId));
 	}
 	
 	/**
@@ -137,7 +164,27 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		return fetched;
 	}
 	
+	/**
+	 * Retrieves all comments posted for an event
+	 * @pre true;
+	 * @post true;
+	 * @return list of strings
+	 */
+	@Override
+	public List<Comment> retrieveComments(Long eventId)
+	{
+		Event event = dbstore.fetchEvent(eventId);
+		List<Comment> comments = new ArrayList<Comment>();
+		List<Long> commentIds = event.getComments();
+		for (int i = 0; i < commentIds.size(); i++)
+		{
+			Comment comment = dbstore.fetchComment(commentIds.get(i));
+			comments.add(comment);
+		}
 
+		return comments;
+	}
+	
 	/**
 	 * Updates an Event by changing one of its fields 
 	 * @pre 	modifiedEvent is not null
@@ -172,44 +219,8 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	}
 	
 	/**
-	 * Adds a comment to an event
-	 * @pre true;
-	 * @post event.getComments.size()++;
-	 * @param eventId - id of the event
-	 * @param comment - string content
+	 * Deletes an event
 	 */
-	@Override
-	public void addComment(Long eventId, String username, Date time, String comment)
-	{
-		Comment newComment = new Comment(username, time, comment);
-		dbstore.simpleStore(newComment);
-		Event event = dbstore.fetchEvent(eventId);
-		event.addComment(newComment.getId());
-		dbstore.simpleStore(event);
-	}
-
-	/**
-	 * Retrieves all comments posted for an event
-	 * @pre true;
-	 * @post true;
-	 * @return list of strings
-	 */
-	@Override
-	public List<Comment> getComments(Long eventId)
-	{
-		Event event = dbstore.fetchEvent(eventId);
-		List<Comment> comments = new ArrayList<Comment>();
-		List<Long> commentIds = event.getComments();
-		for (int i = 0; i < commentIds.size(); i++)
-		{
-			Comment comment = dbstore.fetchComment(commentIds.get(i));
-			comments.add(comment);
-		}
-
-		return comments;
-	}
-
-	
 	@Override
 	public void deleteEvent()
 	{
@@ -217,6 +228,13 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		
 	}
 
+	/**
+	 * Add a rating to an event
+	 * @pre eventId != null && userId != null;
+	 * @post 
+	 * @param eventId - the id of the event being rated
+	 * @param userId - the id of the user who rated the event
+	 */
 	@Override
 	public void rateEvent(Long eventId, String userId)
 	{
@@ -225,6 +243,13 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		dbstore.simpleStore(event);
 	}
 
+	/**
+	 * Invites a guest to an event
+	 * @pre eventId != null && userId != null;
+	 * @post
+	 * @param eventId - the id of the event to invite guest to
+	 * @param userId - the id of the guest being invited
+	 */
 	@Override
 	public void inviteGuest(Long eventId, String userId)
 	{
@@ -232,6 +257,13 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		
 	}
 
+	/**
+	 * Move an event guest from the invitee list to the attendee list
+	 * @pre eventId != null && userId != null;
+	 * @post
+	 * @param eventId - the id of the event the guest is invited to
+	 * @param userId - the id of the guest being confirmed
+	 */
 	@Override
 	public void confirmGuest(Long eventId, String userId)
 	{
@@ -243,6 +275,13 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		dbstore.simpleStore(event);
 	}
 
+	/**
+	 * Uninvite a guest from an event
+	 * @pre eventId != null && userId != null;
+	 * @post
+	 * @param eventId - the id of the event the guest is invited to
+	 * @param userId - the id of the guest being uninvited
+	 */
 	@Override
 	public void removeGuest(Long eventId, String userId)
 	{
@@ -257,10 +296,6 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		
 	}
 
-	@Override
-	public Scheduler retrieveScheduler(Long schedulerId)
-	{
-		return (Scheduler) dbstore.simpleFetch(new Key<Scheduler>(Scheduler.class, schedulerId));
-	}
+
 
 }

@@ -16,16 +16,17 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface EventService extends RemoteService
 {
 	Event createEvent(Event newEvent, List<Date> timeSlots);
-	Event retrieveEvent(Account account, Long eventId);
-	List<Event> retrieveEvents(Account account, List<Long> eventIds);
-	void updateEvent(Event modifiedEvent);
+	void addComment(Long eventId, String username, Date time, String comment);
+	
+	Event retrieveEvent(String userId, Long eventId);
+	List<Event> retrieveListOfEvents(String userId, List<Long> eventIds);
 	
 	Scheduler retrieveScheduler(Long schedulerId);
-	void updateScheduler(String userId, Long schedulerId, List<Long> availabilityIds);
 	List<Availability> retrieveAvailabilities(Long pSchedulerId);
+	List<Comment> retrieveComments(Long eventId);
 	
-	void addComment(Long eventId, String username, Date time, String comment);
-	List<Comment> getComments(Long eventId);
+	void updateEvent(Event modifiedEvent);
+	void updateScheduler(String userId, Long schedulerId, List<Long> availabilityIds);
 	
 	void deleteEvent();
 	void rateEvent(Long eventId, String userId);

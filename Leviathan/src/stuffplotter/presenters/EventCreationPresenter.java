@@ -139,7 +139,6 @@ public class EventCreationPresenter implements Presenter
 		this.eventBus = eventBus;
 		this.createEventDialogBox = display;
 		this.appUser = userAccount;
-		this.populateDisplay();
 	}
 	
 	/**
@@ -152,6 +151,7 @@ public class EventCreationPresenter implements Presenter
 	{
 		EventCreationPagePopulator visitor = new EventCreationPagePopulator(this.appServices.getAccountService(),
 																			this.appUser);
+		
 		this.createEventDialogBox.acceptVisitor(visitor);
 	}
 	
@@ -231,5 +231,6 @@ public class EventCreationPresenter implements Presenter
 		this.bind();
 		Presenter presenter = new EventCreationPagedPresenter(this.createEventDialogBox.getPagedView());
 		presenter.go(this.createEventDialogBox.getPagedViewHolder());
+		this.populateDisplay();
 	}
 }

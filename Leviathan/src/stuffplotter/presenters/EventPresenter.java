@@ -3,6 +3,7 @@ package stuffplotter.presenters;
 import java.util.Date;
 import java.util.List;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
@@ -32,7 +33,7 @@ public class EventPresenter implements Presenter
 		public void clearCommentTextBox();
 		public void updateComments(Comment comment);
 		public void displayComments(List<Comment> comments);
-		public void initialize(Account account, Event event);
+		public void initialize(AccountModel account, Event event);
 		
 		/**
 		 * Retrieve the EventViewer as a widget.
@@ -42,24 +43,26 @@ public class EventPresenter implements Presenter
 		 */
 		public Widget asWidget();
 	}
-	
-	private final Account appUser;
+
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final EventViewer eventView;
+	
+	private final AccountModel userData;
 	private final Event eventData;
 	
 	private List<Comment> eventComments;
 	
-	public EventPresenter(ServiceRepository appServices, HandlerManager eventBus, EventViewer display, Account user, Event data)
+	public EventPresenter(ServiceRepository appServices, HandlerManager eventBus, EventViewer display, AccountModel userData, Event eventData)
 	{
-		this.appUser = user;
 		this.appServices = appServices;
 		this.eventBus = eventBus;
 		this.eventView = display;
-		this.eventData = data;
 		
-		eventView.initialize(appUser, this.eventData);
+		this.userData = userData;
+		this.eventData = eventData;
+		
+		eventView.initialize(userData, this.eventData);
 		this.loadComments();
 	}
 	
@@ -86,7 +89,7 @@ public class EventPresenter implements Presenter
 			{
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
 				{
-					String username = appUser.getUserFullName();
+					String username = userData.getUserFullName();
 					Date timenow = new Date();
 					String content = eventView.getCommentText();
 					
@@ -136,7 +139,7 @@ public class EventPresenter implements Presenter
 	private void loadComments()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.getComments(eventData.getId(), new AsyncCallback<List<Comment>>() {
+		eventService.retrieveComments(eventData.getId(), new AsyncCallback<List<Comment>>() {
 
 			@Override
 			public void onFailure(Throwable caught)

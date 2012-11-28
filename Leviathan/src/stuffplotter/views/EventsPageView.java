@@ -3,6 +3,7 @@ package stuffplotter.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
@@ -126,12 +127,12 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return number of events displayed
 	 */
 	@Override
-	public int initialize(Account user, List<Event> events)
+	public int initialize(AccountModel account, List<Event> events)
 	{
 		this.eventRollPanel.clearDisplay();
 		for (int i = 0; i < events.size(); i++)
 		{	
-			EventListingView rowPanel = new EventListingView(user, events.get(i));
+			EventListingView rowPanel = new EventListingView(account, events.get(i));
 			this.eventRollPanel.addElement(rowPanel);
 		}
 		return events.size();
