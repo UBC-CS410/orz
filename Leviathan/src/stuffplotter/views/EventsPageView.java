@@ -250,37 +250,27 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	{
 		return this.eventPanel;
 	}
-	
-	/**
-	 * Removes the submit availabilities button
-	 * @pre true;
-	 * @post this.submitAvailabilityButton.isVisible() == false;
-	 */
-	@Override
-	public void removeSubmitAvailabilitiesButton()
-	{
-		this.eventActionPanel.remove(this.submitAvailabilityButton);
-	}
-	
-	/**
-	 * Removes the finalize time button
-	 * @pre true;
-	 * @post this.submitAvailabilityButton.isVisible() == false;
-	 */
-	@Override
-	public void removeFinalizeTimeButton()
-	{
-		this.eventActionPanel.remove(this.finalizeTimeButton);
-	}
-	
+		
 	/**
 	 * Clears the event container
 	 * @pre true;
 	 * @post true;
 	 */
+	@Override
 	public void clearEventView()
 	{
 		this.eventPanel.clear();
+	}
+	
+	/**
+	 * Clears the event buttons
+	 * @pre true;
+	 * @post this.eventActionPanel.isVisible() == false;
+	 */
+	@Override
+	public void clearEventButtons()
+	{
+		this.eventActionPanel.clear();
 	}
 	
 	/**
@@ -304,9 +294,10 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * Re-populates listPanel with EventListViews created from a list of Events toDisplay
 	 * @pre true;
 	 * @post this.listPanel.getDisplayer().getRowCount == toDisplay.size() && this.listPanel.isVisible() == true;
+	 * @return number of events displayed
 	 */
 	@Override
-	public void initialize(Account user, List<Event> events)
+	public int initialize(Account user, List<Event> events)
 	{
 		this.eventRollPanel.clearDisplay();
 		for (int i = 0; i < events.size(); i++)
@@ -314,6 +305,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 			EventListingView rowPanel = new EventListingView(user, events.get(i));
 			this.eventRollPanel.addElement(rowPanel);
 		}
+		return events.size();
 	}
 	
 	/**
