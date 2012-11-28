@@ -268,6 +268,7 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		
 		dbstore.simpleStore(myFriendAccept);
 		dbstore.simpleStore(myselfAccept);
+		
 		Long myFriendId = myFriendAccept.getNotificationId();
 		Long myselfAcceptLong = myselfAccept.getNotificationId();
 		

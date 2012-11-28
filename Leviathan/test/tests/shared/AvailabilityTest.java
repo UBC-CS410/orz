@@ -26,12 +26,13 @@ public class AvailabilityTest extends TestCase
 	{
 		Date time = new Date();
 		int votes = 0;
-		
+		Long id = null;
 		Availability av = new Availability(time);
 		
 		assertNotNull(av);
-		assertEquals(time, time);
-		assertEquals(votes, 0);
+		assertEquals(time, av.getTime());
+		assertEquals(votes, av.getVotes());
+		assertEquals(id,av.getId());
 	}
 
 	@Test
@@ -39,9 +40,10 @@ public class AvailabilityTest extends TestCase
 		int voteinc = 1;
 		Date time = new Date();
 		
+		
 		Availability av = new Availability(time);
 		av.incrementVote();
 		
-		//assertEquals(voteinc, )
+		assertEquals(voteinc,av.getVotes());
 	}
 }

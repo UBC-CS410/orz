@@ -26,13 +26,14 @@ public class CommentTest extends TestCase
 		String name = "John Doe";
 		Date time = new Date();
 		String content = "This is a comment";
-		
+		Long iD = null;
 		Comment cm = new Comment(name, time, content);
 		
 		assertNotNull(cm);
 		assertEquals(name, cm.getUsername());
 		assertEquals(time, cm.getTime());
 		assertEquals(content, cm.getContent());
+		assertEquals(iD,cm.getId());
 	}
 
 }

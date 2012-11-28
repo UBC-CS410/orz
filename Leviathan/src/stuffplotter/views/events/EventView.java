@@ -3,8 +3,10 @@ package stuffplotter.views.events;
 import java.util.List;
 
 import stuffplotter.presenters.EventPresenter.EventViewer;
+import stuffplotter.shared.Account;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
+import stuffplotter.shared.Event.Status;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
@@ -129,24 +131,27 @@ public class EventView extends VerticalPanel implements EventViewer
 	 * @post true;
 	 */
 	@Override
-	public void initialize(Event event)
+	public void initialize(Account account, Event event)
 	{
 		Label nameLabel = new Label(event.getName());
 		nameLabel.setStyleName("eventNameLabel");
+	
+		Label ownerLabel = new Label("Invited by: " + event.getOwner());
 		
-		Label scheduleLabel = new Label();
-		if(event.getDate() == null)
+		Label dateLabel = new Label("");
+		switch(event.getStatus())
 		{
-			scheduleLabel.setText("Unscheduled");
-			scheduleLabel.setStyleName("eventUnscheduledLabel");
+			case PROPOSED:
+				dateLabel.setText("Created on: ");
+				break;
+			case SCHEDULED:
+				dateLabel.setText("Scheduled for: " + event.getDate().toString());
+				break;
+			case FINISHED:
+				dateLabel.setText("Finished on: ");
+				break;
 		}
-		else
-		{
-			scheduleLabel.setText(event.getDate().toString());
-			scheduleLabel.setStyleName("eventDateLabel");
-		}
-
-		Label ownerLabel = new Label("Host: " + event.getOwner());
+		
 		Label costLabel = new Label("Cost: " + event.getCost());
 		Label locationLabel = new Label("Location: " + event.getLocation());
 		Label descriptionLabel = new Label("Description: " + event.getDescription());
@@ -157,8 +162,8 @@ public class EventView extends VerticalPanel implements EventViewer
 		commentPanel.add(this.commentLabels);
 		
 		this.add(nameLabel);
-		this.add(scheduleLabel);
 		this.add(ownerLabel);
+		this.add(dateLabel);
 		this.add(costLabel);
 		this.add(locationLabel);
 		this.add(descriptionLabel);
@@ -169,6 +174,5 @@ public class EventView extends VerticalPanel implements EventViewer
 		this.add(commentPanel);
 		
 		this.setStyleName("eventPage");
-	}
-	
+	}	
 }

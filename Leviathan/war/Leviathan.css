@@ -111,9 +111,7 @@
 	color: blue;
 }
 
-.eventScheduledLabel {
-	color: #333;
-}
+
 
 .eventInvitedLabel {
 	color: green;
@@ -123,7 +121,7 @@
 	color: red;
 }
 
-.eventFinishedLabel {
+.eventScheduledLabel {
 	color: orange;
 }
 

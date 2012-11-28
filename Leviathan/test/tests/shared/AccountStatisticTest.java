@@ -3,6 +3,7 @@ package tests.shared;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -87,6 +88,57 @@ public class AccountStatisticTest extends TestCase
 		as.incrementParticipatedEvents();
 		
 		assertEquals(participatedEvents, as.getNumberOfParticipatedEvents());
+	}
+	
+	@Test
+	public void testIncreamentFriends()
+	{
+		int friends = 1;
+		
+		AccountStatistic as = new AccountStatistic();
+		
+		as.incrementFriends();
+		
+		assertEquals(friends, as.getNumberOfFriends());
+	}
+	
+	@Test
+	public void testDecrementFriends()
+	{
+		int friends = -1; //because numberofFriends is set as 0 when an AccountStatistic is created.
+		
+		AccountStatistic as = new AccountStatistic();
+		
+		as.decrementFriends();
+		
+		assertEquals(friends, as.getNumberOfFriends());
+	}
+	
+	@Test
+	public void testSetters()
+	{
+		AccountStatistic as = new AccountStatistic();
+		List<Achievement> userAchievements = new ArrayList<Achievement>();
+		
+		
+		as.setAccountEmail("email");
+		as.setNumberOfFriends(5);
+		as.setNumberOfHostedEvents(5);
+		as.setNumberOfLogins(5);
+		as.setNumberOfParticipatedEvents(5);
+		as.setUserAchievements(userAchievements);
+		as.setUserExperience(500);
+		as.setUserLevel(5);
+		
+		assertEquals("email", as.getAccountEmail());
+		assertEquals(5, as.getNumberOfFriends());
+		assertEquals(5, as.getNumberOfLogins());
+		assertEquals(5, as.getNumberOfHostedEvents());
+		assertEquals(5, as.getNumberOfParticipatedEvents());
+		
+		assertEquals(userAchievements, as.getUserAchievements());
+		assertEquals(500, as.getUserExperience());
+		assertEquals(5, as.getUserLevel());
 	}
 
 }

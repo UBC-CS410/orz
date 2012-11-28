@@ -155,6 +155,7 @@ public class FriendsPagePresenter implements Presenter
 
 	private void dataBindFriends()
 	{
+
 		this.appServices.getStatsService().getStats(this.appUser.getUserEmail(),new AsyncCallback<AccountStatistic>()
 				{
 
@@ -245,11 +246,27 @@ public class FriendsPagePresenter implements Presenter
 			@Override
 			public void onRefreshPage(RefreshPageEvent event)
 			{
-				friendsView.setPendingData(pendingFriends);
-				friendsView.setFriendData(friends);
-				bindFriendPanels();
-				bindPendingFriendPanels();
-			}	
+				AccountServiceAsync accountService = appServices.getAccountService();
+				accountService.getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						dataBindFriends();
+					}
+				});
+				
+				
+			}
 		});
 
 
@@ -259,6 +276,7 @@ public class FriendsPagePresenter implements Presenter
 			public void onClick(ClickEvent event)
 			{
 				String friendEmail = friendsView.getFriendBoxText();
+				int stringLen = friendEmail.length();
 				if(friendEmail.length()==0)
 				{
 					Window.alert("This field cannot be blank!");
@@ -271,10 +289,19 @@ public class FriendsPagePresenter implements Presenter
 				{
 					Window.alert("This field cannot contain and spaces!");
 				}
-
+				else if(stringLen<=10||!friendEmail.substring(stringLen-10,stringLen).equals("@gmail.com"))
+				{
+					Window.alert("Did forget to add '@gmail.com' at the end of your friend's email account?");
+				}
+				else if(containFriend(friends, friendEmail))
+				{
+					Window.alert("Hey, you already have "+friendEmail+" in your Friends List!");
+				}
+				else if(containFriend(pendingFriends, friendEmail))
+				{
+					Window.alert("Hey, don't you see "+friendEmail+"'s request below? Hit 'Confirm' if you want to add them as a friend.");
+				}
 				else{
-					if(!friendEmail.contains("@gmail.com"))
-						friendEmail = friendEmail+"@gmail.com";
 					appServices.getAccountService().addFriend(appUser, friendEmail, new AsyncCallback<Void>(){
 						@Override
 						public void onFailure(Throwable caught)
@@ -292,6 +319,16 @@ public class FriendsPagePresenter implements Presenter
 					});
 				}
 
+			}
+
+			private boolean containFriend(List<AccountModel> friends, String friendEmail)
+			{
+				for(AccountModel account : friends)
+				{
+					if(account.getUserEmail().equals(friendEmail))
+						return true;
+				}
+				return false;
 			}
 		});
 
@@ -376,7 +413,7 @@ public class FriendsPagePresenter implements Presenter
 	private void bindPendingFriendPanels()
 	{
 		List<PendingFriendPanel> pendingFriendsPanels = friendsView.getPendingFriendPanels();
-		for(PendingFriendPanel panel: pendingFriendsPanels)
+		for(final PendingFriendPanel panel: pendingFriendsPanels)
 		{
 			final String friendEmail = panel.getEmail();
 			final String friendName = panel.getName();
@@ -385,6 +422,7 @@ public class FriendsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
+					
 					AccountServiceAsync accountService = appServices.getAccountService();
 					accountService.confirmFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
 
@@ -411,6 +449,7 @@ public class FriendsPagePresenter implements Presenter
 									}
 									
 							}
+							panel.setVisible(false);
 							eventBus.fireEvent(new RefreshPageEvent());
 							appStats.accept(new LevelUpdater().madeFriend());
 							appStats.accept(new AchievementChecker());
@@ -445,9 +484,11 @@ public class FriendsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
+					;
 					AccountServiceAsync accountService = appServices.getAccountService();
 					if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
 					{
+						panel.setVisible(false);
 						accountService.declineFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
 
 							@Override
