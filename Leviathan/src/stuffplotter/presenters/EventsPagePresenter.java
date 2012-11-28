@@ -205,6 +205,7 @@ public class EventsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
+					Window.alert("clicked");
 					displayEvent(currentEvents.get(eventsIndex), eventsIndex);
 				}	
 			});
@@ -302,7 +303,7 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onFailure(Throwable caught)
 			{
-				// TODO Auto-generated method stub
+				System.out.println("failed.");
 				
 			}
 

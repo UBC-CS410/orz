@@ -14,6 +14,7 @@ import stuffplotter.shared.Event.Status;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 
 @SuppressWarnings("serial")
 public class EventServiceImpl extends RemoteServiceServlet implements EventService
@@ -81,17 +82,22 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	@Override
 	public Event retrieveEvent(Account account, Long pEventId)
 	{
-		Event event = dbstore.fetchEvent(pEventId);
-		Date date = new Date();
-		//TODO: add duration to event.getDate()
-		if (event.getDate() != null && date.after(event.getDate()))
+		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, pEventId));
+		
+		//TODO: take duration into account
+		if(event.getStatus() != Status.FINISHED)
 		{
-			event.setStatus(Status.FINISHED);
-			account.getCurrentEvents().remove(pEventId);
-			account.getPastEvents().add(pEventId);
-			dbstore.simpleStore(account);
-			dbstore.simpleStore(event);
+			Date date = new Date();
+			if (event.getDate() != null && date.after(event.getDate()))
+			{
+				event.setStatus(Status.FINISHED);
+				account.getCurrentEvents().remove(pEventId);
+				account.getPastEvents().add(pEventId);
+				dbstore.simpleStore(account);
+				dbstore.simpleStore(event);
+			}
 		}
+
 		return event;
 	}
 	
