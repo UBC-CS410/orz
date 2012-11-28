@@ -155,6 +155,7 @@ public class FriendsPagePresenter implements Presenter
 
 	private void dataBindFriends()
 	{
+
 		this.appServices.getStatsService().getStats(this.appUser.getUserEmail(),new AsyncCallback<AccountStatistic>()
 				{
 
@@ -245,11 +246,27 @@ public class FriendsPagePresenter implements Presenter
 			@Override
 			public void onRefreshPage(RefreshPageEvent event)
 			{
-				friendsView.setPendingData(pendingFriends);
-				friendsView.setFriendData(friends);
-				bindFriendPanels();
-				bindPendingFriendPanels();
-			}	
+				AccountServiceAsync accountService = appServices.getAccountService();
+				accountService.getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						dataBindFriends();
+					}
+				});
+				
+				
+			}
 		});
 
 
