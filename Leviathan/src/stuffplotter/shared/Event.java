@@ -484,4 +484,15 @@ public class Event implements Serializable
 	 */
 	private static final long serialVersionUID = 5333378383196411639L;
 
+	/**
+	 * Removes a user from the list of invitees
+	 * @pre this.invitees.contains(userId) == true;
+	 * @post this.invitees.contains(userId) == false;
+	 * @param userId - email of the user to remove
+	 */
+	public void removeInvitee(String userId)
+	{
+		this.eventInvitees.remove(userId);
+	}
+
 }

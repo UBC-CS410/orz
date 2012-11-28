@@ -4,7 +4,6 @@ import stuffplotter.bindingcontracts.AccountStatisticModel;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
-import stuffplotter.signals.AccountAuthorizedEvent;
 import stuffplotter.signals.UpdateStatsEvent;
 import stuffplotter.signals.UpdateStatsEventHandler;
 
@@ -125,7 +124,6 @@ public class AccountStatisticPresenter implements Presenter
 					{
 						appUser = result;
 						dataBindAccount();
-						
 					}
 				});
 				
@@ -137,6 +135,7 @@ public class AccountStatisticPresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
+		this.bind();
 		container.add(this.statisticsView.asWidget());
 	}
 }

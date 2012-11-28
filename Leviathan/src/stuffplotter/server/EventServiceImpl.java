@@ -218,4 +218,26 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public void inviteGuest(Long eventId, String userId)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void confirmGuest(Long eventId, String userId)
+	{
+		Event event = (Event) dbstore.simpleFetch(new Key<Event>(Event.class, eventId));
+		Account user = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, userId));
+		
+		event.addAttendee(userId);
+		event.removeInvitee(userId);
+		
+		user.addUserEvent(eventId);
+		
+		dbstore.simpleStore(event);
+		dbstore.simpleStore(user);
+	}
+
 }

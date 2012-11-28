@@ -22,4 +22,7 @@ public interface EventServiceAsync
 	void getComments(Long eventId, AsyncCallback<List<Comment>> callback);
 	void deleteEvent(AsyncCallback<Void> callback);
 	void rateEvent(AsyncCallback<Void> callback);
+	
+	void inviteGuest(Long eventId, String userId, AsyncCallback<Void> callback);
+	void confirmGuest(Long eventId, String userId, AsyncCallback<Void> callback);
 }

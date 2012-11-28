@@ -38,6 +38,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	private final Button declineInvitationButton;
 	private final Button submitAvailabilityButton;
 	private final Button finalizeTimeButton;
+	private final Button rateEventButton;
 	
 	private SimplePanel eventPanel;
 	private ScrollDisplayPanel eventRollPanel;
@@ -60,6 +61,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.declineInvitationButton = new Button("Decline Invitation");
 		this.submitAvailabilityButton = new Button("Submit Availabilities");
 		this.finalizeTimeButton = new Button("Finalize Time");
+		this.rateEventButton = new Button("Rate Event");
 		
 		this.acceptInvitationButton.addStyleName("greenActionButton");
 		this.declineInvitationButton.addStyleName("redAcitonButton");
@@ -97,7 +99,56 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.add(this.eventRollPanel);
 		this.setCellWidth(this.eventRollPanel, "225px");
 	}
-
+	
+	/**
+	 * Returns this as a widget so that it can be added to a container
+	 * @pre true
+	 * @post true
+	 * @return this
+	 */
+	@Override
+	public Widget asWidget()
+	{
+		return this;
+	}
+	
+	/**
+	 * Re-populates listPanel with EventListViews created from a list of Events toDisplay
+	 * @pre true;
+	 * @post this.listPanel.getDisplayer().getRowCount == toDisplay.size() && this.listPanel.isVisible() == true;
+	 * @return number of events displayed
+	 */
+	@Override
+	public int initialize(Account user, List<Event> events)
+	{
+		this.eventRollPanel.clearDisplay();
+		for (int i = 0; i < events.size(); i++)
+		{	
+			EventListingView rowPanel = new EventListingView(user, events.get(i));
+			this.eventRollPanel.addElement(rowPanel);
+		}
+		return events.size();
+	}
+	
+	/**
+	 * TODO: Move this to EventRollPresenter
+	 * Highlights the selected event listing
+	 * @pre true;
+	 * @post true;
+	 * @param row - the row index of the flex table
+	 */
+	@Override
+	public void setFocus(int row)
+	{
+		FlexTable eventListings = this.eventRollPanel.getDisplayer();
+		for (int i = 0; i < eventListings.getRowCount(); i++)
+		{
+			eventListings.getWidget(i, 0).removeStyleName("eventSelected");
+		}
+		eventListings.getWidget(row, 0).addStyleName("eventSelected");
+	}
+	
+	
 	/**
 	 * Gets the create events button
 	 * @pre true;
@@ -105,7 +156,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers 
 	 */
 	@Override
-	public HasClickHandlers getCreateButton()
+	public HasClickHandlers getCreateEventButton()
 	{
 		return this.createButton;
 	}
@@ -117,7 +168,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers
 	 */
 	@Override
-	public HasClickHandlers getListCurrentButton()
+	public HasClickHandlers getCurrentEventsButton()
 	{
 		return this.listCurrentButton;
 	}
@@ -129,7 +180,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers
 	 */
 	@Override
-	public HasClickHandlers getListPastButton()
+	public HasClickHandlers getFinishedEventsButton()
 	{
 		return this.listPastButton;
 	}
@@ -141,7 +192,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers
 	 */
 	@Override
-	public HasClickHandlers getAcceptButton()
+	public HasClickHandlers getAcceptInviteButton()
 	{
 		return this.acceptInvitationButton;
 	}
@@ -153,7 +204,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers
 	 */
 	@Override
-	public HasClickHandlers getDeclineButton()
+	public HasClickHandlers getDeclineInviteButton()
 	{
 		return this.declineInvitationButton;
 	}
@@ -165,7 +216,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers
 	 */
 	@Override
-	public HasClickHandlers getSubmitAvailabilitiesButton()
+	public HasClickHandlers getSubmitTimesButton()
 	{
 		return this.submitAvailabilityButton;
 	}
@@ -177,7 +228,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a HasClickHandlers
 	 */
 	@Override
-	public HasClickHandlers getFinalizeTimeButton()
+	public HasClickHandlers getSelectTimeButton()
 	{
 		return this.finalizeTimeButton;
 	}
@@ -201,7 +252,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @post true;
 	 */
 	@Override
-	public void showSubmitAvailabilitiesButton()
+	public void showSubmitTimesButton()
 	{
 		this.eventActionPanel.clear();
 		this.eventActionPanel.add(this.submitAvailabilityButton);
@@ -214,29 +265,45 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @post true;
 	 */
 	@Override
-	public void showFinalizeTimeButton()
+	public void showSelectTimeButton()
 	{
 		this.eventActionPanel.clear();
 		this.eventActionPanel.add(this.finalizeTimeButton);
 	}
-	
+
 	/**
-	 * Get the anchors for each event from event list panel
+	 * Gets the rate event button.
 	 * @pre true;
 	 * @post true;
-	 * @return list of HasClickHandlers
+	 * @return HasClickHandlers
 	 */
 	@Override
-	public List<HasClickHandlers> getEventViewers()
+	public HasClickHandlers getRateEventButton()
 	{
-		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
-		List<Widget> elements = this.eventRollPanel.getElements();
-		for (int i = 0; i < elements.size(); i++)
-		{
-			EventListingView panel = (EventListingView) elements.get(i);
-			links.add(panel.getLink());
-		}
-		return links;	
+		return this.rateEventButton;
+	}
+
+	
+	/**
+	 * Shows the rate event button.
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showRateEventButton()
+	{
+		this.eventActionPanel.add(this.rateEventButton);
+	}
+	
+	/**
+	 * Clears the event buttons
+	 * @pre true;
+	 * @post this.eventActionPanel.isVisible() == false;
+	 */
+	@Override
+	public void hideEventActionButtons()
+	{
+		this.eventActionPanel.clear();
 	}
 	
 	/**
@@ -246,78 +313,39 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	 * @return a simple panel
 	 */
 	@Override
-	public HasWidgets getEventViewerContainer()
+	public HasWidgets getEventViewContainer()
 	{
 		return this.eventPanel;
 	}
-		
+	
 	/**
 	 * Clears the event container
 	 * @pre true;
 	 * @post true;
 	 */
 	@Override
-	public void clearEventView()
+	public void clearEventViewContainer()
 	{
 		this.eventPanel.clear();
 	}
 	
 	/**
-	 * Clears the event buttons
+	 * Get the anchors for each event from event list panel
 	 * @pre true;
-	 * @post this.eventActionPanel.isVisible() == false;
+	 * @post true;
+	 * @return list of HasClickHandlers
 	 */
 	@Override
-	public void clearEventButtons()
+	public List<HasClickHandlers> getEventListingLinks()
 	{
-		this.eventActionPanel.clear();
-	}
-	
-	/**
-	 * Shows eventPanel
-	 * @pre this.eventListPanel.isVisible() == true && this.eventPanel.isVisible() == false;
-	 * @post this.eventListPanel.isVisible() == false && this.eventPanel.isVisible() == true;
-	 */
-	@Override
-	public void showEventSelected(int row)
-	{
-		FlexTable eventListings = this.eventRollPanel.getDisplayer();
-		for (int i = 0; i < eventListings.getRowCount(); i++)
+		List<HasClickHandlers> links = new ArrayList<HasClickHandlers>();
+		List<Widget> elements = this.eventRollPanel.getElements();
+		for (int i = 0; i < elements.size(); i++)
 		{
-			eventListings.getWidget(i, 0).removeStyleName("eventSelected");
+			EventListingView panel = (EventListingView) elements.get(i);
+			links.add(panel.getLink());
 		}
-		eventListings.getWidget(row, 0).addStyleName("eventSelected");
-	}
-	
-	
-	/**
-	 * Re-populates listPanel with EventListViews created from a list of Events toDisplay
-	 * @pre true;
-	 * @post this.listPanel.getDisplayer().getRowCount == toDisplay.size() && this.listPanel.isVisible() == true;
-	 * @return number of events displayed
-	 */
-	@Override
-	public int initialize(Account user, List<Event> events)
-	{
-		this.eventRollPanel.clearDisplay();
-		for (int i = 0; i < events.size(); i++)
-		{	
-			EventListingView rowPanel = new EventListingView(user, events.get(i));
-			this.eventRollPanel.addElement(rowPanel);
-		}
-		return events.size();
-	}
-	
-	/**
-	 * Returns this as a widget so that it can be added to a container
-	 * @pre true
-	 * @post true
-	 * @return this
-	 */
-	@Override
-	public Widget asWidget()
-	{
-		return this;
+		return links;	
 	}
 
 }

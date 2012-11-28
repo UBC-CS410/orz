@@ -27,4 +27,7 @@ public interface EventService extends RemoteService
 	
 	void deleteEvent();
 	void rateEvent();
+	
+	void inviteGuest(Long eventId, String userId);
+	void confirmGuest(Long eventId, String userId);
 }
