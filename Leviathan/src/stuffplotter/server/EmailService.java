@@ -60,7 +60,7 @@ public class EmailService
 
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(newUser));
 			message.setSubject("StuffPlotter - "+formerUser+" wants to add you as a Friend");
-			message.setContent("Hello "+newUser+",\n"+formerUser+" wants to add you as a friend. Please log into Stuffplotter at stuffplotter.appspot.com\nSee ya there,\nStuff Plotter Team", "text/html; charset=utf-8");
+			message.setContent("<p>Hey there</p> <p>Someone from "+formerUser+" would like to add you as friend in Stuff Plotter! Please log into Stuff Plotter with you Google Account at stuffplotter.appspot.com.</p> <p>See ya there, Stuff Plotter Team</p>", "text/html; charset=utf-8");
 			
 			Transport.send(message);		
 		}
@@ -95,7 +95,7 @@ public class EmailService
 			message.setFrom(new InternetAddress(ADMIN_USERNAME));
 			message.setRecipients(Message.RecipientType.TO, recipientEmails);
 			message.setSubject("StuffPlotter - You have been invited to an Envent");
-			message.setContent("Hello You have been invited to an Event, Woopee!!!", "text/html; charset=utf-8");
+			message.setContent("<p>Oh my gosh!</p> <p>You have been invited to an Event! Log into to stuffplotter.appspot.com to see more details.</p> <p>-Stuff Plotter Team</p>", "text/html; charset=utf-8");
 			
 			Transport.send(message);
 		}

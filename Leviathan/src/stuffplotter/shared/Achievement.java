@@ -20,7 +20,7 @@ public enum Achievement {
     COMPLETE_3_EVENTS_SAMEDAY(19, "Busy Body", "Attend and complete 3 Events on one day", "Look at you, running all over town!", "images/blank.jpg"),
     
     //Friend Achievements
-    ADD_FIRST_FRIEND(30, "First Mate", "Make your first Friend", "On your way to popularity!", "images/blank.jpg"),
+    ADD_FIRST_FRIEND(30, "First Mate", "Make your first Friend", "On your way to popularity!", "images/firstfriend.jpg"),
     ADD_10_FRIENDS(31, "Mr. Popular", "Have 10 Friends in your list", "You can never have too many friends!", "images/blank.jpg"),
     		
 	//Blank Achievement
