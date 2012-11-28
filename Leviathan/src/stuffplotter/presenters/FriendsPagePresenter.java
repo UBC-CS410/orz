@@ -297,6 +297,10 @@ public class FriendsPagePresenter implements Presenter
 				{
 					Window.alert("Hey, you already have "+friendEmail+" in your Friends List!");
 				}
+				else if(containFriend(pendingFriends, friendEmail))
+				{
+					Window.alert("Hey, don't you see "+friendEmail+"'s request below? Hit 'Confirm' if you want to add them as a friend.");
+				}
 				else{
 					appServices.getAccountService().addFriend(appUser, friendEmail, new AsyncCallback<Void>(){
 						@Override
