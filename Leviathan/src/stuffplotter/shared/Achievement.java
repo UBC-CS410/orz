@@ -8,7 +8,7 @@ public enum Achievement {
 	REACH_LVL10(2, "Stuff Master", "Reach level 10", "Congratulations!! You have reached the max level!", "images/blank.jpg"),
     
 	//Event Achievements
-	CREATE_FIRST_EVENT(10, "The Host", "Host your first event", "Yay!! first event!", "images/blank.jpg"), 
+	CREATE_FIRST_EVENT(10, "The Host", "Host your first event", "Yay!! first event!", "images/thehost.jpg"), 
     CREATE_5_EVENTS(11, "Scheduler King", "Host 5 events", "Party time!", "images/schedulerking.jpg"), 
     FIRST_PERFECT_EVENT(12,"Ace", "Perfect score on 1st event","Pefect score for the Perfect Host!", "images/ace.jpg"), 
     FULL_EVENT_ATTENDANCE(13, "Full House", "Everyone invited shows up", "Event too popular to turn down!", "images/blank.jpg"),
@@ -20,7 +20,7 @@ public enum Achievement {
     COMPLETE_3_EVENTS_SAMEDAY(19, "Busy Body", "Attend and complete 3 Events on one day", "Look at you, running all over town!", "images/blank.jpg"),
     
     //Friend Achievements
-    ADD_FIRST_FRIEND(30, "First Mate", "Make your first Friend", "On your way to popularity!", "images/blank.jpg"),
+    ADD_FIRST_FRIEND(30, "First Mate", "Make your first Friend", "On your way to popularity!", "images/firstfriend.jpg"),
     ADD_10_FRIENDS(31, "Mr. Popular", "Have 10 Friends in your list", "You can never have too many friends!", "images/blank.jpg"),
     		
 	//Blank Achievement

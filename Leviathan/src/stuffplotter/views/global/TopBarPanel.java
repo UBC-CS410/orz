@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -49,7 +50,13 @@ public class TopBarPanel extends HorizontalPanel implements TopBarView
 		popup.setPopupPosition(this.notificationsLabel.getAbsoluteLeft(), this.notificationsLabel.getAbsoluteTop()+60);
 		
 		this.add(notificationsLabel);
-		this.setCellWidth(notificationsLabel, String.valueOf(Window.getClientWidth() - 200) + "px");
+		//this.setCellWidth(notificationsLabel, String.valueOf(Window.getClientWidth() - 200) + "px");
+		this.setCellWidth(notificationsLabel, "200px");
+		
+		SimplePanel banner = new SimplePanel();
+		banner.addStyleName("banner");
+		this.add(banner);
+		this.setCellWidth(banner, String.valueOf(Window.getClientWidth() - 400) + "px");	
 		
 		this.userNameDisplay = new Label();
 		Label separator = new Label("|");

@@ -24,7 +24,9 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	private int numberOfLogins;
 	private int numberOfHostedEvents;
 	private int numberOfParticipatedEvents;
-	private int numberOfFriends;	
+	private int numberOfFriends;
+	private int numberOfComments;
+	private int numberOfRates;
 
 	/**
 	 * Constructor for the AccountStatistic.
@@ -38,6 +40,8 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 		this.numberOfLogins = 0;
 		this.numberOfHostedEvents = 0;
 		this.numberOfParticipatedEvents = 0;
+		this.numberOfRates = 0;
+		this.setNumberOfComments(0);
 		this.setNumberOfFriends(0);
 		this.userAchievements = new ArrayList<Achievement>();
 	}
@@ -54,7 +58,9 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 		this.numberOfLogins = 0;
 		this.numberOfHostedEvents = 0;
 		this.numberOfParticipatedEvents = 0;
+		this.numberOfRates = 0;
 		this.setNumberOfFriends(0);
+		this.setNumberOfComments(0);
 		this.userAchievements = new ArrayList<Achievement>();
 	}
 	
@@ -339,10 +345,32 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 		this.numberOfFriends = numberOfFriends;
 	}
 
+	@Override
+	public int getNumberOfComments()
+	{
+		return numberOfComments;
+	}
+
+	public void setNumberOfComments(int numberOfComments)
+	{
+		this.numberOfComments = numberOfComments;
+	}
+
 	/**
 	 * Serial version for the AccountStatistic.
 	 */
 	private static final long serialVersionUID = 8871578746223259137L;
+
+	@Override
+	public int getNumberOfRates()
+	{
+		return this.numberOfRates;
+	}
+	
+	public void setNumberOfRates(int rates)
+	{
+		this.numberOfRates = rates;
+	}
 
 
 }

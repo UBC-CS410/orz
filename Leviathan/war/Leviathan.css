@@ -8,10 +8,19 @@
 	color: #FF002B;
 }
 
-
+.banner {
+	background-image: url(./images/banner.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 100%;
+	height: 100px;
+}
 
 .loading {
 	background-image: url(./images/orz.gif);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
 }
 
 .masterContainer {

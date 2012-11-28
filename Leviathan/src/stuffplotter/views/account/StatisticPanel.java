@@ -17,7 +17,9 @@ public class StatisticPanel extends VerticalPanel implements AccountStatisticVie
 	private InfoPanel numOfLogins;
 	private InfoPanel numOfHostedEvents;
 	private InfoPanel numOfParticpatedEvents;
+	private InfoPanel numOfComments;
 	private InfoPanel numOfFriends;
+	private InfoPanel numOfRates;
 	private Label errorMessage;
 	
 	/**
@@ -40,15 +42,19 @@ public class StatisticPanel extends VerticalPanel implements AccountStatisticVie
 		this.userLevel = new InfoPanel("Level", "");
 		this.userExperience = new InfoPanel("Experience", "");
 		this.numOfLogins = new InfoPanel("Number of Page Views", "");
-		this.numOfHostedEvents = new InfoPanel("Number of hosted events", "");
-		this.numOfParticpatedEvents = new InfoPanel("Number of participated events", "");
-		this.numOfFriends = new InfoPanel("Number of friends", "");
+		this.numOfHostedEvents = new InfoPanel("Number of Hosted Events", "");
+		this.numOfParticpatedEvents = new InfoPanel("Number of Participated Events", "");
+		this.numOfRates = new InfoPanel("Number of Events Rated","");
+		this.numOfComments = new InfoPanel("Number of Comments", "");
+		this.numOfFriends = new InfoPanel("Number of Friends", "");
 		this.errorMessage = new Label();
 		this.add(this.userLevel);
 		this.add(this.userExperience);
-		this.add(this.numOfLogins);
+		//this.add(this.numOfLogins);
 		this.add(this.numOfHostedEvents);
 		this.add(this.numOfParticpatedEvents);
+		this.add(this.numOfComments);
+		this.add(this.numOfRates);
 		this.add(this.numOfFriends);
 		this.add(errorMessage);
 	}
@@ -67,6 +73,8 @@ public class StatisticPanel extends VerticalPanel implements AccountStatisticVie
 		this.numOfLogins.setValue(String.valueOf(model.getNumberOfLogins()));
 		this.numOfHostedEvents.setValue(String.valueOf(model.getNumberOfHostedEvents()));
 		this.numOfParticpatedEvents.setValue(String.valueOf(model.getNumberOfParticipatedEvents()));
+		this.numOfComments.setValue(String.valueOf(model.getNumberOfComments()));
+		this.numOfRates.setValue(String.valueOf(model.getNumberOfRates()));
 		this.numOfFriends.setValue(String.valueOf(model.getNumberOfFriends()));
 	}
 

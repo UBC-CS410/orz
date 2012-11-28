@@ -30,7 +30,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 {
 	private static final int NUMOFCOLUMNS = 1;
 	private Button addFriend;
-	private Button searchFriends;
+	//private Button searchFriends;
 	private TextBox addFriendTextBox;
 	private FriendsDisplayPanel friendDisplay;
 	private FriendsDisplayPanel pendingFriendDisplay;
@@ -66,7 +66,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		this.addFriendTextBox.setText("Example: stuffplotter001@gmail.com");
 		
 		
-		this.searchFriends = new Button("Search Friends");
+		//this.searchFriends = new Button("Search Friends");
 		this.pendingFriendDisplay = new FriendsDisplayPanel(NUMOFCOLUMNS);
 		this.pendingFriendsLabel = new Label("Pending Friends");
 
@@ -74,7 +74,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		addFriendPanel.add(this.addFriend);
 		addFriendPanel.add(this.addFriendTextBox);
 		buttonHolder.add(addFriendPanel);
-		buttonHolder.add(this.searchFriends);
+		//buttonHolder.add(this.searchFriends);
 		buttonHolder.add(pendingFriendsLabel);
 		buttonHolder.add(this.pendingFriendDisplay);
 		
@@ -111,7 +111,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	 */
 	public Button getSearchFriendsBtn()
 	{
-		return this.searchFriends;
+		return null;
 	}
 	
 	/**

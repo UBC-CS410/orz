@@ -53,7 +53,7 @@ public class FriendAchievementPopupPanel extends PopupPanel
 		
 		this.achievementPanel = new ScrollDisplayPanel(NUMBEROFCOLUMNS);
 		this.achievementLabel = new Label("Unlocked Achievements");
-		this.achievementLabel.setWidth("85px");
+		this.achievementLabel.setSize("85px", "85px");
 		this.firstLog = new FriendAchievementImage(Achievement.FIRST_LOG_IN);
 		this.reach5 = new FriendAchievementImage(Achievement.REACH_LVL_5);
 		this.reach10 = new FriendAchievementImage(Achievement.REACH_LVL10);
