@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.server.AchievementChecker;
@@ -32,6 +33,7 @@ import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationView;
 import stuffplotter.views.events.EventDateFinalizerDialogBox;
 import stuffplotter.views.events.EventView;
+import stuffplotter.views.util.NotificationDialogBox;
 
 /**
  * Class for the Events Page presenter.
@@ -134,11 +136,25 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				Presenter presenter = new EventCreationPresenter(applicationServices,
-																 eventBus,
-																 new EventCreationView(),
-																 userAccount);
-				presenter.go(null);
+				AccountServiceAsync accountService = applicationServices.getAccountService();
+				accountService.getAccount(userAccount.getUserEmail(), new AsyncCallback<Account>()
+				{
+					@Override
+					public void onSuccess(Account result)
+					{
+						Presenter presenter = new EventCreationPresenter(applicationServices,
+								 eventBus,
+								 new EventCreationView(),
+								 result);
+						presenter.go(null);
+					}
+					
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						new NotificationDialogBox("Create new event", "Faild to retrieve user information.");
+					}
+				});
 			}
 			
 		});
