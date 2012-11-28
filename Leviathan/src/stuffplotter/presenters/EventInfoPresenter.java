@@ -48,11 +48,11 @@ public class EventInfoPresenter implements Presenter
 		
 		/**
 		 * Set the location data for the display.
-		 * @pre locations != null;
+		 * @pre location != null;
 		 * @post true;
-		 * @param locations - the locations to set to the display.
+		 * @param location - the location to set to the display.
 		 */
-		public void setLocationData(JsArray<Placemark> locations);
+		public void setLocationData(Placemark location);
 		
 		/**
 		 * Retrieve the input from the user.
@@ -63,6 +63,34 @@ public class EventInfoPresenter implements Presenter
 		public String getSearchInput();
 		
 		/**
+		 * Enable the next button for the location search results.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void enableNextBtn();
+		
+		/**
+		 * Disable the next button for the location search results.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void disableNextBtn();
+		
+		/**
+		 * Enable the back button for the location search results.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void enableBackBtn();
+		
+		/**
+		 * Disable the back button for the location search results.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void disableBackBtn();
+		
+		/**
 		 * Clear the search results from the view.
 		 * @pre true;
 		 * @post true;
@@ -70,25 +98,18 @@ public class EventInfoPresenter implements Presenter
 		public void clearResults();
 		
 		/**
+		 * Set the message for number of results found.
+		 * @pre true;
+		 * @post true;
+		 */
+		public void setNumberOfResults(int resultsFound);
+		
+		/**
 		 * Set the view to a failed search result view.
 		 * @pre true;
 		 * @post true;
 		 */
 		public void setFailResult();
-		
-		/**
-		 * Display the next search result.
-		 * @pre true;
-		 * @post true;
-		 */
-		public void nextResult();
-		
-		/**
-		 * Display the previous search result.
-		 * @pre true;
-		 * @post true;
-		 */
-		public void previousResult();
 		
 		/**
 		 * Retrieve the EventInfoView as a widget.
@@ -100,6 +121,9 @@ public class EventInfoPresenter implements Presenter
 	}
 	
 	private final EventInfoView display;
+	private JsArray<Placemark> locationsFound;
+	private int numOfLocations;
+	private int currentIndex;
 	
 	/**
 	 * Constructor for the EventInfoPresenter.
@@ -143,8 +167,23 @@ public class EventInfoPresenter implements Presenter
 
 					@Override
 					public void onSuccess(JsArray<Placemark> locations)
-					{
-						display.setLocationData(locations);
+					{						
+						if(locations != null && locations.length() > 0)
+						{
+							locationsFound = locations;
+							currentIndex = 0;
+							numOfLocations = locations.length();
+							display.setLocationData(locations.get(0));
+							display.setNumberOfResults(numOfLocations);
+							if(locations.length() != 1)
+							{
+								display.enableNextBtn();
+							}
+						}
+						else
+						{
+							display.setFailResult();
+						}
 					}
 				};
 				
@@ -158,7 +197,15 @@ public class EventInfoPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				display.nextResult();
+				currentIndex++;
+				display.setLocationData(locationsFound.get(currentIndex));
+				
+				if(currentIndex == numOfLocations - 1)
+				{
+					display.disableNextBtn();
+				}
+				
+				display.enableBackBtn();
 			}
 		});
 		
@@ -167,7 +214,15 @@ public class EventInfoPresenter implements Presenter
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				display.previousResult();
+				currentIndex--;
+				display.setLocationData(locationsFound.get(currentIndex));
+				
+				if(currentIndex == 0)
+				{
+					display.disableBackBtn();
+				}
+				
+				display.enableNextBtn();
 			}
 		});
 	}
@@ -175,7 +230,7 @@ public class EventInfoPresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
-		container.add(this.display.asWidget());
 		this.bind();
+		container.add(this.display.asWidget());
 	}
 }

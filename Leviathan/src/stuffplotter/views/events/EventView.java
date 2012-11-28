@@ -2,6 +2,7 @@ package stuffplotter.views.events;
 
 import java.util.List;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.presenters.EventPresenter.EventViewer;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Comment;
@@ -131,30 +132,30 @@ public class EventView extends VerticalPanel implements EventViewer
 	 * @post true;
 	 */
 	@Override
-	public void initialize(Account account, Event event)
+	public void initialize(AccountModel userData, Event eventData)
 	{
-		Label nameLabel = new Label(event.getName());
+		Label nameLabel = new Label(eventData.getName());
 		nameLabel.setStyleName("eventNameLabel");
 	
-		Label ownerLabel = new Label("Invited by: " + event.getOwnerID());
+		Label ownerLabel = new Label("Invited by: " + eventData.getOwnerID());
 		
 		Label dateLabel = new Label("");
-		switch(event.getStatus())
+		switch(eventData.getStatus())
 		{
 			case PROPOSED:
 				dateLabel.setText("Created on: ");
 				break;
 			case SCHEDULED:
-				dateLabel.setText("Scheduled for: " + event.getDate().toString());
+				dateLabel.setText("Scheduled for: " + eventData.getDate().toString());
 				break;
 			case FINISHED:
 				dateLabel.setText("Finished on: ");
 				break;
 		}
 		
-		Label costLabel = new Label("Cost: " + event.getCost());
-		Label locationLabel = new Label("Location: " + event.getLocation());
-		Label descriptionLabel = new Label("Description: " + event.getDescription());
+		Label costLabel = new Label("Cost: " + eventData.getCost());
+		Label locationLabel = new Label("Location: " + eventData.getLocation());
+		Label descriptionLabel = new Label("Description: " + eventData.getDescription());
 		
 		this.commentTextBox.setVisible(false);	
 		ScrollPanel commentPanel = new ScrollPanel();

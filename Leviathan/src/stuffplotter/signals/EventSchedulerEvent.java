@@ -12,6 +12,7 @@ public class EventSchedulerEvent extends GwtEvent<EventSchedulerEventHandler>
 	public static Type<EventSchedulerEventHandler> TYPE = new Type<EventSchedulerEventHandler>();
 	
 	private Event updatedEvent;
+	private Long schedulerId;
 	private List<Long> availabilitiesIds;
 
 	@Override
@@ -42,9 +43,10 @@ public class EventSchedulerEvent extends GwtEvent<EventSchedulerEventHandler>
 	 * @post this.availabilitiesIds == availabilityIds;;
 	 * @param availabilityIds - list of submitted availability ids
 	 */
-	public EventSchedulerEvent(List<Long> availabilityIds)
+	public EventSchedulerEvent(Long schedulerId, List<Long> availabilityIds)
 	{
 		//super();
+		this.schedulerId = schedulerId;
 		this.availabilitiesIds = availabilityIds;
 	}
 	
@@ -57,6 +59,17 @@ public class EventSchedulerEvent extends GwtEvent<EventSchedulerEventHandler>
 	public Event getUpdatedEvent()
 	{
 		return this.updatedEvent;
+	}
+	
+	/**
+	 * Gets the scheduler id
+	 * @pre true;
+	 * @post true;
+	 * @return this.schedulerId
+	 */
+	public Long getSchedulerId()
+	{
+		return this.schedulerId;
 	}
 
 	/**

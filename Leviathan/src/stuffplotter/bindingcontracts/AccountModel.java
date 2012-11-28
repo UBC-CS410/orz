@@ -74,10 +74,27 @@ public interface AccountModel extends Comparator<AccountModel>
 	public List<String> getUserFriends();
 	
 	/**
+	 * Retrieve the list of the user's current event ids
+	 * @pre true;
+	 * @post true;
+	 * @return the list of the user's current event ids
+	 */
+	public List<Long> getCurrentEvents();
+	
+	/**
+	 * Retrieve the list of the user's finished event ids
+	 * @pre true;
+	 * @post true;
+	 * @return the list of the user's finished event ids
+	 */
+	public List<Long> getPastEvents();
+	
+	/**
 	 * Retrieve the list of the user's notifications.
 	 * @pre true;
 	 * @post true;
 	 * @return the list of the user's notifications.
 	 */
 	public List<Long> getUserNotifications();
+	
 }

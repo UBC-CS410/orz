@@ -4,18 +4,17 @@ package stuffplotter.views.events;
 import stuffplotter.client.EventCreationPageVisitor;
 import stuffplotter.presenters.EventInfoPresenter.EventInfoView;
 
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.maps.client.geocode.Placemark;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Class to display the general information for an event during its creation.
  */
 public class EventInfoPanel extends SimplePanel implements EventSubmittable, EventInfoView
 {
-	private static final String NO_RESULTS = "No results found.";
 	private EventInfoInputPanel eventInputPanel;
 	private EventLocationMapPanel mapPanel;
 	private EventLocationSearchPanel mapSearchPanel;
@@ -39,11 +38,14 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable, Eve
 	private void initializeUI()
 	{
 		HorizontalPanel infoHolder = new HorizontalPanel();
-		eventInputPanel = new EventInfoInputPanel();
-		mapPanel = new EventLocationMapPanel();
-		mapSearchPanel = new EventLocationSearchPanel();
+		VerticalPanel mapHolder = new VerticalPanel();
+		this.eventInputPanel = new EventInfoInputPanel();
+		this.mapPanel = new EventLocationMapPanel();
+		this.mapSearchPanel = new EventLocationSearchPanel();
+		mapHolder.add(this.mapPanel);
+		mapHolder.add(this.mapSearchPanel);
 		infoHolder.add(eventInputPanel);
-		infoHolder.add(mapPanel);
+		infoHolder.add(mapHolder);
 		this.add(infoHolder);
 	}
 	
@@ -86,20 +88,21 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable, Eve
 	@Override
 	public HasClickHandlers getNextBtn()
 	{
-		return this.mapSearchPanel.getNextLocation();
+		return this.mapSearchPanel.getNextBtn();
 	}
 
 	@Override
 	public HasClickHandlers getBackBtn()
 	{
-		return this.mapSearchPanel.getPreviousLocation();
+		return this.mapSearchPanel.getPreviousBtn();
 	}
 
 	@Override
-	public void setLocationData(JsArray<Placemark> locations)
+	public void setLocationData(Placemark location)
 	{
-		// TODO Auto-generated method stub
-		
+		this.eventInputPanel.setCoordinates(location.getPoint());
+		this.eventInputPanel.setLocationText(location.getAddress());
+		this.mapPanel.viewLocation(location.getPoint());
 	}
 
 	@Override
@@ -120,19 +123,38 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable, Eve
 	public void setFailResult()
 	{
 		this.mapSearchPanel.defaultPageResults();
+		this.mapPanel.clearResults();
 		this.eventInputPanel.clearResults();
-		this.mapSearchPanel.setNumOfResults(NO_RESULTS);
+		this.mapSearchPanel.setFailResult();
 	}
 
 	@Override
-	public void nextResult()
+	public void enableNextBtn()
 	{
-		// TO DO
+		this.mapSearchPanel.enableNextBtn();
 	}
 
 	@Override
-	public void previousResult()
+	public void disableNextBtn()
 	{
-		// TO DO
+		this.mapSearchPanel.disableNextBtn();
+	}
+
+	@Override
+	public void enableBackBtn()
+	{
+		this.mapSearchPanel.enableBackBtn();
+	}
+
+	@Override
+	public void disableBackBtn()
+	{
+		this.mapSearchPanel.disableBackBtn();	
+	}
+
+	@Override
+	public void setNumberOfResults(int resultsFound)
+	{
+		this.mapSearchPanel.setNumOfResults(resultsFound);
 	}
 }

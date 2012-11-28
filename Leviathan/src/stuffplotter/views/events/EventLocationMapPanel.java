@@ -3,6 +3,7 @@ package stuffplotter.views.events;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl3D;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -51,5 +52,19 @@ public class EventLocationMapPanel extends SimplePanel
 		this.map.clearOverlays();
 		this.map.setZoomLevel(ZOOM_LEVEL);
 		this.map.panTo(VANCOUVER);
+	}
+	
+	/**
+	 * View the location on the map for the given LatLng.
+	 * @pre location != null;
+	 * @post true;
+	 * @param location - the location to view.
+	 */
+	public void viewLocation(LatLng location)
+	{
+		this.map.clearOverlays();
+		this.map.setZoomLevel(ZOOM_LEVEL);
+		this.map.panTo(location);
+		this.map.addOverlay(new Marker(location));
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import stuffplotter.client.EventCreationPageRetriever;
 
@@ -65,6 +66,7 @@ public class Event implements Serializable
 	
 	private List<String> eventInvitees;
 	private List<String> eventAttendees;
+	private List<String> eventRaters;
 	
 	private Long eventScheduler;
 	private Status eventStatus;
@@ -84,8 +86,10 @@ public class Event implements Serializable
 	{
 		this.eventInvitees = new ArrayList<String>();
 		this.eventAttendees = new ArrayList<String>();
+		this.eventRaters = new ArrayList<String>();
 		this.eventComments = new ArrayList<Long>();
 		this.eventRatings = new ArrayList<Double>();
+		
 	}
 	
 	/**
@@ -109,9 +113,10 @@ public class Event implements Serializable
 		
 		this.eventStatus = Status.PROPOSED;
 		this.eventFrame = eventRetriever.getFrame();
-		
-		this.eventInvitees = new ArrayList<String>();
+
+		this.eventInvitees = eventRetriever.getSelectedFriends();
 		this.eventAttendees = new ArrayList<String>();
+		this.eventRaters = new ArrayList<String>();
 		this.eventComments = new ArrayList<Long>();
 		this.eventRatings = new ArrayList<Double>();
 	}
@@ -331,7 +336,7 @@ public class Event implements Serializable
 	 * @post true;
 	 * @return the eventScheduler
 	 */
-	public Long getEventScheduler()
+	public Long getSchedulerId()
 	{
 		return this.eventScheduler;
 	}
@@ -342,7 +347,7 @@ public class Event implements Serializable
 	 * @post 	this.eventScheduler == eventScheduler
 	 * @param 	eventScheduler 	the eventScheduler to set
 	 */
-	public void setEventScheduler(Long eventScheduler)
+	public void setSchedulerId(Long eventScheduler)
 	{
 		this.eventScheduler = eventScheduler;
 	}
@@ -392,6 +397,17 @@ public class Event implements Serializable
 	}
 	
 	/**
+	 * Removes a user from the list of invitees
+	 * @pre this.invitees.contains(userId) == true;
+	 * @post this.invitees.contains(userId) == false;
+	 * @param userId - email of the user to remove
+	 */
+	public void removeInvitee(String userId)
+	{
+		this.eventInvitees.remove(userId);
+	}
+	
+	/**
 	 * Sets the initial list of invitees to the event
 	 * @pre 	eventInvitees != null;
 	 * @post 	this.eventInvitees.size() += eventInvitees.size();
@@ -422,6 +438,28 @@ public class Event implements Serializable
 	public void addAttendee(String eventAttendee)
 	{
 		this.eventAttendees.add(eventAttendee);
+	}
+
+	/**
+	 * Get the list of account ids of event raters
+	 * @pre true;
+	 * @post true;
+	 * @return the eventRaters
+	 */
+	public List<String> getEventRaters()
+	{
+		return this.eventRaters;
+	}
+
+	/**
+	 * Add an account id to the list of event raters
+	 * @pre eventRater != null
+	 * @post this.eventRaters.contains(eventRater) == true;
+	 * @param eventRater - the account id of the event rater
+	 */
+	public void addEventRater(String eventRater)
+	{
+		this.eventRaters.add(eventRater);
 	}
 
 	/**
@@ -483,16 +521,5 @@ public class Event implements Serializable
 	 * Serial version for the Event.
 	 */
 	private static final long serialVersionUID = 5333378383196411639L;
-
-	/**
-	 * Removes a user from the list of invitees
-	 * @pre this.invitees.contains(userId) == true;
-	 * @post this.invitees.contains(userId) == false;
-	 * @param userId - email of the user to remove
-	 */
-	public void removeInvitee(String userId)
-	{
-		this.eventInvitees.remove(userId);
-	}
 
 }
