@@ -448,7 +448,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(Account result)
 			{
 				userAccount = result;
-				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
+				applicationServices.getEventService().retrieveListOfEvents(userAccount, userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
 				{
 					@Override
 					public void onFailure(Throwable caught)
@@ -501,7 +501,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(Account result)
 			{
 				userAccount = result;
-				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
+				applicationServices.getEventService().retrieveListOfEvents(userAccount, userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
 				{
 					@Override
 					public void onFailure(Throwable caught)

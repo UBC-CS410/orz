@@ -136,7 +136,7 @@ public class EventPresenter implements Presenter
 	private void loadComments()
 	{
 		EventServiceAsync eventService = appServices.getEventService();
-		eventService.getComments(eventData.getId(), new AsyncCallback<List<Comment>>() {
+		eventService.retrieveComments(eventData.getId(), new AsyncCallback<List<Comment>>() {
 
 			@Override
 			public void onFailure(Throwable caught)
