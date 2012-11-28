@@ -4,7 +4,10 @@ import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
+import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 
+import stuffplotter.views.friends.FriendAchievementPopupPanel;
 import stuffplotter.views.friends.FriendPanel;
 import stuffplotter.views.friends.FriendPanelView;
 import stuffplotter.views.friends.FriendPopupPanel;
@@ -33,7 +36,8 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	private FriendsDisplayPanel pendingFriendDisplay;
 	private Label pendingFriendsLabel;
 	private Label displayFriendsLabel;
-	private FriendPopupPanel popup;
+	private FriendPopupPanel popupFriendInfo;
+	private FriendAchievementPopupPanel popupFriendAchievements;
 	
 	/**
 	 * Constructor for the FriendsPagePanel.
@@ -81,8 +85,10 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		VerticalPanel friendHolder = new VerticalPanel();
 		friendHolder.add(displayFriendsLabel);
 		friendHolder.add(this.friendDisplay);
-		this.popup = new FriendPopupPanel();
-		this.popup.setPopupPosition(displayFriendsLabel.getAbsoluteLeft(), displayFriendsLabel.getAbsoluteTop());
+		this.popupFriendInfo = new FriendPopupPanel();
+		this.popupFriendInfo.setPopupPosition(displayFriendsLabel.getAbsoluteLeft(), displayFriendsLabel.getAbsoluteTop());
+		this.popupFriendAchievements = new FriendAchievementPopupPanel();
+		this.popupFriendAchievements.setPopupPosition(displayFriendsLabel.getAbsoluteLeft(), displayFriendsLabel.getAbsoluteTop());
 		this.add(friendHolder);
 	}
 	
@@ -176,6 +182,27 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	@Override
 	public FriendPopupPanel getFriendPopupPanel()
 	{
-		return this.popup;
+		return this.popupFriendInfo;
+	}
+
+	@Override
+	public FriendAchievementPopupPanel getFriendAchievementPopupPanel()
+	{
+		return this.popupFriendAchievements;
+	}
+
+	@Override
+	public void setAccountAndStatsData(Account friendAccount,
+			AccountStatistic friendStats)
+	{
+		this.popupFriendInfo.setAccountAndStatsData(friendAccount, friendStats);
+		
+	}
+
+	@Override
+	public void setStatsData(AccountStatistic stats)
+	{
+		this.popupFriendAchievements.setStatsData(stats);
+		
 	}
 }
