@@ -65,17 +65,6 @@ public class EventInfoInputPanel extends VerticalPanel
 		
 		this.add(new Label("Location:"));
 		this.location = new TextBox();
-		this.location.setText("\"Search\" with map");
-		this.location.setStyleName("grey-text");
-		this.location.addFocusHandler(new FocusHandler()
-		{
-			@Override
-			public void onFocus(FocusEvent event)
-			{
-				location.removeStyleName("grey-text");
-				location.setText("");
-			}
-		});
 		this.add(location);
 		
 		this.add(new Label("Cost:"));
