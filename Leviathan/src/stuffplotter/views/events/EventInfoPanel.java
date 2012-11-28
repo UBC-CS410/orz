@@ -40,11 +40,11 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable, Eve
 	{
 		HorizontalPanel infoHolder = new HorizontalPanel();
 		eventInputPanel = new EventInfoInputPanel();
-		//mapPanel = new EventLocationMapPanel();
-		//mapSearchPanel = new EventLocationSearchPanel();
+		mapPanel = new EventLocationMapPanel();
+		mapSearchPanel = new EventLocationSearchPanel();
 		infoHolder.add(eventInputPanel);
-		//infoHolder.add(mapPanel);
-		//this.add(infoHolder);
+		infoHolder.add(mapPanel);
+		this.add(infoHolder);
 	}
 	
 	/**
@@ -86,13 +86,13 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable, Eve
 	@Override
 	public HasClickHandlers getNextBtn()
 	{
-		return this.getNextBtn();
+		return this.mapSearchPanel.getNextLocation();
 	}
 
 	@Override
 	public HasClickHandlers getBackBtn()
 	{
-		return this.getBackBtn();
+		return this.mapSearchPanel.getPreviousLocation();
 	}
 
 	@Override
@@ -127,14 +127,12 @@ public class EventInfoPanel extends SimplePanel implements EventSubmittable, Eve
 	@Override
 	public void nextResult()
 	{
-		// TODO Auto-generated method stub
-		
+		// TO DO
 	}
 
 	@Override
 	public void previousResult()
 	{
-		// TODO Auto-generated method stub
-		
+		// TO DO
 	}
 }

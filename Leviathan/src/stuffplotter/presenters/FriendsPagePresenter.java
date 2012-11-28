@@ -26,6 +26,7 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
+import stuffplotter.signals.UpdateStatsEvent;
 import stuffplotter.views.friends.FriendPanelView;
 import stuffplotter.views.friends.PendingFriendPanel;
 
@@ -453,7 +454,7 @@ public class FriendsPagePresenter implements Presenter
 							eventBus.fireEvent(new RefreshPageEvent());
 							appStats.accept(new LevelUpdater().madeFriend());
 							appStats.accept(new AchievementChecker());
-							
+							eventBus.fireEvent(new UpdateStatsEvent(appUser.getUserEmail()));
 							appServices.getStatsService().getStats(friendEmail,new AsyncCallback<AccountStatistic>()
 									{
 
@@ -467,9 +468,12 @@ public class FriendsPagePresenter implements Presenter
 										public void onSuccess(AccountStatistic result)
 										{
 											result.accept(new LevelUpdater().madeFriend());
+											
 										}
 								
 									});
+							
+							
 							
 
 
