@@ -12,6 +12,7 @@ import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.signals.RefreshPageEventHandler;
+import stuffplotter.signals.UpdateStatsEvent;
 import stuffplotter.views.global.UserNotificationsPopupPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -214,6 +215,7 @@ public class TopBarPresenter implements Presenter
 							}
 					
 						});
+				eventBus.fireEvent(new UpdateStatsEvent(appUser.getUserEmail()));
 
 			}
 		});
