@@ -4,6 +4,8 @@ import stuffplotter.bindingcontracts.AccountStatisticModel;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
+import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.signals.UpdateStatsEvent;
 import stuffplotter.signals.UpdateStatsEventHandler;
 
@@ -103,13 +105,40 @@ public class AccountStatisticPresenter implements Presenter
 	 */
 	private void bind()
 	{
+		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				appServices.getAccountService().getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						
+						
+					}
+
+					@Override
+					public void onSuccess(Account result)
+					{
+						appUser = result;
+						dataBindAccount();
+					}
+				});
+				
+			}
+			
+		});
 		this.eventBus.addHandler(UpdateStatsEvent.TYPE, new UpdateStatsEventHandler()
 		{
 
 			@Override
 			public void onUpdateStats(UpdateStatsEvent event)
 			{
-				appServices.getAccountService().getAccount(appUser.getUserEmail(), new AsyncCallback<Account>()
+				appServices.getAccountService().getAccount(event.getAccountID(), new AsyncCallback<Account>()
 				{
 
 					@Override

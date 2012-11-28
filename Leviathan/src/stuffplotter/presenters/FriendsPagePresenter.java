@@ -474,7 +474,7 @@ public class FriendsPagePresenter implements Presenter
 									});
 							
 							
-							
+							eventBus.fireEvent(new RefreshPageEvent());
 
 
 						}
@@ -514,7 +514,7 @@ public class FriendsPagePresenter implements Presenter
 										}
 										
 								}
-								eventBus.fireEvent(new RefreshPageEvent());
+								
 							}
 
 						});
