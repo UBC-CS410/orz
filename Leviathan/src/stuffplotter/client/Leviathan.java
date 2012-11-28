@@ -101,6 +101,7 @@ public class Leviathan implements EntryPoint
 	 */
 	public void onModuleLoad()
 	{	
+		RootPanel.get().addStyleName("loading");
 		this.eventBus.addHandler(AccountAuthorizedEvent.TYPE, new AccountAuthorizedEventHandler() 
 		{
 			@Override
@@ -236,6 +237,7 @@ public class Leviathan implements EntryPoint
 		});	
 		
 		AppController appViewer = new AppController(applicationServices, eventBus, applicationUser);
+		RootPanel.get().removeStyleName("loading");
 		appViewer.go(RootPanel.get());
 
 	}
