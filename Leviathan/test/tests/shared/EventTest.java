@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -106,6 +107,7 @@ public class EventTest extends TestCase
 		ArrayList<String> eventAttendees = new ArrayList<String>();
 		ArrayList<Long> eventComments = new ArrayList<Long>();
 		Long eventScheduler = 3000L;
+		List<String> eventRaters = new ArrayList<String>();
 		
 		EventCreationPageRetriever eventRetriever = new EventCreationPageRetriever(eventOwnerID);
 		Event eve = new Event(eventRetriever);
@@ -142,6 +144,7 @@ public class EventTest extends TestCase
 		assertEquals(eventAttendees, eve.getAttendees());
 		assertEquals(eventComments, eve.getComments());
 		assertEquals(eventScheduler,eve.getSchedulerId());
+		assertEquals(eventRaters,eve.getEventRaters());
 		
 	}
 	
@@ -161,6 +164,10 @@ public class EventTest extends TestCase
 		
 		Double rating = 4.3;
 		Double rating2 = 5.0;
+		
+		String eventRater = "Bob";
+		String eventRater2 = "Jon";
+		
 		/*adding people */
 			eve.addAttendee("John");
 			eve.addAttendee("Bob");
@@ -178,13 +185,30 @@ public class EventTest extends TestCase
 			eve.addRating(rating);
 			eve.addRating(rating2);
 			
+			eve.addEventRater(eventRater);
+			eve.addEventRater(eventRater2);
+			
 		assertEquals(4,eve.getAttendees().size());
 		assertEquals(4,eve.getInvitees().size());
 		assertEquals(2,eve.getComments().size());
-		
+		assertEquals(2,eve.getEventRaters().size());
 		
 			
 		
+	}
+	
+	@Test
+	public void testRemoveInvitee()
+	{
+		String eventOwnerID = "1000";
+		EventCreationPageRetriever eventRetriever = new EventCreationPageRetriever(eventOwnerID);
+		Event eve = new Event(eventRetriever);
+		
+		eve.addInvitee("Dan");
+		eve.addInvitee("Scott");
+		
+		eve.removeInvitee(eve.getInvitees().get(0));
+		assertEquals(1,eve.getInvitees().size());
 	}
 	
 }
