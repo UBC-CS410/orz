@@ -1,5 +1,6 @@
 package stuffplotter.presenters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -36,34 +37,8 @@ import stuffplotter.views.events.EventView;
  */
 public class EventsPagePresenter implements Presenter
 {
-	private List<Event> currentEvents;
-	private HandlerRegistration submitAvailabilities;
-	private HandlerRegistration finalizeTime;
-	
 	public interface EventsPageViewer
 	{
-		public HasClickHandlers getCreateButton();
-		public HasClickHandlers getListCurrentButton();
-		public HasClickHandlers getListPastButton();
-		
-		public HasWidgets getEventViewerContainer();
-		public List<HasClickHandlers> getEventViewers();
-		public void showEventSelected(int row);
-		
-		public HasClickHandlers getAcceptButton();
-		public HasClickHandlers getDeclineButton();
-		public HasClickHandlers getSubmitAvailabilitiesButton();
-		public HasClickHandlers getFinalizeTimeButton();
-		
-		public void showInvitationButtons();
-		public void showSubmitAvailabilitiesButton();
-		public void showFinalizeTimeButton();
-		
-		public void clearEventView();
-		public void clearEventButtons();
-		
-		public int initialize(Account user, List<Event> events);
-		
 		/**
 		 * Retrieve the EventsPageViewer as a widget.
 		 * @pre true;
@@ -71,12 +46,42 @@ public class EventsPagePresenter implements Presenter
 		 * @return the EventsPageViewer as a widget.
 		 */
 		public Widget asWidget();
+		
+		public int initialize(Account user, List<Event> events);
+		public void setFocus(int row);
+		
+		public HasClickHandlers getCreateEventButton();
+		
+		public HasClickHandlers getCurrentEventsButton();
+		public HasClickHandlers getFinishedEventsButton();
+		
+		public HasClickHandlers getAcceptInviteButton();
+		public HasClickHandlers getDeclineInviteButton();
+		
+		public HasClickHandlers getSubmitTimesButton();
+		public HasClickHandlers getSelectTimeButton();
+		
+		public HasClickHandlers getRateEventButton();
+			
+		public void showInvitationButtons();
+		public void showSubmitTimesButton();
+		public void showSelectTimeButton();
+		public void showRateEventButton();
+		public void hideEventActionButtons();
+		
+		public HasWidgets getEventViewContainer();
+		public void clearEventViewContainer();
+		
+		public List<HasClickHandlers> getEventListingLinks();
 	}
 	
 	private final Account appUser;
 	private final ServiceRepository appServices;
 	private final HandlerManager eventBus;
 	private final EventsPageViewer eventsView;
+	
+	private List<Event> currentEvents;
+	private List<HandlerRegistration> eventActionListeners = new ArrayList<HandlerRegistration>();	
 	
 	/**
 	 * Constructor for an EventsPagePresenter.
@@ -106,7 +111,7 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
-		eventsView.getCreateButton().addClickHandler(new ClickHandler() {
+		eventsView.getCreateEventButton().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event)
@@ -120,7 +125,7 @@ public class EventsPagePresenter implements Presenter
 			
 		});
 		
-		eventsView.getListCurrentButton().addClickHandler(new ClickHandler()
+		eventsView.getCurrentEventsButton().addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
@@ -129,7 +134,7 @@ public class EventsPagePresenter implements Presenter
 			}
 		});
 		
-		eventsView.getListPastButton().addClickHandler(new ClickHandler()
+		eventsView.getFinishedEventsButton().addClickHandler(new ClickHandler()
 		{	
 			@Override
 			public void onClick(ClickEvent event)
@@ -195,15 +200,14 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bindEventViewers()
 	{
-		for (int i = 0; i < eventsView.getEventViewers().size(); i++)
+		for (int i = 0; i < eventsView.getEventListingLinks().size(); i++)
 		{
 			final int eventsIndex = i;
-			eventsView.getEventViewers().get(i).addClickHandler(new ClickHandler()
+			eventsView.getEventListingLinks().get(i).addClickHandler(new ClickHandler()
 			{
 				@Override
 				public void onClick(ClickEvent event)
 				{
-					Window.alert("clicked");
 					displayEvent(currentEvents.get(eventsIndex), eventsIndex);
 				}	
 			});
@@ -217,42 +221,42 @@ public class EventsPagePresenter implements Presenter
 	 */
 	private void bindEventButtons(int index) 
 	{
-		final int selectedIndex = index;
+		final int selectedIndex = index; //TODO: remove this later
 		final Event selectedEvent = currentEvents.get(selectedIndex);
 		final EventServiceAsync eventService = appServices.getEventService();
 		
-		if (submitAvailabilities != null) 
+		for (HandlerRegistration listener : eventActionListeners)
 		{
-			submitAvailabilities.removeHandler();
+			listener.removeHandler();
 		}
-		submitAvailabilities = this.eventsView.getSubmitAvailabilitiesButton().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				eventService.retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
-
-					@Override
-					public void onFailure(Throwable caught)
-					{
-						Window.alert("Failed to retrieve timeslots");
-					}
-
-					@Override
-					public void onSuccess(List<Availability> result)
-					{
-						AvailabilitySubmitterDialogBox ignore = new AvailabilitySubmitterDialogBox(result, eventBus);
-					}
-
-				});	
-			}
-		});
+		eventActionListeners = new ArrayList<HandlerRegistration>();
 		
-		if (finalizeTime != null) 
+		eventActionListeners.add(this.eventsView.getAcceptInviteButton().addClickHandler(new ClickHandler()
 		{
-			finalizeTime.removeHandler();
-		}
-		finalizeTime = this.eventsView.getFinalizeTimeButton().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}));
+		
+		eventActionListeners.add(this.eventsView.getDeclineInviteButton().addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}));
+		
+		eventActionListeners.add(this.eventsView.getSubmitTimesButton().addClickHandler(new ClickHandler() 
+		{
 
 			@Override
 			public void onClick(ClickEvent event)
@@ -262,18 +266,59 @@ public class EventsPagePresenter implements Presenter
 					@Override
 					public void onFailure(Throwable caught)
 					{
-						Window.alert("Failed to retrieve timeslots");
+						Window.alert("An unexpected error has occured");
+						caught.printStackTrace();
 					}
 
 					@Override
 					public void onSuccess(List<Availability> result)
 					{
-						EventDateFinalizerDialogBox ignore = new EventDateFinalizerDialogBox(result, selectedEvent, selectedIndex, appServices, eventBus);
+						new AvailabilitySubmitterDialogBox(result, eventBus);
 					}
 
 				});	
 			}
-		});
+			
+		}));
+		
+		eventActionListeners.add(this.eventsView.getSelectTimeButton().addClickHandler(new ClickHandler() 
+		{
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				eventService.retrieveAvailabilities(selectedEvent.getEventScheduler(), new AsyncCallback<List<Availability>>() {
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						Window.alert("An unexpected error has occured");
+						caught.printStackTrace();
+					}
+
+					@Override
+					public void onSuccess(List<Availability> result)
+					{
+						new EventDateFinalizerDialogBox(result, selectedEvent, appServices, eventBus);
+					}
+
+				});	
+			}
+			
+		}));
+		
+		eventActionListeners.add(this.eventsView.getRateEventButton().addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}));
+		
 	}
 	
 	/**
@@ -309,8 +354,8 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result;
-				eventsView.clearEventView();
-				eventsView.clearEventButtons();
+				eventsView.clearEventViewContainer();
+				eventsView.hideEventActionButtons();
 				
 				if(eventsView.initialize(appUser, currentEvents) > 0)
 				{
@@ -346,8 +391,8 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(List<Event> result)
 			{
 				currentEvents = result;
-				eventsView.clearEventView();
-				eventsView.clearEventButtons();
+				eventsView.clearEventViewContainer();
+				eventsView.hideEventActionButtons();
 				
 				if(eventsView.initialize(appUser, currentEvents) > 0)
 				{
@@ -366,38 +411,49 @@ public class EventsPagePresenter implements Presenter
 	 * Displays an event from the event roll
 	 * @pre true;
 	 * @post true;
-	 * @param event - the event to display
+	 * @param event - DEPRECATED
 	 * @param index - the row index of the event to display
 	 */
 	private void displayEvent(Event event, int index)
 	{		
+		this.eventsView.setFocus(index);
+		
+		//Present the event
+		Event selectedEvent = currentEvents.get(index);
 		Presenter presenter = new EventPresenter(appServices,
 													 eventBus,
 													 new EventView(),
 													 appUser,
-													 event);
-		presenter.go(eventsView.getEventViewerContainer());
-		
-		eventsView.showEventSelected(index);
-		
-		if(event.getInvitees().contains(appUser.getUserEmail()))
+													 selectedEvent);
+		presenter.go(eventsView.getEventViewContainer());
+	
+		//Present the event specific action buttons
+		this.eventsView.hideEventActionButtons();
+		this.bindEventButtons(index);
+		if(selectedEvent.getInvitees().contains(appUser.getUserEmail()))
 		{
 			eventsView.showInvitationButtons();
 		}
 		else 
 		{
-			if(event.getStatus() == Status.PROPOSED)
+			switch(selectedEvent.getStatus())
 			{
-				if(event.getOwnerID() == appUser.getUserEmail())
-				{
-					eventsView.showFinalizeTimeButton();
-				}
-				else
-				{
-					eventsView.showSubmitAvailabilitiesButton();
-				}
+				case PROPOSED:
+					if(selectedEvent.getOwnerID() == appUser.getUserEmail())
+					{
+						eventsView.showSelectTimeButton();
+					}
+					else
+					{
+						eventsView.showSubmitTimesButton();
+					}
+					break;
+				case SCHEDULED:
+					break;
+				case FINISHED:
+					eventsView.showRateEventButton();
+					break;
 			}
-		}	
-		bindEventButtons(index);
+		}
 	}
 }
