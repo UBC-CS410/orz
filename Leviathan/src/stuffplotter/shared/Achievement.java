@@ -8,7 +8,7 @@ public enum Achievement {
 	REACH_LVL10(2, "Stuff Master", "Reach level 10", "Congratulations!! You have reached the max level!", "images/blank.jpg"),
     
 	//Event Achievements
-	CREATE_FIRST_EVENT(10, "The Host", "Host your first event", "Yay!! first event!", "images/blank.jpg"), 
+	CREATE_FIRST_EVENT(10, "The Host", "Host your first event", "Yay!! first event!", "images/thehost.jpg"), 
     CREATE_5_EVENTS(11, "Scheduler King", "Host 5 events", "Party time!", "images/schedulerking.jpg"), 
     FIRST_PERFECT_EVENT(12,"Ace", "Perfect score on 1st event","Pefect score for the Perfect Host!", "images/ace.jpg"), 
     FULL_EVENT_ATTENDANCE(13, "Full House", "Everyone invited shows up", "Event too popular to turn down!", "images/blank.jpg"),
