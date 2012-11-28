@@ -73,4 +73,20 @@ public interface AccountStatisticModel
 	 * @return the total number of friends the user has.
 	 */
 	public int getNumberOfFriends();	
+	
+	/**
+	 * Retrieve the total number of comments.
+	 * @pre true;
+	 * @post true;
+	 * @return the total number of comments
+	 */
+	public int getNumberOfComments();
+	
+	/**
+	 * Retrieve the total number of rates.
+	 * @pre true;
+	 * @post true;
+	 * @return the total number of rates
+	 */
+	public int getNumberOfRates();
 }
