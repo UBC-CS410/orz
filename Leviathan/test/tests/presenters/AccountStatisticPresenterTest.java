@@ -3,7 +3,7 @@
  */
 package tests.presenters;
 
-import static org.easymock.EasyMock.createStrictMock;
+//import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
