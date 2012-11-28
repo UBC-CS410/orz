@@ -7,6 +7,7 @@ import stuffplotter.presenters.FriendsPagePresenter.FriendsView;
 
 import stuffplotter.views.friends.FriendPanel;
 import stuffplotter.views.friends.FriendPanelView;
+import stuffplotter.views.friends.FriendPopupPanel;
 import stuffplotter.views.friends.FriendsDisplayPanel;
 import stuffplotter.views.friends.PendingFriendPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
@@ -32,6 +33,7 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	private FriendsDisplayPanel pendingFriendDisplay;
 	private Label pendingFriendsLabel;
 	private Label displayFriendsLabel;
+	private FriendPopupPanel popup;
 	
 	/**
 	 * Constructor for the FriendsPagePanel.
@@ -79,6 +81,8 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 		VerticalPanel friendHolder = new VerticalPanel();
 		friendHolder.add(displayFriendsLabel);
 		friendHolder.add(this.friendDisplay);
+		this.popup = new FriendPopupPanel();
+		this.popup.setPopupPosition(displayFriendsLabel.getAbsoluteLeft(), displayFriendsLabel.getAbsoluteTop());
 		this.add(friendHolder);
 	}
 	
@@ -167,5 +171,11 @@ public class FriendsPageView extends HorizontalPanel implements FriendsView
 	public List<PendingFriendPanel> getPendingFriendPanels()
 	{
 		return this.pendingFriendDisplay.getPendingFriendPanels();
+	}
+
+	@Override
+	public FriendPopupPanel getFriendPopupPanel()
+	{
+		return this.popup;
 	}
 }
