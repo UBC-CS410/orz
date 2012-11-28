@@ -393,7 +393,7 @@ public class FriendsPagePresenter implements Presenter
 	private void bindPendingFriendPanels()
 	{
 		List<PendingFriendPanel> pendingFriendsPanels = friendsView.getPendingFriendPanels();
-		for(PendingFriendPanel panel: pendingFriendsPanels)
+		for(final PendingFriendPanel panel: pendingFriendsPanels)
 		{
 			final String friendEmail = panel.getEmail();
 			final String friendName = panel.getName();
@@ -402,6 +402,7 @@ public class FriendsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
+					
 					AccountServiceAsync accountService = appServices.getAccountService();
 					accountService.confirmFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
 
@@ -428,6 +429,7 @@ public class FriendsPagePresenter implements Presenter
 									}
 									
 							}
+							panel.setVisible(false);
 							eventBus.fireEvent(new RefreshPageEvent());
 							appStats.accept(new LevelUpdater().madeFriend());
 							appStats.accept(new AchievementChecker());
@@ -462,9 +464,11 @@ public class FriendsPagePresenter implements Presenter
 				@Override
 				public void onClick(ClickEvent event)
 				{
+					;
 					AccountServiceAsync accountService = appServices.getAccountService();
 					if(Window.confirm("Are you sure you want to deny this friend request (Don't worry, we won't tell them)?"))
 					{
+						panel.setVisible(false);
 						accountService.declineFriendReq(appUser, friendEmail, new AsyncCallback<Void>(){
 
 							@Override
