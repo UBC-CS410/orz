@@ -34,7 +34,6 @@ public class EventDateFinalizerDialogBox extends DialogBox
 	
 	private final List<Availability> sortedTimeSlots;
 	private final Event unscheduledEvent;
-	private final int unscheduledEventIndex;
 	private final ServiceRepository serviceRepository;
 	private final HandlerManager eventBus;
 	
@@ -43,13 +42,12 @@ public class EventDateFinalizerDialogBox extends DialogBox
 	 * @pre true;
 	 * @post this.sortedTimeSlots != null;
 	 */
-	public EventDateFinalizerDialogBox(List<Availability> timeslots, Event event, int index, ServiceRepository services, HandlerManager eventbus)
+	public EventDateFinalizerDialogBox(List<Availability> timeslots, Event event, ServiceRepository services, HandlerManager eventbus)
 	{
 		super();
 		
 		this.sortedTimeSlots = timeslots;
 		this.unscheduledEvent = event;
-		this.unscheduledEventIndex = index;
 		this.serviceRepository = services;
 		this.eventBus = eventbus;
 		
@@ -139,7 +137,7 @@ public class EventDateFinalizerDialogBox extends DialogBox
 					@Override
 					public void onSuccess(Void result)
 					{
-						eventBus.fireEvent(new EventSchedulerEvent(unscheduledEvent, unscheduledEventIndex));
+						eventBus.fireEvent(new EventSchedulerEvent(unscheduledEvent));
 					}
 					
 				});
