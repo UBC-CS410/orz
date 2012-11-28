@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
@@ -50,7 +51,7 @@ public class EventsPagePresenter implements Presenter
 		 */
 		public Widget asWidget();
 		
-		public int initialize(Account user, List<Event> events);
+		public int initialize(AccountModel account, List<Event> events);
 		public void setFocus(int row);
 		
 		public HasClickHandlers getCreateEventButton();
@@ -80,7 +81,7 @@ public class EventsPagePresenter implements Presenter
 	private final HandlerManager eventBus;
 	private final EventsPageViewer eventsPageView;
 	
-	private Account userAccount;
+	private AccountModel userAccount;
 	private AccountStatistic userStatistic;
 	private List<Event> currentEvents;
 	private List<HandlerRegistration> eventActionListeners = new ArrayList<HandlerRegistration>();	
@@ -221,7 +222,6 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onEventCreated(EventCreatedEvent event)
 			{
-				userAccount.addUserEvent(event.getEventID());
 				fetchCurrentEvents();
 			}
 			
@@ -464,7 +464,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(Account result)
 			{
 				userAccount = result;
-				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
+				applicationServices.getEventService().retrieveListOfEvents(userAccount.getUserEmail(), userAccount.getCurrentEvents(), new AsyncCallback<List<Event>>()
 				{
 					@Override
 					public void onFailure(Throwable caught)
@@ -517,7 +517,7 @@ public class EventsPagePresenter implements Presenter
 			public void onSuccess(Account result)
 			{
 				userAccount = result;
-				applicationServices.getEventService().retrieveEvents(userAccount, userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
+				applicationServices.getEventService().retrieveListOfEvents(userAccount.getUserEmail(), userAccount.getPastEvents(), new AsyncCallback<List<Event>>()
 				{
 					@Override
 					public void onFailure(Throwable caught)

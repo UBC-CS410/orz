@@ -2,6 +2,7 @@ package stuffplotter.views.events;
 
 import java.util.List;
 
+import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Event.Status;
@@ -25,12 +26,12 @@ public class EventListingView extends VerticalPanel
 	 * @post this.isVisible() == true
 	 * 
 	 */
-	public EventListingView(Account user, Event event)
+	public EventListingView(AccountModel userData, Event eventData)
 	{
-		this.eventLink = new Anchor(event.getName());
+		this.eventLink = new Anchor(eventData.getName());
 		this.eventLink.setStyleName("eventListingLabel");
 		
-		Label stateLabel = this.getStateLabel(user.getUserEmail(), event.getInvitees(), event.getStatus());
+		Label stateLabel = this.getStateLabel(userData.getUserEmail(), eventData.getInvitees(), eventData.getStatus());
 		Label timeLabel = new Label("");
 
 		this.setStyleName("eventListing");
