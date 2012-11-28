@@ -61,7 +61,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		this.declineInvitationButton = new Button("Decline Invitation");
 		this.submitAvailabilityButton = new Button("Submit Availabilities");
 		this.finalizeTimeButton = new Button("Finalize Time");
-		this.rateEventButton = new Button("Rate Event");
+		this.rateEventButton = new Button("Like");
 		
 		this.acceptInvitationButton.addStyleName("greenActionButton");
 		this.declineInvitationButton.addStyleName("redAcitonButton");
@@ -77,6 +77,11 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		commonActionPanel.add(this.listPastButton);
 	
 		this.eventActionPanel = new VerticalPanel();
+		this.eventActionPanel.add(this.acceptInvitationButton);
+		this.eventActionPanel.add(this.declineInvitationButton);
+		this.eventActionPanel.add(this.submitAvailabilityButton);
+		this.eventActionPanel.add(this.finalizeTimeButton);
+		this.eventActionPanel.add(this.rateEventButton);
 		
 		actionPanel.setSpacing(10);
 		actionPanel.setStyleName("actionBar");
@@ -208,7 +213,7 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	{
 		return this.declineInvitationButton;
 	}
-
+	
 	/**
 	 * Gets the submit availabilities button
 	 * @pre true;
@@ -234,44 +239,6 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	}
 	
 	/**
-	 * Shows the invitation buttons
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showInvitationButtons()
-	{
-		this.eventActionPanel.clear();
-		this.eventActionPanel.add(this.acceptInvitationButton);
-		this.eventActionPanel.add(this.declineInvitationButton);
-	}
-	
-	/**
-	 * Shows the submit availability button
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showSubmitTimesButton()
-	{
-		this.eventActionPanel.clear();
-		this.eventActionPanel.add(this.submitAvailabilityButton);
-	}
-
-	
-	/**
-	 * Shows the finalize time button
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showSelectTimeButton()
-	{
-		this.eventActionPanel.clear();
-		this.eventActionPanel.add(this.finalizeTimeButton);
-	}
-
-	/**
 	 * Gets the rate event button.
 	 * @pre true;
 	 * @post true;
@@ -282,18 +249,6 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	{
 		return this.rateEventButton;
 	}
-
-	
-	/**
-	 * Shows the rate event button.
-	 * @pre true;
-	 * @post true;
-	 */
-	@Override
-	public void showRateEventButton()
-	{
-		this.eventActionPanel.add(this.rateEventButton);
-	}
 	
 	/**
 	 * Clears the event buttons
@@ -303,7 +258,61 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 	@Override
 	public void hideEventActionButtons()
 	{
-		this.eventActionPanel.clear();
+		this.acceptInvitationButton.setVisible(false);
+		this.declineInvitationButton.setVisible(false);
+		this.submitAvailabilityButton.setVisible(false);
+		this.finalizeTimeButton.setVisible(false);
+		this.rateEventButton.setVisible(false);
+	}
+	
+	
+	/**
+	 * Shows the invitation buttons
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showInvitationButtons()
+	{
+		this.hideEventActionButtons();
+		this.acceptInvitationButton.setVisible(true);
+		this.declineInvitationButton.setVisible(true);
+	}
+	
+	/**
+	 * Shows the submit availability button
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showSubmitTimesButton()
+	{
+		this.hideEventActionButtons();
+		this.submitAvailabilityButton.setVisible(true);
+	}
+	
+	/**
+	 * Shows the finalize time button
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showSelectTimeButton()
+	{
+		this.hideEventActionButtons();
+		this.finalizeTimeButton.setVisible(true);
+	}
+
+	/**
+	 * Shows the rate event button.
+	 * @pre true;
+	 * @post true;
+	 */
+	@Override
+	public void showRateEventButton()
+	{
+		this.hideEventActionButtons();
+		this.rateEventButton.setVisible(true);
 	}
 	
 	/**
@@ -347,5 +356,4 @@ public class EventsPageView extends HorizontalPanel implements EventsPageViewer
 		}
 		return links;	
 	}
-
 }

@@ -25,4 +25,5 @@ public interface EventServiceAsync
 	
 	void inviteGuest(Long eventId, String userId, AsyncCallback<Void> callback);
 	void confirmGuest(Long eventId, String userId, AsyncCallback<Void> callback);
+	void removeGuest(Long eventId, String userId, AsyncCallback<Void> callback);
 }

@@ -128,7 +128,6 @@ public class EventInfoPresenter implements Presenter
 			}
 		});
 		
-
 		this.display.getSearchBtn().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -176,7 +175,7 @@ public class EventInfoPresenter implements Presenter
 	@Override
 	public void go(HasWidgets container)
 	{
-		//this.bind();
 		container.add(this.display.asWidget());
+		this.bind();
 	}
 }
