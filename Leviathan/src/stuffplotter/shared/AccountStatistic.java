@@ -111,6 +111,18 @@ public class AccountStatistic implements Serializable, AccountStatisticModel
 	}
 	
 	/**
+	 * Increment the number of comments.
+	 * @pre true;
+	 * @post this.numberOfComments == @pre.this.numberOfComments + 1;
+	 */
+	public void incrementComments()
+	{
+		int comment = this.numberOfComments;
+		comment++;
+		this.numberOfComments = comment;
+	}
+	
+	/**
 	 * Increment the number of events a user has participated in.
 	 * @pre true;
 	 * @post this.numberOfParticipatedEvents == @pre.this.numberOfParticipatedEvents.

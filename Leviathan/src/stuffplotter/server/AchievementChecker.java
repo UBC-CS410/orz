@@ -27,6 +27,7 @@ public class AchievementChecker implements RecordVisitor
 	private int numFriends;
 	private int numHostedEvents;
 	private int numParticipatedEvents;
+	private int numComments;
 
 	final private int ACHIEVEMENTXP = 55;
 	private ServiceRepository applicationServices = new ServiceRepository();
@@ -47,6 +48,7 @@ public class AchievementChecker implements RecordVisitor
 		this.numFriends = user.getNumberOfFriends();
 		this.numHostedEvents = user.getNumberOfHostedEvents();
 		this.numParticipatedEvents = user.getNumberOfParticipatedEvents();
+		this.numComments = user.getNumberOfComments();
 		
 		checkAccountAchievements();
 		
@@ -134,6 +136,18 @@ public class AchievementChecker implements RecordVisitor
 		if(!this.userAchievements.contains(Achievement.ADD_10_FRIENDS))
 			add10Friends();
 		
+		if(!this.userAchievements.contains(Achievement.CREATE_FIRST_EVENT))
+			createFirstEvent();
+		
+		if(!this.userAchievements.contains(Achievement.CREATE_5_EVENTS))
+			create5Events();
+		
+		if(!this.userAchievements.contains(Achievement.COMMENT_AN_EVENT))
+			commentAnEvent();
+		
+		if(!this.userAchievements.contains(Achievement.WRITE_50_COMMENTS))
+			write50Comments();
+		
 		this.user.addUserAchievements(unlockAchievements);
 		
 		Notifier notifier = new Notifier();
@@ -152,11 +166,7 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void checkEventAchievements()
 	{
-		if(!this.userAchievements.contains(Achievement.CREATE_FIRST_EVENT))
-			createFirstEvent();
-		
-		if(!this.userAchievements.contains(Achievement.CREATE_5_EVENTS))
-			create5Events();
+
 		
 		if(!this.userAchievements.contains(Achievement.FIRST_PERFECT_EVENT))
 			perfectEvent();
@@ -172,12 +182,6 @@ public class AchievementChecker implements RecordVisitor
 		
 		if(!this.userAchievements.contains(Achievement.RATE_AN_EVENT))
 			rateAnEvent();
-		
-		if(!this.userAchievements.contains(Achievement.COMMENT_AN_EVENT))
-			commentAnEvent();
-		
-		if(!this.userAchievements.contains(Achievement.WRITE_50_COMMENTS))
-			write50Comments();
 		
 		if(!this.userAchievements.contains(Achievement.COMPLETE_3_EVENTS_SAMEDAY))
 			complete3EventsSameday();
@@ -285,9 +289,9 @@ public class AchievementChecker implements RecordVisitor
 	 */
 	private void fullEventAttendance()
 	{
-		//TODO:
-		if(this.event.getInvitees().size() >=0)
-			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
+//		//TODO:
+//		if(this.event.getInvitees().size() >=0)
+//			this.unlockAchievements.add(Achievement.FIRST_LOG_IN);
 	}
 	
 	private void complete3EventsSameday()
@@ -298,14 +302,15 @@ public class AchievementChecker implements RecordVisitor
 
 	private void write50Comments()
 	{
-		// TODO Auto-generated method stub
+		if(this.numComments>=50)
+			this.unlockAchievements.add(Achievement.WRITE_50_COMMENTS);
 		
 	}
 
 	private void commentAnEvent()
 	{
-		// TODO Auto-generated method stub
-		
+		if(this.numComments>=1)
+			this.unlockAchievements.add(Achievement.COMMENT_AN_EVENT);
 	}
 
 	private void rateAnEvent()
@@ -328,7 +333,8 @@ public class AchievementChecker implements RecordVisitor
 
 	private void create5Events()
 	{
-		// TODO Auto-generated method stub
+		if(this.numParticipatedEvents>=5)
+			this.unlockAchievements.add(Achievement.CREATE_5_EVENTS);
 		
 	}
 

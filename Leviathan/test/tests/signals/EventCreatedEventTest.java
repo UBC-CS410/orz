@@ -22,7 +22,9 @@ public class EventCreatedEventTest extends TestCase
 	public void testECECtor()
 	{
 		long eventID = 1000;
-		EventCreatedEvent ece = new EventCreatedEvent(eventID);
+		String eventName = "";
+		String ownerID = "";
+		EventCreatedEvent ece = new EventCreatedEvent(eventID,eventName, ownerID);
 		
 		assertNotNull(ece);
 		assertEquals(eventID, (long)ece.getEventID());

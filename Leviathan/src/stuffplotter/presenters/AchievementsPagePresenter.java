@@ -7,6 +7,7 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Achievement;
 import stuffplotter.signals.RefreshPageEvent;
+import stuffplotter.signals.RefreshPageEventHandler;
 import stuffplotter.views.achievements.AchievementsDisplayPanel.AchievementPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -98,12 +99,24 @@ public class AchievementsPagePresenter implements Presenter
 	 */
 	private void bind()
 	{
+		this.eventBus.addHandler(RefreshPageEvent.TYPE, new RefreshPageEventHandler()
+		{
+
+			@Override
+			public void onRefreshPage(RefreshPageEvent event)
+			{
+				dataBindAccount();
+				
+			}
+			
+		});
 		setAchievementButtons();
 		
 	}
 
 	private void setAchievementButtons()
 	{
+		
 		List<Widget> panels = this.achievementsView.getAchievementButtons();
 		for(Widget widget : panels)
 		{

@@ -6,9 +6,13 @@ import java.util.List;
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
+import stuffplotter.server.AchievementChecker;
+import stuffplotter.server.LevelUpdater;
 import stuffplotter.shared.Account;
+import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
+import stuffplotter.signals.RefreshPageEvent;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -109,6 +113,29 @@ public class EventPresenter implements Presenter
 									public void onSuccess(Void result)
 									{
 										loadComments();
+										appServices.getStatsService().getStats(userData.getUserEmail(), new AsyncCallback<AccountStatistic>()
+										{
+
+											@Override
+											public void onFailure(
+													Throwable caught)
+											{
+												// TODO Auto-generated method stub
+												
+											}
+
+											@Override
+											public void onSuccess(
+													AccountStatistic result)
+											{
+												AccountStatistic stats = result;
+												stats.incrementComments();
+												stats.accept(new LevelUpdater().commentEvent());
+												stats.accept(new AchievementChecker());
+												eventBus.fireEvent(new RefreshPageEvent());
+												
+											}
+										});
 									}
 									
 								});

@@ -103,6 +103,8 @@ public class GoogleCalendar
 	        .setStart(eventsCtx.create(EventDateTime.class).setDateTime(startDate))
 	        .setEnd(eventsCtx.create(EventDateTime.class).setDateTime(endDate));
 
+	    System.out.println(eventName);
+	    System.out.println(calendarId);
 	    // Note that the EventsContext used to insert the Event has to be the same one used to create
 	    // it.
 	    eventsCtx.insert(calendarId, event).fire(new Receiver<Event>()

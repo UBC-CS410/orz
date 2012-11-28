@@ -11,6 +11,7 @@ import stuffplotter.shared.Event.Status;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -137,7 +138,7 @@ public class EventView extends VerticalPanel implements EventViewer
 		Label nameLabel = new Label(eventData.getName());
 		nameLabel.setStyleName("eventNameLabel");
 	
-		Label ownerLabel = new Label("Invited by: " + eventData.getOwnerID());
+		Label ownerLabel = new Label("Hosted by: " + eventData.getOwnerID());
 		
 		Label dateLabel = new Label("");
 		switch(eventData.getStatus())
@@ -153,9 +154,20 @@ public class EventView extends VerticalPanel implements EventViewer
 				break;
 		}
 		
+		Label durationLabel = new Label("Duration: " + eventData.getDuration());
 		Label costLabel = new Label("Cost: " + eventData.getCost());
 		Label locationLabel = new Label("Location: " + eventData.getLocation());
+		
+		EventLocationMapPanel mapPanel = new EventLocationMapPanel();
+		if(eventData.getCoordinates() != null)
+		{
+			LatLng mapPosition = LatLng.newInstance(eventData.getCoordinates()[0], eventData.getCoordinates()[1]);
+			mapPanel.getLocation(mapPosition);
+		}
+		
 		Label descriptionLabel = new Label("Description: " + eventData.getDescription());
+		
+		
 		
 		this.commentTextBox.setVisible(false);	
 		ScrollPanel commentPanel = new ScrollPanel();
@@ -165,8 +177,14 @@ public class EventView extends VerticalPanel implements EventViewer
 		this.add(nameLabel);
 		this.add(ownerLabel);
 		this.add(dateLabel);
+		this.add(durationLabel);
 		this.add(costLabel);
 		this.add(locationLabel);
+		if(eventData.getCoordinates() != null)
+		{
+			this.add(mapPanel);
+		}
+		
 		this.add(descriptionLabel);
 		
 		this.add(this.commentButton);

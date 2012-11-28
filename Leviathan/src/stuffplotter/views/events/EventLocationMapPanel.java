@@ -67,4 +67,20 @@ public class EventLocationMapPanel extends SimplePanel
 		this.map.panTo(location);
 		this.map.addOverlay(new Marker(location));
 	}
+	
+	/**
+	 * View the location on the map for the given LatLng.
+	 * @pre location != null;
+	 * @post true;
+	 * @param location - the location to view.
+	 */
+	public void getLocation(LatLng location)
+	{
+		this.map.clearOverlays();
+		this.map.setSize("600px", "200px");
+		this.map.setZoomLevel(ZOOM_LEVEL);
+		this.map.panTo(location);
+		this.map.setCenter(location);
+		this.map.addOverlay(new Marker(location));
+	}
 }

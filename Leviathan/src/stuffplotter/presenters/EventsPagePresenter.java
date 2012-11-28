@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.client.GoogleCalendar;
 import stuffplotter.client.services.AccountServiceAsync;
 import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
@@ -30,6 +31,7 @@ import stuffplotter.signals.EventCreatedEvent;
 import stuffplotter.signals.EventCreatedEventHandler;
 import stuffplotter.signals.EventSchedulerEvent;
 import stuffplotter.signals.EventSchedulerEventHandler;
+import stuffplotter.signals.RefreshPageEvent;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.views.events.EventCreationView;
 import stuffplotter.views.events.EventDateFinalizerDialogBox;
@@ -222,6 +224,30 @@ public class EventsPagePresenter implements Presenter
 			@Override
 			public void onEventCreated(EventCreatedEvent event)
 			{
+				//GoogleCalendar calendar = new GoogleCalendar();
+				//calendar.addEvent(event.getEventName(), event.getOwnerID());
+				applicationServices.getStatsService().getStats(userAccount.getUserEmail(), new AsyncCallback<AccountStatistic>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(AccountStatistic result)
+					{
+						AccountStatistic stats = result;
+						stats.incrementHostedEvents();
+						stats.accept(new LevelUpdater().createEvent());
+						stats.accept(new AchievementChecker());
+						eventBus.fireEvent(new RefreshPageEvent());
+						
+						
+					}
+				});
 				fetchCurrentEvents();
 			}
 			
