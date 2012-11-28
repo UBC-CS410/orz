@@ -32,7 +32,7 @@ public class EventPresenter implements Presenter
 		public void clearCommentTextBox();
 		public void updateComments(Comment comment);
 		public void displayComments(List<Comment> comments);
-		public void initialize(Event event);
+		public void initialize(Account account, Event event);
 		
 		/**
 		 * Retrieve the EventViewer as a widget.
@@ -59,7 +59,7 @@ public class EventPresenter implements Presenter
 		this.eventView = display;
 		this.eventData = data;
 		
-		eventView.initialize(this.eventData);
+		eventView.initialize(appUser, this.eventData);
 		this.loadComments();
 	}
 	
