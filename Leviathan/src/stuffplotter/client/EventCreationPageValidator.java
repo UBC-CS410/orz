@@ -15,6 +15,7 @@ import stuffplotter.views.events.FriendSelectionPanel;
  */
 public class EventCreationPageValidator implements EventCreationPageVisitor
 {
+	private static final String NO_DATE_SELECTION = "You must select at least one time slot.";
 	public boolean isPageValid;
 	
 	/**
@@ -48,7 +49,7 @@ public class EventCreationPageValidator implements EventCreationPageVisitor
 		if(datesSelected.isEmpty())
 		{
 			isPageValid = false;
-			dateSelectionPanel.displayErrorMessage();
+			dateSelectionPanel.displayErrorMessage(NO_DATE_SELECTION);
 		}
 	}
 
