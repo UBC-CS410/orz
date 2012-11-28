@@ -1,7 +1,10 @@
 package stuffplotter.views;
 
 import stuffplotter.presenters.HomePagePresenter.HomeView;
+import stuffplotter.presenters.NewsFeedPresenter.NewsFeedView;
+
 import stuffplotter.views.home.HomePageCalendar;
+import stuffplotter.views.home.NewsFeedPanel;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -14,6 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class HomePageView extends SimplePanel implements HomeView
 {
 	private HomePageCalendar calendar;
+	private NewsFeedView newsFeedView;
 	
 	/**
 	 * Constructor for the HomePagePanel.
@@ -34,9 +38,15 @@ public class HomePageView extends SimplePanel implements HomeView
 	private void initializeUI()
 	{
 		calendar = new HomePageCalendar();
-		HorizontalPanel calMapHolder = new HorizontalPanel();
-		calMapHolder.add(calendar);
-		this.add(calMapHolder);
+		newsFeedView = new NewsFeedPanel();
+		HorizontalPanel homeHolder = new HorizontalPanel();
+		homeHolder.add(calendar);
+		homeHolder.add((Widget) newsFeedView);
+
+		
+		
+		
+		this.add(homeHolder);
 	}
 	
 	/**
@@ -54,5 +64,11 @@ public class HomePageView extends SimplePanel implements HomeView
 	public Widget asWidget()
 	{
 		return this;
+	}
+
+	@Override
+	public NewsFeedView getNewsFeed()
+	{
+		return this.newsFeedView;
 	}
 }

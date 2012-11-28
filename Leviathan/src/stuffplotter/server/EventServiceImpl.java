@@ -27,23 +27,29 @@ public class EventServiceImpl extends RemoteServiceServlet implements EventServi
 	 * event to a event scheduler if event is added to data store successfully.
 	 * @pre 	true;
 	 * @post	adds an Event id to an Account's event list;
-	 * @param 	pEvent - the new event to store
+	 * @param 	event - the new event to store
 	 * @param   timeSlots - the time slots proposed for an event.
 	 */
 	@Override
-	public Event createEvent(Event pEvent, List<Date> timeSlots)
+	public Event createEvent(Event event, List<Date> timeSlots)
 	{
 		// store event
-		Event event = pEvent;
 		dbstore.simpleStore(event);
 		
 		// associate scheduler to event
 		this.addScheduler(event.getId(), timeSlots);
 		
+		Account ownerAccount = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, event.getOwnerID()));
+		ownerAccount.addUserEvent(event.getId());
+		dbstore.simpleStore(ownerAccount);
 		
-		Account account = dbstore.fetchAccount(pEvent.getOwnerID());
-		account.addUserEvent(event.getId());
-		dbstore.simpleStore(account);
+		for(String guestEmail : event.getInvitees())
+		{
+			Account guestAccount = (Account) dbstore.simpleFetch(new Key<Account>(Account.class, guestEmail));
+			guestAccount.addUserEvent(event.getId());
+			dbstore.simpleStore(guestAccount);
+		}
+		
 		email.sendEvent(event);
 		return event;
 	}

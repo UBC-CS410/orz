@@ -173,8 +173,7 @@ public class TopBarPresenter implements Presenter
 											{								
 												for(NotificationModel not : result)
 												{
-													if(//!notifications.contains(not))
-															!doesContain(notifications, not))
+													if(!doesContain(notifications, not))
 														notifications.add(not);
 												}
 												Collections.sort(notifications, new Comparator<NotificationModel>()

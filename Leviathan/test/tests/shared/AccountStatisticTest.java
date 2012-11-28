@@ -141,6 +141,28 @@ public class AccountStatisticTest extends TestCase
 		assertEquals(5, as.getUserLevel());
 	}
 
+	@Test
+	public void testAddUserAch()
+	{
+		List<Achievement> achievements = new ArrayList<Achievement>();
+		achievements.add(Achievement.ADD_10_FRIENDS);
+		achievements.add(Achievement.FIRST_LOG_IN);
+		achievements.add(Achievement.ADD_FIRST_FRIEND);
+		
+		AccountStatistic as = new AccountStatistic();
+		
+		boolean bool = as.addUserAchievements(achievements);
+		
+		assertTrue(bool);
+		assertEquals(3,as.getUserAchievements().size());
+		
+		List<Achievement> achievements2 = new ArrayList<Achievement>();
+		achievements2.add(Achievement.ADD_10_FRIENDS);
+		achievements2.add(Achievement.FIRST_LOG_IN);
+		
+		boolean bool2 = as.addUserAchievements(achievements2);
+		assertTrue(bool2);
+	}
 }
 	
 

@@ -142,6 +142,10 @@ public class Leviathan implements EntryPoint
 	        	if(Window.Location.getHref().length() > REDIRECT_URI.length())
 	        	{
 	        		String fragment = Window.Location.getHash();
+	        		if (fragment.contains("error"))
+	        		{
+	        			Window.Location.assign(REDIRECT_URI);
+	        		}
 	        		String token = fragment.substring(fragment.indexOf('=') + 1, fragment.indexOf('&'));
 	        		applicationServices.getAccountService().storeAccessToken(token,  new AsyncCallback<Account>() {
 
