@@ -30,7 +30,7 @@ public class PendingFriendPanel extends HorizontalPanel implements PendingFriend
 	{
 		this.userName = new Label();
 		this.userEmail = new Label();
-		this.profilePic = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
+		this.profilePic = new Image("images/profile.jpg");
 		this.profilePic.setPixelSize(IMAGESIZE, IMAGESIZE);
 		this.confirmButton = new Button("Confirm");
 		this.denyButton = new Button("Deny");

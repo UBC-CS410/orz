@@ -53,4 +53,10 @@ public class AchievementsPageView extends HorizontalPanel implements Achievement
 	{
 		this.achievementDisplayPanel.setAchievementData(achievements);
 	}
+
+	@Override
+	public List<Widget> getAchievementButtons()
+	{
+		return this.achievementDisplayPanel.getElements();
+	}
 }

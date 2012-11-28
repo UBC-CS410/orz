@@ -1,7 +1,11 @@
 package stuffplotter.views.account;
 
+import java.util.List;
+
 import stuffplotter.bindingcontracts.AccountModel;
+import stuffplotter.bindingcontracts.AccountStatisticModel;
 import stuffplotter.presenters.UserAccountPresenter.UserAccountView;
+import stuffplotter.shared.Achievement;
 import stuffplotter.views.util.InfoPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -13,6 +17,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class to display the information for a user's account.
@@ -31,6 +36,7 @@ public class AccountPanel extends SimplePanel implements UserAccountView
 	private InfoPanel phoneField;
 	private InfoPanel ageField;
 	private Image profilePic;
+	private Image badgePic;
 	private Label newAgelabel;
 	private TextBox ageTextBox;
 	private Label newTitlelabel;
@@ -66,15 +72,19 @@ public class AccountPanel extends SimplePanel implements UserAccountView
 		titleField = new InfoPanel("Title","");
 		phoneField = new InfoPanel("Phone","");
 		ageField = new InfoPanel("Age","");
-		profilePic = new Image("http://i983.photobucket.com/albums/ae312/robzile/Mario-Box-question-mark.gif");
+		
+		HorizontalPanel imageHolder = new HorizontalPanel();
+		profilePic = new Image("images/profile.jpg");
 		profilePic.setPixelSize(IMAGESIZE, IMAGESIZE);
+		badgePic = new Image("images/blank.jpg");
+		imageHolder.add(profilePic);
+		imageHolder.add(badgePic);
 		
 		newAgelabel = new Label("Enter New Age: ");
 		ageTextBox = new TextBox();
 		newTitlelabel = new Label("Select New Title: ");
 		titleListBox = new ListBox(false);
-		titleListBox.addItem("Newbie");
-		titleListBox.addItem("TestTitle");
+		titleListBox.addItem("Newb");
 		newPhonelabel = new Label("Enter New Phone Number: ");
 		phoneTextBox = new TextBox();
 		
@@ -83,7 +93,7 @@ public class AccountPanel extends SimplePanel implements UserAccountView
 		this.buttonHolder.add(cancelBtn);
 		
 		this.informationHolder.add(new Label("Account Information"));
-		this.informationHolder.add(profilePic);
+		this.informationHolder.add(imageHolder);
 		this.informationHolder.add(nameField);
 		this.informationHolder.add(emailField);
 		this.informationHolder.add(ageField);
@@ -118,12 +128,24 @@ public class AccountPanel extends SimplePanel implements UserAccountView
 		this.emailField.setValue(model.getUserEmail());
 		this.phoneField.setValue(model.getUserPhone());
 		this.titleField.setValue(model.getUserTitle());
+		this.badgePic.setUrl(model.getBadgePic());
 		if(model.getUserProfilePicture()!=null)
 			this.profilePic.setUrl(model.getUserProfilePicture());
 		if(model.getUserAge().equals("--"))
 		{
 			this.ageField.setValue(model.getUserAge());
 		}
+	}
+	
+	@Override
+	public void setUserData(AccountStatisticModel model)
+	{
+		List<Achievement> achivements = model.getUserAchievements();
+		for(Achievement ach: achivements)
+		{
+			this.titleListBox.addItem(ach.getName());
+		}
+		
 	}
 
 	@Override
@@ -194,4 +216,6 @@ public class AccountPanel extends SimplePanel implements UserAccountView
 		ageField.setValue(result);
 		return result;
 	}
+
+
 }
