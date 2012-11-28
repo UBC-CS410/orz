@@ -1,5 +1,7 @@
 package stuffplotter.client;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import stuffplotter.client.services.ServiceRepository;
@@ -19,11 +21,14 @@ import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarsContext;
+import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
 import com.google.api.gwt.services.calendar.shared.model.Calendar;
 import com.google.api.gwt.services.calendar.shared.model.CalendarList;
 import com.google.api.gwt.services.calendar.shared.model.CalendarListEntry;
 import com.google.api.gwt.services.calendar.shared.model.Event;
+import com.google.api.gwt.services.calendar.shared.model.EventDateTime;
+import com.google.api.gwt.services.calendar.shared.model.EventReminder;
 import com.google.api.gwt.services.calendar.shared.model.Events;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
@@ -32,6 +37,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -209,90 +215,7 @@ public class Leviathan implements EntryPoint
 	}
 	
 	public void startApplication()
-	{		
-		//DO NOT REMOVE CODE BELOW, USED FOR TESTING GOOGLE CALENDARS		
-		final com.google.api.gwt.services.calendar.shared.Calendar testCalendar = GWT.create(com.google.api.gwt.services.calendar.shared.Calendar.class);
-		testCalendar.initialize(new SimpleEventBus(), new GoogleApiRequestTransport("stuffplotter", "AIzaSyC5oA892h66JjK4MFqUM68ZMLSzuNwXSYk"));
-		
-		Button testButton1 = new Button("Authorize Calendar");
-		testButton1.addClickHandler(new ClickHandler() 
-		{
-
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				OAuth2Login.get().authorize("1024938108271.apps.googleusercontent.com", CalendarAuthScope.CALENDAR, new Callback<Void, Exception>()
-						{
-							@Override
-							public void onFailure(Exception reason)
-							{
-								// TODO Auto-generated method stub
-								Window.alert("An unexpected error has occured.");
-								reason.printStackTrace();			
-							}
-
-							@Override
-							public void onSuccess(Void result)
-							{
-							    testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER)
-						        .fire(new Receiver<CalendarList>() {
-						          @Override
-						          public void onSuccess(CalendarList list) {
-						            String calendarId = list.getItems().get(0).getId();
-						            for (int i = 0; i < list.getItems().size(); i++)
-						            {
-						            	 Window.alert(list.getItems().get(i).getId());
-						            }
-						           
-						          }
-						        });
-								Window.alert("Success!");
-							}	
-						});	
-			}		
-		});
-		
-		Button testButton2 = new Button("Test Calendar");
-		testButton2.addClickHandler(new ClickHandler()
-		{
-
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				Window.alert("Retrieving Google Calendar events...");
-				testCalendar.calendarList().list().setMinAccessRole(MinAccessRole.OWNER).fire(new Receiver<CalendarList>()
-				{
-					@Override
-					public void onSuccess(CalendarList response) 
-					{
-						String calendarID = response.getItems().get(0).getId();
-						ListRequest calRequest = testCalendar.events().list(calendarID);
-						calRequest.fire(new Receiver<Events>()
-						{
-							@Override
-							public void onSuccess(Events response)
-							{
-								String result = "Events Found: ";
-								List<Event> events = response.getItems();
-								if(events != null)
-								{
-									for(Event event : events)
-									{
-										result += " " + event.getCreated();
-									}
-								}
-								Window.alert(result);
-							}
-						});
-					}
-				});	
-			}
-			
-		});
-		RootPanel.get().add(testButton1);
-		RootPanel.get().add(testButton2);
-		//DO NOT REMOVE CODE ABOVE, USED FOR TESTING GOOGLE CALENDARS
-		
+	{			
 		applicationServices.getStatsService().getStats(applicationUser.getUserEmail(), new AsyncCallback<AccountStatistic>()
 		{
 
