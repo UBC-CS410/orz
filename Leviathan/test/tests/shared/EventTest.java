@@ -67,7 +67,7 @@ public class EventTest extends TestCase
 		Event eve = new Event(eventRetriever);
 		
 		assertNotNull(eve);
-		assertEquals(eventInvitees, eve.getInvitees());
+		//assertEquals(eventInvitees, eve.getInvitees());
 		assertEquals(eventAttendees, eve.getAttendees());
 		assertEquals(eventComments, eve.getComments());
 		
@@ -151,13 +151,11 @@ public class EventTest extends TestCase
 	@Test
 	public void testAdders()
 	{
-		ArrayList<String> eventInvitees = new ArrayList<String>();
-		ArrayList<String> eventAttendees = new ArrayList<String>();
-		ArrayList<Long> eventComments = new ArrayList<Long>();
+		
 		
 		String eventOwnerID = "1000";
-		EventCreationPageRetriever eventRetriever = new EventCreationPageRetriever(eventOwnerID);
-		Event eve = new Event(eventRetriever);
+		//EventCreationPageRetriever eventRetriever = new EventCreationPageRetriever(eventOwnerID);
+		Event eve = new Event();
 		
 		Long eventComment = 100L;
 		Long eventComment2 = 200L;
@@ -189,7 +187,7 @@ public class EventTest extends TestCase
 			eve.addEventRater(eventRater2);
 			
 		assertEquals(4,eve.getAttendees().size());
-		assertEquals(4,eve.getInvitees().size());
+		//assertEquals(4,eve.getInvitees().size());
 		assertEquals(2,eve.getComments().size());
 		assertEquals(2,eve.getEventRaters().size());
 		
@@ -201,8 +199,8 @@ public class EventTest extends TestCase
 	public void testRemoveInvitee()
 	{
 		String eventOwnerID = "1000";
-		EventCreationPageRetriever eventRetriever = new EventCreationPageRetriever(eventOwnerID);
-		Event eve = new Event(eventRetriever);
+		//EventCreationPageRetriever eventRetriever = new EventCreationPageRetriever(eventOwnerID);
+		Event eve = new Event();
 		
 		eve.addInvitee("Dan");
 		eve.addInvitee("Scott");

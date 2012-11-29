@@ -15,6 +15,7 @@ import org.junit.Test;
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.client.EventCreationPagePopulator;
 import stuffplotter.client.services.AccountServiceAsync;
+import stuffplotter.shared.Account;
 
 /**
  * JUnit test class for EventCreationPagePopulator.java
@@ -22,7 +23,7 @@ import stuffplotter.client.services.AccountServiceAsync;
  */
 public class ECPPTest extends TestCase
 {
-	private AccountServiceAsync accountServicesF;
+	
 	
 	/**
 	 * Verify that the instance fields in the class are set correctly
@@ -30,12 +31,13 @@ public class ECPPTest extends TestCase
 	@Test
 	public void testECPPCtor()
 	{
-		String eventCreator = "John";
-		List<String> userFriends = new ArrayList<String>();
-		AccountServiceAsync accountServices;
-		AccountModel userAccount;
+		//String eventCreator = "John";
+		//List<String> userFriends = new ArrayList<String>();
+		AccountServiceAsync accountServices = null;
+		Account userAccount = new Account();
 	
-		//EventCreationPagePopulator ecpp = EventCreationPagePopulator(accountServices, userAccount); //this constructor can't be called here
+		EventCreationPagePopulator ecpp = new EventCreationPagePopulator(accountServices, userAccount); //this constructor can't be called here
+		assertNotNull(ecpp);
 		
 	}
 

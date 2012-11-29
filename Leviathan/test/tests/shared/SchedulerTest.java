@@ -40,7 +40,7 @@ public class SchedulerTest extends TestCase
 	@Test
 	public void testAddAvail()
 	{
-		ArrayList<Long> availabilities = new ArrayList<Long>();
+
 		
 		Scheduler sch = new Scheduler();
 		Date day = new Date();
