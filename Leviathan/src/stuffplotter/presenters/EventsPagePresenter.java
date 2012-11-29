@@ -607,7 +607,7 @@ public class EventsPagePresenter implements Presenter
 			switch(selectedEvent.getStatus())
 			{
 				case PROPOSED:
-					if(selectedEvent.getOwnerID() == userAccount.getUserEmail())
+					if(selectedEvent.getOwnerID().equals(userAccount.getUserEmail()))
 					{
 						eventsPageView.showSelectTimeButton();
 					}

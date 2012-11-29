@@ -120,7 +120,7 @@ public abstract class Notification implements Serializable, NotificationModel
 			final Notification other = (Notification) o1;
 			if(o1 == this)
 				return true;
-			return this.getNotificationId()==other.notificationId;
+			return this.getNotificationId().equals(other.notificationId);
 		}
 		return false;
 		
