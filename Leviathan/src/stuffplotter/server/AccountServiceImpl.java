@@ -61,8 +61,11 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 	    finally
 	    {
     	  //If users choose to log out, redirect them back to login page
-    	  account.setLogoutUrl(userService.createLogoutURL(userService.createLoginURL(host)));
-    	  dbstore.simpleStore(account); 
+	      if(account != null)
+	      {
+	    	  account.setLogoutUrl(userService.createLogoutURL(userService.createLoginURL(host)));
+	    	  dbstore.simpleStore(account);
+	      }
 	    }
 	    
 	    return account;
@@ -238,11 +241,14 @@ public class AccountServiceImpl extends RemoteServiceServlet implements AccountS
 		}
 		finally
 		{
-			if(!temp.getPendingFriends().contains(acc.getUserEmail()))
+			if(temp != null)
 			{
-				temp.addPendingRequest(acc.getUserEmail());
-				temp.addUserNotification(notId);
-				dbstore.simpleStore(temp);	
+				if(!temp.getPendingFriends().contains(acc.getUserEmail()))
+				{
+					temp.addPendingRequest(acc.getUserEmail());
+					temp.addUserNotification(notId);
+					dbstore.simpleStore(temp);	
+				}
 			}
 		}
 	}

@@ -25,7 +25,7 @@ public class EventCreationPagePopulator implements EventCreationPageVisitor
 	
 	/**
 	 * Constructor for the EventCreationPagePopulator.
-	 * @pre true;
+	 * @pre accountServices != null && userAccount != null;
 	 * @post true;
 	 * @param accountServices - the services to retrieve the account information for users.
 	 * @param userAccount - the user account to populate the event creation pages for.

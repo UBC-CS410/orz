@@ -32,7 +32,6 @@ public class EventListingView extends VerticalPanel
 		this.eventLink.setStyleName("eventListingLabel");
 		
 		Label stateLabel = this.getStateLabel(userData.getUserEmail(), eventData.getInvitees(), eventData.getStatus());
-		Label timeLabel = new Label("");
 
 		this.setStyleName("eventListing");
 		
