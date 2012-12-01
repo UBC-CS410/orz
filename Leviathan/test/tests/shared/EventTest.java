@@ -46,7 +46,7 @@ public class EventTest extends TestCase
 	
 	@Test
 	public void testEvent() {
-		ArrayList<String> eventInvitees = new ArrayList<String>();
+		
 		ArrayList<String> eventAttendees = new ArrayList<String>();
 		ArrayList<Long> eventComments = new ArrayList<Long>();
 				

@@ -50,7 +50,7 @@ public class AccountTest extends TestCase
 		ArrayList<Long> userCurrentEvents = new ArrayList<Long>();
 		ArrayList<Long> userPastEvents = new ArrayList<Long>();
 		//userPastEvents.add(1000L);
-		ArrayList<Notification> userNotifications = new ArrayList<Notification>();
+		ArrayList<Long> userNotifications = new ArrayList<Long>();
 		String userTitle = "Newbie";
 
 		
