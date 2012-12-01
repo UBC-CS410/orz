@@ -40,7 +40,6 @@ public class AccountPagePresenterTest extends TestCase
 		AccountPagePresenter app = new AccountPagePresenter(appServices,eventBus,accountView,appUser);
 		
 		assertNotNull(app);
-		
 	}
 	
 	@Test
