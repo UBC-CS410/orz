@@ -25,7 +25,8 @@ public class AccountStatisticPresenterTest extends TestCase
 {
 	@Test
 	public void testASPCtor()
-	{	//Account appUser = new Account("test@example.com");
+	{
+		//Account appUser = new Account("test@example.com");
 		//ServiceRepository appServices = createStrictMock(ServiceRepository.class);
 		//HandlerManager eventBus = new HandlerManager(null);
 		//AccountStatisticView statisticView = createStrictMock(AccountStatisticView.class);	
