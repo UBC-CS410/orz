@@ -33,7 +33,7 @@ public class AccountPagePresenterTest extends TestCase
 	@Test
 	public void testAPPCtor()
 	{	
-		Account appUser = new Account("test@example.copm");
+		Account appUser = new Account();
 		ServiceRepository appServices = createStrictMock(ServiceRepository.class);
 		HandlerManager eventBus = new HandlerManager(null);
 		AccountView accountView = createStrictMock(AccountView.class);
