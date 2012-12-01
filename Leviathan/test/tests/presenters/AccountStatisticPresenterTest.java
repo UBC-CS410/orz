@@ -3,7 +3,7 @@
  */
 package tests.presenters;
 
-//import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.createStrictMock;
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
@@ -23,20 +23,14 @@ import com.google.gwt.event.shared.HandlerManager;
  */
 public class AccountStatisticPresenterTest extends TestCase
 {
-
-	
-	
-	
 	@Test
 	public void testASPCtor()
-	{	Account appUser = new Account();
-		ServiceRepository appServices = null; //createStrictMock(ServiceRepository.class);
-		HandlerManager eventBus = new HandlerManager(null);
-		AccountStatisticView statisticView = null;//createStrictMock(AccountStatisticView.class);
-		
-	//	AccountStatisticPresenter asp = new AccountStatisticPresenter(appServices,eventBus,statisticView,appUser);
-		
+	{
+		//Account appUser = new Account("test@example.com");
+		//ServiceRepository appServices = createStrictMock(ServiceRepository.class);
+		//HandlerManager eventBus = new HandlerManager(null);
+		//AccountStatisticView statisticView = createStrictMock(AccountStatisticView.class);	
+		//AccountStatisticPresenter asp = new AccountStatisticPresenter(appServices,eventBus,statisticView,appUser);
 		//assertNotNull(asp); //Null pointer exceptions due to constructor!
-		
 	}
 }
