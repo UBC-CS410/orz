@@ -2,7 +2,6 @@ package stuffplotter.views.global;
 
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;

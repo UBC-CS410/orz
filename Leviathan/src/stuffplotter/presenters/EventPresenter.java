@@ -8,7 +8,6 @@ import stuffplotter.client.services.EventServiceAsync;
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.server.AchievementChecker;
 import stuffplotter.server.LevelUpdater;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;

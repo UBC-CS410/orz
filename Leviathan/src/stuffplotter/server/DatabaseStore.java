@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.AchievementNotification;

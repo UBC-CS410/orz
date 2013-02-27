@@ -1,11 +1,7 @@
 package stuffplotter.shared;
 
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
-
 public class AchievementNotification extends Notification
 {
-	
 	private Achievement achievement;
 	
 	public AchievementNotification()
@@ -17,8 +13,6 @@ public class AchievementNotification extends Notification
 		super(NotificationType.ACHIEVEMENTGET, user, user);
 		this.achievement = ach;
 		this.setNotificationDisplay(ach);
-		
-		
 	}
 	
 	
@@ -27,6 +21,8 @@ public class AchievementNotification extends Notification
 		this.notificationDisplay = display;
 	}
 
-
-
+	/**
+	 * Serial version for AchievementNotification. 
+	 */
+	private static final long serialVersionUID = -2958628524619994717L;
 }

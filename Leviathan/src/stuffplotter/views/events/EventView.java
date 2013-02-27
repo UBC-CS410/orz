@@ -4,10 +4,8 @@ import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.presenters.EventPresenter.EventViewer;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;
-import stuffplotter.shared.Event.Status;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;

@@ -4,13 +4,9 @@ import java.util.List;
 
 import stuffplotter.presenters.AchievementsPagePresenter.AchievementsView;
 import stuffplotter.shared.Achievement;
-import stuffplotter.views.account.AccountPanel;
-import stuffplotter.views.account.StatisticPanel;
 import stuffplotter.views.achievements.AchievementsDisplayPanel;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**

@@ -3,14 +3,9 @@
  */
 package tests.shared;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
-
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import stuffplotter.shared.Availability;
 
 /**

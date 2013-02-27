@@ -3,13 +3,12 @@ package stuffplotter.server;
 import java.util.List;
 
 import stuffplotter.client.services.RecordService;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Achievement;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class RecordServiceImpl extends RemoteServiceServlet implements RecordService {
-
+public class RecordServiceImpl extends RemoteServiceServlet implements RecordService
+{
 	/**
 	 * Add an amount of experience to the user
 	 * @pre		user is a valid data store key, xp > 0
@@ -45,4 +44,8 @@ public class RecordServiceImpl extends RemoteServiceServlet implements RecordSer
 		return null;
 	}
 
+	/**
+	 * Serial version for RecordServiceImpl.
+	 */
+	private static final long serialVersionUID = -8037488548260234848L;
 }

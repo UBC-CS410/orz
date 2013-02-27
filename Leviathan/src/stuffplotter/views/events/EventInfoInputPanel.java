@@ -5,8 +5,6 @@ import stuffplotter.shared.Event.Frame;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;

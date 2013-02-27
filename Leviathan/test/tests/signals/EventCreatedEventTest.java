@@ -4,10 +4,7 @@
 package tests.signals;
 
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
-import stuffplotter.signals.EventCreatedEvent;
 
 /**
  * JUnit test class for EventCreatedEvent.java

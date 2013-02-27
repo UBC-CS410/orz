@@ -210,7 +210,6 @@ public class DaySelections extends VerticalPanel
 		 * @post this.isVisible() == true;
 		 * @param timeSlotDate - the date represented by the TimeSlot.		 
 		 */
-		@SuppressWarnings("deprecation")
 		private void initializeVariables(Date timeSlotDate)
 		{
 			this.timeSlot = timeSlotDate;

@@ -3,13 +3,11 @@ package stuffplotter.views.achievements;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import stuffplotter.shared.Achievement;
-import stuffplotter.views.util.InfoPanel;
 import stuffplotter.views.util.ScrollDisplayPanel;
 import stuffplotter.views.util.VerticalInfoPanel;
 

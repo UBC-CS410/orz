@@ -3,16 +3,11 @@
  */
 package tests.shared;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import stuffplotter.client.EventCreationPageRetriever;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Event.Frame;

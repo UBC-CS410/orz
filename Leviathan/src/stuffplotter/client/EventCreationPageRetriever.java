@@ -1,13 +1,7 @@
 package stuffplotter.client;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Widget;
 
 import stuffplotter.shared.Event.Frame;
 import stuffplotter.views.events.EventDateSelectionPanel;

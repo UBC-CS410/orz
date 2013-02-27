@@ -2,12 +2,12 @@ package stuffplotter.client.services;
 
 import java.util.List;
 
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Achievement;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface RecordServiceAsync {
+public interface RecordServiceAsync
+{
 	/**
 	 * Add an amount of experience to the user
 	 * @pre		user is a valid data store key, xp > 0

@@ -1,6 +1,5 @@
 package stuffplotter.server;
 
-import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Event;
 

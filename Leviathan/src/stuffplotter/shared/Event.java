@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import stuffplotter.client.EventCreationPageRetriever;
 

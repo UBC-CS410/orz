@@ -3,14 +3,11 @@ package stuffplotter.client;
 import java.util.Date;
 
 import stuffplotter.views.util.DateSplitter;
-import stuffplotter.views.util.EventToDateConverter;
 
 import com.google.api.gwt.client.GoogleApiRequestTransport;
 import com.google.api.gwt.services.calendar.shared.Calendar;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext;
 import com.google.api.gwt.services.calendar.shared.Calendar.CalendarsContext;
 import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext;
-import com.google.api.gwt.services.calendar.shared.model.CalendarListEntry;
 import com.google.api.gwt.services.calendar.shared.model.Event;
 import com.google.api.gwt.services.calendar.shared.model.EventDateTime;
 import com.google.gwt.core.client.GWT;

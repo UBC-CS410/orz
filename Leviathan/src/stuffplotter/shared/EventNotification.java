@@ -1,22 +1,17 @@
 package stuffplotter.shared;
 
-import stuffplotter.shared.Notification.NotificationType;
-
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
-
 /**
  * Subclass of Notification that represents a Event Notification.
  */
 public class EventNotification extends Notification
 {
-
 	public enum EventNotificationType
 	{
 		EVENTINVITE, EVENTUPDATE
 	}
 	
 	private EventNotificationType eventType;
+	
 	/**
 	 * Constructor for a EventNotification.
 	 * @pre id >= 0 && type != null && fromUser != null && forUser != null;
@@ -34,10 +29,12 @@ public class EventNotification extends Notification
 	
 	public EventNotification(EventNotificationType type, String foruser, String from)
 	{
-		
 		super(NotificationType.EVENTINVITATION, foruser, from);
 		this.eventType = type;
 	}
 
-
+	/**
+	 * Serial version for EventNotification.
+	 */
+	private static final long serialVersionUID = -4203666159999859269L;
 }

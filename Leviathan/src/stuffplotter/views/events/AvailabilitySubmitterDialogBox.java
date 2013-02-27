@@ -11,12 +11,9 @@ import stuffplotter.shared.Availability;
 import stuffplotter.signals.EventSchedulerEvent;
 import stuffplotter.views.util.CloseClickHandler;
 
-import stuffplotter.views.util.DateSplitter;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;

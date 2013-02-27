@@ -2,7 +2,6 @@ package stuffplotter.client.services;
 
 import java.util.List;
 
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Achievement;
 
 import com.google.gwt.user.client.rpc.RemoteService;

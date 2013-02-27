@@ -1,18 +1,11 @@
 package stuffplotter.presenters;
 
-import java.util.Date;
-
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.NewsFeedPresenter.NewsFeedView;
 import stuffplotter.shared.Account;
-import stuffplotter.views.home.NewsFeedPanel;
 
 import com.bradrydzewski.gwt.calendar.client.Calendar;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 

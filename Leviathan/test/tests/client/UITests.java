@@ -1,5 +1,5 @@
 package tests.client;
-
+/*
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import stuffplotter.views.account.AccountPanel;
 import stuffplotter.views.events.AvailabilitySubmitterDialogBox;
 import stuffplotter.shared.Account;
 
-/*public class UITests extends GWTTestCase
+public class UITests extends GWTTestCase
 {
 	//tests to ensure that method for UI work properly where applicable
 	private static AccountPanel accountPanel;

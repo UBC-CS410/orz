@@ -3,8 +3,6 @@ package stuffplotter.bindingcontracts;
 import java.util.Comparator;
 import java.util.List;
 
-import com.google.gwt.safehtml.shared.SafeUri;
-
 /**
  * Interface used by the Account object to enforce a contract between the model and views to
  * simulate data binding.

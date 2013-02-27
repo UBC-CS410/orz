@@ -3,18 +3,12 @@
  */
 package tests.shared;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
-
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import stuffplotter.shared.AchievementNotification;
 import stuffplotter.shared.EventNotification;
 import stuffplotter.shared.EventNotification.EventNotificationType;
-import stuffplotter.shared.FriendNotification;
 import stuffplotter.shared.Notification;
 import stuffplotter.shared.Notification.NotificationType;
 

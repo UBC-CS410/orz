@@ -9,8 +9,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.bindingcontracts.NotificationModel;
-import stuffplotter.shared.Account;
-import stuffplotter.shared.Notification;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 public class NewsFeedDisplayPanel extends ScrollDisplayPanel
@@ -82,9 +80,5 @@ public class NewsFeedDisplayPanel extends ScrollDisplayPanel
 			this.add(friendBadge);
 			this.add(newsHolder);
 		}
-
-
 	}
-
-
 }

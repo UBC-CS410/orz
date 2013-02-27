@@ -3,11 +3,8 @@
  */
 package tests.shared;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import stuffplotter.shared.EventNotification;
 import stuffplotter.shared.EventNotification.EventNotificationType;
 import stuffplotter.shared.Notification.NotificationType;

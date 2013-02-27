@@ -3,11 +3,8 @@
  */
 package tests.client;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import stuffplotter.client.EventCreationPageValidator;
 
 /**

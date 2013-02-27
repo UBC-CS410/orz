@@ -1,9 +1,5 @@
 package stuffplotter.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import stuffplotter.client.services.ServiceRepository;
 import stuffplotter.presenters.AppController;
 import stuffplotter.server.AchievementChecker;
@@ -13,36 +9,12 @@ import stuffplotter.shared.InvalidAccessTokenException;
 import stuffplotter.signals.AccountAuthorizedEvent;
 import stuffplotter.signals.AccountAuthorizedEventHandler;
 
-import com.google.api.gwt.client.GoogleApiRequestTransport;
-import com.google.api.gwt.client.OAuth2Login;
-import com.google.api.gwt.oauth2.client.Auth;
-import com.google.api.gwt.oauth2.client.AuthRequest;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarAuthScope;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarListContext.ListRequest.MinAccessRole;
-import com.google.api.gwt.services.calendar.shared.Calendar.CalendarsContext;
-import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext;
-import com.google.api.gwt.services.calendar.shared.Calendar.EventsContext.ListRequest;
-import com.google.api.gwt.services.calendar.shared.model.Calendar;
-import com.google.api.gwt.services.calendar.shared.model.CalendarList;
-import com.google.api.gwt.services.calendar.shared.model.CalendarListEntry;
-import com.google.api.gwt.services.calendar.shared.model.Event;
-import com.google.api.gwt.services.calendar.shared.model.EventDateTime;
-import com.google.api.gwt.services.calendar.shared.model.EventReminder;
-import com.google.api.gwt.services.calendar.shared.model.Events;
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.web.bindery.requestfactory.shared.Receiver;
 
 
 /**

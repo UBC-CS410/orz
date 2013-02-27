@@ -1,16 +1,7 @@
-/**
- * 
- */
 package tests.client;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
-import stuffplotter.client.MapCoordinate;
-
-
 import com.google.gwt.maps.client.geom.LatLng;
 
 /**
@@ -20,7 +11,6 @@ import com.google.gwt.maps.client.geom.LatLng;
 public class MapCoordinateTest extends TestCase
 {
 	private LatLng coordinateAsLatLng;
-	
 	
 	/**
 	 * Verify that the instance fields in the class are set correctly

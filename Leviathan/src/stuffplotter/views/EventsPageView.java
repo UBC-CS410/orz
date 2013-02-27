@@ -5,13 +5,11 @@ import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.presenters.EventsPagePresenter.EventsPageViewer;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.views.events.EventListingView;
 import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;

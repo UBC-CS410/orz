@@ -6,7 +6,6 @@ import java.util.List;
 import stuffplotter.bindingcontracts.AccountModel;
 import stuffplotter.bindingcontracts.NotificationModel;
 import stuffplotter.presenters.NewsFeedPresenter.NewsFeedView;
-import stuffplotter.views.util.ScrollDisplayPanel;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;

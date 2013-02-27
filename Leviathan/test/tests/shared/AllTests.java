@@ -1,13 +1,13 @@
 package tests.shared;
 
 //import tests.client.UITests;
-
+/*
 import junit.framework.JUnit4TestAdapter;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-/*@RunWith(Suite.class)
+@RunWith(Suite.class)
 @Suite.SuiteClasses({
 		UITests.class
         })

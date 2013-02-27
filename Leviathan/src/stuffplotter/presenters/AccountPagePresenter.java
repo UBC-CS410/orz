@@ -1,7 +1,6 @@
 package stuffplotter.presenters;
 
 import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.presenters.AccountPagePresenter.AccountView;
 import stuffplotter.presenters.AccountStatisticPresenter.AccountStatisticView;
 import stuffplotter.presenters.UserAccountPresenter.UserAccountView;
 import stuffplotter.shared.Account;

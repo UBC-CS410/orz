@@ -8,7 +8,6 @@ import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 
 import stuffplotter.views.friends.FriendAchievementPopupPanel;
-import stuffplotter.views.friends.FriendPanel;
 import stuffplotter.views.friends.FriendPanelView;
 import stuffplotter.views.friends.FriendPopupPanel;
 import stuffplotter.views.friends.FriendsDisplayPanel;

@@ -6,7 +6,6 @@ import stuffplotter.presenters.ApplicationPagingPresenter.MainView.View;
 import stuffplotter.presenters.MenuBarPresenter.MenuBarView;
 import stuffplotter.presenters.TopBarPresenter.TopBarView;
 import stuffplotter.shared.Account;
-import stuffplotter.views.MasterView;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

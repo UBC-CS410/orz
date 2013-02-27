@@ -7,7 +7,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import stuffplotter.client.services.ServiceRepository;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.AccountStatistic;
 import stuffplotter.shared.Achievement;
 import stuffplotter.shared.Event;

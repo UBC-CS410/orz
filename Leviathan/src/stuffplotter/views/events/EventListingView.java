@@ -3,7 +3,6 @@ package stuffplotter.views.events;
 import java.util.List;
 
 import stuffplotter.bindingcontracts.AccountModel;
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Event;
 import stuffplotter.shared.Event.Status;
 

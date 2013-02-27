@@ -3,7 +3,6 @@ package stuffplotter.client.services;
 import java.util.Date;
 import java.util.List;
 
-import stuffplotter.shared.Account;
 import stuffplotter.shared.Availability;
 import stuffplotter.shared.Comment;
 import stuffplotter.shared.Event;

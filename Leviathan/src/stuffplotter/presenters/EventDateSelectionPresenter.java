@@ -7,7 +7,6 @@ import java.util.List;
 import stuffplotter.client.GoogleCalendar;
 import stuffplotter.signals.CalendarAuthorizedEvent;
 import stuffplotter.signals.CalendarAuthorizedEventHandler;
-import stuffplotter.views.util.DateSplitter;
 import stuffplotter.views.util.EventToDateConverter;
 
 import com.google.api.gwt.services.calendar.shared.Calendar;
@@ -19,8 +18,6 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;

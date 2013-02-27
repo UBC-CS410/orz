@@ -87,5 +87,8 @@ public class Comment implements Serializable
 		return this.content;
 	}
 	
-
+	/**
+	 * Serial version for Comment.
+	 */
+	private static final long serialVersionUID = -6889949126447295380L;
 }

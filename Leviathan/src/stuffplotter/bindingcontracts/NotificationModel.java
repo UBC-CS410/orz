@@ -1,6 +1,5 @@
 package stuffplotter.bindingcontracts;
 
-import java.util.Comparator;
 import java.util.Date;
 
 import stuffplotter.shared.Notification.NotificationType;

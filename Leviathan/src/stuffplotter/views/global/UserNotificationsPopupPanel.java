@@ -1,12 +1,7 @@
 package stuffplotter.views.global;
 
 import java.util.List;
-
 import stuffplotter.bindingcontracts.NotificationModel;
-
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;

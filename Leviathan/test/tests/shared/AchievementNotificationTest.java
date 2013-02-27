@@ -3,7 +3,6 @@
  */
 package tests.shared;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
 import org.junit.Test;
